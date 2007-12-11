@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C# Express 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cogwheel GUI", "Cogwheel GUI\Cogwheel GUI.csproj", "{FDE8682B-1BDB-4580-8639-CD5DE6C2FDA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brazil", "Brazil\Brazil.csproj", "{325F86DA-222E-470F-A4F6-B04A3179FB2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cogwheel", "Cogwheel\Cogwheel.csproj", "{241A3B41-B120-493E-8D36-4252316B4B59}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FDE8682B-1BDB-4580-8639-CD5DE6C2FDA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDE8682B-1BDB-4580-8639-CD5DE6C2FDA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDE8682B-1BDB-4580-8639-CD5DE6C2FDA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDE8682B-1BDB-4580-8639-CD5DE6C2FDA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{325F86DA-222E-470F-A4F6-B04A3179FB2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{325F86DA-222E-470F-A4F6-B04A3179FB2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{325F86DA-222E-470F-A4F6-B04A3179FB2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{325F86DA-222E-470F-A4F6-B04A3179FB2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{241A3B41-B120-493E-8D36-4252316B4B59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{241A3B41-B120-493E-8D36-4252316B4B59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{241A3B41-B120-493E-8D36-4252316B4B59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{241A3B41-B120-493E-8D36-4252316B4B59}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
