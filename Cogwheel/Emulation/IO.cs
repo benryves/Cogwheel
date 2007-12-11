@@ -48,14 +48,14 @@ namespace Cogwheel.Emulation {
 
                             if ((port & 0x40) == 0) {
                                 if ((port & 0x01) == 0) {
-                                    VDP.WriteData(value);
+                                    VideoProcessor.WriteData(value);
                                 } else {
-                                    VDP.WriteControl(value);
+                                    VideoProcessor.WriteControl(value);
                                 }
                             }
 
                             if ((port & 0x80) == 0) {
-                                PSG.WriteByteToPsg(value);
+                                SoundGenerator.WriteByteToPsg(value);
                             }
 
                         }
@@ -66,7 +66,7 @@ namespace Cogwheel.Emulation {
                 case HardwareModelType.SegaGameGear: {
 
                         // Ignore the Game Gear specific ports for now.
-                        if (port < 7 && (this.Type == MachineType.GameGear || this.Type == MachineType.GameGearMasterSystem)) {
+                        if (port < 7 && (this.Machine == MachineType.GameGear || this.Machine == MachineType.GameGearMasterSystem)) {
                             if (this.CapsHardwareModel == HardwareModelType.SegaGameGear) {
                                 WriteGameGearPort(port, value);
                             }
@@ -87,16 +87,16 @@ namespace Cogwheel.Emulation {
                             case 0x40:
                             case 0x41:
                                 // PSG
-                                this.PSG.BufferedWriteByteToPsg(this.TotalExecutedCycles, value);
+                                this.SoundGenerator.BufferedWriteByteToPsg(this.TotalExecutedCycles, value);
                                 break;
 
                             case 0x80:
                                 // VDP (Data) 
-                                this.VDP.WriteData(value);
+                                this.VideoProcessor.WriteData(value);
                                 break;
                             case 0x81:
                                 // VDP (Control)
-                                this.VDP.WriteControl(value);
+                                this.VideoProcessor.WriteControl(value);
                                 break;
                         }
                     } break;
@@ -133,10 +133,10 @@ namespace Cogwheel.Emulation {
                         switch (port & 0x61) {
                             case 0x00:
                             case 0x20:
-                                return VDP.ReadData();
+                                return VideoProcessor.ReadData();
                             case 0x01:
                             case 0x21:
-                                return VDP.ReadControl();
+                                return VideoProcessor.ReadControl();
                             case 0x40:
                                 if (this.CapsHardwareModel == HardwareModelType.Sg1000 || this.Sc3000PPI.KeyboardRow == 7) {
                                     return PortA;
@@ -167,13 +167,13 @@ namespace Cogwheel.Emulation {
                                 case 0x01:
                                     return 0xFF;
                                 case 0x40:
-                                    return this.VDP.VCounter;
+                                    return this.VideoProcessor.VCounter;
                                 case 0x41:
-                                    return this.VDP.VCounter; //TODO:Should be H counter
+                                    return this.VideoProcessor.VCounter; //TODO:Should be H counter
                                 case 0x80:
-                                    return this.VDP.ReadData();
+                                    return this.VideoProcessor.ReadData();
                                 case 0x81:
-                                    return this.VDP.ReadControl();
+                                    return this.VideoProcessor.ReadControl();
                                 case 0xC0:
                                     return PortA;
                                 case 0xC1:
@@ -196,7 +196,7 @@ namespace Cogwheel.Emulation {
         private byte PortB {
             get {
                 int PortRead = ~((((int)ControllerPortB.State >> 2) & 0x7) | 0xC8);
-                PortRead |= ButtonReset && Type == MachineType.MasterSystem ? 0x00 : 0x10;
+                PortRead |= ButtonReset && Machine == MachineType.MasterSystem ? 0x00 : 0x10;
                 PortRead |= GetTr(PortBControl, ControllerPortB) ? 0x08 : 0x00;
                 PortRead |= GetTh(PortAControl, ControllerPortA) ? 0x40 : 0x00;
                 PortRead |= GetTh(PortBControl, ControllerPortB) ? 0x80 : 0x00;

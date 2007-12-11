@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Cogwheel.Devices {
     
-    public partial class PSG {
+    public partial class ProgrammableSoundGenerator {
 
         /// <summary>Write a byte to the PSG.</summary>
         /// <param name="value">The dara written to the port.</param>

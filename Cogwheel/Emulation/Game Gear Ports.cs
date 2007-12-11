@@ -24,7 +24,7 @@ namespace Cogwheel.Emulation {
                         return (byte)(
                             (this.ButtonStart ? 0x00 : 0x80) |
                             (this.IsJapanese ? 0x00 : 0x40) |
-                            (this.VDP.VideoStandard == Cogwheel.Devices.VDP.VideoStandardType.NTSC ? 0x00 : 0x20)
+                            (this.VideoProcessor.VideoStandard == Cogwheel.Devices.VideoDisplayProcessor.VideoStandardType.NTSC ? 0x00 : 0x20)
                         );
                     }
                 case 0x01: return 0x7F;

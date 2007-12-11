@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Cogwheel.Devices {
     
-    public partial class PSG {
+    public partial class ProgrammableSoundGenerator {
 
         #region State variables
 
@@ -39,7 +39,7 @@ namespace Cogwheel.Devices {
 
         /// <summary>Create a new instance of the PSG emulator.</summary>
 
-        public PSG() {
+        public ProgrammableSoundGenerator() {
             this.Reset();
         }
 

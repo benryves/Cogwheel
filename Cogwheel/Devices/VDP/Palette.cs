@@ -5,7 +5,7 @@ using System.Drawing.Imaging;
 using System.Drawing;
 
 namespace Cogwheel.Devices {
-    public partial class VDP {
+    public partial class VideoDisplayProcessor {
 
         
         /// <summary>Hard-coded TMS9918 colour palette.</summary>

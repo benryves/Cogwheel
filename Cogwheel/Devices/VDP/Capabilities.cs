@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Cogwheel.Devices {
-    public partial class VDP {
+    public partial class VideoDisplayProcessor {
 
         private Emulation.MachineType CurrentMachineType = Cogwheel.Emulation.MachineType.MasterSystem2;
 

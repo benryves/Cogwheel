@@ -6,7 +6,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
 namespace Cogwheel.Devices {
-    public partial class PSG {
+    public partial class ProgrammableSoundGenerator {
 
         /// <summary>
         /// Calculate the parity level used for white noise generation.

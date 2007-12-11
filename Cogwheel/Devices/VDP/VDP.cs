@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace Cogwheel.Devices {
     
-    public partial class VDP {
+    public partial class VideoDisplayProcessor {
 
         private Emulation.Sega8Bit cpu;
 
@@ -14,7 +14,7 @@ namespace Cogwheel.Devices {
         /// </summary>
         /// <param name="cpu">The CPU that is attached to the VDP (required for interrupts).</param>
 
-        public VDP(Emulation.Sega8Bit cpu) {
+        public VideoDisplayProcessor(Emulation.Sega8Bit cpu) {
             this.cpu = cpu;
             this.SetupVCounter();
             this.Reset();

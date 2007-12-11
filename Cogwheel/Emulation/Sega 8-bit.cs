@@ -4,28 +4,38 @@ using System.Text;
 
 namespace Cogwheel.Emulation {
 
+	/// <summary>
+	/// Represents an 8-bit Sega machine.
+	/// </summary>
     public enum MachineType {
+		/// <summary>The SG-1000 (Sega Game 1000).</summary>
         Sg1000 = 1,
+		/// <summary>The SC-3000 (Sega Computer 1000).</summary>
         Sc3000,
+		/// <summary>The SF-7000 add-on.</summary>
         Sf7000,
+		/// <summary>The Sega Master System.</summary>
         MasterSystem,
+		/// <summary>The Sega Master System version 2.</summary>
         MasterSystem2,
+		/// <summary>The Sega Game Gear.</summary>
         GameGear,
+		/// <summary>The Sega Game Gear in Master System mode.</summary>
         GameGearMasterSystem,
     }
 
     public partial class Sega8Bit : Brazil.Z80A {
-
         
         private MachineType type = MachineType.MasterSystem2;
-        /// <summary>The machine type.</summary>
-        public MachineType Type {
+
+        /// <summary>Gets or sets the underlying machine type.</summary>
+        public MachineType Machine {
             get {
                 return this.type;
             }
             set {
                 this.type = value;
-                this.VDP.MachineType = value;
+                this.VideoProcessor.MachineType = value;
                 switch (value) {
                     case MachineType.Sg1000:
                     case MachineType.Sc3000:
@@ -65,34 +75,42 @@ namespace Cogwheel.Emulation {
         }
 
         /// <summary>
-        /// Machine nationality.
+        /// Gets or sets the machine nationality.
         /// </summary>
-        public bool IsJapanese = true;
+		public bool IsJapanese { get; set; }
 
         #region Devices
 
-        public readonly Devices.VDP VDP;
-        public readonly Devices.PSG PSG;
-        public readonly Devices.Sc3000PPI Sc3000PPI;
-        public readonly Devices.Sf7000PPI Sf7000PPI;
+		/// <summary>
+		/// Provides access to the video display processor component of the hardware.
+		/// </summary>
+		public Devices.VideoDisplayProcessor VideoProcessor { get; private set; }
 
-        /// <summary>The controller connected to port A.</summary>
-        public Devices.Input.Controller ControllerPortA;
-        /// <summary>The controller connected to port B.</summary>
-        public Devices.Input.Controller ControllerPortB;
+		/// <summary>
+		/// Provides access to the programmable sound generator component of the hardware.
+		/// </summary>
+		public Devices.ProgrammableSoundGenerator SoundGenerator { get; private set; }
 
-        /// <summary>An emulated keyboard.</summary>
+		public Devices.Sc3000PPI Sc3000PPI { get; private set; }
+		public Devices.Sf7000PPI Sf7000PPI { get; private set; }
+
+        /// <summary>Gets or sets the controller connected to port A.</summary>
+		public Devices.Input.Controller ControllerPortA { get; set; }
+        /// <summary>Gets or sets the controller connected to port B.</summary>
+		public Devices.Input.Controller ControllerPortB { get; set; }
+
+        /// <summary>Provides access to the keyboard.</summary>
         public Devices.Input.Keyboard ControllerKeyboard;
 
-        /// <summary>Used to set the status of the Game Gear's start button.</summary>
+        /// <summary>Gets or sets the status of the Game Gear's start button.</summary>
         /// <remarks>This has no effect in Master System mode.  Use ButtonPause to set the status of the Master System's Pause button.</remarks>
-        public bool ButtonStart;
+		public bool ButtonStart { get; set; }
 
-        /// <summary>Used to set the status of the Master System's reset button.</summary>
+        /// <summary>Gets or sets the status of the Master System's reset button.</summary>
         /// <remarks>This has no effect in Game Gear or Master System 2 mode.</remarks>
-        public bool ButtonReset;
+		public bool ButtonReset { get; set; }
 
-        /// <summary>Used to set the status of the Master System's pause button.</summary>
+        /// <summary>Gets or sets the status of the Master System's pause button.</summary>
         /// <remarks>This has no effect in Game Gear mode. Use ButtonStart to set the status of the Game Gear's Start button.</remarks>
         public bool ButtonPause {
             set { this.PinNonMaskableInterrupt = value; }
@@ -103,18 +121,24 @@ namespace Cogwheel.Emulation {
 
         #region Peripherals
 
-        public readonly Peripherals.Glasses3D Glasses;
+		/// <summary>
+		/// Provides access to information about the 3D glasses.
+		/// </summary>
+		public Peripherals.Glasses3D Glasses { get; private set; }
 
         #endregion
 
         /// <summary>
-        /// Create a new insance of the Master System emulator.
+        /// Create a new insance of the 8-bit Sega machine emulator.
         /// </summary>
         public Sega8Bit() {
 
+			// Sets region to Japanese.
+			this.IsJapanese = true;
+
             // Set up hardware devices.
-            this.VDP = new Devices.VDP(this);
-            this.PSG = new Devices.PSG();
+            this.VideoProcessor = new Devices.VideoDisplayProcessor(this);
+            this.SoundGenerator = new Devices.ProgrammableSoundGenerator();
             this.Sc3000PPI = new Devices.Sc3000PPI();
             this.Sf7000PPI = new Devices.Sf7000PPI();
             this.ControllerPortA = new Devices.Input.Controller(this);
@@ -123,7 +147,7 @@ namespace Cogwheel.Emulation {
             this.Glasses = new Cogwheel.Peripherals.Glasses3D();
 
             // Set capabilities
-            this.Type = MachineType.MasterSystem;
+            this.Machine = MachineType.MasterSystem2;
 
             // Reset everything.
             this.Reset();
@@ -150,8 +174,8 @@ namespace Cogwheel.Emulation {
             this.PortAControl.SetBits(0x05);
             this.PortBControl.SetBits(0x05);
             // Reset the hardware devices.
-            this.VDP.Reset();
-            this.PSG.Reset();
+            this.VideoProcessor.Reset();
+            this.SoundGenerator.Reset();
             this.Sc3000PPI.Reset();
             this.Sf7000PPI.Reset();
 
@@ -165,13 +189,13 @@ namespace Cogwheel.Emulation {
 
         public void RunLine() {
             this.FetchExecute(228);
-            this.VDP.RasteriseLine();
+            this.VideoProcessor.RasteriseLine();
         }
 
         public void RunFrame() {
-            this.VDP.RunFramePending = false;
-            while (!this.VDP.RunFramePending) {
-                this.VDP.RasteriseLine();
+            this.VideoProcessor.RunFramePending = false;
+            while (!this.VideoProcessor.RunFramePending) {
+                this.VideoProcessor.RasteriseLine();
                 this.FetchExecute(228);
             }
         }

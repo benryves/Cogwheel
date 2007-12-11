@@ -5,7 +5,7 @@ using System.Threading;
 using System.IO;
 
 namespace Cogwheel.Devices {
-    public partial class PSG {
+    public partial class ProgrammableSoundGenerator {
 
         private enum WriteDestination {
             Psg, Stereo,

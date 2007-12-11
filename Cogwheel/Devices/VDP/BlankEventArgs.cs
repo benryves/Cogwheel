@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace Cogwheel.Devices {
 
-    public partial class VDP {
+    public partial class VideoDisplayProcessor {
 
         public class ResolutionChangeEventArgs : EventArgs {
 

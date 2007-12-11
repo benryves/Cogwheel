@@ -6,7 +6,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
 namespace Cogwheel.Devices {
-    public partial class VDP {
+    public partial class VideoDisplayProcessor {
 
         #region Construction and storage of a .NET Bitmap to represent the display.
 
@@ -327,7 +327,7 @@ namespace Cogwheel.Devices {
                     for (int i = 0; i < 256; ++i) this.PixelBuffer[startPixel++] = this.LastBackdropColour;
                 } else {
 
-                    int PaletteTMS9918Mode = this.cpu.Type == Cogwheel.Emulation.MachineType.Sg1000 ? 0 : 1;
+                    int PaletteTMS9918Mode = this.cpu.Machine == Cogwheel.Emulation.MachineType.Sg1000 ? 0 : 1;
 
                     this.LastBackdropColour = PaletteArgb[(Registers[0x7] & 0xF) + 16];
 
