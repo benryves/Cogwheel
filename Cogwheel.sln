@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual C# Express 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brazil", "Brazil\Brazil.csproj", "{325F86DA-222E-470F-A4F6-B04A3179FB2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sega 8-Bit", "Cogwheel\Sega 8-Bit.csproj", "{241A3B41-B120-493E-8D36-4252316B4B59}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sega 8-Bit", "Sega 8-Bit\Sega 8-Bit.csproj", "{241A3B41-B120-493E-8D36-4252316B4B59}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
