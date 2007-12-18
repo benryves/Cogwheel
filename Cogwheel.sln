@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brazil", "Brazil\Brazil.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sega 8-Bit", "Sega 8-Bit\Sega 8-Bit.csproj", "{241A3B41-B120-493E-8D36-4252316B4B59}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cogwheel", "Cogwheel\Cogwheel.csproj", "{1BFBD2AF-4170-497E-9FF6-B263053A6160}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{241A3B41-B120-493E-8D36-4252316B4B59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{241A3B41-B120-493E-8D36-4252316B4B59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{241A3B41-B120-493E-8D36-4252316B4B59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BFBD2AF-4170-497E-9FF6-B263053A6160}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BFBD2AF-4170-497E-9FF6-B263053A6160}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BFBD2AF-4170-497E-9FF6-B263053A6160}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BFBD2AF-4170-497E-9FF6-B263053A6160}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
