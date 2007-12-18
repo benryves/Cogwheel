@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace BeeDevelopment.Cogwheel.Emulation {
-    public partial class Sega8Bit {
+namespace BeeDevelopment.Sega8Bit.Emulation {
+    public partial class Emulator {
 
         /// <summary>
         /// Patch a stream using an IPS patch file.

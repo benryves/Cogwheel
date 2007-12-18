@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Cogwheel")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Sega 8-Bit Emulator")]
+[assembly: AssemblyDescription("Sega 8-Bit Emulator")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Cogwheel")]
-[assembly: AssemblyCopyright("Copyright ©  2007")]
+[assembly: AssemblyCompany("Bee Development")]
+[assembly: AssemblyProduct("Sega 8-Bit Emulator")]
+[assembly: AssemblyCopyright("Copyright © Bee Development 2006-2007")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

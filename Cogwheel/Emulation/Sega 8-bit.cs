@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BeeDevelopment.Cogwheel.Emulation {
+namespace BeeDevelopment.Sega8Bit.Emulation {
 
 	/// <summary>
 	/// Represents an 8-bit Sega machine.
@@ -24,7 +24,7 @@ namespace BeeDevelopment.Cogwheel.Emulation {
         GameGearMasterSystem,
     }
 
-    public partial class Sega8Bit : BeeDevelopment.Brazil.Z80A {
+    public partial class Emulator : BeeDevelopment.Brazil.Z80A {
         
         private MachineType type = MachineType.MasterSystem2;
 
@@ -131,7 +131,7 @@ namespace BeeDevelopment.Cogwheel.Emulation {
         /// <summary>
         /// Create a new insance of the 8-bit Sega machine emulator.
         /// </summary>
-        public Sega8Bit() {
+        public Emulator() {
 
 			// Sets region to Japanese.
 			this.IsJapanese = true;
@@ -143,8 +143,8 @@ namespace BeeDevelopment.Cogwheel.Emulation {
             this.Sf7000PPI = new Devices.Sf7000PPI();
             this.ControllerPortA = new Devices.Input.Controller(this);
             this.ControllerPortB = new Devices.Input.Controller(this);
-            this.ControllerKeyboard = new BeeDevelopment.Cogwheel.Devices.Input.Keyboard(this);
-            this.Glasses = new BeeDevelopment.Cogwheel.Peripherals.Glasses3D();
+            this.ControllerKeyboard = new BeeDevelopment.Sega8Bit.Devices.Input.Keyboard(this);
+            this.Glasses = new BeeDevelopment.Sega8Bit.Peripherals.Glasses3D();
 
             // Set capabilities
             this.Machine = MachineType.MasterSystem2;

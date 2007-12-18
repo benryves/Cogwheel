@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BeeDevelopment.Cogwheel.Devices {
+namespace BeeDevelopment.Sega8Bit.Devices {
     public partial class Floppy {
 
         public const int SectorSizeBytes = 0x100;

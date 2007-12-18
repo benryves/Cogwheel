@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace BeeDevelopment.Cogwheel.Devices {
+namespace BeeDevelopment.Sega8Bit.Devices {
     public partial class VideoDisplayProcessor {
 
         #region Construction and storage of a .NET Bitmap to represent the display.
@@ -47,7 +47,7 @@ namespace BeeDevelopment.Cogwheel.Devices {
         private Rectangle BlitterRectangle;
 
         /// <summary>Check to see if the Game Gear status has been changed.</summary>
-        private BeeDevelopment.Cogwheel.Emulation.MachineType LastMachine = (BeeDevelopment.Cogwheel.Emulation.MachineType)(-1);
+        private BeeDevelopment.Sega8Bit.Emulation.MachineType LastMachine = (BeeDevelopment.Sega8Bit.Emulation.MachineType)(-1);
 
         /// <summary>Pixel data offset to top-left corner when cropping the Game Gear's display.</summary>
         private int GameGearCropOffset = 0;
@@ -120,7 +120,7 @@ namespace BeeDevelopment.Cogwheel.Devices {
 
             int DataLength = PixelBuffer.Length;
 
-            if (LastMachine == BeeDevelopment.Cogwheel.Emulation.MachineType.GameGear) {
+            if (LastMachine == BeeDevelopment.Sega8Bit.Emulation.MachineType.GameGear) {
                 int SrcPointer = GameGearCropOffset; // 0x1830;
                 int DestPointer = 0;
                 for (int y = 0; y < 144; y++) {
@@ -142,7 +142,7 @@ namespace BeeDevelopment.Cogwheel.Devices {
                 }
                 DataLength = 160 * 144;
 
-            } else if (LastMachine == BeeDevelopment.Cogwheel.Emulation.MachineType.GameGearMasterSystem) {
+            } else if (LastMachine == BeeDevelopment.Sega8Bit.Emulation.MachineType.GameGearMasterSystem) {
 
                 Array.Copy(PixelBuffer, TempPixelBuffer, PixelBuffer.Length);
 
@@ -327,7 +327,7 @@ namespace BeeDevelopment.Cogwheel.Devices {
                     for (int i = 0; i < 256; ++i) this.PixelBuffer[startPixel++] = this.LastBackdropColour;
                 } else {
 
-                    int PaletteTMS9918Mode = this.cpu.Machine == BeeDevelopment.Cogwheel.Emulation.MachineType.Sg1000 ? 0 : 1;
+                    int PaletteTMS9918Mode = this.cpu.Machine == BeeDevelopment.Sega8Bit.Emulation.MachineType.Sg1000 ? 0 : 1;
 
                     this.LastBackdropColour = PaletteArgb[(Registers[0x7] & 0xF) + 16];
 

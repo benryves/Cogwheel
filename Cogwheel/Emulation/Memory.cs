@@ -2,8 +2,8 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
-namespace BeeDevelopment.Cogwheel.Emulation {
-    public partial class Sega8Bit {
+namespace BeeDevelopment.Sega8Bit.Emulation {
+    public partial class Emulator {
 
         /// <summary>
         /// Cached inserted cartridge

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BeeDevelopment.Cogwheel.Devices {
+namespace BeeDevelopment.Sega8Bit.Devices {
     public partial class FDC {
 
         /// <summary>Command codes used when controlling the FDC.</summary>

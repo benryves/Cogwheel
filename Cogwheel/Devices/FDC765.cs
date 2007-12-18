@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using word = System.UInt16;
 
-namespace BeeDevelopment.Cogwheel.Devices {
+namespace BeeDevelopment.Sega8Bit.Devices {
     public class FDC765 {
 
         #region fdc765.h

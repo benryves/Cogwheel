@@ -8,8 +8,8 @@
     <ProjectGuid>{241A3B41-B120-493E-8D36-4252316B4B59}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BeeDevelopment.Cogwheel</RootNamespace>
-    <AssemblyName>Cogwheel</AssemblyName>
+    <RootNamespace>BeeDevelopment.Sega8Bit</RootNamespace>
+    <AssemblyName>Sega8Bit</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

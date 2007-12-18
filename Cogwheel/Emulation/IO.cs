@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BeeDevelopment.Cogwheel.Emulation {
-    public partial class Sega8Bit {
+namespace BeeDevelopment.Sega8Bit.Emulation {
+    public partial class Emulator {
 
         /// <summary>
         /// Write a byte to the SMS hardware.
@@ -208,7 +208,7 @@ namespace BeeDevelopment.Cogwheel.Emulation {
 
         private bool GetTh(PortPinControl portControl, Devices.Input.Controller portController) {
             if (portControl.PinThIsInput) {
-                return (portController.State & BeeDevelopment.Cogwheel.Devices.Input.Controller.Pins.TH) == 0;
+                return (portController.State & BeeDevelopment.Sega8Bit.Devices.Input.Controller.Pins.TH) == 0;
             } else {
                 if (this.IsJapanese) {
                     return false;
@@ -220,7 +220,7 @@ namespace BeeDevelopment.Cogwheel.Emulation {
 
         private bool GetTr(PortPinControl portControl, Devices.Input.Controller portController) {
             if (portControl.PinTrIsInput) {
-                return (portController.State & BeeDevelopment.Cogwheel.Devices.Input.Controller.Pins.TR) == 0;
+                return (portController.State & BeeDevelopment.Sega8Bit.Devices.Input.Controller.Pins.TR) == 0;
             } else {
                 if (this.IsJapanese) {
                     return false;

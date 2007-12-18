@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 
-namespace BeeDevelopment.Cogwheel.Devices {
+namespace BeeDevelopment.Sega8Bit.Devices {
     
     public partial class VideoDisplayProcessor {
 
-        private Emulation.Sega8Bit cpu;
+        private Emulation.Emulator cpu;
 
         /// <summary>
         /// Create a new instance of the VDP emulator.
         /// </summary>
         /// <param name="cpu">The CPU that is attached to the VDP (required for interrupts).</param>
 
-        public VideoDisplayProcessor(Emulation.Sega8Bit cpu) {
+        public VideoDisplayProcessor(Emulation.Emulator cpu) {
             this.cpu = cpu;
             this.SetupVCounter();
             this.Reset();

@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BeeDevelopment.Cogwheel.Emulation {
-    public partial class Sega8Bit {
+namespace BeeDevelopment.Sega8Bit.Emulation {
+    public partial class Emulator {
 
         private enum MemoryModelType {
             Sg1000,

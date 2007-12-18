@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BeeDevelopment.Cogwheel.Devices.Input {
+namespace BeeDevelopment.Sega8Bit.Devices.Input {
 
     public class Controller {
 
-        internal readonly Emulation.Sega8Bit machine;
-        public Controller(Emulation.Sega8Bit machine) {
+        internal readonly Emulation.Emulator machine;
+        public Controller(Emulation.Emulator machine) {
             this.machine = machine;
         }
 

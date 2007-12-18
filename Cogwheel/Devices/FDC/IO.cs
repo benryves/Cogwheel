@@ -1,6 +1,6 @@
 using System;
 
-namespace BeeDevelopment.Cogwheel.Devices {
+namespace BeeDevelopment.Sega8Bit.Devices {
     public partial class FDC {
 
         

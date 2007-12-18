@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BeeDevelopment.Cogwheel.Emulation {
-    public partial class Sega8Bit {
+namespace BeeDevelopment.Sega8Bit.Emulation {
+    public partial class Emulator {
 
         private byte Port2 = 0;
 
@@ -24,7 +24,7 @@ namespace BeeDevelopment.Cogwheel.Emulation {
                         return (byte)(
                             (this.ButtonStart ? 0x00 : 0x80) |
                             (this.IsJapanese ? 0x00 : 0x40) |
-                            (this.VideoProcessor.VideoStandard == BeeDevelopment.Cogwheel.Devices.VideoDisplayProcessor.VideoStandardType.NTSC ? 0x00 : 0x20)
+                            (this.VideoProcessor.VideoStandard == BeeDevelopment.Sega8Bit.Devices.VideoDisplayProcessor.VideoStandardType.NTSC ? 0x00 : 0x20)
                         );
                     }
                 case 0x01: return 0x7F;
