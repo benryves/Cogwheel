@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cogwheel.Devices {
+namespace BeeDevelopment.Cogwheel.Devices {
     public class Sf7000PPI : PPI {
 
         public override void Reset() {

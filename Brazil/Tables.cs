@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using int8_t = System.SByte;
 
-namespace Brazil {
+namespace BeeDevelopment.Brazil {
     public partial class Z80A {
 
         private void InitTables() {

@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace Cogwheel.Devices {
+namespace BeeDevelopment.Cogwheel.Devices {
     public partial class ProgrammableSoundGenerator {
 
         /// <summary>

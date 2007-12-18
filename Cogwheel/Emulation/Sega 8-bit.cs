@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cogwheel.Emulation {
+namespace BeeDevelopment.Cogwheel.Emulation {
 
 	/// <summary>
 	/// Represents an 8-bit Sega machine.
@@ -24,7 +24,7 @@ namespace Cogwheel.Emulation {
         GameGearMasterSystem,
     }
 
-    public partial class Sega8Bit : Brazil.Z80A {
+    public partial class Sega8Bit : BeeDevelopment.Brazil.Z80A {
         
         private MachineType type = MachineType.MasterSystem2;
 
@@ -143,8 +143,8 @@ namespace Cogwheel.Emulation {
             this.Sf7000PPI = new Devices.Sf7000PPI();
             this.ControllerPortA = new Devices.Input.Controller(this);
             this.ControllerPortB = new Devices.Input.Controller(this);
-            this.ControllerKeyboard = new Cogwheel.Devices.Input.Keyboard(this);
-            this.Glasses = new Cogwheel.Peripherals.Glasses3D();
+            this.ControllerKeyboard = new BeeDevelopment.Cogwheel.Devices.Input.Keyboard(this);
+            this.Glasses = new BeeDevelopment.Cogwheel.Peripherals.Glasses3D();
 
             // Set capabilities
             this.Machine = MachineType.MasterSystem2;

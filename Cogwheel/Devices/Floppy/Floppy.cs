@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace Cogwheel.Devices {
+namespace BeeDevelopment.Cogwheel.Devices {
     public partial class Floppy {
 
         /// <summary>A side of a floppy disk can store up to 160KB (163840 bytes).</summary>

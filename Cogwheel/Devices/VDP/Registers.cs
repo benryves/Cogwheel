@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
 
-namespace Cogwheel.Devices {
+namespace BeeDevelopment.Cogwheel.Devices {
     public partial class VideoDisplayProcessor {
 
         /// <summary>Stores the 10 VDP control registers.</summary>

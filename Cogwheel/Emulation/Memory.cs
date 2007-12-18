@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
-namespace Cogwheel.Emulation {
+namespace BeeDevelopment.Cogwheel.Emulation {
     public partial class Sega8Bit {
 
         /// <summary>

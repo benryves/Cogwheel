@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cogwheel.Devices.Input {
+namespace BeeDevelopment.Cogwheel.Devices.Input {
     public class Joypad : Input.Controller {
 
         public Joypad(Emulation.Sega8Bit machine)

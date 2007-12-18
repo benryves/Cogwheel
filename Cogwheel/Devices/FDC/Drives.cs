@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace Cogwheel.Devices {
+namespace BeeDevelopment.Cogwheel.Devices {
     public partial class FDC {
         
         public class Drive {

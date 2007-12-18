@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using word = System.UInt16;
 
-namespace Cogwheel.Devices {
+namespace BeeDevelopment.Cogwheel.Devices {
     public class FDC765 {
 
         #region fdc765.h

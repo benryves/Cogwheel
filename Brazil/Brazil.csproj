@@ -8,7 +8,7 @@
     <ProjectGuid>{325F86DA-222E-470F-A4F6-B04A3179FB2A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Brazil</RootNamespace>
+    <RootNamespace>BeeDevelopment.Brazil</RootNamespace>
     <AssemblyName>Brazil</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

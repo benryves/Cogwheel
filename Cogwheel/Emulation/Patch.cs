@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace Cogwheel.Emulation {
+namespace BeeDevelopment.Cogwheel.Emulation {
     public partial class Sega8Bit {
 
         /// <summary>

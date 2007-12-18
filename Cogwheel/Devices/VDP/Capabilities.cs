@@ -2,17 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cogwheel.Devices {
+namespace BeeDevelopment.Cogwheel.Devices {
     public partial class VideoDisplayProcessor {
 
-        private Emulation.MachineType CurrentMachineType = Cogwheel.Emulation.MachineType.MasterSystem2;
+        private Emulation.MachineType CurrentMachineType = BeeDevelopment.Cogwheel.Emulation.MachineType.MasterSystem2;
 
         public Emulation.MachineType MachineType {
             set {
                 
                 this.CurrentMachineType = value;
 
-                bool SmsClass = !(value == Emulation.MachineType.Sg1000 || value == Emulation.MachineType.Sc3000 || value == Cogwheel.Emulation.MachineType.Sf7000);
+                bool SmsClass = !(value == Emulation.MachineType.Sg1000 || value == Emulation.MachineType.Sc3000 || value == BeeDevelopment.Cogwheel.Emulation.MachineType.Sf7000);
 
                 this.CapSupportsLineInterrupts = SmsClass;
                 this.CapSupportsMode4 = SmsClass;
@@ -24,7 +24,7 @@ namespace Cogwheel.Devices {
                 this.CapFixedPaletteIndex = SmsClass ? 1 : 0;
 
                 this.CapMaxSpritesPerScaline = SmsClass ? 8 : 4;
-                this.CapMaxZoomedSpritesPerScanline = SmsClass ? (value == Cogwheel.Emulation.MachineType.MasterSystem ? 4 : 8) : 0;
+                this.CapMaxZoomedSpritesPerScanline = SmsClass ? (value == BeeDevelopment.Cogwheel.Emulation.MachineType.MasterSystem ? 4 : 8) : 0;
             }
 
             get {

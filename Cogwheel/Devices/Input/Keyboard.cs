@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cogwheel.Devices.Input {
+namespace BeeDevelopment.Cogwheel.Devices.Input {
     public class Keyboard {
 
         public enum KeyName {
@@ -21,9 +21,9 @@ namespace Cogwheel.Devices.Input {
         }
 
 
-        private readonly Cogwheel.Emulation.Sega8Bit Machine;
+        private readonly BeeDevelopment.Cogwheel.Emulation.Sega8Bit Machine;
 
-        public Keyboard(Cogwheel.Emulation.Sega8Bit machine) {
+        public Keyboard(BeeDevelopment.Cogwheel.Emulation.Sega8Bit machine) {
             this.Machine = machine;
         }
 

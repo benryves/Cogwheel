@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace Brazil {
+namespace BeeDevelopment.Brazil {
     public partial class Z80A {
 
         [StructLayout(LayoutKind.Explicit)]

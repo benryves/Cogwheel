@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cogwheel.Peripherals {
+namespace BeeDevelopment.Cogwheel.Peripherals {
 
     /// <summary>
     /// The 3D glasses as used by certain 3D games.

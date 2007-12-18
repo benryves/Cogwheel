@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using System.IO;
 
-namespace Cogwheel.Devices {
+namespace BeeDevelopment.Cogwheel.Devices {
     public partial class ProgrammableSoundGenerator {
 
         private enum WriteDestination {

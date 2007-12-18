@@ -1,6 +1,6 @@
 using System;
 
-namespace Cogwheel.Devices {
+namespace BeeDevelopment.Cogwheel.Devices {
     public partial class FDC {
 
         

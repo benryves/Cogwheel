@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cogwheel.Emulation {
+namespace BeeDevelopment.Cogwheel.Emulation {
     public partial class Sega8Bit {
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace Cogwheel.Emulation {
 
         private bool GetTh(PortPinControl portControl, Devices.Input.Controller portController) {
             if (portControl.PinThIsInput) {
-                return (portController.State & Cogwheel.Devices.Input.Controller.Pins.TH) == 0;
+                return (portController.State & BeeDevelopment.Cogwheel.Devices.Input.Controller.Pins.TH) == 0;
             } else {
                 if (this.IsJapanese) {
                     return false;
@@ -220,7 +220,7 @@ namespace Cogwheel.Emulation {
 
         private bool GetTr(PortPinControl portControl, Devices.Input.Controller portController) {
             if (portControl.PinTrIsInput) {
-                return (portController.State & Cogwheel.Devices.Input.Controller.Pins.TR) == 0;
+                return (portController.State & BeeDevelopment.Cogwheel.Devices.Input.Controller.Pins.TR) == 0;
             } else {
                 if (this.IsJapanese) {
                     return false;

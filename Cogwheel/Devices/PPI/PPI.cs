@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cogwheel.Devices {
+namespace BeeDevelopment.Cogwheel.Devices {
 
     /// <summary>Emulated Intel 8255 PPI.</summary>
     public class PPI {

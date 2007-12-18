@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Brazil {
+namespace BeeDevelopment.Brazil {
     /// <summary>
     /// ZiLOG Z80A CPU Emulator
     /// </summary>

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cogwheel.Emulation {
+namespace BeeDevelopment.Cogwheel.Emulation {
     public partial class Sega8Bit {
 
         private byte Port2 = 0;
@@ -24,7 +24,7 @@ namespace Cogwheel.Emulation {
                         return (byte)(
                             (this.ButtonStart ? 0x00 : 0x80) |
                             (this.IsJapanese ? 0x00 : 0x40) |
-                            (this.VideoProcessor.VideoStandard == Cogwheel.Devices.VideoDisplayProcessor.VideoStandardType.NTSC ? 0x00 : 0x20)
+                            (this.VideoProcessor.VideoStandard == BeeDevelopment.Cogwheel.Devices.VideoDisplayProcessor.VideoStandardType.NTSC ? 0x00 : 0x20)
                         );
                     }
                 case 0x01: return 0x7F;
