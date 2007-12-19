@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using BeeDevelopment.Sega8Bit.Emulation;
 
 namespace BeeDevelopment.Sega8Bit.Utility.RomData {
 
@@ -61,6 +62,36 @@ namespace BeeDevelopment.Sega8Bit.Utility.RomData {
 		public bool TryGetRomData(byte[] data, out RomData romData) {
 			return this.TryGetRomData(Crc32.Calculate(data), out romData);
 		}
+
+
+		/// <summary>
+		/// Guess which mapper to use.
+		/// </summary>
+		/// <param name="data">The data to check.</param>
+		/// <returns>An <see cref="Emulator.MapperType"/> that seems the most likely one to use.</returns>
+		public Emulator.MapperType GuessMapper(byte[] data) {
+
+			if (data.Length >= 0x8000) {
+				ushort CodemastersChecksumA = BitConverter.ToUInt16(data, 0x7FE6);
+				ushort CodemastersChecksumB = BitConverter.ToUInt16(data, 0x7FE8);
+				if (CodemastersChecksumB == 0x10000 - CodemastersChecksumA) {
+					return Emulator.MapperType.Codemasters;
+				}
+			}
+
+			RomData TryIdentifyHardware;
+			if (TryGetRomData(data, out TryIdentifyHardware)) {
+				if (TryIdentifyHardware.DataFile != null && TryIdentifyHardware.DataFile.Extensions != null) {
+					var Extensions = new List<string>(Array.ConvertAll(TryIdentifyHardware.DataFile.Extensions, x=>x.ToLowerInvariant()));
+					if (Extensions.Contains("sc") || Extensions.Contains("sg") || Extensions.Contains("mv") || Extensions.Contains("omv")) {
+						return Emulator.MapperType.Ram;
+					}
+				}
+			}
+
+			return Emulator.MapperType.Standard;
+		}
+
 
 	}
 }

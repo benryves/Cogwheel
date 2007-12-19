@@ -44,8 +44,10 @@ namespace BeeDevelopment.Cogwheel {
 					} else {
 						this.Text = Application.ProductName;
 					}
-		
+
+							
 					this.EmulatorHost.Emulator = new Emulator();
+					this.EmulatorHost.Emulator.Mapper = this.Identifier.GuessMapper(Data);
 					GC.Collect();
 					this.EmulatorHost.Emulator.Machine = Machine;
 					this.EmulatorHost.Emulator.LoadCartridge(new MemoryStream(Data));
