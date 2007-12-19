@@ -70,18 +70,30 @@ namespace BeeDevelopment.Sega8Bit.Emulation {
 
             PadCartSize();
 
-            // Standard mapper initialisation
-            WriteMemory(0xFFFC, 0);
-            WriteMemory(0xFFFD, 0);
-            WriteMemory(0xFFFE, 1);
-            WriteMemory(0xFFFF, 2);
-
-            // Codemasters initialisation
-            WriteMemory(0x0000, 0);
-            WriteMemory(0x4000, 1);
-            WriteMemory(0x8000, 2);
 
 
+			if (this.Mapper == MapperType.Ram) {
+				for (int i = 0; i < 3; ++i) {
+					if (i < this.CartridgeRom.Length) {
+						this.MemoryModel[i] = this.CartridgeRom[i];
+					} else {
+						this.MemoryModel[i] = new byte[0x4000];
+					}
+				}
+			} else {
+
+				// Standard mapper initialisation
+				WriteMemory(0xFFFC, 0);
+				WriteMemory(0xFFFD, 0);
+				WriteMemory(0xFFFE, 1);
+				WriteMemory(0xFFFF, 2);
+
+				// Codemasters initialisation
+				WriteMemory(0x0000, 0);
+				WriteMemory(0x4000, 1);
+				WriteMemory(0x8000, 2);
+
+			}
         }
 
 
@@ -107,6 +119,7 @@ namespace BeeDevelopment.Sega8Bit.Emulation {
 
 
         public override byte ReadMemory(ushort address) {
+
             switch (address & 0xC000) {
                 case 0x0000:
                     if (address < 1024) {
@@ -138,47 +151,52 @@ namespace BeeDevelopment.Sega8Bit.Emulation {
             }
 
             // Handle standard mapper paging stuff.
-            if (this.Mapper == MapperType.Standard) {
+			switch (this.Mapper) {
+				case MapperType.Standard: {
+						if (address == 0xFFFC) {
 
-                if (address == 0xFFFC) {
+							this.BankNumberOffset = (value & 3) * 8;
 
-                    this.BankNumberOffset = (value & 3) * 8;
+							if ((value & 0x08) != 0) {
+								// Cartridge RAM enabled
+								this.CartridgeRamEnabled = true;
+								this.MemoryModel[2] = CartridgeRam;
+							} else {
+								// Cartridge ROM enabled
+								this.CartridgeRamEnabled = false;
+								this.MemoryModel[2] = this.CartridgeRom[this.BankNumbers[2]];
+							}
 
-                    if ((value & 0x08) != 0) {
-                        // Cartridge RAM enabled
-                        this.CartridgeRamEnabled = true;
-                        this.MemoryModel[2] = CartridgeRam;
-                    } else {
-                        // Cartridge ROM enabled
-                        this.CartridgeRamEnabled = false;
-                        this.MemoryModel[2] = this.CartridgeRom[this.BankNumbers[2]];
-                    }
+							this.WorkRamEnabled = (value & 0x10) == 0;
 
-                    this.WorkRamEnabled = (value & 0x10) == 0;
+						} else if (address > 0xFFFC) {
+							int SwitchedBank = address - 0xFFFD;
+							this.BankNumbers[SwitchedBank] = (value + BankNumberOffset) % this.CartridgeRom.Length;
 
-                } else if (address > 0xFFFC) {
-                    int SwitchedBank = address - 0xFFFD;
-                    this.BankNumbers[SwitchedBank] = (value + BankNumberOffset) % this.CartridgeRom.Length;
+							if (!(SwitchedBank == 2 && this.CartridgeRamEnabled)) {
+								this.MemoryModel[SwitchedBank] = this.CartridgeRom[this.BankNumbers[SwitchedBank]];
+							}
+						}
 
-                    if (!(SwitchedBank == 2 && this.CartridgeRamEnabled)) {
-                        this.MemoryModel[SwitchedBank] = this.CartridgeRom[this.BankNumbers[SwitchedBank]];
-                    }
-                }
-
-                if (this.CartridgeRamEnabled && (address & 0xC000) == 0x8000) {
-                    this.CartridgeRam[address & 0x3FFF] = value;
-                }
-            } else if (this.Mapper == MapperType.Codemasters) {
-                switch (address) {
-                    case 0x0000:
-                    case 0x4000:
-                    case 0x8000:
-                        int SwitchedBank = address / 0x4000;
-                        this.BankNumbers[SwitchedBank] = value % this.CartridgeRom.Length;
-                        this.MemoryModel[SwitchedBank] = this.CartridgeRom[this.BankNumbers[SwitchedBank]];
-                        break;
-                }
-            }
+						if (this.CartridgeRamEnabled && (address & 0xC000) == 0x8000) {
+							this.CartridgeRam[address & 0x3FFF] = value;
+						}
+					} break;
+				case MapperType.Codemasters: {
+						switch (address) {
+							case 0x0000:
+							case 0x4000:
+							case 0x8000:
+								int SwitchedBank = address / 0x4000;
+								this.BankNumbers[SwitchedBank] = value % this.CartridgeRom.Length;
+								this.MemoryModel[SwitchedBank] = this.CartridgeRom[this.BankNumbers[SwitchedBank]];
+								break;
+						}
+					} break;
+				case MapperType.Ram: {
+						this.MemoryModel[address / 0x4000][address & 0x3FFF] = value;
+					} break;
+			}
 
         }
 
