@@ -185,6 +185,8 @@ namespace BeeDevelopment.Sega8Bit.Emulation {
             this.ResetMemory();
             // Clear Game Genie codes.
             this.GameGenieClearCodes();
+
+			CyclesToRunCounter = 0;
         }
 
         public void RunLine() {
@@ -199,5 +201,18 @@ namespace BeeDevelopment.Sega8Bit.Emulation {
                 this.FetchExecute(228);
             }
         }
+
+		private long CyclesToRunCounter;
+
+		public bool Run(TimeSpan time) {
+			this.VideoProcessor.RunFramePending = false;
+			CyclesToRunCounter += (long)(time.TotalSeconds * 3000000);
+			while (CyclesToRunCounter > 0) {
+				this.VideoProcessor.RasteriseLine();
+				this.FetchExecute(228);
+				CyclesToRunCounter -= 228;
+			}
+			return this.VideoProcessor.RunFramePending;			
+		}
     }
 }

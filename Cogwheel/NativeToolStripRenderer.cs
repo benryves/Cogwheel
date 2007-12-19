@@ -212,7 +212,6 @@ namespace Asztal.Szótár {
 				if (item.Checked) {
 					Rectangle rect = e.Item.ContentRectangle;
 					rect.Width = rect.Height;
-
 					//Center the checkmark horizontally in the gutter (looks ugly, though)
 					//rect.X = (e.ToolStrip.DisplayRectangle.Left - rect.Width) / 2;
 
@@ -237,7 +236,7 @@ namespace Asztal.Szótár {
 
 					//I don't think ToolStrip even supports radio box items. So no need to render them.
 					renderer.SetParameters(VSCLASS_MENU, (int)MenuParts.MENU_POPUPCHECK, e.Item.Enabled ? (int)MenuPopupCheckStates.MC_CHECKMARKNORMAL : (int)MenuPopupCheckStates.MC_CHECKMARKDISABLED);
-
+					rect.Inflate(1, 1);
 					renderer.DrawBackground(e.Graphics, rect);
 				}
 			} else {

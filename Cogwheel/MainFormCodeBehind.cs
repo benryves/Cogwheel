@@ -1,27 +1,53 @@
 ﻿using BeeDevelopment.Zip;
 using BeeDevelopment.Sega8Bit;
 using BeeDevelopment.Sega8Bit.Emulation;
+using System.Collections.Generic;
 using System.IO;
 using System;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Threading;
+using BeeDevelopment.Sega8Bit.Devices.Input;
 
 namespace BeeDevelopment.Cogwheel {
+
+	class KeyTarget {
+		public int PlayerIndex { get; set; }
+		public Joypad.Pins Pin { get; set; }
+	}
+
 	partial class MainForm {
+
+
+	
 
 		/// <summary>
 		/// Prompt to open a ROM file, and load it if applicable.
 		/// </summary>
 		private void PromptOpenRom() {
-			if (this.OpenRomDialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
-				byte[] Data;
-				MachineType Machine;
-				try {
-					Machine = this.LoadRom(this.OpenRomDialog.FileName, out Data);
-				} catch (Exception ex) {
-					MessageBox.Show(this, "Error loading ROM file: " + Environment.NewLine + ex.Message, "Open ROM", MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
+			try {
+				if (this.OpenRomDialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
+					byte[] Data;
+					MachineType Machine;
+					try {
+						Machine = this.LoadRom(this.OpenRomDialog.FileName, out Data);
+					} catch (Exception ex) {
+						MessageBox.Show(this, "Error loading ROM file: " + Environment.NewLine + ex.Message, "Open ROM", MessageBoxButtons.OK, MessageBoxIcon.Error);
+						return;
+					}
+
+					this.EmulatorHost.Emulator = new Emulator();
+					GC.Collect();
+					this.EmulatorHost.Emulator.Machine = Machine;
+					this.EmulatorHost.Emulator.LoadCartridge(new MemoryStream(Data));
+					
+					this.EmulatorHost.Emulator.ControllerPortA = (this.EmulatorHost.PlayerA = new Joypad(this.EmulatorHost.Emulator));
+					this.EmulatorHost.Emulator.ControllerPortB = (this.EmulatorHost.PlayerB = new Joypad(this.EmulatorHost.Emulator));
+
+					this.EmulatorHost.Emulator.IsJapanese = Properties.Settings.Default.EmulatorIsJapanese;
 				}
+			} finally {
+				this.LastRun = DateTime.Now;
 			}
 		}
 
@@ -65,7 +91,33 @@ namespace BeeDevelopment.Cogwheel {
 				case ".sc": return MachineType.Sc3000;
 				default: return MachineType.MasterSystem2;
 			}
+		}
 
+
+		private DateTime LastRun = DateTime.Now;
+
+		private void RunEmulatorTicks() {
+			var Now = DateTime.Now;
+
+			if (this.EmulatorHost.Emulator != null) {
+				
+				var TimeToRun = Now - LastRun;
+				var TimePerFrame = TimeSpan.FromSeconds(1d / 60d);
+
+				int FramesToRun = (int)Math.Floor(TimeToRun.TotalSeconds / TimePerFrame.TotalSeconds);
+
+				if (TimeToRun < TimePerFrame || FramesToRun == 0) {
+					this.Invalidate();
+					Thread.Sleep(1);
+				} else {
+					for (int i = 0; i < FramesToRun; ++i) {
+						this.EmulatorHost.Emulator.RunFrame();
+						LastRun += TimePerFrame;
+					}
+				}				
+			} else {
+				LastRun = Now;
+			}
 		}
 	}
 }

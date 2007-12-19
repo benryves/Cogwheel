@@ -74,6 +74,10 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Sega8BitHost.resx">
+      <DependentUpon>Sega8BitHost.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -88,6 +92,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Sega8BitHost.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sega8BitHost.Designer.cs">
+      <DependentUpon>Sega8BitHost.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Brazil\Brazil.csproj">
@@ -101,6 +111,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cog.ico" />
+    <None Include="app.config" />
+    <None Include="Resources\sms_rom.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

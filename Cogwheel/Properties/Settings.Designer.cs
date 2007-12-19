@@ -22,5 +22,101 @@ namespace BeeDevelopment.Cogwheel.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Up")]
+        public global::System.Windows.Forms.Keys KeyP1Up {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Up"]));
+            }
+            set {
+                this["KeyP1Up"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Down")]
+        public global::System.Windows.Forms.Keys KeyP1Down {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Down"]));
+            }
+            set {
+                this["KeyP1Down"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Left")]
+        public global::System.Windows.Forms.Keys KeyP1Left {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Left"]));
+            }
+            set {
+                this["KeyP1Left"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Right")]
+        public global::System.Windows.Forms.Keys KeyP1Right {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Right"]));
+            }
+            set {
+                this["KeyP1Right"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Z")]
+        public global::System.Windows.Forms.Keys KeyP1B1 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1B1"]));
+            }
+            set {
+                this["KeyP1B1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("X")]
+        public global::System.Windows.Forms.Keys KeyP1B2 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1B2"]));
+            }
+            set {
+                this["KeyP1B2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Space")]
+        public global::System.Windows.Forms.Keys KeyPause {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyPause"]));
+            }
+            set {
+                this["KeyPause"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EmulatorIsJapanese {
+            get {
+                return ((bool)(this["EmulatorIsJapanese"]));
+            }
+            set {
+                this["EmulatorIsJapanese"] = value;
+            }
+        }
     }
 }

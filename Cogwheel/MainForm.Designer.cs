@@ -29,13 +29,19 @@
 			this.OpenMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.OpenRomDialog = new System.Windows.Forms.OpenFileDialog();
+			this.EmulatorHost = new BeeDevelopment.Cogwheel.Sega8BitHost();
+			this.OptionsMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.RegionMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.JapaneseMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.ExportMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainFormMenus.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// MainFormMenus
 			// 
 			this.MainFormMenus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.FileMenu});
+            this.FileMenu,
+            this.OptionsMenu});
 			this.MainFormMenus.Location = new System.Drawing.Point(0, 0);
 			this.MainFormMenus.Name = "MainFormMenus";
 			this.MainFormMenus.Size = new System.Drawing.Size(284, 24);
@@ -52,6 +58,7 @@
 			// 
 			// OpenMenu
 			// 
+			this.OpenMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icons_SmsRom;
 			this.OpenMenu.Name = "OpenMenu";
 			this.OpenMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
 			this.OpenMenu.Size = new System.Drawing.Size(185, 22);
@@ -70,13 +77,49 @@
 			// 
 			this.OpenRomDialog.Filter = resources.GetString("OpenRomDialog.Filter");
 			// 
+			// EmulatorHost
+			// 
+			this.EmulatorHost.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.EmulatorHost.Emulator = null;
+			this.EmulatorHost.Location = new System.Drawing.Point(0, 24);
+			this.EmulatorHost.Name = "EmulatorHost";
+			this.EmulatorHost.PlayerA = null;
+			this.EmulatorHost.PlayerB = null;
+			this.EmulatorHost.Size = new System.Drawing.Size(284, 240);
+			this.EmulatorHost.TabIndex = 1;
+			// 
+			// OptionsMenu
+			// 
+			this.OptionsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.JapaneseMenu, this.ExportMenu});
+			this.OptionsMenu.Name = "OptionsMenu";
+			this.OptionsMenu.Size = new System.Drawing.Size(61, 20);
+			this.OptionsMenu.Text = "&Options";
+			this.OptionsMenu.DropDownOpening += new System.EventHandler(this.OptionsMenu_DropDownOpening);
+			// 
+			// JapaneseMenu
+			// 
+			this.JapaneseMenu.Name = "JapaneseMenu";
+			this.JapaneseMenu.Size = new System.Drawing.Size(152, 22);
+			this.JapaneseMenu.Text = "&Japanese";
+			this.JapaneseMenu.Click += new System.EventHandler(this.JapaneseMenu_Click);
+			// 
+			// ExportMenu
+			// 
+			this.ExportMenu.Name = "ExportMenu";
+			this.ExportMenu.Size = new System.Drawing.Size(152, 22);
+			this.ExportMenu.Text = "&Export";
+			this.ExportMenu.Click += new System.EventHandler(this.ExportMenu_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(284, 264);
+			this.Controls.Add(this.EmulatorHost);
 			this.Controls.Add(this.MainFormMenus);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.KeyPreview = true;
 			this.MainMenuStrip = this.MainFormMenus;
 			this.Name = "MainForm";
 			this.Load += new System.EventHandler(this.MainForm_Load);
@@ -94,6 +137,11 @@
 		private System.Windows.Forms.ToolStripMenuItem OpenMenu;
 		private System.Windows.Forms.ToolStripMenuItem ExitMenu;
 		private System.Windows.Forms.OpenFileDialog OpenRomDialog;
+		private Sega8BitHost EmulatorHost;
+		private System.Windows.Forms.ToolStripMenuItem OptionsMenu;
+		private System.Windows.Forms.ToolStripMenuItem RegionMenu;
+		private System.Windows.Forms.ToolStripMenuItem JapaneseMenu;
+		private System.Windows.Forms.ToolStripMenuItem ExportMenu;
 	}
 }
 
