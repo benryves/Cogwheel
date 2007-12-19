@@ -6,9 +6,12 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using BeeDevelopment.Sega8Bit.Utility.RomData;
 
 namespace BeeDevelopment.Cogwheel {
 	public partial class MainForm : Form {
+
+		private RomIdentifier Identifier;
 
 		public MainForm() {
 			InitializeComponent();
@@ -17,6 +20,9 @@ namespace BeeDevelopment.Cogwheel {
 		}
 
 		private void MainForm_Load(object sender, EventArgs e) {
+
+			this.Identifier = new RomIdentifier(Application.StartupPath);
+
 			Application.Idle += new EventHandler(Application_Idle);
 			this.EmulatorHost.LoadKeyMappings();
 		}

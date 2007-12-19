@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
 using BeeDevelopment.Sega8Bit.Devices.Input;
+using BeeDevelopment.Sega8Bit.Utility.RomData;
 
 namespace BeeDevelopment.Cogwheel {
 
@@ -36,11 +37,20 @@ namespace BeeDevelopment.Cogwheel {
 						return;
 					}
 
+					RomData RomInfo;
+					if (this.Identifier.TryGetRomData(Data, out RomInfo)) {
+						RomInfo.Fix(ref Data);
+						this.Text = RomInfo.Name + " - " + Application.ProductName;
+					} else {
+						this.Text = Application.ProductName;
+					}
+		
 					this.EmulatorHost.Emulator = new Emulator();
 					GC.Collect();
 					this.EmulatorHost.Emulator.Machine = Machine;
 					this.EmulatorHost.Emulator.LoadCartridge(new MemoryStream(Data));
 					
+
 					this.EmulatorHost.Emulator.ControllerPortA = (this.EmulatorHost.PlayerA = new Joypad(this.EmulatorHost.Emulator));
 					this.EmulatorHost.Emulator.ControllerPortB = (this.EmulatorHost.PlayerB = new Joypad(this.EmulatorHost.Emulator));
 

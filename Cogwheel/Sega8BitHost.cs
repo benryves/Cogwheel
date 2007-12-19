@@ -9,22 +9,38 @@ using System.Windows.Forms;
 using BeeDevelopment.Sega8Bit.Emulation;
 using System.Drawing.Drawing2D;
 using BeeDevelopment.Sega8Bit.Devices.Input;
+using System.Runtime.InteropServices;
+using System.Drawing.Imaging;
+using BeeDevelopment.Sega8Bit.Devices;
 
 namespace BeeDevelopment.Cogwheel {
 	public partial class Sega8BitHost : UserControl {
 
-		private Bitmap LastBuffer;
+		private int[] LastBuffer;
+		private Bitmap BackBuffer;
+		private Size BackBufferResolution;
 
 		private Emulator emulator;
 		public Emulator Emulator {
 			get { return this.emulator; }
 			set {
+				
+
 				this.emulator = value;
 				if (this.emulator != null) {
-					this.emulator.VideoProcessor.GenerateOutputBitmap = true;
-					this.emulator.VideoProcessor.VerticalBlank += (sender, e) => { LastBuffer = e.Output; this.Invalidate(); };
+
+					this.emulator.VideoProcessor.GenerateOutputBitmap = false;
+					this.emulator.VideoProcessor.VerticalBlank += (sender, e) => { LastBuffer = e.Pixels; this.Invalidate(); };
+					this.emulator.VideoProcessor.ResolutionChange += new BeeDevelopment.Sega8Bit.Devices.VideoDisplayProcessor.ResolutionChangeEventHandler(VideoProcessor_ResolutionChange);
 				}
+				this.VideoProcessor_ResolutionChange(null, new VideoDisplayProcessor.ResolutionChangeEventArgs(new Size(256, 192)));
 			}
+		}
+
+		void VideoProcessor_ResolutionChange(object sender, BeeDevelopment.Sega8Bit.Devices.VideoDisplayProcessor.ResolutionChangeEventArgs e) {
+			if (this.BackBuffer != null) this.BackBuffer.Dispose();
+			this.BackBufferResolution = e.Resolution;
+			this.BackBuffer = new Bitmap(e.Resolution.Width, e.Resolution.Height);
 		}
 
 		public Sega8BitHost() {
@@ -33,11 +49,20 @@ namespace BeeDevelopment.Cogwheel {
 		}
 
 		protected override void OnPaint(PaintEventArgs e) {
-			if (this.emulator == null || this.LastBuffer == null) {
-				e.Graphics.Clear(Color.Black);
+			if (this.emulator == null || this.BackBuffer == null) {
+				e.Graphics.Clear(Color.FromKnownColor(KnownColor.Control));
 			} else {
+				
 				e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-				e.Graphics.DrawImage(this.LastBuffer, this.ClientRectangle);
+				e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
+
+				lock (this.BackBuffer) {
+					var BD = this.BackBuffer.LockBits(new Rectangle(0, 0, this.BackBufferResolution.Width, this.BackBufferResolution.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+					Marshal.Copy(this.LastBuffer, 0, BD.Scan0, (BD.Stride * BD.Height) / 4);
+					this.BackBuffer.UnlockBits(BD);
+				}
+
+				e.Graphics.DrawImage(this.BackBuffer, this.ClientRectangle);
 			}
 		}
 

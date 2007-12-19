@@ -28,12 +28,13 @@
 			this.FileMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.OpenMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.OpenRomDialog = new System.Windows.Forms.OpenFileDialog();
-			this.EmulatorHost = new BeeDevelopment.Cogwheel.Sega8BitHost();
 			this.OptionsMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.RegionMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.JapaneseMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ExportMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.OpenRomDialog = new System.Windows.Forms.OpenFileDialog();
+			this.RegionMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.EmulatorHost = new BeeDevelopment.Cogwheel.Sega8BitHost();
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.MainFormMenus.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -51,6 +52,7 @@
 			// 
 			this.FileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.OpenMenu,
+            this.toolStripMenuItem1,
             this.ExitMenu});
 			this.FileMenu.Name = "FileMenu";
 			this.FileMenu.Size = new System.Drawing.Size(37, 20);
@@ -73,9 +75,38 @@
 			this.ExitMenu.Text = "E&xit";
 			this.ExitMenu.Click += new System.EventHandler(this.ExitMenu_Click);
 			// 
+			// OptionsMenu
+			// 
+			this.OptionsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.JapaneseMenu,
+            this.ExportMenu});
+			this.OptionsMenu.Name = "OptionsMenu";
+			this.OptionsMenu.Size = new System.Drawing.Size(61, 20);
+			this.OptionsMenu.Text = "&Options";
+			this.OptionsMenu.DropDownOpening += new System.EventHandler(this.OptionsMenu_DropDownOpening);
+			// 
+			// JapaneseMenu
+			// 
+			this.JapaneseMenu.Name = "JapaneseMenu";
+			this.JapaneseMenu.Size = new System.Drawing.Size(121, 22);
+			this.JapaneseMenu.Text = "&Japanese";
+			this.JapaneseMenu.Click += new System.EventHandler(this.JapaneseMenu_Click);
+			// 
+			// ExportMenu
+			// 
+			this.ExportMenu.Name = "ExportMenu";
+			this.ExportMenu.Size = new System.Drawing.Size(121, 22);
+			this.ExportMenu.Text = "&Export";
+			this.ExportMenu.Click += new System.EventHandler(this.ExportMenu_Click);
+			// 
 			// OpenRomDialog
 			// 
 			this.OpenRomDialog.Filter = resources.GetString("OpenRomDialog.Filter");
+			// 
+			// RegionMenu
+			// 
+			this.RegionMenu.Name = "RegionMenu";
+			this.RegionMenu.Size = new System.Drawing.Size(32, 19);
 			// 
 			// EmulatorHost
 			// 
@@ -88,28 +119,10 @@
 			this.EmulatorHost.Size = new System.Drawing.Size(284, 240);
 			this.EmulatorHost.TabIndex = 1;
 			// 
-			// OptionsMenu
+			// toolStripMenuItem1
 			// 
-			this.OptionsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.JapaneseMenu, this.ExportMenu});
-			this.OptionsMenu.Name = "OptionsMenu";
-			this.OptionsMenu.Size = new System.Drawing.Size(61, 20);
-			this.OptionsMenu.Text = "&Options";
-			this.OptionsMenu.DropDownOpening += new System.EventHandler(this.OptionsMenu_DropDownOpening);
-			// 
-			// JapaneseMenu
-			// 
-			this.JapaneseMenu.Name = "JapaneseMenu";
-			this.JapaneseMenu.Size = new System.Drawing.Size(152, 22);
-			this.JapaneseMenu.Text = "&Japanese";
-			this.JapaneseMenu.Click += new System.EventHandler(this.JapaneseMenu_Click);
-			// 
-			// ExportMenu
-			// 
-			this.ExportMenu.Name = "ExportMenu";
-			this.ExportMenu.Size = new System.Drawing.Size(152, 22);
-			this.ExportMenu.Text = "&Export";
-			this.ExportMenu.Click += new System.EventHandler(this.ExportMenu_Click);
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(182, 6);
 			// 
 			// MainForm
 			// 
@@ -142,6 +155,7 @@
 		private System.Windows.Forms.ToolStripMenuItem RegionMenu;
 		private System.Windows.Forms.ToolStripMenuItem JapaneseMenu;
 		private System.Windows.Forms.ToolStripMenuItem ExportMenu;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 	}
 }
 
