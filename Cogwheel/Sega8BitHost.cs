@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using BeeDevelopment.Sega8Bit.Emulation;
 using System.Drawing.Drawing2D;
-using BeeDevelopment.Sega8Bit.Devices.Input;
 using System.Runtime.InteropServices;
-using System.Drawing.Imaging;
+using System.Windows.Forms;
 using BeeDevelopment.Sega8Bit.Devices;
+using BeeDevelopment.Sega8Bit.Devices.Input;
+using BeeDevelopment.Sega8Bit.Emulation;
 
 namespace BeeDevelopment.Cogwheel {
 	public partial class Sega8BitHost : UserControl {
