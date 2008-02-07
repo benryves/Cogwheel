@@ -1,38 +1,38 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-namespace BeeDevelopment.Brazil {
+namespace Brazil {
 	public partial class Z80A {
 	
-	    private bool PendingEI = false;
+		private bool PendingEI = false;
 
-	    public int TotalExecutedCycles {
-	        get { return this.ThisCycles; }
-	        set { this.ThisCycles = value; this.NextCycles = value; }
-	    }
-	    
-	    private int ThisCycles = 0;
-	    private int NextCycles =  0;
-	    
-	    private LinkedList<ushort> PCTrail = new LinkedList<ushort>();
-	    
+		public int TotalExecutedCycles {
+			get { return this.ThisCycles; }
+			set { this.ThisCycles = value; this.NextCycles = value; }
+		}
+		
+		private int ThisCycles = 0;
+		private int NextCycles =  0;
+		
+		private LinkedList<ushort> PCTrail = new LinkedList<ushort>();
+		
 		public void FetchExecute(int cycles) {
 			//*/
 			if (cycles == -1) RunningCycles = 1; else RunningCycles += cycles;
+			
 			int ClockCycles = 4;
+			
 			sbyte Displacement;
+			
 			byte TB; byte TBH; byte TBL; byte TB1; byte TB2; sbyte TSB; ushort TUS; int TI1; int TI2; int TIR;
+			
 			while (RunningCycles > 0) {
-			
-			    //PCTrail.AddFirst(this.RegisterPC);
-			    //if (PCTrail.Count > 4096) PCTrail.RemoveLast();
-			
 		
-                if (PendingEI) {
-		            flipFlopIFF1 = true;
-                    flipFlopIFF2 = true;
-		            PendingEI = false;
-		        }			    
+				if (PendingEI) {
+					flipFlopIFF1 = true;
+					flipFlopIFF2 = true;
+					PendingEI = false;
+				}				
 
 				++RegR;
 				switch (ReadMemory(RegPC.Value16++)) {
@@ -1058,7 +1058,7 @@ namespace BeeDevelopment.Brazil {
 						if (!RegFlagZ) {
 							RegPC.Value16 = TUS;
 						} else {
-							ClockCycles = 1;
+							ClockCycles = 10;
 						}
 						break;
 					case 0xC3: // JP nn
@@ -1074,7 +1074,7 @@ namespace BeeDevelopment.Brazil {
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = TUS;
 						} else {
-							ClockCycles = 1;
+							ClockCycles = 10;
 						}
 						break;
 					case 0xC5: // PUSH BC
@@ -1114,7 +1114,7 @@ namespace BeeDevelopment.Brazil {
 						if (RegFlagZ) {
 							RegPC.Value16 = TUS;
 						} else {
-							ClockCycles = 1;
+							ClockCycles = 10;
 						}
 						break;
 					case 0xCB: // (Prefix)
@@ -2794,7 +2794,7 @@ namespace BeeDevelopment.Brazil {
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = TUS;
 						} else {
-							ClockCycles = 1;
+							ClockCycles = 10;
 						}
 						break;
 					case 0xCD: // CALL nn
@@ -2836,7 +2836,7 @@ namespace BeeDevelopment.Brazil {
 						if (!RegFlagC) {
 							RegPC.Value16 = TUS;
 						} else {
-							ClockCycles = 1;
+							ClockCycles = 10;
 						}
 						break;
 					case 0xD3: // OUT n, A
@@ -2852,7 +2852,7 @@ namespace BeeDevelopment.Brazil {
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = TUS;
 						} else {
-							ClockCycles = 1;
+							ClockCycles = 10;
 						}
 						break;
 					case 0xD5: // PUSH DE
@@ -2894,7 +2894,7 @@ namespace BeeDevelopment.Brazil {
 						if (RegFlagC) {
 							RegPC.Value16 = TUS;
 						} else {
-							ClockCycles = 1;
+							ClockCycles = 10;
 						}
 						break;
 					case 0xDB: // IN A, n
@@ -2910,7 +2910,7 @@ namespace BeeDevelopment.Brazil {
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = TUS;
 						} else {
-							ClockCycles = 1;
+							ClockCycles = 10;
 						}
 						break;
 					case 0xDD: // (Prefix)
@@ -3963,7 +3963,7 @@ namespace BeeDevelopment.Brazil {
 								if (!RegFlagZ) {
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xC3: // JP nn
@@ -3979,7 +3979,7 @@ namespace BeeDevelopment.Brazil {
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xC5: // PUSH BC
@@ -4019,7 +4019,7 @@ namespace BeeDevelopment.Brazil {
 								if (RegFlagZ) {
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xCB: // (Prefix)
@@ -5868,7 +5868,7 @@ namespace BeeDevelopment.Brazil {
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xCD: // CALL nn
@@ -5910,7 +5910,7 @@ namespace BeeDevelopment.Brazil {
 								if (!RegFlagC) {
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xD3: // OUT n, A
@@ -5926,7 +5926,7 @@ namespace BeeDevelopment.Brazil {
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xD5: // PUSH DE
@@ -5968,7 +5968,7 @@ namespace BeeDevelopment.Brazil {
 								if (RegFlagC) {
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xDB: // IN A, n
@@ -5984,7 +5984,7 @@ namespace BeeDevelopment.Brazil {
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xDD: // <-
@@ -6024,7 +6024,7 @@ namespace BeeDevelopment.Brazil {
 								if (!RegFlagP) {
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xE3: // EX (SP), IX
@@ -6042,7 +6042,7 @@ namespace BeeDevelopment.Brazil {
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xE5: // PUSH IX
@@ -6082,7 +6082,7 @@ namespace BeeDevelopment.Brazil {
 								if (RegFlagP) {
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xEB: // EX DE, HL
@@ -6098,7 +6098,7 @@ namespace BeeDevelopment.Brazil {
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xED: // (Prefix)
@@ -7059,7 +7059,7 @@ namespace BeeDevelopment.Brazil {
 										if (RegBC.Value16 != 0) {
 											RegPC.Value16 -= 2;
 										} else {
-											ClockCycles = 1;
+											ClockCycles = 16;
 										}
 										break;
 									case 0xB1: // CPIR
@@ -7075,7 +7075,7 @@ namespace BeeDevelopment.Brazil {
 										if (RegBC.Value16 != 0 && !RegFlagZ) {
 											RegPC.Value16 -= 2;
 										} else {
-											ClockCycles = 1;
+											ClockCycles = 16;
 										}
 										break;
 									case 0xB2: // INIR
@@ -7088,7 +7088,7 @@ namespace BeeDevelopment.Brazil {
 										if (RegBC.High8 != 0) {
 											RegPC.Value16 -= 2;
 										} else {
-											ClockCycles = 1;
+											ClockCycles = 16;
 										}
 										break;
 									case 0xB3: // OTIR
@@ -7101,7 +7101,7 @@ namespace BeeDevelopment.Brazil {
 										if (RegBC.High8 != 0) {
 											RegPC.Value16 -= 2;
 										} else {
-											ClockCycles = 1;
+											ClockCycles = 16;
 										}
 										break;
 									case 0xB4: // NOP
@@ -7131,7 +7131,7 @@ namespace BeeDevelopment.Brazil {
 										if (RegBC.Value16 != 0) {
 											RegPC.Value16 -= 2;
 										} else {
-											ClockCycles = 1;
+											ClockCycles = 16;
 										}
 										break;
 									case 0xB9: // CPDR
@@ -7147,7 +7147,7 @@ namespace BeeDevelopment.Brazil {
 										if (RegBC.Value16 != 0 && !RegFlagZ) {
 											RegPC.Value16 -= 2;
 										} else {
-											ClockCycles = 1;
+											ClockCycles = 16;
 										}
 										break;
 									case 0xBA: // INDR
@@ -7160,7 +7160,7 @@ namespace BeeDevelopment.Brazil {
 										if (RegBC.High8 != 0) {
 											RegPC.Value16 -= 2;
 										} else {
-											ClockCycles = 1;
+											ClockCycles = 16;
 										}
 										break;
 									case 0xBB: // OTDR
@@ -7173,7 +7173,7 @@ namespace BeeDevelopment.Brazil {
 										if (RegBC.High8 != 0) {
 											RegPC.Value16 -= 2;
 										} else {
-											ClockCycles = 1;
+											ClockCycles = 16;
 										}
 										break;
 									case 0xBC: // NOP
@@ -7482,7 +7482,7 @@ namespace BeeDevelopment.Brazil {
 								if (!RegFlagS) {
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xF3: // DI
@@ -7499,7 +7499,7 @@ namespace BeeDevelopment.Brazil {
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xF5: // PUSH AF
@@ -7539,7 +7539,7 @@ namespace BeeDevelopment.Brazil {
 								if (RegFlagS) {
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xFB: // EI
@@ -7555,7 +7555,7 @@ namespace BeeDevelopment.Brazil {
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xFD: // <-
@@ -7608,7 +7608,7 @@ namespace BeeDevelopment.Brazil {
 						if (!RegFlagP) {
 							RegPC.Value16 = TUS;
 						} else {
-							ClockCycles = 1;
+							ClockCycles = 10;
 						}
 						break;
 					case 0xE3: // EX (SP), HL
@@ -7626,7 +7626,7 @@ namespace BeeDevelopment.Brazil {
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = TUS;
 						} else {
-							ClockCycles = 1;
+							ClockCycles = 10;
 						}
 						break;
 					case 0xE5: // PUSH HL
@@ -7666,7 +7666,7 @@ namespace BeeDevelopment.Brazil {
 						if (RegFlagP) {
 							RegPC.Value16 = TUS;
 						} else {
-							ClockCycles = 1;
+							ClockCycles = 10;
 						}
 						break;
 					case 0xEB: // EX DE, HL
@@ -7682,7 +7682,7 @@ namespace BeeDevelopment.Brazil {
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = TUS;
 						} else {
-							ClockCycles = 1;
+							ClockCycles = 10;
 						}
 						break;
 					case 0xED: // (Prefix)
@@ -8643,7 +8643,7 @@ namespace BeeDevelopment.Brazil {
 								if (RegBC.Value16 != 0) {
 									RegPC.Value16 -= 2;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 16;
 								}
 								break;
 							case 0xB1: // CPIR
@@ -8659,7 +8659,7 @@ namespace BeeDevelopment.Brazil {
 								if (RegBC.Value16 != 0 && !RegFlagZ) {
 									RegPC.Value16 -= 2;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 16;
 								}
 								break;
 							case 0xB2: // INIR
@@ -8672,7 +8672,7 @@ namespace BeeDevelopment.Brazil {
 								if (RegBC.High8 != 0) {
 									RegPC.Value16 -= 2;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 16;
 								}
 								break;
 							case 0xB3: // OTIR
@@ -8685,7 +8685,7 @@ namespace BeeDevelopment.Brazil {
 								if (RegBC.High8 != 0) {
 									RegPC.Value16 -= 2;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 16;
 								}
 								break;
 							case 0xB4: // NOP
@@ -8715,7 +8715,7 @@ namespace BeeDevelopment.Brazil {
 								if (RegBC.Value16 != 0) {
 									RegPC.Value16 -= 2;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 16;
 								}
 								break;
 							case 0xB9: // CPDR
@@ -8731,7 +8731,7 @@ namespace BeeDevelopment.Brazil {
 								if (RegBC.Value16 != 0 && !RegFlagZ) {
 									RegPC.Value16 -= 2;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 16;
 								}
 								break;
 							case 0xBA: // INDR
@@ -8744,7 +8744,7 @@ namespace BeeDevelopment.Brazil {
 								if (RegBC.High8 != 0) {
 									RegPC.Value16 -= 2;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 16;
 								}
 								break;
 							case 0xBB: // OTDR
@@ -8757,7 +8757,7 @@ namespace BeeDevelopment.Brazil {
 								if (RegBC.High8 != 0) {
 									RegPC.Value16 -= 2;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 16;
 								}
 								break;
 							case 0xBC: // NOP
@@ -9066,7 +9066,7 @@ namespace BeeDevelopment.Brazil {
 						if (!RegFlagS) {
 							RegPC.Value16 = TUS;
 						} else {
-							ClockCycles = 1;
+							ClockCycles = 10;
 						}
 						break;
 					case 0xF3: // DI
@@ -9083,7 +9083,7 @@ namespace BeeDevelopment.Brazil {
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = TUS;
 						} else {
-							ClockCycles = 1;
+							ClockCycles = 10;
 						}
 						break;
 					case 0xF5: // PUSH AF
@@ -9123,7 +9123,7 @@ namespace BeeDevelopment.Brazil {
 						if (RegFlagS) {
 							RegPC.Value16 = TUS;
 						} else {
-							ClockCycles = 1;
+							ClockCycles = 10;
 						}
 						break;
 					case 0xFB: // EI
@@ -9139,7 +9139,7 @@ namespace BeeDevelopment.Brazil {
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = TUS;
 						} else {
-							ClockCycles = 1;
+							ClockCycles = 10;
 						}
 						break;
 					case 0xFD: // (Prefix)
@@ -10192,7 +10192,7 @@ namespace BeeDevelopment.Brazil {
 								if (!RegFlagZ) {
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xC3: // JP nn
@@ -10208,7 +10208,7 @@ namespace BeeDevelopment.Brazil {
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xC5: // PUSH BC
@@ -10248,7 +10248,7 @@ namespace BeeDevelopment.Brazil {
 								if (RegFlagZ) {
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xCB: // (Prefix)
@@ -11929,7 +11929,7 @@ namespace BeeDevelopment.Brazil {
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xCD: // CALL nn
@@ -11971,7 +11971,7 @@ namespace BeeDevelopment.Brazil {
 								if (!RegFlagC) {
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xD3: // OUT n, A
@@ -11987,7 +11987,7 @@ namespace BeeDevelopment.Brazil {
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xD5: // PUSH DE
@@ -12029,7 +12029,7 @@ namespace BeeDevelopment.Brazil {
 								if (RegFlagC) {
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xDB: // IN A, n
@@ -12045,7 +12045,7 @@ namespace BeeDevelopment.Brazil {
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xDD: // <-
@@ -12085,7 +12085,7 @@ namespace BeeDevelopment.Brazil {
 								if (!RegFlagP) {
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xE3: // EX (SP), IY
@@ -12103,7 +12103,7 @@ namespace BeeDevelopment.Brazil {
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xE5: // PUSH IY
@@ -12143,7 +12143,7 @@ namespace BeeDevelopment.Brazil {
 								if (RegFlagP) {
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xEB: // EX DE, HL
@@ -12159,7 +12159,7 @@ namespace BeeDevelopment.Brazil {
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xED: // (Prefix)
@@ -13120,7 +13120,7 @@ namespace BeeDevelopment.Brazil {
 										if (RegBC.Value16 != 0) {
 											RegPC.Value16 -= 2;
 										} else {
-											ClockCycles = 1;
+											ClockCycles = 16;
 										}
 										break;
 									case 0xB1: // CPIR
@@ -13136,7 +13136,7 @@ namespace BeeDevelopment.Brazil {
 										if (RegBC.Value16 != 0 && !RegFlagZ) {
 											RegPC.Value16 -= 2;
 										} else {
-											ClockCycles = 1;
+											ClockCycles = 16;
 										}
 										break;
 									case 0xB2: // INIR
@@ -13149,7 +13149,7 @@ namespace BeeDevelopment.Brazil {
 										if (RegBC.High8 != 0) {
 											RegPC.Value16 -= 2;
 										} else {
-											ClockCycles = 1;
+											ClockCycles = 16;
 										}
 										break;
 									case 0xB3: // OTIR
@@ -13162,7 +13162,7 @@ namespace BeeDevelopment.Brazil {
 										if (RegBC.High8 != 0) {
 											RegPC.Value16 -= 2;
 										} else {
-											ClockCycles = 1;
+											ClockCycles = 16;
 										}
 										break;
 									case 0xB4: // NOP
@@ -13192,7 +13192,7 @@ namespace BeeDevelopment.Brazil {
 										if (RegBC.Value16 != 0) {
 											RegPC.Value16 -= 2;
 										} else {
-											ClockCycles = 1;
+											ClockCycles = 16;
 										}
 										break;
 									case 0xB9: // CPDR
@@ -13208,7 +13208,7 @@ namespace BeeDevelopment.Brazil {
 										if (RegBC.Value16 != 0 && !RegFlagZ) {
 											RegPC.Value16 -= 2;
 										} else {
-											ClockCycles = 1;
+											ClockCycles = 16;
 										}
 										break;
 									case 0xBA: // INDR
@@ -13221,7 +13221,7 @@ namespace BeeDevelopment.Brazil {
 										if (RegBC.High8 != 0) {
 											RegPC.Value16 -= 2;
 										} else {
-											ClockCycles = 1;
+											ClockCycles = 16;
 										}
 										break;
 									case 0xBB: // OTDR
@@ -13234,7 +13234,7 @@ namespace BeeDevelopment.Brazil {
 										if (RegBC.High8 != 0) {
 											RegPC.Value16 -= 2;
 										} else {
-											ClockCycles = 1;
+											ClockCycles = 16;
 										}
 										break;
 									case 0xBC: // NOP
@@ -13543,7 +13543,7 @@ namespace BeeDevelopment.Brazil {
 								if (!RegFlagS) {
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xF3: // DI
@@ -13560,7 +13560,7 @@ namespace BeeDevelopment.Brazil {
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xF5: // PUSH AF
@@ -13600,7 +13600,7 @@ namespace BeeDevelopment.Brazil {
 								if (RegFlagS) {
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xFB: // EI
@@ -13616,7 +13616,7 @@ namespace BeeDevelopment.Brazil {
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
 								} else {
-									ClockCycles = 1;
+									ClockCycles = 10;
 								}
 								break;
 							case 0xFD: // <-
@@ -13651,43 +13651,43 @@ namespace BeeDevelopment.Brazil {
 				}
 
 
-			    // Handle interrupts
-			    
-			    if (NmiRequested) {
-			        flipFlopIFF2 = flipFlopIFF1;
-			        flipFlopIFF1 = false;
-			        WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
-				    RegPC.Value16 = 0x66;
-				    ClockCycles += 13;
-				    NmiRequested = false;
-				    break;
-			    }
+				// Handle interrupts
+				
+				if (NmiRequested) {
+					flipFlopIFF2 = flipFlopIFF1;
+					flipFlopIFF1 = false;
+					WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
+					RegPC.Value16 = 0x66;
+					ClockCycles += 13;
+					NmiRequested = false;
+					break;
+				}
 
-			    if (flipFlopIFF1 && IntRequested) {
-	    
-				    switch (interruptMode) {
-					    case 0:
-						    break;
-					    case 1:
-						    WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
-						    RegPC.Value16 = 0x38;
-						    ClockCycles += 13;
-						    break;
-					    case 2:
-						    TUS = (ushort)(RegI * 256 + 0);
-						    WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
-						    RegPC.Low8 = ReadMemory(TUS++); RegPC.High8 = ReadMemory(TUS);
-						    //throw new Exception(string.Format("{0:X4}", RegPC));
-						    ClockCycles += 19;
-						    break;
-				    }
-				    flipFlopIFF1 = false;
-				    flipFlopIFF2 = false;
-				    IntRequested = false;
-			    }
+				if (flipFlopIFF1 && IntRequested) {
+		
+					switch (interruptMode) {
+						case 0:
+							break;
+						case 1:
+							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
+							RegPC.Value16 = 0x38;
+							ClockCycles += 13;
+							break;
+						case 2:
+							TUS = (ushort)(RegI * 256 + 0);
+							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
+							RegPC.Low8 = ReadMemory(TUS++); RegPC.High8 = ReadMemory(TUS);
+							//throw new Exception(string.Format("{0:X4}", RegPC));
+							ClockCycles += 19;
+							break;
+					}
+					flipFlopIFF1 = false;
+					flipFlopIFF2 = false;
+					IntRequested = false;
+				}
 
-	    
-                if (cycles == -1) break;
+		
+				if (cycles == -1) break;
 				RunningCycles -= ClockCycles;
 				
 				this.ThisCycles = this.NextCycles;
