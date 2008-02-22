@@ -33,10 +33,9 @@
   <ItemGroup>
     <Reference Include="SlimDX, Version=1.0.2863.23737, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Visual Studio 2005\SlimDX\SlimDX\Binaries (August SDK)\SlimDX.dll</HintPath>
+      <HintPath>..\Binary Libraries\SlimDX.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -86,6 +85,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Resources\sms_rom.png" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Brazil\Brazil.csproj">
       <Project>{325F86DA-222E-470F-A4F6-B04A3179FB2A}</Project>
       <Name>Brazil</Name>
@@ -94,10 +97,6 @@
       <Project>{A59F09F7-37CE-409C-B290-7C6B160E0B11}</Project>
       <Name>Sega</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Resources\sms_rom.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

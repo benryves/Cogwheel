@@ -1,0 +1,374 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BeeZip</name>
+    </assembly>
+    <members>
+        <member name="T:BeeDevelopment.Zip.Crc32">
+            <summary>
+            Provides methods for CRC-32 checksum calculation.
+            </summary>
+        </member>
+        <member name="M:BeeDevelopment.Zip.Crc32.Calculate(System.Byte[])">
+            <summary>
+            Calculates a CRC-32 checksum from a stream.
+            </summary>
+            <param name="data">The data to calculate the checksum over.</param>
+            <returns>The CRC-32 checksum.</returns>
+        </member>
+        <member name="T:BeeDevelopment.Zip.DosDateTime">
+            <summary>
+            Represents a date and time stored in the format used by MS-DOS.
+            </summary>
+        </member>
+        <member name="M:BeeDevelopment.Zip.DosDateTime.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Creates a new instance of the <see cref="T:BeeDevelopment.Zip.DosDateTime"/> class representing specified year, month, day, hour, minute, and second.
+            </summary>
+            <param name="year">The year.</param>
+            <param name="month">The month.</param>
+            <param name="day">The day.</param>
+            <param name="hour">The hours.</param>
+            <param name="minute">The minutes.</param>
+            <param name="second">The seconds.</param>
+        </member>
+        <member name="M:BeeDevelopment.Zip.DosDateTime.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:BeeDevelopment.Zip.DosDateTime"/> class representing 12:00 AM on the 1st January 1980.
+            </summary>
+        </member>
+        <member name="M:BeeDevelopment.Zip.DosDateTime.FromDateTime(System.DateTime)">
+            <summary>
+            Creates a <see cref="T:BeeDevelopment.Zip.DosDateTime"/> instance from a <see cref="T:System.DateTime"/>.
+            </summary>
+            <param name="dateTime">The <see cref="T:System.DateTime"/> to convert to a <see cref="T:BeeDevelopment.Zip.DosDateTime"/>.</param>
+            <returns>A new <see cref="T:BeeDevelopment.Zip.DosDateTime"/> instance representing the date and time specified in the <see cref="T:System.DateTime"/>.</returns>
+        </member>
+        <member name="M:BeeDevelopment.Zip.DosDateTime.ToDateTime">
+            <summary>
+            Converts this instance to a <see cref="T:System.DateTime"/> representing the date and time.
+            </summary>
+            <returns>The converted <see cref="T:System.DateTime"/> instance.</returns>
+        </member>
+        <member name="M:BeeDevelopment.Zip.DosDateTime.ToBinary">
+            <summary>
+            Serializes the current <see cref="T:BeeDevelopment.Zip.DosDateTime"/> object to a 32-bit binary value that subsequently can be used to recreate the <see cref="T:BeeDevelopment.Zip.DosDateTime"/> object. 
+            </summary>
+        </member>
+        <member name="M:BeeDevelopment.Zip.DosDateTime.FromBinary(System.Int32)">
+            <summary>
+            Deserializes a 32-bit binary value and recreates an original serialized <see cref="T:BeeDevelopment.Zip.DosDateTime"/> object. 
+            </summary>
+            <param name="dateData">A 32-bit integer that encode the date and time.</param>
+            <returns>The <see cref="T:BeeDevelopment.Zip.DosDateTime"/> instance serialised to a 32-bit integer value.</returns>
+        </member>
+        <member name="M:BeeDevelopment.Zip.DosDateTime.ToString">
+            <summary>
+            Converts the value of the current <see cref="T:BeeDevelopment.Zip.DosDateTime"/> to its equivalent string representation.
+            </summary>
+        </member>
+        <member name="P:BeeDevelopment.Zip.DosDateTime.Second">
+            <summary>
+            Gets the seconds component of the date represented by this instance.
+            </summary>
+        </member>
+        <member name="P:BeeDevelopment.Zip.DosDateTime.Minute">
+            <summary>
+            Gets the minute component of the date represented by this instance.
+            </summary>
+        </member>
+        <member name="P:BeeDevelopment.Zip.DosDateTime.Hour">
+            <summary>
+            Gets the hour component of the date represented by this instance.
+            </summary>
+        </member>
+        <member name="P:BeeDevelopment.Zip.DosDateTime.Day">
+            <summary>
+            Gets or sets the day of the month represented by this instance.
+            </summary>
+        </member>
+        <member name="P:BeeDevelopment.Zip.DosDateTime.Month">
+            <summary>
+            Gets the month component of the date represented by this instance.
+            </summary>
+        </member>
+        <member name="P:BeeDevelopment.Zip.DosDateTime.Year">
+            <summary>
+            Gets the year component of the date represented by this instance.
+            </summary>
+        </member>
+        <member name="T:BeeDevelopment.Zip.ZipFileEntry">
+            <summary>
+            Represents a file stored inside a <see cref="T:BeeDevelopment.Zip.ZipFile"/>.
+            </summary>
+        </member>
+        <member name="M:BeeDevelopment.Zip.ZipFileEntry.Save(System.IO.Stream)">
+            <summary>
+            Saves the <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/> to a <see cref="T:System.IO.Stream"/>.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write the <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/> to.</param>
+        </member>
+        <member name="M:BeeDevelopment.Zip.ZipFileEntry.EncodeStrings(System.Byte[]@,System.Byte[]@)">
+            <summary>
+            Encode the filename and comment fields associated with this entry.
+            </summary>
+            <param name="filename">Outputs the encoded filename.</param>
+            <param name="comment">Outputs the encoded comment.</param>
+            <returns>True if the strings are encoded using UTF-8, false if using legacy codepage 437.</returns>
+        </member>
+        <member name="M:BeeDevelopment.Zip.ZipFileEntry.#ctor">
+            <summary>
+            Creates an empty <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/> instance.
+            </summary>
+        </member>
+        <member name="M:BeeDevelopment.Zip.ZipFileEntry.FromFile(System.String)">
+            <summary>
+            Creates a <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/> instance from an existing file.
+            </summary>
+            <param name="filename">The name of the file to load.</param>
+            <returns>A <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/> created from <paramref name="filename"/>.</returns>
+        </member>
+        <member name="M:BeeDevelopment.Zip.ZipFileEntry.FromZipFileStream(System.IO.Stream,System.Boolean)">
+            <summary>
+            Creates a <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/> from a stream containing a zip file.
+            </summary>
+            <param name="stream">The stream to create the <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/> from.</param>
+            <param name="isLocalFileHeader">True if this is a local file header, false if it is from the central directory.</param>
+        </member>
+        <member name="M:BeeDevelopment.Zip.ZipFileEntry.ToString">
+            <summary>
+            Returns a string representation of the <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/>.
+            </summary>
+            <returns>A string representation of the <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/>.</returns>
+        </member>
+        <member name="P:BeeDevelopment.Zip.ZipFileEntry.Name">
+            <summary>
+            Gets or sets the name of the file.
+            </summary>
+        </member>
+        <member name="P:BeeDevelopment.Zip.ZipFileEntry.Method">
+            <summary>
+            Gets or sets the <see cref="T:BeeDevelopment.Zip.ZipFileEntry.CompressionMethod"/> used to compress the file.
+            </summary>
+        </member>
+        <member name="P:BeeDevelopment.Zip.ZipFileEntry.LastWriteTime">
+            <summary>
+            Gets or sets the time when the <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/> was last written to.
+            </summary>
+        </member>
+        <member name="P:BeeDevelopment.Zip.ZipFileEntry.Comment">
+            <summary>
+            Gets or sets a comment attached to the file.
+            </summary>
+        </member>
+        <member name="P:BeeDevelopment.Zip.ZipFileEntry.Data">
+            <summary>
+            Gets or sets the data that the <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/> represents.
+            </summary>
+        </member>
+        <member name="P:BeeDevelopment.Zip.ZipFileEntry.CompressedSize">
+            <summary>
+            Gets the compressed size of the data <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/>.
+            </summary>
+        </member>
+        <member name="P:BeeDevelopment.Zip.ZipFileEntry.Crc">
+            <summary>
+            Gets the CRC-32 checksum of the <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/>.
+            </summary>
+        </member>
+        <member name="P:BeeDevelopment.Zip.ZipFileEntry.Attributes">
+            <summary>
+            Gets the internal general-purpose attribute bits.
+            </summary>
+        </member>
+        <member name="T:BeeDevelopment.Zip.ZipFileEntry.CompressionMethod">
+            <summary>
+            Defines the method used to compress the data.
+            </summary>
+            <remarks>Only Store and Deflate methods are support at present.</remarks>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.CompressionMethod.Store">
+            <summary>The file is stored (no compression).</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.CompressionMethod.Shrink">
+            <summary>The file is Shrunk.</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.CompressionMethod.ReduceFactor1">
+            <summary>The file is Reduced with compression factor 1.</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.CompressionMethod.ReduceFactor2">
+            <summary>The file is Reduced with compression factor 2.</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.CompressionMethod.ReduceFactor3">
+            <summary>The file is Reduced with compression factor 3.</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.CompressionMethod.ReduceFactor4">
+            <summary>The file is Reduced with compression factor 4.</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.CompressionMethod.Implode">
+            <summary>The file is Imploded.</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.CompressionMethod.Deflate">
+            <summary>The file is Deflated.</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.CompressionMethod.Deflate64">
+            <summary>Enhanced Deflating using Deflate64™.</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.CompressionMethod.IbmTerseOld">
+            <summary>PKWARE Data Compression Library Imploding (old IBM TERSE).</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.CompressionMethod.BZip2">
+            <summary>File is compressed using BZIP2 algorithm.</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.CompressionMethod.Lzma">
+            <summary>LZMA (EFS).</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.CompressionMethod.IbmTerseNew">
+            <summary>File is compressed using IBM TERSE (new).</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.CompressionMethod.IbmLZ77">
+            <summary>IBM LZ77 z Architecture (PFS).</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.CompressionMethod.WavPack">
+            <summary>WavPack compressed data.</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.CompressionMethod.PPMd">
+            <summary>PPMd version I, Rev 1.</summary>
+        </member>
+        <member name="T:BeeDevelopment.Zip.ZipFileEntry.AttributeBits">
+            <summary>
+            Defines general-purpose flags for the compressed data.
+            </summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.AttributeBits.None">
+            <summary>No special attributes are set.</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.AttributeBits.Encrypted">
+            <summary>If set, indicates that the file is encrypted.</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.AttributeBits.SizeInformationAfterData">
+            <summary>If set, the usual CRC-32, compressed size and uncompressed size fields are set to zero and their real values are appended after the data section.</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.AttributeBits.EnhancedDeflate">
+            <summary>Reserved for use with method 8 (deflate), for enhanced deflating.</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.AttributeBits.CompressedPatchedData">
+            <summary>If set, this indicates that the file is compressed patched data.</summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.AttributeBits.StrongEncrypytion">
+            <summary>Strong encryption.</summary>
+            <remarks>
+            If set, you should set the version needed to extract value to at least 50 and you must also set bit 0.
+            If AES encryption is used, the version needed to extract value must be at least 51.
+            </remarks>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.AttributeBits.UnicodeNames">
+            <summary>Language encoding flag (EFS).</summary>
+            <remarks>If this bit is set, the filename and comment fields for this file must be encoded using UTF-8.</remarks>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFileEntry.AttributeBits.EncryptedHeaders">
+            <summary>Selected data values in the Local Header are masked to hide their actual values.</summary>
+        </member>
+        <member name="T:BeeDevelopment.Zip.ZipFile">
+            <summary>
+            Provides functionality for reading and writing zip archive files.
+            </summary>
+        </member>
+        <member name="F:BeeDevelopment.Zip.ZipFile.Files">
+            <summary>
+            The internal list used to store the files.
+            </summary>
+        </member>
+        <member name="M:BeeDevelopment.Zip.ZipFile.Save(System.IO.Stream)">
+            <summary>
+            Saves the <see cref="T:BeeDevelopment.Zip.ZipFile"/> to a <see cref="T:System.IO.Stream"/>.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to save the <see cref="T:BeeDevelopment.Zip.ZipFile"/> to.</param>
+        </member>
+        <member name="M:BeeDevelopment.Zip.ZipFile.Save(System.String)">
+            <summary>
+            Saves the <see cref="T:BeeDevelopment.Zip.ZipFile"/> to a file.
+            </summary>
+            <param name="filename">The name of the file to save the <see cref="T:BeeDevelopment.Zip.ZipFile"/> to.</param>
+        </member>
+        <member name="M:BeeDevelopment.Zip.ZipFile.#ctor">
+            <summary>
+            Creates an empty instance of <see cref="T:BeeDevelopment.Zip.ZipFile"/>.
+            </summary>
+        </member>
+        <member name="M:BeeDevelopment.Zip.ZipFile.FromStream(System.IO.Stream)">
+            <summary>
+            Creates an instance of a <see cref="T:BeeDevelopment.Zip.ZipFile"/> from an existing zip file stored in a <see cref="T:System.IO.Stream"/>.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to load the <see cref="T:BeeDevelopment.Zip.ZipFile"/> from.</param>
+            <returns>The <see cref="T:BeeDevelopment.Zip.ZipFile"/> loaded from <paramref name="stream"/>.</returns>
+        </member>
+        <member name="M:BeeDevelopment.Zip.ZipFile.FromFile(System.String)">
+            <summary>
+            Creates an instance of a <see cref="T:BeeDevelopment.Zip.ZipFile"/> from an existing zip file.
+            </summary>
+            <param name="filename">The name of the file to load the <see cref="T:BeeDevelopment.Zip.ZipFile"/> from.</param>
+            <returns>The <see cref="T:BeeDevelopment.Zip.ZipFile"/> loaded from <paramref name="filename"/>.</returns>
+        </member>
+        <member name="M:BeeDevelopment.Zip.ZipFile.Add(BeeDevelopment.Zip.ZipFileEntry)">
+            <summary>
+            Adds a <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/> to the <see cref="T:BeeDevelopment.Zip.ZipFile"/>.
+            </summary>
+            <param name="item">The <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/> to add.</param>
+        </member>
+        <member name="M:BeeDevelopment.Zip.ZipFile.Clear">
+            <summary>
+            Removes all <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/> elements from the <see cref="T:BeeDevelopment.Zip.ZipFile"/>.
+            </summary>
+        </member>
+        <member name="M:BeeDevelopment.Zip.ZipFile.Contains(BeeDevelopment.Zip.ZipFileEntry)">
+            <summary>
+            Determines whether a <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/> is in the <see cref="T:BeeDevelopment.Zip.ZipFile"/>.
+            </summary>
+            <param name="item">The <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/> to locate in the <see cref="T:BeeDevelopment.Zip.ZipFile"/>.</param>
+            <returns>True if the <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/> is found in the <see cref="T:BeeDevelopment.Zip.ZipFile"/>; otherwise, false.</returns>
+        </member>
+        <member name="M:BeeDevelopment.Zip.ZipFile.CopyTo(BeeDevelopment.Zip.ZipFileEntry[],System.Int32)">
+            <summary>
+            Copies all <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/> elements from the <see cref="T:BeeDevelopment.Zip.ZipFile"/> to an array, starting at the specified index of the target array.
+            </summary>
+            <param name="array">The one-dimensional array that is the target of the elements copied from the <see cref="T:BeeDevelopment.Zip.ZipFile"/>.</param>
+            <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
+        </member>
+        <member name="M:BeeDevelopment.Zip.ZipFile.Remove(BeeDevelopment.Zip.ZipFileEntry)">
+            <summary>
+            Removes the first occurance of a specific <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/> from the <see cref="T:BeeDevelopment.Zip.ZipFile"/>.
+            </summary>
+            <param name="item">The <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/> to remove from the <see cref="T:BeeDevelopment.Zip.ZipFile"/>.</param>
+            <returns>True if item is successfully removed; otherwise, false. This method also returns false if item was not found in the <see cref="T:BeeDevelopment.Zip.ZipFile"/>.</returns>
+        </member>
+        <member name="M:BeeDevelopment.Zip.ZipFile.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the <see cref="T:BeeDevelopment.Zip.ZipFile"/>.
+            </summary>
+            <returns>An enumerator that iterates through the <see cref="T:BeeDevelopment.Zip.ZipFile"/>.</returns>
+        </member>
+        <member name="M:BeeDevelopment.Zip.ZipFile.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the <see cref="T:BeeDevelopment.Zip.ZipFile"/>.
+            </summary>
+            <returns>An enumerator that iterates through the <see cref="T:BeeDevelopment.Zip.ZipFile"/>.</returns>
+        </member>
+        <member name="P:BeeDevelopment.Zip.ZipFile.Count">
+            <summary>
+            Gets the number of <see cref="T:BeeDevelopment.Zip.ZipFileEntry"/> elements contained in the <see cref="T:BeeDevelopment.Zip.ZipFile"/>.
+            </summary>
+        </member>
+        <member name="P:BeeDevelopment.Zip.ZipFile.IsReadOnly">
+            <summary>
+            Gets a value indicating whether the <see cref="T:BeeDevelopment.Zip.ZipFile"/> is read-only.
+            </summary>
+            <remarks>This always return false.</remarks>
+        </member>
+        <member name="T:BeeDevelopment.Zip.ZipFile.RecordIdentifier">
+            <summary>
+            Defines identifiers for the records in a zip archive.
+            </summary>
+        </member>
+    </members>
+</doc>
