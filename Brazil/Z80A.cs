@@ -19,7 +19,7 @@ namespace BeeDevelopment.Brazil {
 		/// <summary>
 		/// Reset the Z80 to its initial state
 		/// </summary>
-		public void Reset() {
+		public virtual void Reset() {
 			ResetRegisters();
 			ResetInterrupts();
 			this.TotalExecutedCycles = 0;

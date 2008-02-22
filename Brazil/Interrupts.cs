@@ -5,75 +5,89 @@ using System.Text;
 namespace BeeDevelopment.Brazil {
 	public partial class Z80A {
 
-		private bool flipFlopIFF1 = false;
-		private bool flipFlopIFF2 = false;
-		private int interruptMode = 1;
-		private bool pinInterrupt = false;
-		private bool pinNonMaskableInterrupt = false;
 
-		private bool NmiRequested = false;
-		private bool IntRequested = false;
+		/// <summary>
+		/// Gets or sets the state of the <c>IFF1</c> flag.
+		/// </summary>
+		public bool IFF1 { get; set; }
 
-
-		public bool PinInterrupt {
-			get { return pinInterrupt; }
-			set { if (value && !pinInterrupt) IntRequested = true; pinInterrupt = value; }
+		/// <summary>
+		/// Gets or sets the state of the <c>IFF2</c> flag.
+		/// </summary>
+		public bool IFF2 { get; set; }
+		
+		/// <summary>
+		/// Gets or sets the state of the <see cref="INT"/> pin.
+		/// </summary>
+		public bool Interrupt {
+			get { return this.interrupt; }
+			set { if (value && !this.interrupt) this.InterruptPending = true; this.interrupt = value; }
 		}
+		private bool interrupt;
 
-		public bool PinNonMaskableInterrupt {
-			get { return pinNonMaskableInterrupt; }
-			set { if (value && !pinNonMaskableInterrupt) NmiRequested = true; pinNonMaskableInterrupt = value; }
+		/// <summary>
+		/// Gets or sets the state of the <see cref="NMI"/> pin.
+		/// </summary>
+		public bool NonMaskableInterrupt {
+			get { return this.nonMaskableInterrupt; }
+			set { if (value && !this.nonMaskableInterrupt) this.NonMaskableInterruptPending = true; this.nonMaskableInterrupt = value; }
 		}
+		private bool nonMaskableInterrupt;
 
-		private void ResetInterrupts() {
-			flipFlopIFF1 = false;
-			flipFlopIFF2 = false;
-			pinInterrupt = false;
-			interruptMode = 1;
-			PendingEI = false;
-			NmiRequested = false;
-			IntRequested = false;
-		}
+		/// <summary>
+		/// Gets or sets whether an interrupt (<c>INT</c>) is pending.
+		/// </summary>
+		public bool InterruptPending { get; set; }
 
-		public bool FlipFlopIFF1 {
-			get { return this.flipFlopIFF1; }
-			set { this.flipFlopIFF1 = value; }
-		}
+		/// <summary>
+		/// Gets or sets whether a non-maskable interrupt (<c>NMI</c>) is pending.
+		/// </summary>
+		public bool NonMaskableInterruptPending { get; set; }
 
-		public bool FlipFlopIFF2 {
-			get { return this.flipFlopIFF2; }
-			set { this.flipFlopIFF2 = value; }
-		}
-
+		/// <summary>
+		/// Gets or sets the current interrupt mode.
+		/// </summary>
 		public int InterruptMode {
 			get { return this.interruptMode; }
 			set { if (value < 0 || value > 2) throw new ArgumentOutOfRangeException(); this.interruptMode = value; }
 		}
+		private int interruptMode;
 
-		public int InterruptPackedStatus {
-			get {
-				return (this.FlipFlopIFF1 ? 0x01 : 0)
-					 + (this.FlipFlopIFF2 ? 0x02 : 0)
-					 + (this.PinInterrupt ? 0x04 : 0)
-					 + (this.PinNonMaskableInterrupt ? 0x08 : 0)
-					 + (this.IntRequested ? 0x10 : 0)
-					 + (this.NmiRequested ? 0x20 : 0)
-					 + (this.PendingEI ? 0x40 : 0)
-					 + (this.InterruptMode << 8);
-			}
-			set {
-				this.FlipFlopIFF1 = (value & 0x01) != 0;
-				this.FlipFlopIFF2 = (value & 0x02) != 0;
-				this.PinInterrupt = (value & 0x04) != 0;
-				this.PinNonMaskableInterrupt = (value & 0x08) != 0;
-				this.IntRequested = (value & 0x10) != 0;
-				this.NmiRequested = (value & 0x20) != 0;
-				this.PendingEI = (value & 0x40) != 0;
-				this.InterruptMode = (value >> 8) & 3;				
-			}
 
+		/// <summary>
+		/// Gets or sets whether the device is halted.
+		/// </summary>
+		public bool Halted { get; set; }
+
+		public int InterruptCount { get; set; }
+
+		private void ResetInterrupts() {
+			this.IFF1 = false;
+			this.IFF2 = false;
+			this.Interrupt = false;
+			this.NonMaskableInterrupt = false;
+			this.InterruptPending = false;
+			this.NonMaskableInterruptPending = false;
+			this.InterruptMode = 1;
+			this.Halted = false;
 		}
 
+		private void DisableInterrupts() {
+			this.IFF1 = false;
+			this.IFF2 = false;
+			InstructionsUntilEI = 0;
+		}
 
+		private int InstructionsUntilEI;
+
+		private void EnableInterrupts() {
+			InstructionsUntilEI = 2;
+		}
+
+		private void Halt() {
+			this.Halted = true;			
+		}
+
+	
 	}
 }
