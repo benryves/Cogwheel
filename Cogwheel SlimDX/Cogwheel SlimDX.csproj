@@ -5,14 +5,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1BFBD2AF-4170-497E-9FF6-B263053A6160}</ProjectGuid>
+    <ProjectGuid>{BA61BC42-6CB2-4913-B29A-D18D1C38113A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BeeDevelopment.Cogwheel</RootNamespace>
-    <AssemblyName>Cogwheel</AssemblyName>
+    <RootNamespace>CogwheelSlimDX</RootNamespace>
+    <AssemblyName>CogwheelGui</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ApplicationIcon>Cog.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,13 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BeeZip, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SlimDX, Version=1.0.2863.23737, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Zip\Zip\bin\Release\BeeZip.dll</HintPath>
+      <HintPath>..\..\..\..\Visual Studio 2005\SlimDX\SlimDX\Binaries (August SDK)\SlimDX.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -50,23 +48,20 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainFormCodeBehind.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NativeToolStripRenderer.cs" />
+    <Compile Include="PixelDumper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Sega8BitHost.resx">
-      <DependentUpon>Sega8BitHost.cs</DependentUpon>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyForm.resx">
+      <DependentUpon>PropertyForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -83,11 +78,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Sega8BitHost.cs">
-      <SubType>UserControl</SubType>
+    <Compile Include="PropertyForm.cs">
+      <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Sega8BitHost.Designer.cs">
-      <DependentUpon>Sega8BitHost.cs</DependentUpon>
+    <Compile Include="PropertyForm.Designer.cs">
+      <DependentUpon>PropertyForm.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -95,13 +90,12 @@
       <Project>{325F86DA-222E-470F-A4F6-B04A3179FB2A}</Project>
       <Name>Brazil</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Sega 8-Bit\Sega 8-Bit.csproj">
-      <Project>{241A3B41-B120-493E-8D36-4252316B4B59}</Project>
-      <Name>Sega 8-Bit</Name>
+    <ProjectReference Include="..\Sega\Sega.csproj">
+      <Project>{A59F09F7-37CE-409C-B290-7C6B160E0B11}</Project>
+      <Name>Sega</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Cog.ico" />
     <None Include="app.config" />
     <None Include="Resources\sms_rom.png" />
   </ItemGroup>

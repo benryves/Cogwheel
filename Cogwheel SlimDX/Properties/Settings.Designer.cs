@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BeeDevelopment.Cogwheel.Properties {
+namespace CogwheelSlimDX.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -26,72 +26,84 @@ namespace BeeDevelopment.Cogwheel.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Up")]
-        public global::System.Windows.Forms.Keys KeyP1Up {
+        public global::System.Windows.Forms.Keys KeyUp {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["KeyP1Up"]));
+                return ((global::System.Windows.Forms.Keys)(this["KeyUp"]));
             }
             set {
-                this["KeyP1Up"] = value;
+                this["KeyUp"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Down")]
-        public global::System.Windows.Forms.Keys KeyP1Down {
+        public global::System.Windows.Forms.Keys KeyDown {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["KeyP1Down"]));
+                return ((global::System.Windows.Forms.Keys)(this["KeyDown"]));
             }
             set {
-                this["KeyP1Down"] = value;
+                this["KeyDown"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Left")]
-        public global::System.Windows.Forms.Keys KeyP1Left {
+        public global::System.Windows.Forms.Keys KeyLeft {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["KeyP1Left"]));
+                return ((global::System.Windows.Forms.Keys)(this["KeyLeft"]));
             }
             set {
-                this["KeyP1Left"] = value;
+                this["KeyLeft"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Right")]
-        public global::System.Windows.Forms.Keys KeyP1Right {
+        public global::System.Windows.Forms.Keys KeyRight {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["KeyP1Right"]));
+                return ((global::System.Windows.Forms.Keys)(this["KeyRight"]));
             }
             set {
-                this["KeyP1Right"] = value;
+                this["KeyRight"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Z")]
-        public global::System.Windows.Forms.Keys KeyP1B1 {
+        public global::System.Windows.Forms.Keys KeyTL {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["KeyP1B1"]));
+                return ((global::System.Windows.Forms.Keys)(this["KeyTL"]));
             }
             set {
-                this["KeyP1B1"] = value;
+                this["KeyTL"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("X")]
-        public global::System.Windows.Forms.Keys KeyP1B2 {
+        public global::System.Windows.Forms.Keys KeyTR {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["KeyP1B2"]));
+                return ((global::System.Windows.Forms.Keys)(this["KeyTR"]));
             }
             set {
-                this["KeyP1B2"] = value;
+                this["KeyTR"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Space")]
+        public global::System.Windows.Forms.Keys KeyStart {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyStart"]));
+            }
+            set {
+                this["KeyStart"] = value;
             }
         }
         
@@ -109,13 +121,13 @@ namespace BeeDevelopment.Cogwheel.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool EmulatorIsJapanese {
+        [global::System.Configuration.DefaultSettingValueAttribute("Enter")]
+        public global::System.Windows.Forms.Keys KeyReset {
             get {
-                return ((bool)(this["EmulatorIsJapanese"]));
+                return ((global::System.Windows.Forms.Keys)(this["KeyReset"]));
             }
             set {
-                this["EmulatorIsJapanese"] = value;
+                this["KeyReset"] = value;
             }
         }
     }
