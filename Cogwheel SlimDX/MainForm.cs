@@ -52,7 +52,14 @@ namespace CogwheelSlimDX {
 
 			Application.Idle += new EventHandler(Application_Idle);
 
-			this.Identifier = new RomIdentifier("ROM Data");
+			string RomDataDir = Path.Combine(Application.StartupPath, "ROM Data");
+			if (Directory.Exists(RomDataDir)) {
+				try {
+					this.Identifier = new RomIdentifier("ROM Data");
+				} catch (Exception ex) {
+					MessageBox.Show(this, ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				}
+			}
 			
 		}
 
