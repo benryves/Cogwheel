@@ -60,6 +60,13 @@ namespace CogwheelSlimDX.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap camera {
+            get {
+                object obj = ResourceManager.GetObject("camera", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap sms_rom {
             get {
                 object obj = ResourceManager.GetObject("sms_rom", resourceCulture);

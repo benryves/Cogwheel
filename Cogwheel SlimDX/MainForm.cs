@@ -6,6 +6,8 @@ using System.Windows.Forms;
 using BeeDevelopment.Sega8Bit;
 using BeeDevelopment.Sega8Bit.Mappers;
 using BeeDevelopment.Sega8Bit.Utility;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 
 namespace CogwheelSlimDX {
@@ -205,6 +207,44 @@ namespace CogwheelSlimDX {
 			if (this.CurrentRomInfo != null) {
 				new PropertyForm("ROM Properties", this.CurrentRomInfo).Show(this);
 			}
+		}
+
+		/// <summary>
+		/// Takes a screenshot and copies it to the clipboard.
+		/// </summary>
+		/// <returns>True if the screenshot was taken succesfully, false otherwise.</returns>
+		public bool TakeScreenshot() {
+			
+			// Quick sanity check that a frame has been generated.
+			if (this.Emulator.Video.LastCompleteFrameHeight + this.Emulator.Video.LastCompleteFrameWidth <= 0) return false;
+
+			try {
+				// Use a temporary Bitmap to store the screenshot image.
+				using (var ScreenshotImage = new Bitmap(this.Emulator.Video.LastCompleteFrameWidth, this.Emulator.Video.LastCompleteFrameHeight)) {
+
+					// Lock, copy, unlock.
+					var LockedData = ScreenshotImage.LockBits(new Rectangle(0, 0, ScreenshotImage.Width, ScreenshotImage.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppRgb);
+					try {
+						Marshal.Copy(this.Emulator.Video.LastCompleteFrame, 0, LockedData.Scan0, ScreenshotImage.Width * ScreenshotImage.Height);
+					} finally {
+						ScreenshotImage.UnlockBits(LockedData);
+					}
+
+					// Store in clipboard.
+					Clipboard.SetData(DataFormats.Bitmap, ScreenshotImage);
+				}
+
+				// Success!
+				return true;
+			} catch  {
+
+				// If anything goes wrong, return false.
+				return false;
+			}
+		}
+
+		private void CopyScreenshotMenu_Click(object sender, EventArgs e) {
+			this.TakeScreenshot();
 		}
 	}
 }

@@ -28,9 +28,11 @@
 			this.Menus = new System.Windows.Forms.MenuStrip();
 			this.FileMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.QuickLoadRomMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.PropertiesMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.OpenRomDialog = new System.Windows.Forms.OpenFileDialog();
-			this.PropertiesMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.EditMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.CopyScreenshotMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -45,7 +47,8 @@
 			// Menus
 			// 
 			this.Menus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.FileMenu});
+            this.FileMenu,
+            this.EditMenu});
 			this.Menus.Location = new System.Drawing.Point(0, 0);
 			this.Menus.Name = "Menus";
 			this.Menus.Size = new System.Drawing.Size(325, 24);
@@ -71,6 +74,14 @@
 			this.QuickLoadRomMenu.Text = "&Quick Load ROM...";
 			this.QuickLoadRomMenu.Click += new System.EventHandler(this.QuickLoadRomMenu_Click);
 			// 
+			// PropertiesMenu
+			// 
+			this.PropertiesMenu.Name = "PropertiesMenu";
+			this.PropertiesMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Return)));
+			this.PropertiesMenu.Size = new System.Drawing.Size(216, 22);
+			this.PropertiesMenu.Text = "&Properties...";
+			this.PropertiesMenu.Click += new System.EventHandler(this.PropertiesMenu_Click);
+			// 
 			// ExitMenu
 			// 
 			this.ExitMenu.Name = "ExitMenu";
@@ -84,13 +95,22 @@
 			this.OpenRomDialog.Filter = "ROM Files (*.zip;*.sms;*.gg;*.sg;*.sc;*.mv)|*.zip;*.sms;*.gg;*.sg;*.sc;*.mv|All F" +
 				"iles (*.*)|*.*";
 			// 
-			// PropertiesMenu
+			// EditMenu
 			// 
-			this.PropertiesMenu.Name = "PropertiesMenu";
-			this.PropertiesMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Return)));
-			this.PropertiesMenu.Size = new System.Drawing.Size(216, 22);
-			this.PropertiesMenu.Text = "&Properties...";
-			this.PropertiesMenu.Click += new System.EventHandler(this.PropertiesMenu_Click);
+			this.EditMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CopyScreenshotMenu});
+			this.EditMenu.Name = "EditMenu";
+			this.EditMenu.Size = new System.Drawing.Size(39, 20);
+			this.EditMenu.Text = "&Edit";
+			// 
+			// CopyScreenshotMenu
+			// 
+			this.CopyScreenshotMenu.Image = global::CogwheelSlimDX.Properties.Resources.camera;
+			this.CopyScreenshotMenu.Name = "CopyScreenshotMenu";
+			this.CopyScreenshotMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+			this.CopyScreenshotMenu.Size = new System.Drawing.Size(205, 22);
+			this.CopyScreenshotMenu.Text = "&Copy Screenshot";
+			this.CopyScreenshotMenu.Click += new System.EventHandler(this.CopyScreenshotMenu_Click);
 			// 
 			// MainForm
 			// 
@@ -120,6 +140,8 @@
 		private System.Windows.Forms.ToolStripMenuItem ExitMenu;
 		private System.Windows.Forms.OpenFileDialog OpenRomDialog;
 		private System.Windows.Forms.ToolStripMenuItem PropertiesMenu;
+		private System.Windows.Forms.ToolStripMenuItem EditMenu;
+		private System.Windows.Forms.ToolStripMenuItem CopyScreenshotMenu;
 	}
 }
 
