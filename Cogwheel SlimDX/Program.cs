@@ -13,8 +13,6 @@ namespace CogwheelSlimDX {
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			//MessageBox.Show("This is a special build for Jacko; this is not meant to be out on general release!" + Environment.NewLine + "It is still full of bugs.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-
 			// Try to initialise Direct3D:
 			try {
 				Direct3D.Initialize();
