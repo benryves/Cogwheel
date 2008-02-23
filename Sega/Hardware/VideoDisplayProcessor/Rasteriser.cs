@@ -348,9 +348,9 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 		#endregion
 
-
 		#region Methods
 
+		Random R = new Random();
 
 		/// <summary>
 		/// Rasterise a single scanline.
@@ -632,11 +632,12 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 								if (amZoomed && (--maxZoomedSprites > 0)) {
 									for (int p = 0; p < 16; ++p) {
-										if (!ForegroundBackground[pixelX]) {
-											if (colours[p / 2] != 0) {
-												if (spriteCollisionBuffer[pixelX]) {
-													this.SpriteCollision = true;
-												} else {
+
+										if (colours[p / 2] != 0) {
+											if (spriteCollisionBuffer[pixelX]) {
+												this.SpriteCollision = true;
+											} else {
+												if (!ForegroundBackground[pixelX]) {
 													spriteCollisionBuffer[pixelX] = true;
 													PixelBuffer[startPixel + pixelX] = this.colourRam[colours[p / 2] + 16];
 												}
@@ -647,12 +648,13 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 									}
 								} else {
 									for (int p = 0; p < 8; ++p) {
-										if (!ForegroundBackground[pixelX]) {
-											if (colours[p] != 0) {
-												if (spriteCollisionBuffer[pixelX]) {
-													this.SpriteCollision = true;
-												} else {
-													spriteCollisionBuffer[pixelX] = true;
+
+										if (colours[p] != 0) {
+											if (spriteCollisionBuffer[pixelX]) {
+												this.SpriteCollision = true;
+											} else {
+												spriteCollisionBuffer[pixelX] = true;
+												if (!ForegroundBackground[pixelX]) {
 													PixelBuffer[startPixel + pixelX] = this.colourRam[colours[p] + 16];
 												}
 											}
@@ -820,6 +822,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 						break;
 				}
 			}
+
+			//this.SpriteCollision = (R.Next() & 1) == 0;
 
 			return FrameInterrupted;
 		}
