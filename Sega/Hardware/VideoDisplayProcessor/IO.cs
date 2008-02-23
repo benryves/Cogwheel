@@ -129,7 +129,7 @@
 
 				this.address = (ushort)((this.address & 0x00FF) + (data << 8));
 
-				this.readBuffer = this.vram[this.address & 0x3FFF];
+				
 
 				switch (this.accessMode) {
 					case DataAccessMode.RegisterWrite:
@@ -137,6 +137,7 @@
 						this.UpdateIrq();
 						break;
 					case DataAccessMode.VideoRamReadWrite:
+						this.readBuffer = this.vram[this.address & 0x3FFF];
 						++this.address;
 						break;
 
