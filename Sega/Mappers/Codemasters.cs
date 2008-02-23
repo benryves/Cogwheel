@@ -7,6 +7,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 	/// </summary>
 	public class Codemasters : Standard, ICartridgeMapper {
 
+
 		#region Reading and Writing
 
 		/// <summary>
@@ -53,6 +54,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		/// </summary>
 		public Codemasters()
 			: base() {
+			this.ProtectFirstKilobyte = false;
 		}
 
 		#endregion

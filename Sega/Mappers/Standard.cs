@@ -39,6 +39,11 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		/// </summary>
 		protected bool RamEnabled;
 
+		/// <summary>
+		/// Gets or sets whether the first kilobyte should be protected or not.
+		/// </summary>
+		protected bool ProtectFirstKilobyte = true;
+
 		#endregion
 
 		#region Reading and Writing
@@ -52,7 +57,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 
 			switch (address & 0xC000) {
 				case 0x0000:
-					if (address < 1024) {
+					if (address < 1024 && this.ProtectFirstKilobyte) {
 						return this.CartridgeRom[0][address];
 					} else {
 						return this.MemoryModel[0][address & 0x3FFF];
