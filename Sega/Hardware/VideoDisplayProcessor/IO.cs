@@ -129,23 +129,24 @@
 
 				this.address = (ushort)((this.address & 0x00FF) + (data << 8));
 
-				
-
 				switch (this.accessMode) {
-					case DataAccessMode.RegisterWrite:
-						this.registers[data & 0xF] = (byte)(address & 0xFF);
-						this.UpdateIrq();
-						break;
-					case DataAccessMode.VideoRamReadWrite:
+					case DataAccessMode.VideoRamReadWrite: // 0
 						this.readBuffer = this.vram[this.address & 0x3FFF];
 						++this.address;
+						break;
+					case DataAccessMode.RegisterWrite: // 2
+						this.registers[data & 0x0F] = (byte)(address & 0xFF);
+						this.UpdateIrq();
 						break;
 
 				}
 				this.waitingForSecond = false;
+
 			} else {
+
 				this.address = (ushort)((this.address & 0xFF00) + data);
 				this.waitingForSecond = true;
+
 			}
 		}
 
