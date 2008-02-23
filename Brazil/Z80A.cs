@@ -1,31 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BeeDevelopment.Brazil {
+
 	/// <summary>
 	/// ZiLOG Z80A CPU Emulator
 	/// </summary>
 	public partial class Z80A {
 
-		int RunningCycles;
-
+		/// <summary>
+		/// Creates an instance of the <see cref="Z80A"/> emulator class.
+		/// </summary>
 		public Z80A() {
 			InitTables();
 			Reset();
-			RunningCycles = 0;
 		}
 
 		/// <summary>
 		/// Reset the Z80 to its initial state
 		/// </summary>
 		public virtual void Reset() {
-			ResetRegisters();
-			ResetInterrupts();
+			this.ResetRegisters();
+			this.ResetInterrupts();
+			this.RunningCycles = 0;
 			this.TotalExecutedCycles = 0;
 		}
-
-		//public bool Logging = false;
-
 	}
 }

@@ -2,6 +2,9 @@ using System.Collections.Generic;
 namespace BeeDevelopment.Brazil {
 	public partial class Z80A {
 	
+		/// <summary>
+		/// Gets or sets the total number of clock cycles executed.
+		/// </summary>
 		public int TotalExecutedCycles {
 			get { return this.ThisCycles; }
 			set { this.ThisCycles = value; this.NextCycles = value; }
@@ -9,7 +12,12 @@ namespace BeeDevelopment.Brazil {
 		
 		private int ThisCycles = 0;
 		private int NextCycles =  0;
-		
+		private int RunningCycles;
+
+		/// <summary>
+		/// Runs the CPU for a particular number of clock cycles.
+		/// </summary>
+		/// <param name="cycles">The number of cycles to run the CPU emulator for. Specify -1 to run for a single instruction.</param>
 		public void FetchExecute(int cycles) {
 			//*/
 			if (cycles == -1) RunningCycles = 1; else RunningCycles += cycles;

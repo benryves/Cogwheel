@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BeeDevelopment.Brazil {
 	public partial class Z80A {
