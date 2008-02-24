@@ -49,7 +49,7 @@ namespace BeeDevelopment.Sega8Bit {
 				(this.Ports[1].TL.State ? 0x04 : 0x00) |
 				(this.Ports[1].TR.State ? 0x08 : 0x00) |
 				(this.ResetButton ? 0x00 : 0x10) |
-				//(this.Ports[0].TR.State ? 0x20 : 0x00) |
+				0x20 |
 				(this.Ports[0].TH.State ? 0x40 : 0x00) |
 				(this.Ports[1].TH.State ? 0x80 : 0x00)
 			);

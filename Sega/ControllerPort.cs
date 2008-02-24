@@ -111,10 +111,12 @@ namespace BeeDevelopment.Sega8Bit {
 
 
 		internal void WriteState(int value) {
-			this.TR.Direction = ((value & 0x01) != 0) ? PinDirection.Input : PinDirection.Output;
-			this.TH.Direction = ((value & 0x02) != 0) ? PinDirection.Input : PinDirection.Output;
-			this.TR.State = ((value & 0x10) != 0);
-			this.TH.State = ((value & 0x20) != 0);
+			if (this.Region == Region.Export) {
+				this.TR.Direction = ((value & 0x01) != 0) ? PinDirection.Input : PinDirection.Output;
+				this.TH.Direction = ((value & 0x02) != 0) ? PinDirection.Input : PinDirection.Output;
+				if (this.TR.Direction == PinDirection.Output) this.TR.State = ((value & 0x10) != 0);
+				if (this.TH.Direction == PinDirection.Output) this.TH.State = ((value & 0x20) != 0);
+			}
 		}
 
 	}
