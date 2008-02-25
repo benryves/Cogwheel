@@ -361,6 +361,10 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 				TilemapRow %= 32;
 			}
 
+			if (this.SupportsMirroredNameTable && (this.registers[0x2] & 0x01) == 0) {
+				TilemapRow &= 0xEF;
+			}
+
 			return (TilemapRow * 64) + (this.ActiveFrameHeight == 192 ? ((this.registers[0x2] & 0xE) * 1024) : ((this.registers[0x2] & 0xC) * 1024 + 0x700));
 		}
 
@@ -440,7 +444,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 								for (int i = 0; i < 8; ++i) {
 									this.PixelBuffer[startPixel + i] = this.LastBackdropColour;
 								}
-							
 
 								for (int ScreenColumn = 0; ScreenColumn < 32; ++ScreenColumn) {
 
@@ -453,7 +456,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 									int NameTableColumn = (ScreenColumn - CurrentXScroll / 8) & 31;
 									int NameTableColumnFine = CurrentXScroll & 7;
 
-									UpperByte = vram[NameTableOffset + NameTableColumn * 2 + 1];
+									UpperByte = vram[(NameTableOffset + NameTableColumn * 2 + 1) & 0x3FFF];
 
 									FlippedX = (UpperByte & 0x2) != 0;
 									FlippedY = (UpperByte & 0x4) != 0;
@@ -462,7 +465,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 									ForegroundTile = (UpperByte & 0x10) != 0;
 
-									TileNum = this.vram[NameTableOffset + NameTableColumn * 2] + (UpperByte & 1) * 256;
+									TileNum = this.vram[(NameTableOffset + NameTableColumn * 2) & 0x3FFF] + (UpperByte & 1) * 256;
 									TileOffset = TileNum * 64;
 
 									if (FlippedY) {
