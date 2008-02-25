@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 
 namespace BeeDevelopment.Sega8Bit.Utility {
 	/// <summary>
@@ -73,51 +74,31 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 		/// <summary>
 		/// Gets or sets the CRC-32 checksum of the ROM file.
 		/// </summary>
-		[ReadOnly(true)]
-		[DisplayName("CRC-32")]
-		[Description("The CRC-32 checksum of the ROM file.")]
 		public int Crc32 { get; set; }
 
 		/// <summary>
 		/// Gets or sets a descriptive name of the ROM.
 		/// </summary>
-		[ReadOnly(true)]
-		[Category("Description")]
-		[Description("A descriptive name of the ROM.")]
-		public string Name { get; set; }
+		public string FullName { get; set; }
 
 		/// <summary>
 		/// Gets or sets the author of the ROM.
 		/// </summary>
-		[ReadOnly(true)]
-		[Category("Description")]
-		[Description("The author of the ROM.")]
 		public string Author { get; set; }
 
 		/// <summary>
 		/// Gets or sets comments attributed to the ROM.
 		/// </summary>
-		[ReadOnly(true)]
-		[Category("Description")]
-		[Description("Comments attributed to the ROM.")]
 		public string Comments { get; set; }
 
 		/// <summary>
 		/// Gets or sets data that can be used to patch a damaged ROM to correct it.
 		/// </summary>
-		[Category("Corrections")]
-		[Browsable(false)]
-		[ReadOnly(true)]
-		[DisplayName("Patch")]
 		public KeyValuePair<int, byte>[] CorrectivePatch { get; set; }
 
 		/// <summary>
 		/// Gets or sets the size of the ROM's header.
 		/// </summary>
-		[Category("Corrections")]
-		[DisplayName("Header Size")]
-		[ReadOnly(true)]
-		[Description("The size of the ROM's header, if any.")]
 		public int HeaderSize { get; set; }
 
 		/// <summary>
@@ -126,42 +107,67 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 		/// <remarks>
 		/// A footer can be caused by overdumping.
 		/// </remarks>
-		[Category("Corrections")]
-		[DisplayName("Footer Size")]
-		[ReadOnly(true)]
-		[Description("The size of the ROM's footer, if any.")]
 		public int FooterSize { get; set; }
 
 		/// <summary>
 		/// Gets or sets the <see cref="RomType"/> of the ROM.
 		/// </summary>
-		[ReadOnly(true)]
-		[Description("The general type of the ROM.")]
 		public RomType Type { get; set; }
 
 		/// <summary>
 		/// Gets or sets the correct extension if the <see cref="RomType"/> is <c>IncorrectExtension</c>.
 		/// </summary>
-		[Category("Corrections")]
-		[DisplayName("Extension")]
-		[ReadOnly(true)]
-		[Description("The corrected extension of the ROM if applicable.")]
 		public string CorrectedExtension { get; set; }
 
 		/// <summary>
 		/// Gets or sets the correct size if the <see cref="RomType"/> is <c>Overdumped</c>.
 		/// </summary>
-		[Category("Corrections")]
-		[DisplayName("Size")]
-		[ReadOnly(true)]
-		[Description("The correct size of the ROM; only specified it it has been overdumped.")]
 		public int? CorrectedSize { get; set; }
 
 		/// <summary>
 		/// Gets or sets the <see cref="RomData"/> instance that defines this <see cref="RomInfo"/> instance.
 		/// </summary>
-		[Browsable(false)]
 		public RomData RomData { get; set;}
+
+		/// <summary>
+		/// Gets the title of the game, with any special information removed.
+		/// </summary>
+		public string Title {
+
+			get {
+
+				string[] StrippedInfo = new string[]{
+                        "[BIOS]", "[Hack]", "[Proto]",
+                        "(h)", "(f)",
+                    };
+
+
+				string s = this.FullName;
+				foreach (string remove in StrippedInfo) s = s.Replace(remove, "");
+
+				s = new Regex(@"\(bad([^\(]*?)\)").Replace(s, "");
+				s = new Regex(@"\(first([^\(]*?)\)").Replace(s, "");
+				s = new Regex(@"\(([^\(]*?)byte(.*?)\)").Replace(s, "");
+				s = new Regex(@"\[([A-Z]{1}|[vV]([^\[].*?)|Proto|beta([^\[].*?))\]").Replace(s, "");
+				s = new Regex(@"\((([^\(]*?)overdump)\)").Replace(s, "");
+
+				foreach (Country C in Enum.GetValues(typeof(Country))) {
+					s = new Regex(@"\(" + Countries.CountryToIdentifier(C) + @"\)", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase).Replace(s, "");
+				}
+
+
+				while (s.Contains("  ")) s = s.Replace("  ", " ");
+				s = s.Trim();
+				if (s.EndsWith(", The")) s = "The " + s.Replace(", The", "");
+				return s.Trim();
+
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the country of origin of the ROM.
+		/// </summary>
+		public Country Country { get; set; }
 
 		#endregion
 
@@ -198,7 +204,15 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 				default: throw new InvalidDataException("Unsupported ROM type '" + Components[1] + "'.");
 			}
 
-			this.Name = Components[2];
+			this.FullName = Components[2];
+
+			// Find country.
+			this.Country = Country.None;
+			foreach (Country PossibleMatch in Enum.GetValues(typeof(Country))) {
+				if (this.FullName.ToUpperInvariant().Contains("(" + Countries.CountryToIdentifier(PossibleMatch) + ")")) {
+					this.Country = PossibleMatch;
+				}
+			}
 
 			if (Components.Length > 3) {
 
@@ -255,7 +269,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 		/// Returns a descriptive name for the ROM.
 		/// </summary>
 		public override string ToString() {
-			return this.Name;
+			return this.FullName;
 		}
 
 		/// <summary>

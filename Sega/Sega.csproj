@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ControllerPort.cs" />
+    <Compile Include="Country.cs" />
     <Compile Include="MemoryCheat.cs" />
     <Compile Include="Region.cs" />
     <Compile Include="Emulator.Controllers.cs" />
