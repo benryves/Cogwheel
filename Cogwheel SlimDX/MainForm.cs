@@ -190,13 +190,16 @@ namespace CogwheelSlimDX {
 					this.CurrentRomInfo.Fix(ref Data);
 				}
 
-				this.Text = (this.CurrentRomInfo != null ? this.CurrentRomInfo.Name : Path.GetFileNameWithoutExtension(Filename)) + " - " + Application.ProductName;
+				this.Text = (this.CurrentRomInfo != null ? this.CurrentRomInfo.Title : Path.GetFileNameWithoutExtension(Filename)) + " - " + Application.ProductName;
 
 				this.Emulator.ResetAll();
 
-				this.Emulator.Region = BeeDevelopment.Sega8Bit.Region.Export;
+				this.Emulator.Region = Countries.CountryToRegion(this.CurrentRomInfo != null ? this.CurrentRomInfo.Country : Country.None); 
 				this.Emulator.Cartridge = this.Identifier.CreateCartridgeMapper(Data);
-				this.Emulator.SetCapabilitiesByModel(Model);
+				
+				this.Emulator.SetCapabilitiesByModel(
+					(this.Emulator.Region == BeeDevelopment.Sega8Bit.Region.Japanese && Model == HardwareModel.MasterSystem2) ? HardwareModel.MasterSystem : Model
+				);
 
 
 
