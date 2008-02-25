@@ -197,7 +197,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 		#endregion
 
-		#region Begin/End
+		#region Private Methods
 
 
 		/// <summary>
@@ -346,11 +346,27 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 		}
 
+		/// <summary>
+		/// Gets the offset to the name table in VRAM.
+		/// </summary>
+		/// <param name="yscroll">The current y scroll offset.</param>
+		/// <returns>The address of the first tile in the row that corresponds to the number of scanlines rendered and the y-scroll offset.</returns>
+		private int GetNameTableOffset(int yScroll) {
+
+			int TilemapRow = (this.ScanlinesDrawn + yScroll) / 8;
+
+			if (this.ActiveFrameHeight == 192) {
+				TilemapRow %= 28;
+			} else {
+				TilemapRow %= 32;
+			}
+
+			return (TilemapRow * 64) + (this.ActiveFrameHeight == 192 ? ((this.registers[0x2] & 0xE) * 1024) : ((this.registers[0x2] & 0xC) * 1024 + 0x700));
+		}
+
 		#endregion
 
-		#region Methods
-
-		Random R = new Random();
+		#region Public Methods
 
 		/// <summary>
 		/// Rasterise a single scanline.
@@ -390,7 +406,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					for (int i = 0; i < 256; ++i) this.PixelBuffer[startPixel++] = this.LastBackdropColour;
 				} else {
 
-					this.LastBackdropColour = this.colourRam[(Registers[0x7] & 0xF) + 16];
+					this.LastBackdropColour = this.colourRam[(this.registers[0x7] & 0xF) + 16];
 
 					switch (this.CurrentMode) {
 
@@ -399,80 +415,76 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 						case Mode.Mode4Resolution240: {
 								#region Mode 4 background layer
 
-								// Get name table base address
+								int NameTableOffset = GetNameTableOffset(this.YScroll);
 
-								int row = (this.ScanlinesDrawn + this.YScroll) / 8;
-								if (this.ActiveFrameHeight == 192) {
-									row %= 28;
-								} else {
-									row %= 32;
+								int TileNum;
+								int TileOffset;
+
+								bool FlippedX, FlippedY;
+								
+								int TileRowOffset;
+
+								int PaletteNumber;
+
+								bool ForegroundTile;
+
+								byte UpperByte;
+
+								byte CurrentXScroll = this.InhibitScrollX && (this.ScanlinesDrawn < 16) ? (byte)0 : this.registers[0x8];
+
+								int MasterTileRowOffset = ((this.ScanlinesDrawn + this.YScroll) & 7);
+
+								int[] Colours = new int[8];
+
+								// Clear eight leftmost pixels to overscan colour.
+								for (int i = 0; i < 8; ++i) {
+									this.PixelBuffer[startPixel + i] = this.LastBackdropColour;
 								}
+							
 
-								int nameTableOffset = (row * 64) + (this.ActiveFrameHeight == 192 ? ((this.registers[0x2] & 0xE) * 1024) : ((this.registers[0x2] & 0xC) * 1024 + 0x700));
+								for (int ScreenColumn = 0; ScreenColumn < 32; ++ScreenColumn) {
 
-								int tileNum;
-								int tileOffset;
-
-								bool flippedX;
-								bool flippedY;
-								int tileRowOffset;
-
-								int paletteNumber;
-
-								bool foregroundTile;
-
-								byte upperByte;
-
-								byte currentXScroll = this.InhibitScrollX && (this.ScanlinesDrawn < 16) ? (byte)0 : this.registers[0x8];
-
-								int masterTileRowOffset = ((this.ScanlinesDrawn + this.YScroll) & 7);
-
-								int[] colours = new int[8];
-
-								for (int acol = 0; acol < 32; ++acol) {
-
-									int col = (acol - currentXScroll / 8) & 31;
-									int colExtra = currentXScroll & 7;
-
-
-
-									upperByte = vram[nameTableOffset + col * 2 + 1];
-
-									flippedX = (upperByte & 0x2) != 0;
-									flippedY = (upperByte & 0x4) != 0;
-
-									paletteNumber = (upperByte & 0x8) * 2;
-
-									foregroundTile = (upperByte & 0x10) != 0;
-
-									tileNum = vram[nameTableOffset + col * 2] + (upperByte & 1) * 256;
-									tileOffset = tileNum * 64;
-
-
-									if (flippedY) {
-										tileRowOffset = 7 - masterTileRowOffset;
-									} else {
-										tileRowOffset = masterTileRowOffset;
+									// Handle Y-scroll inhibition.
+									if (ScreenColumn == 24 && this.InhibitScrollY) {
+										MasterTileRowOffset = this.ScanlinesDrawn & 7;
+										NameTableOffset = GetNameTableOffset(0);
 									}
 
-									tileOffset += tileRowOffset * 8;
+									int NameTableColumn = (ScreenColumn - CurrentXScroll / 8) & 31;
+									int NameTableColumnFine = CurrentXScroll & 7;
 
+									UpperByte = vram[NameTableOffset + NameTableColumn * 2 + 1];
 
-									if (!flippedX) {
-										for (int p = 0; p <= 7; ++p) {
-											colours[p] = this.FastPixelColourIndex[tileOffset++];
-										}
+									FlippedX = (UpperByte & 0x2) != 0;
+									FlippedY = (UpperByte & 0x4) != 0;
+
+									PaletteNumber = (UpperByte & 0x8) * 2;
+
+									ForegroundTile = (UpperByte & 0x10) != 0;
+
+									TileNum = this.vram[NameTableOffset + NameTableColumn * 2] + (UpperByte & 1) * 256;
+									TileOffset = TileNum * 64;
+
+									if (FlippedY) {
+										TileRowOffset = 7 - MasterTileRowOffset;
 									} else {
-										for (int p = 7; p >= 0; --p) {
-											colours[p] = this.FastPixelColourIndex[tileOffset++];
-										}
+										TileRowOffset = MasterTileRowOffset;
 									}
 
-									int o = (acol * 8 + colExtra) & 0xFF;
+									TileOffset += TileRowOffset * 8;
+
+									// Read the tile data (either backwards or forwards depending on FlippedX).
+									if (FlippedX) {
+										for (int p = 7; p >= 0; --p) Colours[p] = this.FastPixelColourIndex[TileOffset++];
+									} else {
+										for (int p = 0; p <= 7; ++p) Colours[p] = this.FastPixelColourIndex[TileOffset++];
+									}
+
+									int o = (ScreenColumn * 8 + NameTableColumnFine) & 0xFF;
 
 									for (int p = 0; p < 8; p++) {
-										this.PixelBuffer[startPixel + o] = this.colourRam[colours[p] + paletteNumber];
-										ForegroundBackground[o] = foregroundTile && colours[p] != 0;
+										this.PixelBuffer[startPixel + o] = this.colourRam[Colours[p] + PaletteNumber];
+										ForegroundBackground[o] = ForegroundTile && Colours[p] != 0;
 										if (++o == 256) break;
 									}
 
@@ -856,6 +868,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 
 		#endregion
+
 
 
 	}
