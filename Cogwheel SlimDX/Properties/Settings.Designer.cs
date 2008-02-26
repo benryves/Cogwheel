@@ -73,7 +73,7 @@ namespace CogwheelSlimDX.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Z")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ControlKey")]
         public global::System.Windows.Forms.Keys KeyTL {
             get {
                 return ((global::System.Windows.Forms.Keys)(this["KeyTL"]));
@@ -85,7 +85,7 @@ namespace CogwheelSlimDX.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("X")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Menu")]
         public global::System.Windows.Forms.Keys KeyTR {
             get {
                 return ((global::System.Windows.Forms.Keys)(this["KeyTR"]));

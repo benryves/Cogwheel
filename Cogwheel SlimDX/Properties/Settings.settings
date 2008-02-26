@@ -15,10 +15,10 @@
       <Value Profile="(Default)">Right</Value>
     </Setting>
     <Setting Name="KeyTL" Type="System.Windows.Forms.Keys" Scope="User">
-      <Value Profile="(Default)">Z</Value>
+      <Value Profile="(Default)">ControlKey</Value>
     </Setting>
     <Setting Name="KeyTR" Type="System.Windows.Forms.Keys" Scope="User">
-      <Value Profile="(Default)">X</Value>
+      <Value Profile="(Default)">Menu</Value>
     </Setting>
     <Setting Name="KeyStart" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Space</Value>

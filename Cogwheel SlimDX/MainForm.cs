@@ -90,8 +90,10 @@ namespace CogwheelSlimDX {
 			this.Dumper.ReinitialiseRenderer();
 		}
 
+		#region Keyboard Input
+
 		private void OnKeyChange(KeyEventArgs e, bool state) {
-			
+
 			if (e.KeyCode == Properties.Settings.Default.KeyUp) {
 				this.Emulator.Ports[0].Up.State = state;
 				e.Handled = true;
@@ -135,9 +137,11 @@ namespace CogwheelSlimDX {
 		protected override void OnKeyDown(KeyEventArgs e) {
 			this.OnKeyChange(e, false);
 		}
+
 		protected override void OnKeyUp(KeyEventArgs e) {
 			this.OnKeyChange(e, true);
 		}
+
 		protected override bool IsInputKey(Keys keyData) {
 			if (keyData == Properties.Settings.Default.KeyUp) return true;
 			if (keyData == Properties.Settings.Default.KeyDown) return true;
@@ -150,6 +154,29 @@ namespace CogwheelSlimDX {
 			if (keyData == Properties.Settings.Default.KeyReset) return true;
 			return base.IsInputKey(keyData);
 		}
+
+		// Process window messages to check for Alt+Space (ie, window menu) problems.
+		protected override void WndProc(ref Message m) {
+			switch (m.Msg) {
+				case 0x112: // WM_SYSCOMMAND
+					switch ((int)m.WParam & 0xFFF0) {
+						case 0xF100: // SC_KEYMENU
+							m.Result = IntPtr.Zero;
+							break;
+						default:
+							base.WndProc(ref m);
+							break;
+					}
+					break;
+				default:
+					base.WndProc(ref m);
+					break;
+			}			
+		}
+
+		#endregion
+
+		
 
 		private void ExitMenu_Click(object sender, EventArgs e) {
 			this.Close();
@@ -353,6 +380,8 @@ namespace CogwheelSlimDX {
 		}
 
 		#endregion
+
+		
 
 		
 
