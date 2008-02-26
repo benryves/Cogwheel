@@ -52,6 +52,8 @@ namespace BeeDevelopment.Sega8Bit {
 
 				byte Source = this.Cartridge.ReadMemory(address);
 
+				if (!this.Cheats.Enabled) return Source;
+
 				var Cheat = this.Cheats[address];
 
 		
