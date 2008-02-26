@@ -188,9 +188,7 @@ namespace CogwheelSlimDX {
 				this.CurrentRomInfo = this.CurrentRomInfo = this.Identifier.GetRomInfo(Data, Filename);
 
 				if (this.CurrentRomInfo != null) {
-					if (this.CurrentRomInfo.RomData != null) {
-						Model = this.CurrentRomInfo.RomData.Model;
-					}
+					Model = this.CurrentRomInfo.Model;
 					this.CurrentRomInfo.Fix(ref Data);
 				}
 
