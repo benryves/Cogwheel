@@ -66,9 +66,25 @@ namespace CogwheelSlimDX {
 					MessageBox.Show(this, ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 			}
-			
+
+			this.RenderPanelSize = new Size(256 * 2, 192 * 2);
+			this.CenterToScreen();
+
 		}
 
+		/// <summary>
+		/// Gets or sets the size of the form's RenderPanel.
+		/// </summary>
+		/// <remarks>Setting this property sets the form size to better accomodate the RenderPanel.</remarks>
+		public Size RenderPanelSize {
+			get { return this.RenderPanel.Size; }
+			set {
+				this.ClientSize = new Size(
+					value.Width + this.ClientSize.Width - this.RenderPanel.Width,
+					value.Height + this.ClientSize.Height - this.RenderPanel.Height
+				);
+			}
+		}
 
 		private void RepaintVideo() {
 			this.Dumper.Render(this.Emulator.Video.LastCompleteFrame, this.Emulator.Video.LastCompleteFrameWidth, this.Emulator.Video.LastCompleteFrameHeight);
