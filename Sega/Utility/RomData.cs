@@ -47,6 +47,8 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 
 			this.Roms = new List<RomInfo>(64);
 
+			this.Model = HardwareModel.Default;
+
 			using (var DataReader = new StreamReader(File.OpenRead(filename))) {
 				string CurrentLine;
 				while ((CurrentLine = DataReader.ReadLine()) != null) {
@@ -66,7 +68,26 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 						if (this.ModelName == null) {
 							this.ModelName = CurrentLine.Substring(1).Trim();
 						} else if (this.Extensions == null) {
+
 							this.Extensions = Array.ConvertAll(CurrentLine.Substring(1).ToLowerInvariant().Split('.'), Extension => "." + Extension.Trim());
+
+							foreach (var Extension in this.Extensions) {
+								switch (Extension) {
+									case ".sms":
+										this.Model = HardwareModel.MasterSystem2;
+										break;
+									case ".gg":
+										this.Model = HardwareModel.GameGear;
+										break;
+									case ".sc":
+										this.Model = HardwareModel.SC3000;
+										break;
+									case ".sg":
+										this.Model = HardwareModel.SG1000;
+										break;
+								}
+							}
+
 						} else if (this.Comments == null) {
 							this.Comments = CurrentLine.Substring(1).Trim();
 						} else {
@@ -76,29 +97,8 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 					} else {
 
 						// Gadzooks, 'tis a valid line of data.
-						this.Roms.Add(new RomInfo(CurrentLine) { RomData = this });
+						this.Roms.Add(new RomInfo(CurrentLine, this));
 
-					}
-				}
-			}
-
-			this.Model = HardwareModel.Default;
-
-			if (this.Extensions != null) {
-				foreach (var Extension in this.Extensions) {
-					switch (Extension) {
-						case ".sms":
-							this.Model = HardwareModel.MasterSystem2;
-							break;
-						case ".gg":
-							this.Model = HardwareModel.GameGear;
-							break;
-						case ".sc":
-							this.Model = HardwareModel.SC3000;
-							break;
-						case ".sg":
-							this.Model = HardwareModel.SG1000;
-							break;
 					}
 				}
 			}
