@@ -55,7 +55,7 @@ namespace BeeDevelopment.Sega8Bit {
 			cheat = new MemoryCheat() {
 				Replacement = (byte)(RawCode >> 28),
 				Address = (ushort)(((RawCode >> 16) & 0x0FFF) | ((RawCode & 0xF000) ^ 0xF000)),
-				Cloak = (byte)(((RawCode >> 12) ^ (RawCode >> 8)) & 0xF),
+				Cloak = (byte)(((RawCode >> 8) ^ (RawCode >> 4)) & 0xF),
 				Original = (byte)((((RawCode >> 2) & 0x03) | ((RawCode >> 6) & 0x3C) | ((RawCode << 6) & 0xC0)) ^ 0xBA),				
 			};
 
@@ -85,8 +85,8 @@ namespace BeeDevelopment.Sega8Bit {
 
 			int CloakRef = (this.Original ^ 0xBA);
 			CloakRef = (CloakRef << 2) | (CloakRef >> 6);
-			CloakRef = ((CloakRef & 0xF0) << 4) | (CloakRef & 0xF);
-			CloakRef |= ((this.Cloak << 4) ^ ((CloakRef & 0xF00) >> 4)) & 0x0F0;
+			CloakRef = ((CloakRef & 0x0F0) << 4) | (CloakRef & 0x00F);
+			CloakRef |= ((this.Cloak ^ (CloakRef >> 8)) << 4) & 0x0F0;
 
 			return string.Format("{0:X2}{1:X1}-{2:X3}-{3:X3}", this.Replacement, (MangledAddress >> 12) & 0xF, MangledAddress & 0xFFF, CloakRef);
 		}
