@@ -116,7 +116,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 
 			RomInfo TryIdentifyHardware = this.GetRomInfo(data);
 			if (TryIdentifyHardware != null) {
-				if (TryIdentifyHardware.RomData != null && (TryIdentifyHardware.RomData.Model == HardwareModel.SG1000 || TryIdentifyHardware.RomData.Model == HardwareModel.SC3000)) {
+				if (TryIdentifyHardware.Model == HardwareModel.SG1000 || TryIdentifyHardware.Model == HardwareModel.SC3000) {
 					Result = new Ram();
 				}
 			}

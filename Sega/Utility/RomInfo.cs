@@ -130,6 +130,11 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 		public RomData RomData { get; set;}
 
 		/// <summary>
+		/// Gets or sets the <see cref="HardwareModel"/> of the ROM.
+		/// </summary>
+		public HardwareModel Model { get; set; }
+
+		/// <summary>
 		/// Gets the title of the game, with any special information removed.
 		/// </summary>
 		public string Title {
@@ -137,7 +142,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			get {
 
 				string[] StrippedInfo = new string[]{
-                        "[BIOS]", "[Hack]", "[Proto]",
+                        "[BIOS]", "[Hack]", "[Proto]", "[SMS-GG]",
                         "(h)", "(f)",
                     };
 
@@ -145,11 +150,13 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 				string s = this.FullName;
 				foreach (string remove in StrippedInfo) s = s.Replace(remove, "");
 
-				s = new Regex(@"\(bad([^\(]*?)\)").Replace(s, "");
-				s = new Regex(@"\(first([^\(]*?)\)").Replace(s, "");
-				s = new Regex(@"\(([^\(]*?)byte(.*?)\)").Replace(s, "");
-				s = new Regex(@"\[([A-Z]{1}|[vV]([^\[].*?)|Proto|beta([^\[].*?))\]").Replace(s, "");
-				s = new Regex(@"\((([^\(]*?)overdump)\)").Replace(s, "");
+				RegexOptions Options = RegexOptions.IgnoreCase | RegexOptions.CultureInvariant;
+				s = new Regex(@"\(bad([^\(]*?)\)", Options).Replace(s, "");
+				s = new Regex(@"\(first([^\(]*?)\)", Options).Replace(s, "");
+				s = new Regex(@"\(([^\(]*?)byte(.*?)\)", Options).Replace(s, "");
+				s = new Regex(@"\[([A-Z]{1}|[vV]([^\[].*?)|Proto|beta([^\[].*?))\]", Options).Replace(s, "");
+				s = new Regex(@"\((([^\(]*?)overdump)\)", Options).Replace(s, "");
+				s = new Regex(@"\(([^\(]*?)change extension(.*?)\)", Options).Replace(s, "");
 
 				foreach (Country C in Enum.GetValues(typeof(Country))) {
 					s = new Regex(@"\(" + Countries.CountryToIdentifier(C) + @"\)", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase).Replace(s, "");
@@ -158,7 +165,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 
 				while (s.Contains("  ")) s = s.Replace("  ", " ");
 				s = s.Trim();
-				if (s.EndsWith(", The")) s = "The " + s.Replace(", The", "");
+				if (s.Contains(", The")) s = "The " + s.Replace(", The", "");
 				return s.Trim();
 
 			}
@@ -257,7 +264,42 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 						}
 						break;
 				}
+			}
 
+			if (this.FullName.ToUpperInvariant().Contains("[SMS-GG]")) {
+				this.Model = HardwareModel.GameGearMasterSystem;
+			}
+
+			if (!string.IsNullOrEmpty(this.CorrectedExtension)) {
+				switch (this.CorrectedExtension.ToLowerInvariant()) {
+					case "sms":
+						this.Model = HardwareModel.MasterSystem2;
+						break;
+					case "gg":
+						this.Model = HardwareModel.GameGear;
+						break;
+					case "sg":
+					case "mv":
+						this.Model = HardwareModel.SG1000;
+						break;
+					case "sc":
+						this.Model = HardwareModel.SC3000;
+						break;
+				}
+			}
+
+		}
+
+		/// <summary>
+		/// Creates an instance of <see cref="RomInfo"/> from a line in a <c>.romdata</c> file.
+		/// </summary>
+		/// <param name="romDataDefinition">The line from the <c>.romdata</c> file to parse.</param>
+		/// <param name="romData">The <see cref="RomData"/> instance that contains the definition for this <see cref="RomInfo"/>.</param>
+		public RomInfo(string romDataDefinition, RomData romData)
+			: this(romDataDefinition) {
+			this.RomData = romData;
+			if (this.Model == HardwareModel.Default) {
+				this.Model = romData.Model;
 			}
 		}
 
