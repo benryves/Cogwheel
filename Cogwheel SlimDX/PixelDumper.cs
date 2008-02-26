@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 
 namespace CogwheelSlimDX {
 	class PixelDumper : IDisposable {
@@ -107,21 +108,23 @@ namespace CogwheelSlimDX {
 			// Clean up first!
 			this.DisposeRenderer();
 
-			// Set up initial device pararmeters.
-			PresentParameters Params = new PresentParameters() {
-				BackBufferWidth = Math.Max(1, this.Control.ClientSize.Width),
-				BackBufferHeight = Math.Max(1, this.Control.ClientSize.Height),
-				DeviceWindowHandle = this.Control.Handle,
-			};
+			try {
 
-			// Try and create the device.
-			this.GraphicsDevice = new Device(0, DeviceType.Hardware, this.Control.Handle, CreateFlags.HardwareVertexProcessing, Params);
+				// Set up initial device pararmeters.
+				PresentParameters Params = new PresentParameters() {
+					BackBufferWidth = Math.Max(1, this.Control.ClientSize.Width),
+					BackBufferHeight = Math.Max(1, this.Control.ClientSize.Height),
+					DeviceWindowHandle = this.Control.Handle,
+				};
 
-			// Create the vertex buffer.
-			this.Vertices = new VertexBuffer(this.GraphicsDevice, 6 * Vertex.Size, Usage.WriteOnly, VertexFormat.None, Pool.Managed);
-			var VertexStream = Vertices.Lock(0, 0, LockFlags.None);
-			VertexStream.WriteRange(
-				new[] {
+				// Try and create the device.
+				this.GraphicsDevice = new Device(0, DeviceType.Hardware, this.Control.Handle, CreateFlags.HardwareVertexProcessing, Params);
+
+				// Create the vertex buffer.
+				this.Vertices = new VertexBuffer(this.GraphicsDevice, 6 * Vertex.Size, Usage.WriteOnly, VertexFormat.None, Pool.Managed);
+				var VertexStream = Vertices.Lock(0, 0, LockFlags.None);
+				VertexStream.WriteRange(
+					new[] {
 					new Vertex() { Position = new Vector3(-0.5f, -0.5f, 0f), TextureCoordinate = new Vector2(0f, 1f) },
 					new Vertex() { Position = new Vector3(+0.5f, -0.5f, 0f), TextureCoordinate = new Vector2(1f, 1f) },
 					new Vertex() { Position = new Vector3(-0.5f, +0.5f, 0f), TextureCoordinate = new Vector2(0f, 0f) },
@@ -129,11 +132,14 @@ namespace CogwheelSlimDX {
 					new Vertex() { Position = new Vector3(+0.5f, -0.5f, 0f), TextureCoordinate = new Vector2(1f, 1f) },
 					new Vertex() { Position = new Vector3(+0.5f, +0.5f, 0f), TextureCoordinate = new Vector2(1f, 0f) }
 				}
-			);
-			this.Vertices.Unlock();
+				);
+				this.Vertices.Unlock();
 
-			// Create a texture to write to to create video ouptut.
-			this.VideoOutput = new Texture(this.GraphicsDevice, this.VideoOutputWidth, this.VideoOutputHeight, 0, Usage.None, Format.A8R8G8B8, Pool.Managed);
+				// Create a texture to write to to create video ouptut.
+				this.VideoOutput = new Texture(this.GraphicsDevice, this.VideoOutputWidth, this.VideoOutputHeight, 0, Usage.None, Format.A8R8G8B8, Pool.Managed);
+			} catch {
+				Thread.Sleep(1000);
+			}
 		}
 
 		/// <summary>
@@ -141,68 +147,76 @@ namespace CogwheelSlimDX {
 		/// </summary>
 		public void Render(int[] data, int width, int height) {
 
-			if (this.GraphicsDevice == null) return;
-
-			if (this.VideoOutput != null) {
-
-				if (width > this.VideoOutputWidth || height > this.VideoOutputHeight) {
-					this.VideoOutputWidth = 1;
-					while (this.VideoOutputWidth < width) this.VideoOutputWidth <<= 1;
-					this.VideoOutputHeight = 1;
-					while (this.VideoOutputHeight < height) this.VideoOutputHeight <<= 1;
-					this.ReinitialiseRenderer();
-				}
-
-				var OutputStream = this.VideoOutput.LockRectangle(0, new Rectangle(0, 0, width, height), LockFlags.Discard);
-				int PitchOverflow = OutputStream.Pitch - width * 4;
-				for (int y = 0; y < height; ++y) {
-					OutputStream.Data.WriteRange(data, y * width, width);
-					OutputStream.Data.Seek(PitchOverflow, SeekOrigin.Current);
-				}
-				
-
-				this.VideoOutput.UnlockRectangle(0);
-
+			if (this.GraphicsDevice == null) {
+				this.ReinitialiseRenderer();
+				if (this.GraphicsDevice == null) return;
 			}
 
-			this.GraphicsDevice.SetRenderState(RenderState.CullMode, Cull.None);
-			this.GraphicsDevice.SetRenderState(RenderState.Lighting, false);
-
-			this.GraphicsDevice.BeginScene();
-
-			//this.GraphicsDevice.SetSamplerState(0, SamplerState.MinFilter, TextureFilter.Linear);
-			this.GraphicsDevice.SetSamplerState(0, SamplerState.MagFilter, TextureFilter.Point);
-
-			this.GraphicsDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.Black, 1.0f, 0);
-
-			float OffsetX = -.5f / (float)this.VideoOutputWidth;
-			float OffsetY = +.5f / (float)this.VideoOutputHeight;
-
-			OffsetX = 0f; OffsetY = 0f;
-
-			this.GraphicsDevice.SetTransform(TransformState.World, Matrix.Translation(
-				OffsetX + (((float)(this.VideoOutputWidth - width)) / (float)this.VideoOutputWidth) * 0.5f,
-				OffsetY + (((float)(this.VideoOutputHeight - height)) / (float)this.VideoOutputHeight) * -0.5f,
-				0f));
-
-
-			this.GraphicsDevice.SetTransform(TransformState.View, Matrix.LookAtLH(new Vector3(0f, 0f, -5f), Vector3.Zero, Vector3.UnitY));
-			this.GraphicsDevice.SetTransform(TransformState.Projection, Matrix.OrthoLH((float)width / (float)this.VideoOutputWidth, (float)height / (float)this.VideoOutputHeight, 0f, 10f));
-
-
-
-			this.GraphicsDevice.SetTexture(0, this.VideoOutput);
-
-			this.GraphicsDevice.SetStreamSource(0, this.Vertices, 0, Vertex.Size);
-			this.GraphicsDevice.VertexFormat = Vertex.Format;
-			this.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
-
-			this.GraphicsDevice.EndScene();
 			try {
-				this.GraphicsDevice.Present();
-			} catch (DeviceLostException) {
-				this.ReinitialiseRenderer();
-				this.Render(data, width, height);
+
+				if (this.VideoOutput != null) {
+
+					if (width > this.VideoOutputWidth || height > this.VideoOutputHeight) {
+						this.VideoOutputWidth = 1;
+						while (this.VideoOutputWidth < width) this.VideoOutputWidth <<= 1;
+						this.VideoOutputHeight = 1;
+						while (this.VideoOutputHeight < height) this.VideoOutputHeight <<= 1;
+						this.ReinitialiseRenderer();
+					}
+
+					var OutputStream = this.VideoOutput.LockRectangle(0, new Rectangle(0, 0, width, height), LockFlags.Discard);
+					int PitchOverflow = OutputStream.Pitch - width * 4;
+					for (int y = 0; y < height; ++y) {
+						OutputStream.Data.WriteRange(data, y * width, width);
+						OutputStream.Data.Seek(PitchOverflow, SeekOrigin.Current);
+					}
+
+
+					this.VideoOutput.UnlockRectangle(0);
+				}
+
+				this.GraphicsDevice.SetRenderState(RenderState.CullMode, Cull.None);
+				this.GraphicsDevice.SetRenderState(RenderState.Lighting, false);
+
+				this.GraphicsDevice.BeginScene();
+
+				//this.GraphicsDevice.SetSamplerState(0, SamplerState.MinFilter, TextureFilter.Linear);
+				this.GraphicsDevice.SetSamplerState(0, SamplerState.MagFilter, TextureFilter.Point);
+
+				this.GraphicsDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.Black, 1.0f, 0);
+
+				float OffsetX = -.5f / (float)this.VideoOutputWidth;
+				float OffsetY = +.5f / (float)this.VideoOutputHeight;
+
+				OffsetX = 0f; OffsetY = 0f;
+
+				this.GraphicsDevice.SetTransform(TransformState.World, Matrix.Translation(
+					OffsetX + (((float)(this.VideoOutputWidth - width)) / (float)this.VideoOutputWidth) * 0.5f,
+					OffsetY + (((float)(this.VideoOutputHeight - height)) / (float)this.VideoOutputHeight) * -0.5f,
+					0f));
+
+
+				this.GraphicsDevice.SetTransform(TransformState.View, Matrix.LookAtLH(new Vector3(0f, 0f, -5f), Vector3.Zero, Vector3.UnitY));
+				this.GraphicsDevice.SetTransform(TransformState.Projection, Matrix.OrthoLH((float)width / (float)this.VideoOutputWidth, (float)height / (float)this.VideoOutputHeight, 0f, 10f));
+
+
+
+				this.GraphicsDevice.SetTexture(0, this.VideoOutput);
+
+				this.GraphicsDevice.SetStreamSource(0, this.Vertices, 0, Vertex.Size);
+				this.GraphicsDevice.VertexFormat = Vertex.Format;
+				this.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
+
+				this.GraphicsDevice.EndScene();
+				try {
+					this.GraphicsDevice.Present();
+				} catch (DeviceLostException) {
+					this.ReinitialiseRenderer();
+					this.Render(data, width, height);
+				}
+
+			} catch {
+				this.DisposeRenderer();
 			}
 
 		}
