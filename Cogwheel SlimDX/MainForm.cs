@@ -113,7 +113,7 @@ namespace CogwheelSlimDX {
 				e.Handled = true;
 			}
 			if (e.KeyCode == Properties.Settings.Default.KeyTR) {
-				this.Emulator.Ports[0].TR.State = state;
+				this.Emulator.Ports[0].TR.InputState = state;
 				e.Handled = true;
 			}
 			if (e.KeyCode == Properties.Settings.Default.KeyPause && this.Emulator.HasPauseButton) {

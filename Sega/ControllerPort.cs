@@ -1,4 +1,5 @@
 ﻿using BeeDevelopment.Brazil;
+using System;
 
 namespace BeeDevelopment.Sega8Bit {
 
@@ -19,6 +20,14 @@ namespace BeeDevelopment.Sega8Bit {
 			/// Gets or sets the state of the pin.
 			/// </summary>
 			public virtual bool State { get; set; }
+
+
+			/// <summary>
+			/// Creates an instance of a <see cref="UnidirectionalPin"/>.
+			/// </summary>
+			public UnidirectionalPin() {
+				this.State = true;
+			}
 		}
 
 
@@ -33,8 +42,14 @@ namespace BeeDevelopment.Sega8Bit {
 			/// </summary>
 			public ControllerPort Port { get; private set; }
 
+			/// <summary>
+			/// Creates an instance of a <see cref="BidirectionalPin"/>.
+			/// </summary>
 			public BidirectionalPin(ControllerPort port) {
 				this.Port = port;
+				this.InputState = true;
+				this.OutputState = false;
+				this.Direction = PinDirection.Input;
 			}
 
 			/// <summary>
@@ -42,15 +57,32 @@ namespace BeeDevelopment.Sega8Bit {
 			/// </summary>
 			public PinDirection Direction { get; set; }
 
+			/// <summary>
+			/// Gets or sets the state of the pin as an input.
+			/// </summary>
+			public bool InputState { get; set; }
+
+			/// <summary>
+			/// Gets or sets the state of the pin as an input.
+			/// </summary>
+			public bool OutputState { get; set; }
+
+			/// <summary>
+			/// Gets or sets the state of the <see cref="BidirectionalPin"/>.
+			/// </summary>
+			/// <remarks>When setting the state, this modifies both <see cref="InputState"/> and <see cref="OutputState"/> properties.</remarks>
 			public override bool State {
 				get {
 					if (this.Direction == PinDirection.Input) {
-						return base.State;
+						return this.InputState;
 					} else {
-						return this.Port.Region == Region.Japanese ? false : base.State;
+						return this.Port.Region == Region.Japanese ? false : this.OutputState;
 					}					
 				}
-				set { base.State = value; }
+				set {
+					this.InputState = value;
+					this.OutputState = value;
+				}
 			}
 			
 		}
@@ -100,13 +132,13 @@ namespace BeeDevelopment.Sega8Bit {
 		/// Creates an instance of a <see cref="ControllerPort"/>.
 		/// </summary>
 		public ControllerPort() {
-			this.Up = new UnidirectionalPin() { State = true };
-			this.Down = new UnidirectionalPin() { State = true };
-			this.Left = new UnidirectionalPin() { State = true };
-			this.Right = new UnidirectionalPin() { State = true };
-			this.TL = new UnidirectionalPin() { State = true };
-			this.TR = new BidirectionalPin(this) { State = true };
-			this.TH = new BidirectionalPin(this) { State = true };
+			this.Up = new UnidirectionalPin();
+			this.Down = new UnidirectionalPin();
+			this.Left = new UnidirectionalPin();
+			this.Right = new UnidirectionalPin();
+			this.TL = new UnidirectionalPin();
+			this.TR = new BidirectionalPin(this);
+			this.TH = new BidirectionalPin(this);
 		}
 
 
@@ -114,8 +146,8 @@ namespace BeeDevelopment.Sega8Bit {
 			if (this.Region == Region.Export) {
 				this.TR.Direction = ((value & 0x01) != 0) ? PinDirection.Input : PinDirection.Output;
 				this.TH.Direction = ((value & 0x02) != 0) ? PinDirection.Input : PinDirection.Output;
-				if (this.TR.Direction == PinDirection.Output) this.TR.State = ((value & 0x10) != 0);
-				if (this.TH.Direction == PinDirection.Output) this.TH.State = ((value & 0x20) != 0);
+				this.TR.OutputState = ((value & 0x10) != 0);
+				this.TH.OutputState = ((value & 0x20) != 0);
 			}
 		}
 
