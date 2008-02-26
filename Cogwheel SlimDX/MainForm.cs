@@ -56,6 +56,9 @@ namespace CogwheelSlimDX {
 			Application.Idle += new EventHandler(Application_Idle);
 
 			string RomDataDir = Path.Combine(Application.StartupPath, "ROM Data");
+
+			this.Identifier = new RomIdentifier();
+
 			if (Directory.Exists(RomDataDir)) {
 				try {
 					this.Identifier = new RomIdentifier("ROM Data");
@@ -182,7 +185,7 @@ namespace CogwheelSlimDX {
 				}
 
 
-				this.CurrentRomInfo = this.Identifier.GetRomInfo(Data, Filename);
+				this.CurrentRomInfo = this.CurrentRomInfo = this.Identifier.GetRomInfo(Data, Filename);
 
 				if (this.CurrentRomInfo != null) {
 					if (this.CurrentRomInfo.RomData != null) {
