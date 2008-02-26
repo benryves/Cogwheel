@@ -60,16 +60,149 @@ namespace CogwheelSlimDX.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap camera {
+        internal static System.Drawing.Bitmap Flag_BR {
             get {
-                object obj = ResourceManager.GetObject("camera", resourceCulture);
+                object obj = ResourceManager.GetObject("Flag_BR", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap sms_rom {
+        internal static System.Drawing.Bitmap Flag_DE {
             get {
-                object obj = ResourceManager.GetObject("sms_rom", resourceCulture);
+                object obj = ResourceManager.GetObject("Flag_DE", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Flag_EN {
+            get {
+                object obj = ResourceManager.GetObject("Flag_EN", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Flag_ES {
+            get {
+                object obj = ResourceManager.GetObject("Flag_ES", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Flag_FR {
+            get {
+                object obj = ResourceManager.GetObject("Flag_FR", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Flag_IT {
+            get {
+                object obj = ResourceManager.GetObject("Flag_IT", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Flag_JP {
+            get {
+                object obj = ResourceManager.GetObject("Flag_JP", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Flag_KR {
+            get {
+                object obj = ResourceManager.GetObject("Flag_KR", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Flag_NZ {
+            get {
+                object obj = ResourceManager.GetObject("Flag_NZ", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Flag_US {
+            get {
+                object obj = ResourceManager.GetObject("Flag_US", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_Camera {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Camera", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_Comment {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Comment", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_CommentEdit {
+            get {
+                object obj = ResourceManager.GetObject("Icon_CommentEdit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_Error {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Error", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_Exclamation {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Exclamation", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_House {
+            get {
+                object obj = ResourceManager.GetObject("Icon_House", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_Information {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Information", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_Lightning {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Lightning", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_SmsRom {
+            get {
+                object obj = ResourceManager.GetObject("Icon_SmsRom", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_User {
+            get {
+                object obj = ResourceManager.GetObject("Icon_User", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_Wrench {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Wrench", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

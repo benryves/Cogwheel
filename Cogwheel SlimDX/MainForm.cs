@@ -8,6 +8,7 @@ using BeeDevelopment.Sega8Bit.Mappers;
 using BeeDevelopment.Sega8Bit.Utility;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Collections.Generic;
 
 
 namespace CogwheelSlimDX {
@@ -194,6 +195,53 @@ namespace CogwheelSlimDX {
 
 				this.Emulator.ResetAll();
 
+				if (this.CurrentRomInfo != null) {
+
+					this.AddMessage(Properties.Resources.Icon_Information, this.CurrentRomInfo.Title);
+					if (!string.IsNullOrEmpty(this.CurrentRomInfo.Author)) this.AddMessage(Properties.Resources.Icon_User, this.CurrentRomInfo.Author);
+				
+					switch (this.CurrentRomInfo.Type) {
+						case RomInfo.RomType.HeaderedFootered:
+							if (this.CurrentRomInfo.FooterSize > 0) this.AddMessage(Properties.Resources.Icon_Exclamation, "Footered");
+							if (this.CurrentRomInfo.HeaderSize > 0) this.AddMessage(Properties.Resources.Icon_Exclamation, "Headered");
+							break;
+						case RomInfo.RomType.Overdumped:
+							this.AddMessage(Properties.Resources.Icon_Exclamation, "Overdumped");
+							break;
+						case RomInfo.RomType.Translation:
+							this.AddMessage(Properties.Resources.Icon_CommentEdit, "Translation");
+							break;
+						case RomInfo.RomType.Bios:
+							this.AddMessage(Properties.Resources.Icon_Lightning, "BIOS");
+							break;
+						case RomInfo.RomType.Bad:
+							this.AddMessage(Properties.Resources.Icon_Exclamation, "Fixable errors in dump");
+							break;
+						case RomInfo.RomType.VeryBad:
+							this.AddMessage(Properties.Resources.Icon_Error, "Unusable dump");
+							break;
+						case RomInfo.RomType.Demo:
+							this.AddMessage(Properties.Resources.Icon_House, "Homebrew");
+							break;
+						case RomInfo.RomType.Hack:
+							this.AddMessage(Properties.Resources.Icon_Wrench, "Hack");
+							break;
+					}
+
+					switch (this.CurrentRomInfo.Country) {
+						case Country.Japan: this.AddMessage(Properties.Resources.Flag_JP, "Japan"); break;
+						case Country.Brazil: this.AddMessage(Properties.Resources.Flag_BR, "Brazil"); break;
+						case Country.UnitedStates: this.AddMessage(Properties.Resources.Flag_US, "United States"); break;
+						case Country.Korea: this.AddMessage(Properties.Resources.Flag_KR, "Korea"); break;
+						case Country.France: this.AddMessage(Properties.Resources.Flag_FR, "France"); break;
+						case Country.Spain: this.AddMessage(Properties.Resources.Flag_ES, "Spain"); break;
+						case Country.Germany: this.AddMessage(Properties.Resources.Flag_DE, "Germany"); break;
+						case Country.Italy: this.AddMessage(Properties.Resources.Flag_IT, "Italy"); break;
+						case Country.England: this.AddMessage(Properties.Resources.Flag_EN, "England"); break;
+						case Country.NewZealand: this.AddMessage(Properties.Resources.Flag_NZ, "New Zealand"); break;
+					}
+				}
+
 				this.Emulator.Region = Countries.CountryToRegion(this.CurrentRomInfo != null ? this.CurrentRomInfo.Country : Country.None); 
 				this.Emulator.Cartridge = this.Identifier.CreateCartridgeMapper(Data);
 				
@@ -206,18 +254,14 @@ namespace CogwheelSlimDX {
 			}
 		}
 
-		private void PropertiesMenu_Click(object sender, EventArgs e) {
-			if (this.CurrentRomInfo != null) {
-				new PropertyForm("ROM Properties", this.CurrentRomInfo).Show(this);
-			}
-		}
+		#region Screenshot
 
 		/// <summary>
 		/// Takes a screenshot and copies it to the clipboard.
 		/// </summary>
 		/// <returns>True if the screenshot was taken succesfully, false otherwise.</returns>
 		public bool TakeScreenshot() {
-			
+
 			// Quick sanity check that a frame has been generated.
 			if (this.Emulator.Video.LastCompleteFrameHeight + this.Emulator.Video.LastCompleteFrameWidth <= 0) return false;
 
@@ -239,7 +283,7 @@ namespace CogwheelSlimDX {
 
 				// Success!
 				return true;
-			} catch  {
+			} catch {
 
 				// If anything goes wrong, return false.
 				return false;
@@ -249,5 +293,50 @@ namespace CogwheelSlimDX {
 		private void CopyScreenshotMenu_Click(object sender, EventArgs e) {
 			this.TakeScreenshot();
 		}
+
+		#endregion
+
+		#region Messages
+
+		/// <summary>
+		/// Storage for the messages.
+		/// </summary>
+		private Queue<KeyValuePair<Image, string>> Messages = new Queue<KeyValuePair<Image, string>>();
+
+		/// <summary>
+		/// Add a popup message.
+		/// </summary>
+		/// <param name="icon">The icon of the message.</param>
+		/// <param name="message">The text of the message.</param>
+		private void AddMessage(Image icon, string message) {
+			this.Messages.Enqueue(new KeyValuePair<Image, string>(icon, message));
+			if (!this.MessageTicker.Enabled) {
+				this.MessageTicker.Enabled = true;
+				this.MessageTicker_Tick(null, null);
+			}
+		}
+
+		private void MessageTicker_Tick(object sender, EventArgs e) {
+			lock (this.Messages) {
+
+				if (this.MessageStatus.Image != null) {
+					this.MessageStatus.Image.Dispose();
+					this.MessageStatus.Image = null;
+				}
+				this.MessageStatus.Text = "";
+
+				if (this.Messages.Count == 0) {
+					this.MessageTicker.Enabled = false;
+				} else {
+					var Message = this.Messages.Dequeue();
+					this.MessageStatus.Image = Message.Key;
+					this.MessageStatus.Text = Message.Value;
+				}
+			}
+		}
+
+		#endregion
+
+
 	}
 }
