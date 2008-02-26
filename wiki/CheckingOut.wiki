@@ -1,5 +1,0 @@
-#summary Checking out the source code.
-
-= Checking out the source code =
-
-The SVN repository is located at the following URL: `http://cogwheel.googlecode.com/svn/`

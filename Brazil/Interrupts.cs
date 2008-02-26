@@ -17,11 +17,7 @@ namespace BeeDevelopment.Brazil {
 		/// <summary>
 		/// Gets or sets the state of the <see cref="INT"/> pin.
 		/// </summary>
-		public bool Interrupt {
-			get { return this.interrupt; }
-			set { if (value && !this.interrupt) this.InterruptPending = true; this.interrupt = value; }
-		}
-		private bool interrupt;
+		public bool Interrupt { get; set; }
 
 		/// <summary>
 		/// Gets or sets the state of the <see cref="NMI"/> pin.
@@ -31,11 +27,6 @@ namespace BeeDevelopment.Brazil {
 			set { if (value && !this.nonMaskableInterrupt) this.NonMaskableInterruptPending = true; this.nonMaskableInterrupt = value; }
 		}
 		private bool nonMaskableInterrupt;
-
-		/// <summary>
-		/// Gets or sets whether an interrupt (<c>INT</c>) is pending.
-		/// </summary>
-		public bool InterruptPending { get; set; }
 
 		/// <summary>
 		/// Gets or sets whether a non-maskable interrupt (<c>NMI</c>) is pending.
@@ -64,7 +55,6 @@ namespace BeeDevelopment.Brazil {
 			this.IFF2 = false;
 			this.Interrupt = false;
 			this.NonMaskableInterrupt = false;
-			this.InterruptPending = false;
 			this.NonMaskableInterruptPending = false;
 			this.InterruptMode = 1;
 			this.Halted = false;

@@ -44,10 +44,9 @@ namespace BeeDevelopment.Brazil {
 				if (this.IFF1) { // Are interrupts enabled?
 
 					// IRQ
-					if (this.InterruptPending) {
+					if (this.Interrupt) {
 
 						this.Halted = false;
-						this.InterruptPending = false;
 
 						this.IFF1 = false;
 						this.IFF2 = false;
