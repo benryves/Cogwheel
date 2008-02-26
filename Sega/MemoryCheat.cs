@@ -24,6 +24,11 @@ namespace BeeDevelopment.Sega8Bit {
 		public byte Original { get; set; }
 
 		/// <summary>
+		/// Gets or sets the "cloak" value.
+		/// </summary>
+		public byte Cloak { get; set; }
+
+		/// <summary>
 		/// Tries to parse a Game Genie cheat into a <see cref="MemoryCheat"/> instance.
 		/// </summary>
 		/// <param name="gameGenieCode">The code to parse in the format XXX-XXX-XXX.</param>
@@ -48,9 +53,10 @@ namespace BeeDevelopment.Sega8Bit {
 
 
 			cheat = new MemoryCheat() {
-				Address = (ushort)(((RawCode >> 16) & 0x0FFF) | ((RawCode & 0xF000) ^ 0xF000)),
-				Original = (byte)((((RawCode >> 2) & 0x03) | ((RawCode >> 6) & 0x3C) | ((RawCode << 6) & 0xC0)) ^ 0xBA),
 				Replacement = (byte)(RawCode >> 28),
+				Address = (ushort)(((RawCode >> 16) & 0x0FFF) | ((RawCode & 0xF000) ^ 0xF000)),
+				Cloak = (byte)(((RawCode >> 12) ^ (RawCode >> 8)) & 0xF),
+				Original = (byte)((((RawCode >> 2) & 0x03) | ((RawCode >> 6) & 0x3C) | ((RawCode << 6) & 0xC0)) ^ 0xBA),				
 			};
 
 			return true;
@@ -68,6 +74,21 @@ namespace BeeDevelopment.Sega8Bit {
 			} else {
 				return Result;
 			}
+		}
+
+		/// <summary>
+		/// Converts the <see cref="MemoryCheat"/> back into a Game Genie code.
+		/// </summary>
+		/// <returns></returns>
+		public override string ToString() {
+			ushort MangledAddress = (ushort)(((this.Address << 4) | (this.Address >> 12)) ^ 0xF);
+
+			int CloakRef = (this.Original ^ 0xBA);
+			CloakRef = (CloakRef << 2) | (CloakRef >> 6);
+			CloakRef = ((CloakRef & 0xF0) << 4) | (CloakRef & 0xF);
+			CloakRef |= ((this.Cloak << 4) ^ ((CloakRef & 0xF00) >> 4)) & 0x0F0;
+
+			return string.Format("{0:X2}{1:X1}-{2:X3}-{3:X3}", this.Replacement, (MangledAddress >> 12) & 0xF, MangledAddress & 0xFFF, CloakRef);
 		}
 	}
 
