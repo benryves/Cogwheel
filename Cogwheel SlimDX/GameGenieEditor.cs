@@ -36,13 +36,23 @@ namespace CogwheelSlimDX {
 				e.CancelEdit = true;
 				if (this.CurrentCheatList.Items[e.Item].Tag == null) {
 					this.CurrentCheatList.Items.RemoveAt(e.Item);
+				} else {
+					this.CurrentCheatList.Items[e.Item].Text = this.CurrentCheatList.Items[e.Item].Tag.ToString();
 				}
 			} else {
 				MemoryCheat Cheat;
 				if (MemoryCheat.TryParse(e.Label, out Cheat)) {
-					this.CurrentCheatList.Items[e.Item].Tag = Cheat;
-					e.CancelEdit = true;
+
 					this.CurrentCheatList.Items[e.Item].Text = Cheat.ToString();
+
+					if (this.UpdateCheats()) {
+						e.CancelEdit = true;
+						this.CurrentCheatList.Items[e.Item].Tag = Cheat;
+					} else {
+						MessageBox.Show(this, "The entered code conflicts with another code's memory address.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+						e.CancelEdit = false;
+						this.CurrentCheatList.Items[e.Item].BeginEdit();
+					}
 				} else {
 					MessageBox.Show(this, "The entered code is not a valid Game Genie code.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 					e.CancelEdit = false;
@@ -67,10 +77,22 @@ namespace CogwheelSlimDX {
 		}
 
 		private void GameGenieEditor_FormClosing(object sender, FormClosingEventArgs e) {
-			this.Collection.Clear();
-			foreach (ListViewItem Cheat in this.CurrentCheatList.Items) {
-				this.Collection.Add(MemoryCheat.Parse(Cheat.Text));
+			if (!this.UpdateCheats() && MessageBox.Show(this, "Two or more cheats share the same memory address.", Application.ProductName, MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Retry) {
+				e.Cancel = true;
 			}
+		}
+
+		private bool UpdateCheats() {
+			try {
+				this.Collection.Clear();
+				foreach (ListViewItem Cheat in this.CurrentCheatList.Items) {
+					this.Collection.Add(MemoryCheat.Parse(Cheat.Text));
+				}
+				return true;
+			} catch {
+				return false;
+			}
+			
 		}
 	}
 }
