@@ -44,10 +44,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		/// Resets the mapper to its default state.
 		/// </summary>
 		public void Reset() {
-
-			// Clear cartridge RAM.
-			this.Memory = new byte[0x10000];
-
+			// Do nothing...
 		}
 
 		/// <summary>
@@ -62,7 +59,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		/// Creates an instance of the <see cref="Ram"/> mapper.
 		/// </summary>
 		public Ram() {
-			this.Reset();
+			this.Memory = new byte[0x10000];
 		}
 
 		#endregion
