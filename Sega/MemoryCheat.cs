@@ -31,6 +31,7 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <returns>True if the code could be parsed, false otherwise.</returns>
 		public static bool TryParse(string gameGenieCode, out MemoryCheat cheat) {
 			cheat = default(MemoryCheat);
+			if (gameGenieCode == null) return false;
 			string TrimmedCode = "";
 			foreach (char c in gameGenieCode.Trim().ToUpperInvariant()) {
 				if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F')) TrimmedCode += c;
@@ -80,9 +81,15 @@ namespace BeeDevelopment.Sega8Bit {
 		private MemoryCheat[] QuickIndex;
 
 		/// <summary>
+		/// Gets or sets whether the cheats are enabled.
+		/// </summary>
+		public bool Enabled { get; set; }
+
+		/// <summary>
 		/// Creates an instance of the <see cref="MemoryCheatCollection"/>.
 		/// </summary>
 		public MemoryCheatCollection() {
+			this.Enabled = true;
 			this.Cheats = new List<MemoryCheat>();
 			this.Clear();
 		}
