@@ -337,6 +337,25 @@ namespace CogwheelSlimDX {
 
 		#endregion
 
+		#region Game Genie
+
+		private void GameGenieMenu_DropDownOpening(object sender, EventArgs e) {
+			this.GameGenieEnabledMenu.Checked = this.Emulator.Cheats.Enabled;
+		}
+
+		private void GameGenieEnabledMenu_Click(object sender, EventArgs e) {
+			this.Emulator.Cheats.Enabled ^= true;
+		}
+
+		private void GameGenieEditMenu_Click(object sender, EventArgs e) {
+			new GameGenieEditor(this.Emulator.Cheats).ShowDialog(this);
+		}
+
+		#endregion
+
+		
+
+
 
 	}
 }

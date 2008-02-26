@@ -165,6 +165,13 @@ namespace CogwheelSlimDX.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Icon_GameGenie {
+            get {
+                object obj = ResourceManager.GetObject("Icon_GameGenie", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Icon_House {
             get {
                 object obj = ResourceManager.GetObject("Icon_House", resourceCulture);

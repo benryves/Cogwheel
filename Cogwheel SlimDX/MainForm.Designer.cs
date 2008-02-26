@@ -28,14 +28,18 @@
 			this.RenderPanel = new System.Windows.Forms.Panel();
 			this.Menus = new System.Windows.Forms.MenuStrip();
 			this.FileMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.QuickLoadRomMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.EditMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.CopyScreenshotMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.OpenRomDialog = new System.Windows.Forms.OpenFileDialog();
 			this.Status = new System.Windows.Forms.StatusStrip();
 			this.MessageStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.MessageTicker = new System.Windows.Forms.Timer(this.components);
+			this.ToolsMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.QuickLoadRomMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.CopyScreenshotMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.GameGenieMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.GameGenieEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.GameGenieEditMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -52,12 +56,12 @@
 			// 
 			this.Menus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FileMenu,
-            this.EditMenu});
+            this.EditMenu,
+            this.ToolsMenu});
 			this.Menus.Location = new System.Drawing.Point(0, 0);
 			this.Menus.Name = "Menus";
 			this.Menus.Size = new System.Drawing.Size(325, 24);
 			this.Menus.TabIndex = 0;
-			this.Menus.Text = "menuStrip1";
 			// 
 			// FileMenu
 			// 
@@ -67,15 +71,6 @@
 			this.FileMenu.Name = "FileMenu";
 			this.FileMenu.Size = new System.Drawing.Size(37, 20);
 			this.FileMenu.Text = "&File";
-			// 
-			// QuickLoadRomMenu
-			// 
-			this.QuickLoadRomMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_SmsRom;
-			this.QuickLoadRomMenu.Name = "QuickLoadRomMenu";
-			this.QuickLoadRomMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-			this.QuickLoadRomMenu.Size = new System.Drawing.Size(216, 22);
-			this.QuickLoadRomMenu.Text = "&Quick Load ROM...";
-			this.QuickLoadRomMenu.Click += new System.EventHandler(this.QuickLoadRomMenu_Click);
 			// 
 			// ExitMenu
 			// 
@@ -92,15 +87,6 @@
 			this.EditMenu.Name = "EditMenu";
 			this.EditMenu.Size = new System.Drawing.Size(39, 20);
 			this.EditMenu.Text = "&Edit";
-			// 
-			// CopyScreenshotMenu
-			// 
-			this.CopyScreenshotMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Camera;
-			this.CopyScreenshotMenu.Name = "CopyScreenshotMenu";
-			this.CopyScreenshotMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-			this.CopyScreenshotMenu.Size = new System.Drawing.Size(205, 22);
-			this.CopyScreenshotMenu.Text = "&Copy Screenshot";
-			this.CopyScreenshotMenu.Click += new System.EventHandler(this.CopyScreenshotMenu_Click);
 			// 
 			// OpenRomDialog
 			// 
@@ -128,6 +114,58 @@
 			this.MessageTicker.Enabled = true;
 			this.MessageTicker.Interval = 2500;
 			this.MessageTicker.Tick += new System.EventHandler(this.MessageTicker_Tick);
+			// 
+			// ToolsMenu
+			// 
+			this.ToolsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.GameGenieMenu});
+			this.ToolsMenu.Name = "ToolsMenu";
+			this.ToolsMenu.Size = new System.Drawing.Size(48, 20);
+			this.ToolsMenu.Text = "&Tools";
+			// 
+			// QuickLoadRomMenu
+			// 
+			this.QuickLoadRomMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_SmsRom;
+			this.QuickLoadRomMenu.Name = "QuickLoadRomMenu";
+			this.QuickLoadRomMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+			this.QuickLoadRomMenu.Size = new System.Drawing.Size(216, 22);
+			this.QuickLoadRomMenu.Text = "&Quick Load ROM...";
+			this.QuickLoadRomMenu.Click += new System.EventHandler(this.QuickLoadRomMenu_Click);
+			// 
+			// CopyScreenshotMenu
+			// 
+			this.CopyScreenshotMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Camera;
+			this.CopyScreenshotMenu.Name = "CopyScreenshotMenu";
+			this.CopyScreenshotMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+			this.CopyScreenshotMenu.Size = new System.Drawing.Size(205, 22);
+			this.CopyScreenshotMenu.Text = "&Copy Screenshot";
+			this.CopyScreenshotMenu.Click += new System.EventHandler(this.CopyScreenshotMenu_Click);
+			// 
+			// GameGenieMenu
+			// 
+			this.GameGenieMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.GameGenieEnabledMenu,
+            this.GameGenieEditMenu});
+			this.GameGenieMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_GameGenie;
+			this.GameGenieMenu.Name = "GameGenieMenu";
+			this.GameGenieMenu.Size = new System.Drawing.Size(152, 22);
+			this.GameGenieMenu.Text = "&Game Genie";
+			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
+			// 
+			// GameGenieEnabledMenu
+			// 
+			this.GameGenieEnabledMenu.CheckOnClick = true;
+			this.GameGenieEnabledMenu.Name = "GameGenieEnabledMenu";
+			this.GameGenieEnabledMenu.Size = new System.Drawing.Size(152, 22);
+			this.GameGenieEnabledMenu.Text = "&Enabled";
+			this.GameGenieEnabledMenu.Click += new System.EventHandler(this.GameGenieEnabledMenu_Click);
+			// 
+			// GameGenieEditMenu
+			// 
+			this.GameGenieEditMenu.Name = "GameGenieEditMenu";
+			this.GameGenieEditMenu.Size = new System.Drawing.Size(152, 22);
+			this.GameGenieEditMenu.Text = "Edit Codes...";
+			this.GameGenieEditMenu.Click += new System.EventHandler(this.GameGenieEditMenu_Click);
 			// 
 			// MainForm
 			// 
@@ -164,6 +202,10 @@
 		private System.Windows.Forms.StatusStrip Status;
 		private System.Windows.Forms.ToolStripStatusLabel MessageStatus;
 		private System.Windows.Forms.Timer MessageTicker;
+		private System.Windows.Forms.ToolStripMenuItem ToolsMenu;
+		private System.Windows.Forms.ToolStripMenuItem GameGenieMenu;
+		private System.Windows.Forms.ToolStripMenuItem GameGenieEnabledMenu;
+		private System.Windows.Forms.ToolStripMenuItem GameGenieEditMenu;
 	}
 }
 
