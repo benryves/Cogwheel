@@ -71,6 +71,26 @@
 			Scaled,
 		}
 
+
+		/// <summary>
+		/// Gets or sets the palette mode used with the legacy TMS9918 video modes.
+		/// </summary>
+		public FixedPaletteModes FixedPaletteMode { get; set; }
+
+		/// <summary>
+		/// Defines the possible fixed colour palette types.
+		/// </summary>
+		public enum FixedPaletteModes {
+			/// <summary>
+			/// The original TMS9918 fixed colour palette.
+			/// </summary>
+			Tms9918,
+			/// <summary>
+			/// The truncated Sega Master System fixed colour palette.
+			/// </summary>
+			MasterSystem,
+		}
+
 		/// <summary>
 		/// Sets the capabilities of the <see cref="VideoDisplayProcessor"/> based on a particular hardware version.
 		/// </summary>
@@ -94,7 +114,7 @@
 			this.ExtendedPalette = model == HardwareModel.GameGear;
 			this.SupportsVariablePalette = Mark3OrLater;
 			this.SupportsFixedPalette = !(model == HardwareModel.GameGear || model == HardwareModel.GameGearMasterSystem); // The Game Gear VDP loses any sort of fixed TMS9918A palette.
-
+			this.FixedPaletteMode = Mark3OrLater ? FixedPaletteModes.MasterSystem : FixedPaletteModes.Tms9918;
 			this.ResizingMode = (model == HardwareModel.GameGear ? ResizingModes.Cropped : (model == HardwareModel.GameGearMasterSystem ? ResizingModes.Scaled : ResizingModes.Normal));
 
 

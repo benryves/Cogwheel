@@ -394,6 +394,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 				int startPixel = this.ScanlinesDrawn * 256;
 
+				int[] FixedPalette = this.FixedPaletteMode == FixedPaletteModes.MasterSystem ? this.FixedPaletteMasterSystem : this.FixedPaletteTMS9918;
+
 				if (!this.DisplayVisible) {
 					// Screen is off
 					switch (this.CurrentMode) {
@@ -401,7 +403,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 						case Mode.Graphic2:
 						case Mode.Multicolour:
 						case Mode.Text:
-							this.LastBackdropColour = this.FixedPaletteTMS9918[this.Registers[0x7] & 0xF];
+							this.LastBackdropColour = FixedPalette[this.Registers[0x7] & 0xF];
 							break;
 						default:
 							this.LastBackdropColour = this.colourRam[(Registers[0x7] & 0xF) + 16];
@@ -502,7 +504,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 						case Mode.Graphic2: {
 								#region Graphic 1/2 background layer
 
-								//this.LastBackdropColour = this.PaletteTMS9918[CapFixedPaletteIndex, this.Registers[0x7] & 0xF];
+								this.LastBackdropColour = FixedPalette[this.Registers[0x7] & 0xF];
 
 								int NameTableStartAddress = (this.Registers[0x2] & 0x0F) << 10;
 
@@ -536,8 +538,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 									int ColourForeground = LastBackdropColour;
 									int ColourBackground = LastBackdropColour;
 
-									if ((CharacterColour & 0xF0) != 0) ColourForeground = this.FixedPaletteTMS9918[CharacterColour >> 04];
-									if ((CharacterColour & 0x0F) != 0) ColourBackground = this.FixedPaletteTMS9918[CharacterColour & 0xF];
+									if ((CharacterColour & 0xF0) != 0) ColourForeground = FixedPalette[CharacterColour >> 04];
+									if ((CharacterColour & 0x0F) != 0) ColourBackground = FixedPalette[CharacterColour & 0xF];
 
 									for (int Pixel = 0; Pixel < 8; ++Pixel) {
 										PixelBuffer[startPixel + Column * 8 + Pixel] = (CharacterPixelRow & 0x80) != 0 ? ColourForeground : ColourBackground;
@@ -551,8 +553,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 						case Mode.Text: {
 								#region Text background layer
 
-								int ColourForeground = this.FixedPaletteTMS9918[this.registers[0x7] >> 04];
-								int ColourBackground = this.FixedPaletteTMS9918[this.registers[0x7] & 0xF];
+								int ColourForeground = FixedPalette[this.registers[0x7] >> 04];
+								int ColourBackground = FixedPalette[this.registers[0x7] & 0xF];
 
 								int NameTableStartAddress = (this.Registers[0x2] & 0x0F) << 10;
 								int PatternGeneratorAddress = (this.Registers[0x4] & 0x07) << 11;
@@ -750,7 +752,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 									if (PixelOffset >= 0 && PixelOffset < 256 && !DrawnPixel[PixelOffset]) {
 										bool PixelSet = (SpritePixelRow & 0x80) != 0;
 										if (PixelSet && (SpriteFlags & 0x0F) != 0) {
-											PixelBuffer[startPixel + PixelOffset] = this.FixedPaletteTMS9918[SpriteFlags & 0x0F];
+											PixelBuffer[startPixel + PixelOffset] = FixedPalette[SpriteFlags & 0x0F];
 											DrawnPixel[PixelOffset] = true;
 										}
 									}
