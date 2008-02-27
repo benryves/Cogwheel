@@ -9,7 +9,6 @@ using BeeDevelopment.Sega8Bit.Utility;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
-using System.Windows.Forms.VisualStyles;
 
 
 namespace CogwheelSlimDX {
@@ -70,6 +69,7 @@ namespace CogwheelSlimDX {
 
 			this.RenderPanelSize = new Size(256 * 2, 192 * 2);
 			this.CenterToScreen();
+
 		}
 
 		/// <summary>
