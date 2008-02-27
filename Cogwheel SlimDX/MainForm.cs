@@ -110,27 +110,27 @@ namespace CogwheelSlimDX {
 
 		private void OnKeyChange(KeyEventArgs e, bool state) {
 
-			if (e.KeyCode == Properties.Settings.Default.KeyUp) {
+			if (e.KeyCode == Properties.Settings.Default.KeyP1Up) {
 				this.Emulator.Ports[0].Up.State = state;
 				e.Handled = true;
 			}
-			if (e.KeyCode == Properties.Settings.Default.KeyDown) {
+			if (e.KeyCode == Properties.Settings.Default.KeyP1Down) {
 				this.Emulator.Ports[0].Down.State = state;
 				e.Handled = true;
 			}
-			if (e.KeyCode == Properties.Settings.Default.KeyLeft) {
+			if (e.KeyCode == Properties.Settings.Default.KeyP1Left) {
 				this.Emulator.Ports[0].Left.State = state;
 				e.Handled = true;
 			}
-			if (e.KeyCode == Properties.Settings.Default.KeyRight) {
+			if (e.KeyCode == Properties.Settings.Default.KeyP1Right) {
 				this.Emulator.Ports[0].Right.State = state;
 				e.Handled = true;
 			}
-			if (e.KeyCode == Properties.Settings.Default.KeyTL) {
+			if (e.KeyCode == Properties.Settings.Default.KeyP1TL) {
 				this.Emulator.Ports[0].TL.State = state;
 				e.Handled = true;
 			}
-			if (e.KeyCode == Properties.Settings.Default.KeyTR) {
+			if (e.KeyCode == Properties.Settings.Default.KeyP1TR) {
 				this.Emulator.Ports[0].TR.InputState = state;
 				e.Handled = true;
 			}
@@ -159,12 +159,12 @@ namespace CogwheelSlimDX {
 		}
 
 		protected override bool IsInputKey(Keys keyData) {
-			if (keyData == Properties.Settings.Default.KeyUp) return true;
-			if (keyData == Properties.Settings.Default.KeyDown) return true;
-			if (keyData == Properties.Settings.Default.KeyLeft) return true;
-			if (keyData == Properties.Settings.Default.KeyRight) return true;
-			if (keyData == Properties.Settings.Default.KeyTL) return true;
-			if (keyData == Properties.Settings.Default.KeyTR) return true;
+			if (keyData == Properties.Settings.Default.KeyP1Up) return true;
+			if (keyData == Properties.Settings.Default.KeyP1Down) return true;
+			if (keyData == Properties.Settings.Default.KeyP1Left) return true;
+			if (keyData == Properties.Settings.Default.KeyP1Right) return true;
+			if (keyData == Properties.Settings.Default.KeyP1TL) return true;
+			if (keyData == Properties.Settings.Default.KeyP1TR) return true;
 			if (keyData == Properties.Settings.Default.KeyPause) return true;
 			if (keyData == Properties.Settings.Default.KeyStart) return true;
 			if (keyData == Properties.Settings.Default.KeyReset) return true;
@@ -397,11 +397,22 @@ namespace CogwheelSlimDX {
 
 		#endregion
 
-		
+		#region Settings
 
-		
+		private void CustomiseControlsToolStripMenuItem_Click(object sender, EventArgs e) {
+			new ControlEditor().ShowDialog(this);
+		}
 
+		protected override void OnClosing(System.ComponentModel.CancelEventArgs e) {
+			try {
+				Properties.Settings.Default.Save();
+			} catch (Exception ex) {
+				MessageBox.Show(this, "Error saving settings - " + ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}
+			base.OnClosing(e);
+		}
 
+		#endregion
 
 	}
 }

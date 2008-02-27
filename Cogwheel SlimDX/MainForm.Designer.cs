@@ -36,6 +36,7 @@
 			this.GameGenieMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.GameGenieEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.GameGenieEditMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.CustomiseControlsMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.OpenRomDialog = new System.Windows.Forms.OpenFileDialog();
 			this.Status = new System.Windows.Forms.StatusStrip();
 			this.MessageStatus = new System.Windows.Forms.ToolStripStatusLabel();
@@ -109,7 +110,8 @@
 			// ToolsMenu
 			// 
 			this.ToolsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.GameGenieMenu});
+            this.GameGenieMenu,
+            this.CustomiseControlsMenu});
 			this.ToolsMenu.Name = "ToolsMenu";
 			this.ToolsMenu.Size = new System.Drawing.Size(48, 20);
 			this.ToolsMenu.Text = "&Tools";
@@ -121,7 +123,7 @@
             this.GameGenieEditMenu});
 			this.GameGenieMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(138, 22);
+			this.GameGenieMenu.Size = new System.Drawing.Size(187, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
 			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
 			// 
@@ -139,6 +141,14 @@
 			this.GameGenieEditMenu.Size = new System.Drawing.Size(139, 22);
 			this.GameGenieEditMenu.Text = "Edit Codes...";
 			this.GameGenieEditMenu.Click += new System.EventHandler(this.GameGenieEditMenu_Click);
+			// 
+			// CustomiseControlsMenu
+			// 
+			this.CustomiseControlsMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Controller;
+			this.CustomiseControlsMenu.Name = "CustomiseControlsMenu";
+			this.CustomiseControlsMenu.Size = new System.Drawing.Size(187, 22);
+			this.CustomiseControlsMenu.Text = "&Customise Controls...";
+			this.CustomiseControlsMenu.Click += new System.EventHandler(this.CustomiseControlsToolStripMenuItem_Click);
 			// 
 			// OpenRomDialog
 			// 
@@ -207,6 +217,7 @@
 		private System.Windows.Forms.ToolStripMenuItem GameGenieMenu;
 		private System.Windows.Forms.ToolStripMenuItem GameGenieEnabledMenu;
 		private System.Windows.Forms.ToolStripMenuItem GameGenieEditMenu;
+		private System.Windows.Forms.ToolStripMenuItem CustomiseControlsMenu;
 	}
 }
 

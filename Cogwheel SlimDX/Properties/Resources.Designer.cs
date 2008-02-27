@@ -151,6 +151,13 @@ namespace CogwheelSlimDX.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Icon_Controller {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Controller", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Icon_Error {
             get {
                 object obj = ResourceManager.GetObject("Icon_Error", resourceCulture);
@@ -182,6 +189,20 @@ namespace CogwheelSlimDX.Properties {
         internal static System.Drawing.Bitmap Icon_Information {
             get {
                 object obj = ResourceManager.GetObject("Icon_Information", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_Joystick {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Joystick", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_Keyboard {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Keyboard", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

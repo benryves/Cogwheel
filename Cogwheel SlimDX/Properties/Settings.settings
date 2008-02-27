@@ -2,22 +2,22 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CogwheelSlimDX.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="KeyUp" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="KeyP1Up" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Up</Value>
     </Setting>
-    <Setting Name="KeyDown" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="KeyP1Down" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Down</Value>
     </Setting>
-    <Setting Name="KeyLeft" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="KeyP1Left" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Left</Value>
     </Setting>
-    <Setting Name="KeyRight" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="KeyP1Right" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Right</Value>
     </Setting>
-    <Setting Name="KeyTL" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="KeyP1TL" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">ControlKey</Value>
     </Setting>
-    <Setting Name="KeyTR" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="KeyP1TR" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Menu</Value>
     </Setting>
     <Setting Name="KeyStart" Type="System.Windows.Forms.Keys" Scope="User">
@@ -28,6 +28,24 @@
     </Setting>
     <Setting Name="KeyReset" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Back</Value>
+    </Setting>
+    <Setting Name="KeyP2Up" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">None</Value>
+    </Setting>
+    <Setting Name="KeyP2Down" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">None</Value>
+    </Setting>
+    <Setting Name="KeyP2Left" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">None</Value>
+    </Setting>
+    <Setting Name="KeyP2Right" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">None</Value>
+    </Setting>
+    <Setting Name="KeyP2TL" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">None</Value>
+    </Setting>
+    <Setting Name="KeyP2TR" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">None</Value>
     </Setting>
   </Settings>
 </SettingsFile>

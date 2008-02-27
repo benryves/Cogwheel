@@ -26,72 +26,72 @@ namespace CogwheelSlimDX.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Up")]
-        public global::System.Windows.Forms.Keys KeyUp {
+        public global::System.Windows.Forms.Keys KeyP1Up {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["KeyUp"]));
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Up"]));
             }
             set {
-                this["KeyUp"] = value;
+                this["KeyP1Up"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Down")]
-        public global::System.Windows.Forms.Keys KeyDown {
+        public global::System.Windows.Forms.Keys KeyP1Down {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["KeyDown"]));
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Down"]));
             }
             set {
-                this["KeyDown"] = value;
+                this["KeyP1Down"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Left")]
-        public global::System.Windows.Forms.Keys KeyLeft {
+        public global::System.Windows.Forms.Keys KeyP1Left {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["KeyLeft"]));
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Left"]));
             }
             set {
-                this["KeyLeft"] = value;
+                this["KeyP1Left"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Right")]
-        public global::System.Windows.Forms.Keys KeyRight {
+        public global::System.Windows.Forms.Keys KeyP1Right {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["KeyRight"]));
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Right"]));
             }
             set {
-                this["KeyRight"] = value;
+                this["KeyP1Right"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ControlKey")]
-        public global::System.Windows.Forms.Keys KeyTL {
+        public global::System.Windows.Forms.Keys KeyP1TL {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["KeyTL"]));
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1TL"]));
             }
             set {
-                this["KeyTL"] = value;
+                this["KeyP1TL"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Menu")]
-        public global::System.Windows.Forms.Keys KeyTR {
+        public global::System.Windows.Forms.Keys KeyP1TR {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["KeyTR"]));
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1TR"]));
             }
             set {
-                this["KeyTR"] = value;
+                this["KeyP1TR"] = value;
             }
         }
         
@@ -128,6 +128,78 @@ namespace CogwheelSlimDX.Properties {
             }
             set {
                 this["KeyReset"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("None")]
+        public global::System.Windows.Forms.Keys KeyP2Up {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP2Up"]));
+            }
+            set {
+                this["KeyP2Up"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("None")]
+        public global::System.Windows.Forms.Keys KeyP2Down {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP2Down"]));
+            }
+            set {
+                this["KeyP2Down"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("None")]
+        public global::System.Windows.Forms.Keys KeyP2Left {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP2Left"]));
+            }
+            set {
+                this["KeyP2Left"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("None")]
+        public global::System.Windows.Forms.Keys KeyP2Right {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP2Right"]));
+            }
+            set {
+                this["KeyP2Right"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("None")]
+        public global::System.Windows.Forms.Keys KeyP2TL {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP2TL"]));
+            }
+            set {
+                this["KeyP2TL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("None")]
+        public global::System.Windows.Forms.Keys KeyP2TR {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP2TR"]));
+            }
+            set {
+                this["KeyP2TR"] = value;
             }
         }
     }
