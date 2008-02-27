@@ -27,7 +27,7 @@
       <Value Profile="(Default)">Space</Value>
     </Setting>
     <Setting Name="KeyReset" Type="System.Windows.Forms.Keys" Scope="User">
-      <Value Profile="(Default)">Enter</Value>
+      <Value Profile="(Default)">Back</Value>
     </Setting>
   </Settings>
 </SettingsFile>

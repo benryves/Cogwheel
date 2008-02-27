@@ -121,7 +121,7 @@ namespace CogwheelSlimDX.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Enter")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Back")]
         public global::System.Windows.Forms.Keys KeyReset {
             get {
                 return ((global::System.Windows.Forms.Keys)(this["KeyReset"]));
