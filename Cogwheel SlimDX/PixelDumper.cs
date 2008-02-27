@@ -180,7 +180,7 @@ namespace CogwheelSlimDX {
 
 				this.GraphicsDevice.BeginScene();
 
-				//this.GraphicsDevice.SetSamplerState(0, SamplerState.MinFilter, TextureFilter.Linear);
+				this.GraphicsDevice.SetSamplerState(0, SamplerState.MinFilter, TextureFilter.Linear);
 				this.GraphicsDevice.SetSamplerState(0, SamplerState.MagFilter, TextureFilter.Point);
 
 				this.GraphicsDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.Black, 1.0f, 0);
