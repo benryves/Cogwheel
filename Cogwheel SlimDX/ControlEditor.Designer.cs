@@ -37,9 +37,10 @@
 			this.LabelRight = new System.Windows.Forms.Label();
 			this.ConsoleGroup = new System.Windows.Forms.GroupBox();
 			this.ConsoleTable = new System.Windows.Forms.TableLayoutPanel();
+			this.LabelPause = new System.Windows.Forms.Label();
 			this.LabelReset = new System.Windows.Forms.Label();
 			this.LabelStart = new System.Windows.Forms.Label();
-			this.LabelPause = new System.Windows.Forms.Label();
+			this.TabIcons = new System.Windows.Forms.ImageList(this.components);
 			this.PanelOKCancel = new System.Windows.Forms.Panel();
 			this.ButtonOK = new System.Windows.Forms.Button();
 			this.ButtonCancel = new System.Windows.Forms.Button();
@@ -58,7 +59,6 @@
 			this.ConsolePause = new CogwheelSlimDX.KeyButton();
 			this.ConsoleReset = new CogwheelSlimDX.KeyButton();
 			this.ConsoleStart = new CogwheelSlimDX.KeyButton();
-			this.TabIcons = new System.Windows.Forms.ImageList(this.components);
 			this.InputTabs.SuspendLayout();
 			this.KeyboardTab.SuspendLayout();
 			this.JoypadGroup.SuspendLayout();
@@ -154,7 +154,7 @@
 			// 
 			this.LabelButton2.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.LabelButton2.AutoSize = true;
-			this.LabelButton2.Location = new System.Drawing.Point(42, 35);
+			this.LabelButton2.Location = new System.Drawing.Point(42, 34);
 			this.LabelButton2.Name = "LabelButton2";
 			this.LabelButton2.Size = new System.Drawing.Size(13, 13);
 			this.LabelButton2.TabIndex = 1;
@@ -164,7 +164,7 @@
 			// 
 			this.LabelUp.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.LabelUp.AutoSize = true;
-			this.LabelUp.Location = new System.Drawing.Point(38, 63);
+			this.LabelUp.Location = new System.Drawing.Point(38, 61);
 			this.LabelUp.Name = "LabelUp";
 			this.LabelUp.Size = new System.Drawing.Size(21, 13);
 			this.LabelUp.TabIndex = 2;
@@ -174,7 +174,7 @@
 			// 
 			this.LabelDown.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.LabelDown.AutoSize = true;
-			this.LabelDown.Location = new System.Drawing.Point(31, 91);
+			this.LabelDown.Location = new System.Drawing.Point(31, 88);
 			this.LabelDown.Name = "LabelDown";
 			this.LabelDown.Size = new System.Drawing.Size(35, 13);
 			this.LabelDown.TabIndex = 3;
@@ -184,7 +184,7 @@
 			// 
 			this.LabelLeft.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.LabelLeft.AutoSize = true;
-			this.LabelLeft.Location = new System.Drawing.Point(36, 119);
+			this.LabelLeft.Location = new System.Drawing.Point(36, 115);
 			this.LabelLeft.Name = "LabelLeft";
 			this.LabelLeft.Size = new System.Drawing.Size(25, 13);
 			this.LabelLeft.TabIndex = 4;
@@ -194,7 +194,7 @@
 			// 
 			this.LabelRight.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.LabelRight.AutoSize = true;
-			this.LabelRight.Location = new System.Drawing.Point(33, 147);
+			this.LabelRight.Location = new System.Drawing.Point(33, 145);
 			this.LabelRight.Name = "LabelRight";
 			this.LabelRight.Size = new System.Drawing.Size(32, 13);
 			this.LabelRight.TabIndex = 5;
@@ -232,26 +232,6 @@
 			this.ConsoleTable.Size = new System.Drawing.Size(295, 90);
 			this.ConsoleTable.TabIndex = 0;
 			// 
-			// LabelReset
-			// 
-			this.LabelReset.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.LabelReset.AutoSize = true;
-			this.LabelReset.Location = new System.Drawing.Point(31, 37);
-			this.LabelReset.Name = "LabelReset";
-			this.LabelReset.Size = new System.Drawing.Size(35, 13);
-			this.LabelReset.TabIndex = 21;
-			this.LabelReset.Text = "Reset";
-			// 
-			// LabelStart
-			// 
-			this.LabelStart.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.LabelStart.AutoSize = true;
-			this.LabelStart.Location = new System.Drawing.Point(34, 67);
-			this.LabelStart.Name = "LabelStart";
-			this.LabelStart.Size = new System.Drawing.Size(29, 13);
-			this.LabelStart.TabIndex = 22;
-			this.LabelStart.Text = "Start";
-			// 
 			// LabelPause
 			// 
 			this.LabelPause.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -261,6 +241,32 @@
 			this.LabelPause.Size = new System.Drawing.Size(37, 13);
 			this.LabelPause.TabIndex = 23;
 			this.LabelPause.Text = "Pause";
+			// 
+			// LabelReset
+			// 
+			this.LabelReset.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.LabelReset.AutoSize = true;
+			this.LabelReset.Location = new System.Drawing.Point(31, 38);
+			this.LabelReset.Name = "LabelReset";
+			this.LabelReset.Size = new System.Drawing.Size(35, 13);
+			this.LabelReset.TabIndex = 21;
+			this.LabelReset.Text = "Reset";
+			// 
+			// LabelStart
+			// 
+			this.LabelStart.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.LabelStart.AutoSize = true;
+			this.LabelStart.Location = new System.Drawing.Point(34, 68);
+			this.LabelStart.Name = "LabelStart";
+			this.LabelStart.Size = new System.Drawing.Size(29, 13);
+			this.LabelStart.TabIndex = 22;
+			this.LabelStart.Text = "Start";
+			// 
+			// TabIcons
+			// 
+			this.TabIcons.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+			this.TabIcons.ImageSize = new System.Drawing.Size(16, 16);
+			this.TabIcons.TransparentColor = System.Drawing.Color.Transparent;
 			// 
 			// PanelOKCancel
 			// 
@@ -281,7 +287,7 @@
 			this.ButtonOK.Name = "ButtonOK";
 			this.ButtonOK.Size = new System.Drawing.Size(75, 26);
 			this.ButtonOK.TabIndex = 0;
-			this.ButtonOK.Text = "&OK";
+			this.ButtonOK.Text = "OK";
 			this.ButtonOK.UseVisualStyleBackColor = true;
 			// 
 			// ButtonCancel
@@ -292,7 +298,7 @@
 			this.ButtonCancel.Name = "ButtonCancel";
 			this.ButtonCancel.Size = new System.Drawing.Size(75, 26);
 			this.ButtonCancel.TabIndex = 1;
-			this.ButtonCancel.Text = "&Cancel";
+			this.ButtonCancel.Text = "Cancel";
 			this.ButtonCancel.UseVisualStyleBackColor = true;
 			// 
 			// Player1TL
@@ -303,7 +309,7 @@
 			this.Player1TL.Key = System.Windows.Forms.Keys.None;
 			this.Player1TL.Location = new System.Drawing.Point(101, 3);
 			this.Player1TL.Name = "Player1TL";
-			this.Player1TL.Size = new System.Drawing.Size(92, 22);
+			this.Player1TL.Size = new System.Drawing.Size(92, 21);
 			this.Player1TL.TabIndex = 6;
 			this.Player1TL.Text = "None";
 			this.Player1TL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -315,9 +321,9 @@
 			this.Player1TR.AutoCheck = false;
 			this.Player1TR.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player1TR.Key = System.Windows.Forms.Keys.None;
-			this.Player1TR.Location = new System.Drawing.Point(101, 31);
+			this.Player1TR.Location = new System.Drawing.Point(101, 30);
 			this.Player1TR.Name = "Player1TR";
-			this.Player1TR.Size = new System.Drawing.Size(92, 22);
+			this.Player1TR.Size = new System.Drawing.Size(92, 21);
 			this.Player1TR.TabIndex = 7;
 			this.Player1TR.Text = "None";
 			this.Player1TR.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -329,9 +335,9 @@
 			this.Player1Up.AutoCheck = false;
 			this.Player1Up.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player1Up.Key = System.Windows.Forms.Keys.None;
-			this.Player1Up.Location = new System.Drawing.Point(101, 59);
+			this.Player1Up.Location = new System.Drawing.Point(101, 57);
 			this.Player1Up.Name = "Player1Up";
-			this.Player1Up.Size = new System.Drawing.Size(92, 22);
+			this.Player1Up.Size = new System.Drawing.Size(92, 21);
 			this.Player1Up.TabIndex = 8;
 			this.Player1Up.Text = "None";
 			this.Player1Up.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -343,9 +349,9 @@
 			this.Player1Down.AutoCheck = false;
 			this.Player1Down.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player1Down.Key = System.Windows.Forms.Keys.None;
-			this.Player1Down.Location = new System.Drawing.Point(101, 87);
+			this.Player1Down.Location = new System.Drawing.Point(101, 84);
 			this.Player1Down.Name = "Player1Down";
-			this.Player1Down.Size = new System.Drawing.Size(92, 22);
+			this.Player1Down.Size = new System.Drawing.Size(92, 21);
 			this.Player1Down.TabIndex = 9;
 			this.Player1Down.Text = "None";
 			this.Player1Down.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -357,9 +363,9 @@
 			this.Player1Left.AutoCheck = false;
 			this.Player1Left.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player1Left.Key = System.Windows.Forms.Keys.None;
-			this.Player1Left.Location = new System.Drawing.Point(101, 115);
+			this.Player1Left.Location = new System.Drawing.Point(101, 111);
 			this.Player1Left.Name = "Player1Left";
-			this.Player1Left.Size = new System.Drawing.Size(92, 22);
+			this.Player1Left.Size = new System.Drawing.Size(92, 21);
 			this.Player1Left.TabIndex = 10;
 			this.Player1Left.Text = "None";
 			this.Player1Left.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -371,9 +377,9 @@
 			this.Player1Right.AutoCheck = false;
 			this.Player1Right.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player1Right.Key = System.Windows.Forms.Keys.None;
-			this.Player1Right.Location = new System.Drawing.Point(101, 143);
+			this.Player1Right.Location = new System.Drawing.Point(101, 138);
 			this.Player1Right.Name = "Player1Right";
-			this.Player1Right.Size = new System.Drawing.Size(92, 22);
+			this.Player1Right.Size = new System.Drawing.Size(92, 27);
 			this.Player1Right.TabIndex = 12;
 			this.Player1Right.Text = "None";
 			this.Player1Right.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -387,7 +393,7 @@
 			this.Player2TL.Key = System.Windows.Forms.Keys.None;
 			this.Player2TL.Location = new System.Drawing.Point(199, 3);
 			this.Player2TL.Name = "Player2TL";
-			this.Player2TL.Size = new System.Drawing.Size(93, 22);
+			this.Player2TL.Size = new System.Drawing.Size(93, 21);
 			this.Player2TL.TabIndex = 11;
 			this.Player2TL.Text = "None";
 			this.Player2TL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -399,9 +405,9 @@
 			this.Player2TR.AutoCheck = false;
 			this.Player2TR.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player2TR.Key = System.Windows.Forms.Keys.None;
-			this.Player2TR.Location = new System.Drawing.Point(199, 31);
+			this.Player2TR.Location = new System.Drawing.Point(199, 30);
 			this.Player2TR.Name = "Player2TR";
-			this.Player2TR.Size = new System.Drawing.Size(93, 22);
+			this.Player2TR.Size = new System.Drawing.Size(93, 21);
 			this.Player2TR.TabIndex = 13;
 			this.Player2TR.Text = "None";
 			this.Player2TR.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -413,9 +419,9 @@
 			this.Player2Up.AutoCheck = false;
 			this.Player2Up.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player2Up.Key = System.Windows.Forms.Keys.None;
-			this.Player2Up.Location = new System.Drawing.Point(199, 59);
+			this.Player2Up.Location = new System.Drawing.Point(199, 57);
 			this.Player2Up.Name = "Player2Up";
-			this.Player2Up.Size = new System.Drawing.Size(93, 22);
+			this.Player2Up.Size = new System.Drawing.Size(93, 21);
 			this.Player2Up.TabIndex = 14;
 			this.Player2Up.Text = "None";
 			this.Player2Up.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -427,9 +433,9 @@
 			this.Player2Down.AutoCheck = false;
 			this.Player2Down.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player2Down.Key = System.Windows.Forms.Keys.None;
-			this.Player2Down.Location = new System.Drawing.Point(199, 87);
+			this.Player2Down.Location = new System.Drawing.Point(199, 84);
 			this.Player2Down.Name = "Player2Down";
-			this.Player2Down.Size = new System.Drawing.Size(93, 22);
+			this.Player2Down.Size = new System.Drawing.Size(93, 21);
 			this.Player2Down.TabIndex = 15;
 			this.Player2Down.Text = "None";
 			this.Player2Down.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -441,9 +447,9 @@
 			this.Player2Left.AutoCheck = false;
 			this.Player2Left.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player2Left.Key = System.Windows.Forms.Keys.None;
-			this.Player2Left.Location = new System.Drawing.Point(199, 115);
+			this.Player2Left.Location = new System.Drawing.Point(199, 111);
 			this.Player2Left.Name = "Player2Left";
-			this.Player2Left.Size = new System.Drawing.Size(93, 22);
+			this.Player2Left.Size = new System.Drawing.Size(93, 21);
 			this.Player2Left.TabIndex = 16;
 			this.Player2Left.Text = "None";
 			this.Player2Left.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -455,9 +461,9 @@
 			this.Player2Right.AutoCheck = false;
 			this.Player2Right.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player2Right.Key = System.Windows.Forms.Keys.None;
-			this.Player2Right.Location = new System.Drawing.Point(199, 143);
+			this.Player2Right.Location = new System.Drawing.Point(199, 138);
 			this.Player2Right.Name = "Player2Right";
-			this.Player2Right.Size = new System.Drawing.Size(93, 22);
+			this.Player2Right.Size = new System.Drawing.Size(93, 27);
 			this.Player2Right.TabIndex = 17;
 			this.Player2Right.Text = "None";
 			this.Player2Right.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -471,7 +477,7 @@
 			this.ConsolePause.Key = System.Windows.Forms.Keys.None;
 			this.ConsolePause.Location = new System.Drawing.Point(101, 3);
 			this.ConsolePause.Name = "ConsolePause";
-			this.ConsolePause.Size = new System.Drawing.Size(191, 23);
+			this.ConsolePause.Size = new System.Drawing.Size(191, 24);
 			this.ConsolePause.TabIndex = 18;
 			this.ConsolePause.Text = "None";
 			this.ConsolePause.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -483,9 +489,9 @@
 			this.ConsoleReset.AutoCheck = false;
 			this.ConsoleReset.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.ConsoleReset.Key = System.Windows.Forms.Keys.None;
-			this.ConsoleReset.Location = new System.Drawing.Point(101, 32);
+			this.ConsoleReset.Location = new System.Drawing.Point(101, 33);
 			this.ConsoleReset.Name = "ConsoleReset";
-			this.ConsoleReset.Size = new System.Drawing.Size(191, 23);
+			this.ConsoleReset.Size = new System.Drawing.Size(191, 24);
 			this.ConsoleReset.TabIndex = 20;
 			this.ConsoleReset.Text = "None";
 			this.ConsoleReset.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -497,19 +503,13 @@
 			this.ConsoleStart.AutoCheck = false;
 			this.ConsoleStart.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.ConsoleStart.Key = System.Windows.Forms.Keys.None;
-			this.ConsoleStart.Location = new System.Drawing.Point(101, 61);
+			this.ConsoleStart.Location = new System.Drawing.Point(101, 63);
 			this.ConsoleStart.Name = "ConsoleStart";
-			this.ConsoleStart.Size = new System.Drawing.Size(191, 26);
+			this.ConsoleStart.Size = new System.Drawing.Size(191, 24);
 			this.ConsoleStart.TabIndex = 19;
 			this.ConsoleStart.Text = "None";
 			this.ConsoleStart.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.ConsoleStart.UseVisualStyleBackColor = true;
-			// 
-			// TabIcons
-			// 
-			this.TabIcons.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-			this.TabIcons.ImageSize = new System.Drawing.Size(16, 16);
-			this.TabIcons.TransparentColor = System.Drawing.Color.Transparent;
 			// 
 			// ControlEditor
 			// 
