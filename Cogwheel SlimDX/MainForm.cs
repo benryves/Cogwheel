@@ -9,6 +9,7 @@ using BeeDevelopment.Sega8Bit.Utility;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
+using System.Reflection;
 
 
 namespace CogwheelSlimDX {
@@ -108,32 +109,23 @@ namespace CogwheelSlimDX {
 
 		#region Keyboard Input
 
+
 		private void OnKeyChange(KeyEventArgs e, bool state) {
 
-			if (e.KeyCode == Properties.Settings.Default.KeyP1Up) {
-				this.Emulator.Ports[0].Up.State = state;
-				e.Handled = true;
-			}
-			if (e.KeyCode == Properties.Settings.Default.KeyP1Down) {
-				this.Emulator.Ports[0].Down.State = state;
-				e.Handled = true;
-			}
-			if (e.KeyCode == Properties.Settings.Default.KeyP1Left) {
-				this.Emulator.Ports[0].Left.State = state;
-				e.Handled = true;
-			}
-			if (e.KeyCode == Properties.Settings.Default.KeyP1Right) {
-				this.Emulator.Ports[0].Right.State = state;
-				e.Handled = true;
-			}
-			if (e.KeyCode == Properties.Settings.Default.KeyP1TL) {
-				this.Emulator.Ports[0].TL.State = state;
-				e.Handled = true;
-			}
-			if (e.KeyCode == Properties.Settings.Default.KeyP1TR) {
-				this.Emulator.Ports[0].TR.InputState = state;
-				e.Handled = true;
-			}
+			if (e.KeyCode == Properties.Settings.Default.KeyP1Up) { this.Emulator.Ports[0].Up.State = state; e.Handled = true;}
+			if (e.KeyCode == Properties.Settings.Default.KeyP1Down) { this.Emulator.Ports[0].Down.State = state; e.Handled = true; }
+			if (e.KeyCode == Properties.Settings.Default.KeyP1Left) { this.Emulator.Ports[0].Left.State = state; e.Handled = true; }
+			if (e.KeyCode == Properties.Settings.Default.KeyP1Right) { this.Emulator.Ports[0].Right.State = state; e.Handled = true; }
+			if (e.KeyCode == Properties.Settings.Default.KeyP1TL) { this.Emulator.Ports[0].TL.State = state; e.Handled = true; }
+			if (e.KeyCode == Properties.Settings.Default.KeyP1TR) { this.Emulator.Ports[0].TR.InputState = state; e.Handled = true; }
+
+			if (e.KeyCode == Properties.Settings.Default.KeyP2Up) { this.Emulator.Ports[1].Up.State = state; e.Handled = true; }
+			if (e.KeyCode == Properties.Settings.Default.KeyP2Down) { this.Emulator.Ports[1].Down.State = state; e.Handled = true; }
+			if (e.KeyCode == Properties.Settings.Default.KeyP2Left) { this.Emulator.Ports[1].Left.State = state; e.Handled = true; }
+			if (e.KeyCode == Properties.Settings.Default.KeyP2Right) { this.Emulator.Ports[1].Right.State = state; e.Handled = true; }
+			if (e.KeyCode == Properties.Settings.Default.KeyP2TL) { this.Emulator.Ports[1].TL.State = state; e.Handled = true; }
+			if (e.KeyCode == Properties.Settings.Default.KeyP2TR) { this.Emulator.Ports[1].TR.InputState = state; e.Handled = true; }			
+			
 			if (e.KeyCode == Properties.Settings.Default.KeyPause && this.Emulator.HasPauseButton) {
 				this.Emulator.PauseButton = !state;
 				e.Handled = true;
@@ -159,15 +151,25 @@ namespace CogwheelSlimDX {
 		}
 
 		protected override bool IsInputKey(Keys keyData) {
+
 			if (keyData == Properties.Settings.Default.KeyP1Up) return true;
 			if (keyData == Properties.Settings.Default.KeyP1Down) return true;
 			if (keyData == Properties.Settings.Default.KeyP1Left) return true;
 			if (keyData == Properties.Settings.Default.KeyP1Right) return true;
 			if (keyData == Properties.Settings.Default.KeyP1TL) return true;
 			if (keyData == Properties.Settings.Default.KeyP1TR) return true;
+
+			if (keyData == Properties.Settings.Default.KeyP2Up) return true;
+			if (keyData == Properties.Settings.Default.KeyP2Down) return true;
+			if (keyData == Properties.Settings.Default.KeyP2Left) return true;
+			if (keyData == Properties.Settings.Default.KeyP2Right) return true;
+			if (keyData == Properties.Settings.Default.KeyP2TL) return true;
+			if (keyData == Properties.Settings.Default.KeyP2TR) return true;
+
 			if (keyData == Properties.Settings.Default.KeyPause) return true;
 			if (keyData == Properties.Settings.Default.KeyStart) return true;
 			if (keyData == Properties.Settings.Default.KeyReset) return true;
+
 			return base.IsInputKey(keyData);
 		}
 
