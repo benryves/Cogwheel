@@ -8,11 +8,15 @@ using System.Windows.Forms;
 
 namespace CogwheelSlimDX {
 	public partial class ControlEditor : Form {
+
+		Joysticks Sticks;
+
 		public ControlEditor() {
 			InitializeComponent();
 
 			this.TabIcons.Images.Add(Properties.Resources.Icon_Keyboard);
-			
+			this.TabIcons.Images.Add(Properties.Resources.Icon_Joystick);
+
 			this.Player1TL.Key = Properties.Settings.Default.KeyP1TL;
 			this.Player1TR.Key = Properties.Settings.Default.KeyP1TR;
 			this.Player1Up.Key = Properties.Settings.Default.KeyP1Up;
@@ -30,6 +34,23 @@ namespace CogwheelSlimDX {
 			this.ConsolePause.Key = Properties.Settings.Default.KeyPause;
 			this.ConsoleReset.Key = Properties.Settings.Default.KeyReset;
 			this.ConsoleStart.Key = Properties.Settings.Default.KeyStart;
+
+			this.Sticks = new Joysticks();
+
+			foreach (var Stick in this.Sticks.Items) {
+				var JoystickPage = new TabPage() {
+					Text = string.Format(Stick.Name),
+					ImageIndex = 1,
+				};
+				JoystickPage.Controls.Add(new Label() {
+					Text = "Joystick support is not yet implemented.", 
+					Anchor = AnchorStyles.None,
+					TextAlign = ContentAlignment.MiddleCenter,
+					AutoSize = false,
+					Dock = DockStyle.Fill,
+				});
+				this.InputTabs.TabPages.Add(JoystickPage);
+			}
 		}
 
 		protected override void OnClosing(CancelEventArgs e) {

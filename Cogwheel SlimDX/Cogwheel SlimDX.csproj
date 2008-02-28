@@ -56,6 +56,7 @@
     <Compile Include="GameGenieEditor.Designer.cs">
       <DependentUpon>GameGenieEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Joystick.cs" />
     <Compile Include="KeyButton.cs">
       <SubType>Component</SubType>
     </Compile>
