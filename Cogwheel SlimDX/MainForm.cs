@@ -15,6 +15,81 @@ using System.Reflection;
 namespace CogwheelSlimDX {
 	public partial class MainForm : Form {
 
+		#region Fields
+
+		// Input.
+		private InputManager Input;
+		private KeyboardInputSource KeyboardInput;
+
+		// Output.
+		private PixelDumper Dumper;
+
+		// Emulator stuff.
+		private Emulator Emulator;
+		private RomIdentifier Identifier;
+		private RomInfo CurrentRomInfo;
+
+		#endregion
+
+		#region Properties
+
+		/// <summary>
+		/// Gets or sets the size of the form's RenderPanel.
+		/// </summary>
+		/// <remarks>Setting this property sets the form size to better accomodate the RenderPanel.</remarks>
+		public Size RenderPanelSize {
+			get { return this.RenderPanel.Size; }
+			set {
+				this.ClientSize = new Size(
+					value.Width + this.ClientSize.Width - this.RenderPanel.Width,
+					value.Height + this.ClientSize.Height - this.RenderPanel.Height
+				);
+			}
+		}
+
+		#endregion
+
+		#region Constructor/Initialiser
+
+		public MainForm() {
+
+			InitializeComponent();
+
+			// Set up input devices:
+			this.Input = new InputManager();
+			this.KeyboardInput = new KeyboardInputSource();
+			this.Input.Sources.Add(this.KeyboardInput);
+			this.KeyboardInput.LoadKeymapFromSettings();
+
+			// Create a pixel dumper.
+			this.Dumper = new PixelDumper(this.RenderPanel);
+
+			// Load the emulator.
+			this.Emulator = new BeeDevelopment.Sega8Bit.Emulator();
+			this.Emulator.Cartridge = new BeeDevelopment.Sega8Bit.Mappers.Standard();
+
+			// Load the ROM data (if required).
+			string RomDataDir = Path.Combine(Application.StartupPath, "ROM Data");
+			this.Identifier = new RomIdentifier();
+			if (Directory.Exists(RomDataDir)) {
+				try {
+					this.Identifier = new RomIdentifier("ROM Data");
+				} catch (Exception ex) {
+					MessageBox.Show(this, ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				}
+			}
+
+			// Set window text and position.
+			this.Text = Application.ProductName;
+			this.RenderPanelSize = new Size(256 * 2, 192 * 2);
+			this.CenterToScreen();
+
+			// Attach render loop handler.
+			Application.Idle += new EventHandler(Application_Idle);
+		}
+		
+		#endregion
+
 		#region Render Loop
 
 		[System.Security.SuppressUnmanagedCodeSecurity, DllImport("User32.dll", CharSet = CharSet.Auto)]
@@ -31,61 +106,15 @@ namespace CogwheelSlimDX {
 
 			while (AppStillIdle) {
 				Thread.Sleep(10);
+				this.Input.UpdateEmulatorState(this.Emulator);
 				this.Emulator.RunFrame();
 				this.RepaintVideo();
 			}
 		}
-		
+
 		#endregion
 
-
-		private PixelDumper Dumper;
-		private Emulator Emulator;
-		private RomIdentifier Identifier;
-
-		private RomInfo CurrentRomInfo;
-
-		public MainForm() {
-			InitializeComponent();
-
-			this.Text = Application.ProductName;
-			this.Dumper = new PixelDumper(this.RenderPanel);
-
-			this.Emulator = new BeeDevelopment.Sega8Bit.Emulator();
-			this.Emulator.Cartridge = new BeeDevelopment.Sega8Bit.Mappers.Standard();
-
-			Application.Idle += new EventHandler(Application_Idle);
-
-			string RomDataDir = Path.Combine(Application.StartupPath, "ROM Data");
-
-			this.Identifier = new RomIdentifier();
-
-			if (Directory.Exists(RomDataDir)) {
-				try {
-					this.Identifier = new RomIdentifier("ROM Data");
-				} catch (Exception ex) {
-					MessageBox.Show(this, ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-				}
-			}
-
-			this.RenderPanelSize = new Size(256 * 2, 192 * 2);
-			this.CenterToScreen();
-
-		}
-
-		/// <summary>
-		/// Gets or sets the size of the form's RenderPanel.
-		/// </summary>
-		/// <remarks>Setting this property sets the form size to better accomodate the RenderPanel.</remarks>
-		public Size RenderPanelSize {
-			get { return this.RenderPanel.Size; }
-			set {
-				this.ClientSize = new Size(
-					value.Width + this.ClientSize.Width - this.RenderPanel.Width,
-					value.Height + this.ClientSize.Height - this.RenderPanel.Height
-				);
-			}
-		}
+		#region Video Output
 
 		private void RepaintVideo() {
 			this.Dumper.Render(this.Emulator.Video.LastCompleteFrame, this.Emulator.Video.LastCompleteFrameWidth, this.Emulator.Video.LastCompleteFrameHeight);
@@ -93,7 +122,7 @@ namespace CogwheelSlimDX {
 
 		FormWindowState LastWindowState = FormWindowState.Normal;
 		private void MainForm_Resize(object sender, EventArgs e) {
-			
+
 			if (this.WindowState == FormWindowState.Maximized || this.LastWindowState == FormWindowState.Maximized) {
 				this.Dumper.ReinitialiseRenderer();
 				this.LastWindowState = this.WindowState;
@@ -107,70 +136,20 @@ namespace CogwheelSlimDX {
 			this.Dumper.ReinitialiseRenderer();
 		}
 
+		#endregion
+
 		#region Keyboard Input
-
-
-		private void OnKeyChange(KeyEventArgs e, bool state) {
-
-			if (e.KeyCode == Properties.Settings.Default.KeyP1Up) { this.Emulator.Ports[0].Up.State = state; e.Handled = true;}
-			if (e.KeyCode == Properties.Settings.Default.KeyP1Down) { this.Emulator.Ports[0].Down.State = state; e.Handled = true; }
-			if (e.KeyCode == Properties.Settings.Default.KeyP1Left) { this.Emulator.Ports[0].Left.State = state; e.Handled = true; }
-			if (e.KeyCode == Properties.Settings.Default.KeyP1Right) { this.Emulator.Ports[0].Right.State = state; e.Handled = true; }
-			if (e.KeyCode == Properties.Settings.Default.KeyP1TL) { this.Emulator.Ports[0].TL.State = state; e.Handled = true; }
-			if (e.KeyCode == Properties.Settings.Default.KeyP1TR) { this.Emulator.Ports[0].TR.InputState = state; e.Handled = true; }
-
-			if (e.KeyCode == Properties.Settings.Default.KeyP2Up) { this.Emulator.Ports[1].Up.State = state; e.Handled = true; }
-			if (e.KeyCode == Properties.Settings.Default.KeyP2Down) { this.Emulator.Ports[1].Down.State = state; e.Handled = true; }
-			if (e.KeyCode == Properties.Settings.Default.KeyP2Left) { this.Emulator.Ports[1].Left.State = state; e.Handled = true; }
-			if (e.KeyCode == Properties.Settings.Default.KeyP2Right) { this.Emulator.Ports[1].Right.State = state; e.Handled = true; }
-			if (e.KeyCode == Properties.Settings.Default.KeyP2TL) { this.Emulator.Ports[1].TL.State = state; e.Handled = true; }
-			if (e.KeyCode == Properties.Settings.Default.KeyP2TR) { this.Emulator.Ports[1].TR.InputState = state; e.Handled = true; }			
-			
-			if (e.KeyCode == Properties.Settings.Default.KeyPause && this.Emulator.HasPauseButton) {
-				this.Emulator.PauseButton = !state;
-				e.Handled = true;
-			}
-			if (e.KeyCode == Properties.Settings.Default.KeyStart && this.Emulator.HasStartButton) {
-				this.Emulator.StartButton = !state;
-				e.Handled = true;
-			}
-			if (e.KeyCode == Properties.Settings.Default.KeyReset && this.Emulator.HasResetButton) {
-				this.Emulator.ResetButton = !state;
-				e.Handled = true;
-			}
-
-			base.OnKeyDown(e);
-		}
-
+		
 		protected override void OnKeyDown(KeyEventArgs e) {
-			this.OnKeyChange(e, false);
+			this.KeyboardInput.KeyChange(e, true);
 		}
 
 		protected override void OnKeyUp(KeyEventArgs e) {
-			this.OnKeyChange(e, true);
+			this.KeyboardInput.KeyChange(e, false);
 		}
 
 		protected override bool IsInputKey(Keys keyData) {
-
-			if (keyData == Properties.Settings.Default.KeyP1Up) return true;
-			if (keyData == Properties.Settings.Default.KeyP1Down) return true;
-			if (keyData == Properties.Settings.Default.KeyP1Left) return true;
-			if (keyData == Properties.Settings.Default.KeyP1Right) return true;
-			if (keyData == Properties.Settings.Default.KeyP1TL) return true;
-			if (keyData == Properties.Settings.Default.KeyP1TR) return true;
-
-			if (keyData == Properties.Settings.Default.KeyP2Up) return true;
-			if (keyData == Properties.Settings.Default.KeyP2Down) return true;
-			if (keyData == Properties.Settings.Default.KeyP2Left) return true;
-			if (keyData == Properties.Settings.Default.KeyP2Right) return true;
-			if (keyData == Properties.Settings.Default.KeyP2TL) return true;
-			if (keyData == Properties.Settings.Default.KeyP2TR) return true;
-
-			if (keyData == Properties.Settings.Default.KeyPause) return true;
-			if (keyData == Properties.Settings.Default.KeyStart) return true;
-			if (keyData == Properties.Settings.Default.KeyReset) return true;
-
-			return base.IsInputKey(keyData);
+			return this.KeyboardInput.IsInputKey(keyData);
 		}
 
 		// Process window messages to check for Alt+Space (ie, window menu) problems.
@@ -194,11 +173,15 @@ namespace CogwheelSlimDX {
 
 		#endregion
 
-		
+		#region Misc. Menus
 
 		private void ExitMenu_Click(object sender, EventArgs e) {
 			this.Close();
 		}
+
+		#endregion
+
+		#region ROM Loading
 
 		private void QuickLoadRomMenu_Click(object sender, EventArgs e) {
 			if (this.OpenRomDialog.ShowDialog(this) == DialogResult.OK) {
@@ -245,7 +228,7 @@ namespace CogwheelSlimDX {
 
 					this.AddMessage(Properties.Resources.Icon_Information, this.CurrentRomInfo.Title);
 					if (!string.IsNullOrEmpty(this.CurrentRomInfo.Author)) this.AddMessage(Properties.Resources.Icon_User, this.CurrentRomInfo.Author);
-				
+
 					switch (this.CurrentRomInfo.Type) {
 						case RomInfo.RomType.HeaderedFootered:
 							if (this.CurrentRomInfo.FooterSize > 0) this.AddMessage(Properties.Resources.Icon_Exclamation, "Footered");
@@ -288,17 +271,16 @@ namespace CogwheelSlimDX {
 					}
 				}
 
-				this.Emulator.Region = Countries.CountryToRegion(this.CurrentRomInfo != null ? this.CurrentRomInfo.Country : Country.None); 
+				this.Emulator.Region = Countries.CountryToRegion(this.CurrentRomInfo != null ? this.CurrentRomInfo.Country : Country.None);
 				this.Emulator.Cartridge = this.Identifier.CreateCartridgeMapper(Data);
-				
+
 				this.Emulator.SetCapabilitiesByModel(
 					(this.Emulator.Region == BeeDevelopment.Sega8Bit.Region.Japanese && Model == HardwareModel.MasterSystem2) ? HardwareModel.MasterSystem : Model
 				);
-
-
-
 			}
 		}
+
+		#endregion		
 
 		#region Screenshot
 
@@ -403,6 +385,7 @@ namespace CogwheelSlimDX {
 
 		private void CustomiseControlsToolStripMenuItem_Click(object sender, EventArgs e) {
 			new ControlEditor().ShowDialog(this);
+			this.KeyboardInput.LoadKeymapFromSettings();
 		}
 
 		protected override void OnClosing(System.ComponentModel.CancelEventArgs e) {

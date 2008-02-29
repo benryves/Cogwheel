@@ -5,11 +5,12 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using CogwheelSlimDX.JoystickInput;
 
 namespace CogwheelSlimDX {
 	public partial class ControlEditor : Form {
 
-		Joysticks Sticks;
+		JoystickCollection Joysticks;
 
 		public ControlEditor() {
 			InitializeComponent();
@@ -35,12 +36,13 @@ namespace CogwheelSlimDX {
 			this.ConsoleReset.Key = Properties.Settings.Default.KeyReset;
 			this.ConsoleStart.Key = Properties.Settings.Default.KeyStart;
 
-			this.Sticks = new Joysticks();
+			this.Joysticks = new JoystickCollection();
 
-			foreach (var Stick in this.Sticks.Items) {
+			foreach (var Stick in this.Joysticks.Joysticks) {
 				var JoystickPage = new TabPage() {
 					Text = string.Format(Stick.Name),
 					ImageIndex = 1,
+					Tag = Stick,
 				};
 				JoystickPage.Controls.Add(new Label() {
 					Text = "Joystick support is not yet implemented.", 
@@ -79,6 +81,5 @@ namespace CogwheelSlimDX {
 
 			base.OnClosing(e);
 		}
-
 	}
 }
