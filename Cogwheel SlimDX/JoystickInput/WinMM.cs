@@ -136,33 +136,33 @@ namespace CogwheelSlimDX.JoystickInput {
 
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct JOYCAPS {
-			public ushort wMid;
-			public ushort wPid;
+			public ushort VendorId;
+			public ushort ProductId;
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAXPNAMELEN)]
-			public string szPname;
-			public uint wXmin;
-			public uint wXmax;
-			public uint wYmin;
-			public uint wYmax;
-			public uint wZmin;
-			public uint wZmax;
-			public uint wNumButtons;
-			public uint wPeriodMin;
-			public uint wPeriodMax;
-			public uint wRmin;
-			public uint wRmax;
-			public uint wUmin;
-			public uint wUmax;
-			public uint wVmin;
-			public uint wVmax;
-			public uint wCaps;
-			public uint wMaxAxes;
-			public uint wNumAxes;
-			public uint wMaxButtons;
+			public string ProductName;
+			public uint XMin;
+			public uint XMax;
+			public uint YMin;
+			public uint YMax;
+			public uint ZMin;
+			public uint ZMax;
+			public uint ButtonCount;
+			public uint PeriodMin;
+			public uint PeriodMax;
+			public uint RMin;
+			public uint RMax;
+			public uint UMin;
+			public uint UMax;
+			public uint VMin;
+			public uint VMax;
+			public uint Capabilities;
+			public uint MaximumAxisCount;
+			public uint AxisCount;
+			public uint MaximumButtonCount;
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAXPNAMELEN)]
-			public string szRegKey;
+			public string RegistryKey;
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_JOYSTICKOEMVXDNAME)]
-			public string szOEMVxD;
+			public string OemVxD;
 
 		}
 

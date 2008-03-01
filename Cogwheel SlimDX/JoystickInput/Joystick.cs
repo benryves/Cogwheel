@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
+using Microsoft.Win32;
 
 namespace CogwheelSlimDX.JoystickInput {
 	/// <summary>
@@ -16,9 +17,31 @@ namespace CogwheelSlimDX.JoystickInput {
 		public int Id { get; private set; }
 
 		/// <summary>
+		/// Gets the vendor identifier of the <see cref="Joystick"/>.
+		/// </summary>
+		public int VendorId { get; private set; }
+
+		/// <summary>
+		/// Gets the product identifier of the <see cref="Joystick"/>.
+		/// </summary>
+		public int ProductId { get; private set; }
+
+		/// <summary>
 		/// Gets the name of the joystick.
 		/// </summary>
 		public string Name { get; private set; }
+
+		/// <summary>
+		/// Gets the number of buttons supported by the joystick.
+		/// </summary>
+		public int ButtonCount { get; private set; }
+
+		public bool HasXAxis { get; private set; }
+		public bool HasYAxis { get; private set; }
+		public bool HasZAxis { get; private set; }
+		public bool HasRudder { get; private set; }
+		public bool HasUAxis { get; private set; }
+		public bool HasVAxis { get; private set; }
 
 		private WinMM.JOYCAPS Caps { get; set; }
 
@@ -31,7 +54,17 @@ namespace CogwheelSlimDX.JoystickInput {
 			WinMM.JOYCAPS Caps = new WinMM.JOYCAPS();
 			if (WinMM.joyGetDevCaps(this.Id, ref Caps, Marshal.SizeOf(Caps)) != WinMM.Result.JOYERR_NOERROR) throw new InvalidOperationException();
 			this.Caps = Caps;
-			this.Name = Caps.szPname;
+			var FullName = GetNameFromId(Caps.VendorId, Caps.ProductId);
+			this.Name = FullName ?? Caps.ProductName;
+			this.VendorId = Caps.VendorId;
+			this.ProductId = Caps.ProductId;
+			this.ButtonCount = (int)Caps.ButtonCount;
+			this.HasXAxis = Caps.AxisCount > 0;
+			this.HasYAxis = Caps.AxisCount > 1;
+			this.HasZAxis = Caps.AxisCount > 2;
+			this.HasRudder = Caps.AxisCount > 3;
+			this.HasUAxis = Caps.AxisCount > 4;
+			this.HasVAxis = Caps.AxisCount > 5;
 		}
 
 		/// <summary>
@@ -47,18 +80,31 @@ namespace CogwheelSlimDX.JoystickInput {
 			var State = new JoystickState();
 			State.Buttons = (Buttons)Info.Buttons;
 
-			State.XAxis = this.Caps.wNumAxes > 0 ? GetNormalisedAxisPoint(Info.X, this.Caps.wXmin, this.Caps.wXmax) : 0f;
-			State.YAxis = this.Caps.wNumAxes > 1 ? GetNormalisedAxisPoint(Info.Y, this.Caps.wYmin, this.Caps.wYmax) : 0f;
-			State.ZAxis = this.Caps.wNumAxes > 2 ? GetNormalisedAxisPoint(Info.Z, this.Caps.wZmin, this.Caps.wZmax) : 0f;
-			State.Rudder = this.Caps.wNumAxes > 3 ? GetNormalisedAxisPoint(Info.Rudder, this.Caps.wRmin, this.Caps.wRmax) : 0f;
-			State.UAxis = this.Caps.wNumAxes > 4 ? GetNormalisedAxisPoint(Info.U, this.Caps.wUmin, this.Caps.wUmax) : 0f;
-			State.VAxis = this.Caps.wNumAxes > 5 ? GetNormalisedAxisPoint(Info.V, this.Caps.wVmin, this.Caps.wVmax) : 0f;
+			State.XAxis = this.Caps.AxisCount > 0 ? GetNormalisedAxisPoint(Info.X, this.Caps.XMin, this.Caps.XMax) : 0f;
+			State.YAxis = this.Caps.AxisCount > 1 ? GetNormalisedAxisPoint(Info.Y, this.Caps.YMin, this.Caps.YMax) : 0f;
+			State.ZAxis = this.Caps.AxisCount > 2 ? GetNormalisedAxisPoint(Info.Z, this.Caps.ZMin, this.Caps.ZMax) : 0f;
+			State.Rudder = this.Caps.AxisCount > 3 ? GetNormalisedAxisPoint(Info.Rudder, this.Caps.RMin, this.Caps.RMax) : 0f;
+			State.UAxis = this.Caps.AxisCount > 4 ? GetNormalisedAxisPoint(Info.U, this.Caps.UMin, this.Caps.UMax) : 0f;
+			State.VAxis = this.Caps.AxisCount > 5 ? GetNormalisedAxisPoint(Info.V, this.Caps.VMin, this.Caps.VMax) : 0f;
 
 			return State;
 		}
 
 		private static float GetNormalisedAxisPoint(int value, uint min, uint max) {
 			return Math.Max(-1f, Math.Min(+1f, (float)(value - min) / (float)(max - min) * 2f - 1f));
+		}
+
+		/// <summary>
+		/// Gets the name of a joystick from its vendor and product ids.
+		/// </summary>
+		/// <param name="vid">The vendor id.</param>
+		/// <param name="pid">The product id.</param>
+		/// <returns>The name of the joystick, or null if none was found.</returns>
+		/// <remarks>This traverses the registry, so is probably very naughty.</remarks>
+		private static string GetNameFromId(ushort vid, ushort pid) {
+			var JoystickKey = Registry.CurrentUser.OpenSubKey(string.Format(@"System\CurrentControlSet\Control\MediaProperties\PrivateProperties\Joystick\OEM\VID_{0:X4}&PID_{1:X4}", vid, pid));
+			if (JoystickKey == null) return null;
+			return JoystickKey.GetValue("OEMName") as string;
 		}
 
 	}

@@ -59,7 +59,9 @@ namespace CogwheelSlimDX {
 			this.Input = new InputManager();
 			this.KeyboardInput = new KeyboardInputSource();
 			this.Input.Sources.Add(this.KeyboardInput);
-			this.KeyboardInput.LoadKeymapFromSettings();
+			foreach (var Stick in new JoystickInput.JoystickCollection().Joysticks) this.Input.Sources.Add(new JoystickInputSource(Stick));	
+			this.Input.ReloadSettings();
+			
 
 			// Create a pixel dumper.
 			this.Dumper = new PixelDumper(this.RenderPanel);
@@ -106,6 +108,7 @@ namespace CogwheelSlimDX {
 
 			while (AppStillIdle) {
 				Thread.Sleep(10);
+				this.Input.Poll();
 				this.Input.UpdateEmulatorState(this.Emulator);
 				this.Emulator.RunFrame();
 				this.RepaintVideo();
@@ -384,8 +387,8 @@ namespace CogwheelSlimDX {
 		#region Settings
 
 		private void CustomiseControlsToolStripMenuItem_Click(object sender, EventArgs e) {
-			new ControlEditor().ShowDialog(this);
-			this.KeyboardInput.LoadKeymapFromSettings();
+			new ControlEditor(this.Input).ShowDialog(this);
+			this.Input.ReloadSettings();
 		}
 
 		protected override void OnClosing(System.ComponentModel.CancelEventArgs e) {
