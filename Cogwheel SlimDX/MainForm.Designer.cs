@@ -41,6 +41,8 @@
 			this.Status = new System.Windows.Forms.StatusStrip();
 			this.MessageStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.MessageTicker = new System.Windows.Forms.Timer(this.components);
+			this.AdvancedLoadMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.FileSep0 = new System.Windows.Forms.ToolStripSeparator();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -68,6 +70,8 @@
 			// 
 			this.FileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.QuickLoadRomMenu,
+            this.AdvancedLoadMenu,
+            this.FileSep0,
             this.ExitMenu});
 			this.FileMenu.Name = "FileMenu";
 			this.FileMenu.Size = new System.Drawing.Size(37, 20);
@@ -177,6 +181,18 @@
 			this.MessageTicker.Interval = 2500;
 			this.MessageTicker.Tick += new System.EventHandler(this.MessageTicker_Tick);
 			// 
+			// AdvancedLoadMenu
+			// 
+			this.AdvancedLoadMenu.Name = "AdvancedLoadMenu";
+			this.AdvancedLoadMenu.Size = new System.Drawing.Size(216, 22);
+			this.AdvancedLoadMenu.Text = "&Advanced Load...";
+			this.AdvancedLoadMenu.Click += new System.EventHandler(this.AdvancedLoadMenu_Click);
+			// 
+			// FileSep0
+			// 
+			this.FileSep0.Name = "FileSep0";
+			this.FileSep0.Size = new System.Drawing.Size(213, 6);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -218,6 +234,8 @@
 		private System.Windows.Forms.ToolStripMenuItem GameGenieEnabledMenu;
 		private System.Windows.Forms.ToolStripMenuItem GameGenieEditMenu;
 		private System.Windows.Forms.ToolStripMenuItem CustomiseControlsMenu;
+		private System.Windows.Forms.ToolStripMenuItem AdvancedLoadMenu;
+		private System.Windows.Forms.ToolStripSeparator FileSep0;
 	}
 }
 

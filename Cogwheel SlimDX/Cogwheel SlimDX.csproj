@@ -44,11 +44,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdvancedRomLoadDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdvancedRomLoadDialog.Designer.cs">
+      <DependentUpon>AdvancedRomLoadDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="ControlEditor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ControlEditor.Designer.cs">
       <DependentUpon>ControlEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FileBrowseTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FileBrowseTextBox.Designer.cs">
+      <DependentUpon>FileBrowseTextBox.cs</DependentUpon>
     </Compile>
     <Compile Include="GameGenieEditor.cs">
       <SubType>Form</SubType>
@@ -73,8 +85,15 @@
     <Compile Include="PixelDumper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AdvancedRomLoadDialog.resx">
+      <DependentUpon>AdvancedRomLoadDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ControlEditor.resx">
       <DependentUpon>ControlEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FileBrowseTextBox.resx">
+      <DependentUpon>FileBrowseTextBox.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GameGenieEditor.resx">

@@ -226,7 +226,6 @@ namespace CogwheelSlimDX {
 		/// <param name="key">The <see cref="KeyEventArgs"/> referencing the key that was pressed.</param>
 		/// <param name="pressed">True if the key was pressed, false if it was released.</param>
 		public void KeyChange(KeyEventArgs key, bool pressed) {
-
 			if (key.KeyCode == this.KeyPlayer1TL) this.Player1TL = pressed;
 			if (key.KeyCode == this.KeyPlayer1TR) this.Player1TR = pressed;
 			if (key.KeyCode == this.KeyPlayer1Up) this.Player1Up = pressed;

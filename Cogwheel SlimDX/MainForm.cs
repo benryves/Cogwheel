@@ -190,42 +190,14 @@ namespace CogwheelSlimDX {
 			if (this.OpenRomDialog.ShowDialog(this) == DialogResult.OK) {
 
 				string Filename = this.OpenRomDialog.FileName;
-				byte[] Data;
-
-				HardwareModel Model = HardwareModel.MasterSystem2;
 
 				try {
-
-					Data = ZipLoader.FindRom(ref Filename);
-					switch (Path.GetExtension(Filename)) {
-						case ".gg":
-							Model = HardwareModel.GameGear;
-							break;
-						case ".sc":
-							Model = HardwareModel.SC3000;
-							break;
-						case ".mv":
-						case ".sg":
-							Model = HardwareModel.SG1000;
-							break;
-					}
-
+					this.CurrentRomInfo = this.Identifier.QuickLoadEmulator(ref Filename, this.Emulator);
 				} catch (Exception ex) {
-					MessageBox.Show(this, ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-					return;
-				}
-
-
-				this.CurrentRomInfo = this.CurrentRomInfo = this.Identifier.GetRomInfo(Data, Filename);
-
-				if (this.CurrentRomInfo != null) {
-					Model = this.CurrentRomInfo.Model;
-					this.CurrentRomInfo.Fix(ref Data);
+					MessageBox.Show(this, ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 
 				this.Text = (this.CurrentRomInfo != null ? this.CurrentRomInfo.Title : Path.GetFileNameWithoutExtension(Filename)) + " - " + Application.ProductName;
-
-				this.Emulator.ResetAll();
 
 				if (this.CurrentRomInfo != null) {
 
@@ -274,12 +246,28 @@ namespace CogwheelSlimDX {
 					}
 				}
 
-				this.Emulator.Region = Countries.CountryToRegion(this.CurrentRomInfo != null ? this.CurrentRomInfo.Country : Country.None);
-				this.Emulator.Cartridge = this.Identifier.CreateCartridgeMapper(Data);
+				
+			}
+		}
 
-				this.Emulator.SetCapabilitiesByModel(
-					(this.Emulator.Region == BeeDevelopment.Sega8Bit.Region.Japanese && Model == HardwareModel.MasterSystem2) ? HardwareModel.MasterSystem : Model
-				);
+		private void AdvancedLoadMenu_Click(object sender, EventArgs e) {
+			var RomLoadDialog = new AdvancedRomLoadDialog();
+			if (RomLoadDialog.ShowDialog(this) == DialogResult.OK) {
+
+				this.Emulator.RemoveAllMedia();
+				this.Emulator.ResetAll();
+
+				if (File.Exists(RomLoadDialog.CartridgeFileName)) {
+					string CartridgeName = RomLoadDialog.CartridgeFileName;
+					this.Identifier.QuickLoadEmulator(ref CartridgeName, this.Emulator);
+				}
+
+				if (File.Exists(RomLoadDialog.BiosFileName)) {
+					string BiosName = RomLoadDialog.BiosFileName;
+					this.Emulator.Bios = this.Identifier.CreateCartridgeMapper(this.Identifier.LoadAndFixRomData(ref BiosName));
+					this.Emulator.BiosEnabled = true;
+					this.Emulator.CartridgeSlotEnabled = false;
+				}
 			}
 		}
 
@@ -401,6 +389,8 @@ namespace CogwheelSlimDX {
 		}
 
 		#endregion
+
+
 
 	}
 }
