@@ -89,6 +89,11 @@ namespace BeeDevelopment.Sega8Bit {
 			switch (port & 0xC1) { 
 
 				case 0x00: // Memory controller.
+					this.ExpansionSlotEnabled = (value & 0x80) == 0;
+					this.CartridgeSlotEnabled = (value & 0x40) == 0;
+					this.CardSlotEnabled = (value & 0x20) == 0;
+					this.RamEnabled = (value & 0x10) == 0;
+					this.BiosEnabled = (value & 0x08) == 0;
 					break;
 
 				case 0x01: // I/O port (controller ports) control.

@@ -130,5 +130,71 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 
 		}
 
+		/// <summary>
+		/// Quick-loads a ROM file into an emulator, setting up the state automatically.
+		/// </summary>
+		/// <param name="romFileName">The filename of the ROM file.</param>
+		/// <param name="emulator">The emulator instance to load the ROM file for.</param>
+		/// <returns>A <see cref="RomInfo"/> instance that describes the ROM, or null if none was found.</returns>
+		public RomInfo QuickLoadEmulator(ref string romFileName, Emulator emulator) {
+
+			HardwareModel Model = HardwareModel.MasterSystem2;
+			RomInfo Info = null;
+
+			var Data = LoadAndFixRomData(ref romFileName, out Info);
+
+			switch (Path.GetExtension(romFileName)) {
+				case ".gg":
+					Model = HardwareModel.GameGear;
+					break;
+				case ".sc":
+					Model = HardwareModel.SC3000;
+					break;
+				case ".mv":
+				case ".sg":
+					Model = HardwareModel.SG1000;
+					break;
+			}
+
+			if (Info != null) Model = Info.Model;
+
+			emulator.RemoveAllMedia();
+			emulator.ResetAll();
+
+			emulator.Region = Countries.CountryToRegion(Info != null ? Info.Country : Country.None);
+			emulator.Cartridge = this.CreateCartridgeMapper(Data);
+
+			emulator.SetCapabilitiesByModel(
+				(emulator.Region == BeeDevelopment.Sega8Bit.Region.Japanese && Model == HardwareModel.MasterSystem2) ? HardwareModel.MasterSystem : Model
+			);
+
+			return Info;
+
+		}
+
+		/// <summary>
+		/// Loads and fixes data from a ROM file.
+		/// </summary>
+		/// <param name="filename">The file to load.</param>
+		/// <param name="info">Outputs <see cref="RomInfo"/> if found.</param>
+		/// <returns>The loaded and fixed ROM data.</returns>
+		public byte[] LoadAndFixRomData(ref string filename, out RomInfo info) {
+			info = null;
+			var Data = ZipLoader.FindRom(ref filename);
+			info = this.GetRomInfo(Data, filename);
+			if (info != null) info.Fix(ref Data);
+			return Data;
+		}
+
+
+		/// <summary>
+		/// Loads and fixes data from a ROM file.
+		/// </summary>
+		/// <param name="filename">The file to load.</param>
+		/// <returns>The loaded and fixed ROM data.</returns>
+		public byte[] LoadAndFixRomData(ref string filename) {
+			RomInfo Dud;
+			return LoadAndFixRomData(ref filename, out Dud);
+		}
 	}
 }
