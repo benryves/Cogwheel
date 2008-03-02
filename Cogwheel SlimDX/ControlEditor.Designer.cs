@@ -565,6 +565,8 @@
 			this.Controls.Add(this.PanelOKCancel);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "ControlEditor";
 			this.Padding = new System.Windows.Forms.Padding(3);
 			this.ShowInTaskbar = false;
