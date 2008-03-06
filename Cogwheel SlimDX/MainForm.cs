@@ -28,6 +28,7 @@ namespace CogwheelSlimDX {
 		private Emulator Emulator;
 		private RomIdentifier Identifier;
 		private RomInfo CurrentRomInfo;
+		protected bool Paused = false;
 
 		#endregion
 
@@ -66,6 +67,9 @@ namespace CogwheelSlimDX {
 			// Create a pixel dumper.
 			this.Dumper = new PixelDumper(this.RenderPanel);
 
+			// Initialise sound.
+			this.InitialiseSound();
+
 			// Load the emulator.
 			this.Emulator = new BeeDevelopment.Sega8Bit.Emulator();
 			this.Emulator.Cartridge = new BeeDevelopment.Sega8Bit.Mappers.Standard();
@@ -88,6 +92,13 @@ namespace CogwheelSlimDX {
 
 			// Attach render loop handler.
 			Application.Idle += new EventHandler(Application_Idle);
+			this.Disposed += new EventHandler(MainForm_Disposed);
+
+		}
+
+		void MainForm_Disposed(object sender, EventArgs e) {
+			this.DisposeSound();
+			if (this.Dumper != null) this.Dumper.Dispose();
 		}
 		
 		#endregion
@@ -107,10 +118,14 @@ namespace CogwheelSlimDX {
 		void Application_Idle(object sender, EventArgs e) {
 
 			while (AppStillIdle) {
-				Thread.Sleep(10);
-				this.Input.Poll();
-				this.Input.UpdateEmulatorState(this.Emulator);
-				this.Emulator.RunFrame();
+				if (!this.Paused) {
+					this.Emulator.RunFrame();
+					short[] Buffer = new short[735 * 2];
+					this.Emulator.Sound.CreateSamples(Buffer);
+					this.GeneratedSoundSamples.Enqueue(Buffer);
+					this.Input.Poll();
+					this.Input.UpdateEmulatorState(this.Emulator);
+				}
 				this.RepaintVideo();
 			}
 		}
@@ -141,8 +156,62 @@ namespace CogwheelSlimDX {
 
 		#endregion
 
+		#region Sound Output
+
+		private WaveLib.WaveOutPlayer WaveOutput;
+
+		private int SoundBufferSizeInFrames = 4;
+
+		private Queue<short[]> GeneratedSoundSamples;
+
+		private void InitialiseSound() {
+			this.GeneratedSoundSamples = new Queue<short[]>();
+			var Format = new WaveLib.WaveFormat (44100, 16, 2);
+			this.WaveOutput = new WaveLib.WaveOutPlayer(-1, Format, SoundBufferSizeInFrames * 735 * 4, 3, new WaveLib.BufferFillEventHandler(SoundBufferFiller));
+		}
+
+		private void DisposeSound() {
+			if (this.WaveOutput != null) {
+				this.WaveOutput.Dispose();
+				this.WaveOutput = null;
+			}
+		}
+
+		private bool SoundMuted = false;
+
+		private void SoundBufferFiller(IntPtr data, int size) {
+			lock (this.GeneratedSoundSamples) {
+
+				short[] Generated = new short[size / 2];
+
+				if (SoundMuted) {
+
+					this.GeneratedSoundSamples.Clear();
+
+				} else {
+
+					for (int i = 0; i < Generated.Length; i += 735 * 2) {
+						if (this.GeneratedSoundSamples.Count > 0) {
+							Array.Copy(this.GeneratedSoundSamples.Dequeue(), 0, Generated, i, 735 * 2);
+						} else {
+							short[] Temp = new short[735 * 2];
+							if (this.Emulator != null) this.Emulator.Sound.CreateSamples(Temp);
+							Array.Copy(Temp, 0, Generated, i, 735 * 2);
+						}
+					}
+
+				}
+
+				Marshal.Copy(Generated, 0, data, size / 2);
+				while (this.GeneratedSoundSamples.Count > this.SoundBufferSizeInFrames) this.GeneratedSoundSamples.Dequeue();
+
+			}
+		}
+
+		#endregion
+
 		#region Keyboard Input
-		
+
 		protected override void OnKeyDown(KeyEventArgs e) {
 			this.KeyboardInput.KeyChange(e, true);
 		}
@@ -390,7 +459,21 @@ namespace CogwheelSlimDX {
 
 		#endregion
 
+		#region Focus
 
+		protected override void OnLostFocus(EventArgs e) {
+			this.SoundMuted = true;
+			this.Paused = true;
+			base.OnLostFocus(e);
+		}
+
+		protected override void OnGotFocus(EventArgs e) {
+			this.SoundMuted = false;
+			this.Paused = false;
+			base.OnGotFocus(e);
+		}
+
+		#endregion
 
 	}
 }

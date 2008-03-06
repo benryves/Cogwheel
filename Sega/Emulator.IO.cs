@@ -13,6 +13,11 @@ namespace BeeDevelopment.Sega8Bit {
 		public VideoDisplayProcessor Video { get; private set; }
 
 		/// <summary>
+		/// Gets the <see cref="ProgrammableSoundGenerator"/>.
+		/// </summary>
+		public ProgrammableSoundGenerator Sound { get; private set; }
+
+		/// <summary>
 		/// Gets or sets whether the emulator has Game Gear ports.
 		/// </summary>
 		public bool HasGameGearPorts { get; set; }
@@ -103,6 +108,7 @@ namespace BeeDevelopment.Sega8Bit {
 				
 				case 0x40: // PSG.
 				case 0x41:
+					this.Sound.WriteQueued(value);
 					break;
 
 				case 0x80: // VDP Data.

@@ -22,6 +22,7 @@ namespace BeeDevelopment.Sega8Bit {
 			this.ResetMemory();
 			this.ResetPorts();
 			this.Video.Reset();
+			this.Sound.Reset();
 		}
 
 		/// <summary>
@@ -29,6 +30,7 @@ namespace BeeDevelopment.Sega8Bit {
 		/// </summary>
 		public Emulator() {
 			this.Video = new VideoDisplayProcessor(this);
+			this.Sound = new ProgrammableSoundGenerator(this);
 			this.Cheats = new MemoryCheatCollection();
 			this.ResetAll();
 		}

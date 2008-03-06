@@ -36,10 +36,16 @@
       <HintPath>..\Binary Libraries\BeeZip.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ControllerPort.cs" />
     <Compile Include="Country.cs" />
+    <Compile Include="Hardware\ProgrammableSoundGenerator\Output.cs" />
+    <Compile Include="Hardware\ProgrammableSoundGenerator\IO.cs" />
+    <Compile Include="Hardware\ProgrammableSoundGenerator\Registers.cs" />
+    <Compile Include="Hardware\ProgrammableSoundGenerator\ProgrammableSoundGenerator.cs" />
     <Compile Include="MemoryCheat.cs" />
     <Compile Include="Region.cs" />
     <Compile Include="Emulator.Controllers.cs" />

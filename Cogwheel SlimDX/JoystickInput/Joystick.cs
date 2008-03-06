@@ -36,11 +36,17 @@ namespace CogwheelSlimDX.JoystickInput {
 		/// </summary>
 		public int ButtonCount { get; private set; }
 
+		/// <summary>Gets whether the joystick has an X-axis.</summary>
 		public bool HasXAxis { get; private set; }
+		/// <summary>Gets whether the joystick has a Y-axis.</summary>
 		public bool HasYAxis { get; private set; }
+		/// <summary>Gets whether the joystick has a Z-axis.</summary>
 		public bool HasZAxis { get; private set; }
+		/// <summary>Gets whether the joystick has a rudder.</summary>
 		public bool HasRudder { get; private set; }
+		/// <summary>Gets whether the joystick has a U-axis.</summary>
 		public bool HasUAxis { get; private set; }
+		/// <summary>Gets whether the joystick has a V-axis.</summary>
 		public bool HasVAxis { get; private set; }
 
 		private WinMM.JOYCAPS Caps { get; set; }
@@ -74,7 +80,7 @@ namespace CogwheelSlimDX.JoystickInput {
 		public JoystickState GetState() {
 			var	Info = new WinMM.JOYINFOEX();
 			Info.Size = Marshal.SizeOf(Info);
-			Info.Flags = WinMM.InfoFlags.JOY_RETURNBUTTONS;
+			Info.Flags = WinMM.InfoFlags.JOY_RETURNBUTTONS | WinMM.InfoFlags.JOY_RETURNPOVCTS;
 			var Result = WinMM.joyGetPosEx(this.Id, ref Info);
 			if (Result != WinMM.Result.JOYERR_NOERROR) return null;
 			var State = new JoystickState();
@@ -86,6 +92,10 @@ namespace CogwheelSlimDX.JoystickInput {
 			State.Rudder = this.Caps.AxisCount > 3 ? GetNormalisedAxisPoint(Info.Rudder, this.Caps.RMin, this.Caps.RMax) : 0f;
 			State.UAxis = this.Caps.AxisCount > 4 ? GetNormalisedAxisPoint(Info.U, this.Caps.UMin, this.Caps.UMax) : 0f;
 			State.VAxis = this.Caps.AxisCount > 5 ? GetNormalisedAxisPoint(Info.V, this.Caps.VMin, this.Caps.VMax) : 0f;
+
+			if (Info.PointOfView != 0xFFFF) {
+				State.PointOfView = Info.PointOfView / 100f;
+			}
 
 			return State;
 		}

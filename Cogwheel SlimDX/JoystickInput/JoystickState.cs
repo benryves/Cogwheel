@@ -67,6 +67,9 @@ namespace CogwheelSlimDX.JoystickInput {
 		/// <summary>Gets or sets the normalised value of the V (rudder) axis.</summary>
 		public float VAxis { get; set; }
 
+		/// <summary>Gets or sets the point of view hat position, or null if in the neutral position.</summary>
+		public float? PointOfView { get; set; }
+
 		public override string ToString() {
 			return string.Format("({0},{1})+{2}", this.XAxis, this.YAxis, this.Buttons);
 		}

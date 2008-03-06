@@ -115,6 +115,7 @@ namespace CogwheelSlimDX {
 					BackBufferWidth = Math.Max(1, this.Control.ClientSize.Width),
 					BackBufferHeight = Math.Max(1, this.Control.ClientSize.Height),
 					DeviceWindowHandle = this.Control.Handle,
+					PresentationInterval = PresentInterval.One,
 				};
 
 				// Try and create the device.
