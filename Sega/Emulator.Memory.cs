@@ -78,31 +78,13 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <returns>The byte read from memory from address <paramref name="address"/>.</returns>
 		public override byte ReadMemory(ushort address) {
 
+
+
 			// Reads from RAM.
 			if (address >= 0xC000) {
-				return this.RamEnabled ? this.ram[address & 0x1FFF] : (byte)0xFF;
+				return this.ram[address & 0x1FFF];
 			} else {
 
-				if (this.CartridgeSlotEnabled) {
-					// Reads from cartridge slot.
-					if (this.Cartridge != null) {
-
-						byte Source = this.Cartridge.ReadMemory(address);
-
-						if (!this.Cheats.Enabled) return Source;
-
-						var Cheat = this.Cheats[address];
-
-
-						if (Cheat != null && Cheat.Original == Source) {
-							return Cheat.Replacement;
-						} else {
-							return Source;
-						}
-
-					}
-					return 0xFF; // Default.
-				}
 
 				// Reads from BIOS ROM.
 				if (this.BiosEnabled && this.Bios != null) return this.Bios.ReadMemory(address);
@@ -113,7 +95,24 @@ namespace BeeDevelopment.Sega8Bit {
 				// Reads from expansion slot.
 				if (this.ExpansionSlotEnabled && this.ExpansionSlot != null) return this.ExpansionSlot.ReadMemory(address);
 
-				return 0xFF;
+				// Reads from cartridge slot.
+				if (this.Cartridge != null) {
+
+					byte Source = this.Cartridge.ReadMemory(address);
+
+					if (!this.Cheats.Enabled) return Source;
+
+					var Cheat = this.Cheats[address];
+
+
+					if (Cheat != null && Cheat.Original == Source) {
+						return Cheat.Replacement;
+					} else {
+						return Source;
+					}
+
+				}
+				return 0xFF; // Default.
 
 				
 			}
