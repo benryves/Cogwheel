@@ -51,31 +51,27 @@ namespace BeeDevelopment.Sega8Bit {
 			while (!this.RunScanline()) ;
 		}
 
-		private Region region;
 		/// <summary>
-		/// Gets or sets the region of the <see cref="Emulator"/>.
+		/// Gets or sets the <see cref="Region"/> of the emulator.
 		/// </summary>
-		public Region Region {
-			get { return this.region; }
-			set { 
-				this.region = value;
-				for (int i = 0; i < 2; ++i) {
-					this.Ports[i].Region = this.region;					
-				}
-			}
-		}
+		public Region Region { get; set; }
 
 		/// <summary>
 		/// Sets the capabilities of the <see cref="Emulator"/> based on a particular hardware version.
 		/// </summary>
 		/// <param name="model">The <see cref="HardwareModel"/> to base the capabilities on.</param>
-		public void SetCapabilitiesByModel(HardwareModel model) {
+		public void SetCapabilitiesByModelAndRegion(HardwareModel model, Region region) {
 			this.Video.SetCapabilitiesByModel(model);
 			this.HasGameGearPorts = (model == HardwareModel.GameGear);
 			this.HasStartButton = (model == HardwareModel.GameGear);
 			this.HasResetButton = (model == HardwareModel.MasterSystem || model == HardwareModel.MasterSystem2);
 			this.HasPauseButton = (model != HardwareModel.GameGear);
-		}
 
+
+			for (int i = 0; i < 2; ++i) {
+				this.Ports[i].SupportsOutput = (model == HardwareModel.MasterSystem || model == HardwareModel.MasterSystem2) && region != Region.Japanese;
+			}
+
+		}
 	}
 }

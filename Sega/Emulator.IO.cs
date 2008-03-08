@@ -44,7 +44,7 @@ namespace BeeDevelopment.Sega8Bit {
 						// D5: NNTS - 0: NTSC, 1: PAL.
 						return (byte)(
 							(this.StartButton ? 0x00 : 0x80) |
-							(this.region == Region.Japanese ? 0x00 : 0x40) |
+							(this.Region == Region.Japanese ? 0x00 : 0x40) |
 							(this.Video.System == VideoDisplayProcessor.VideoSystem.Ntsc ? 0x00 : 0x20)
 						);
 					case 0x01: return 0x7F;

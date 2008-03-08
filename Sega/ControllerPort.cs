@@ -73,11 +73,11 @@ namespace BeeDevelopment.Sega8Bit {
 			/// <remarks>When setting the state, this modifies both <see cref="InputState"/> and <see cref="OutputState"/> properties.</remarks>
 			public override bool State {
 				get {
-					if (this.Direction == PinDirection.Input) {
-						return this.InputState;
+					if (this.Direction == PinDirection.Output && this.Port.SupportsOutput) {
+						return this.OutputState;
 					} else {
-						return this.Port.Region == Region.Japanese ? false : this.OutputState;
-					}					
+						return this.InputState;
+					}
 				}
 				set {
 					this.InputState = value;
@@ -88,9 +88,9 @@ namespace BeeDevelopment.Sega8Bit {
 		}
 
 		/// <summary>
-		/// Gets or sets the region of the controller port.
+		/// Gets or sets whether the controller port can output data as well as input data on its bidirectional pins.
 		/// </summary>
-		public Region Region { get; set; }
+		public bool SupportsOutput { get; set; }
 
 		/// <summary>
 		/// Gets or sets the state of the Up pin.
@@ -143,12 +143,10 @@ namespace BeeDevelopment.Sega8Bit {
 
 
 		internal void WriteState(int value) {
-			if (this.Region == Region.Export) {
-				this.TR.Direction = ((value & 0x01) != 0) ? PinDirection.Input : PinDirection.Output;
-				this.TH.Direction = ((value & 0x02) != 0) ? PinDirection.Input : PinDirection.Output;
-				this.TR.OutputState = ((value & 0x10) != 0);
-				this.TH.OutputState = ((value & 0x20) != 0);
-			}
+			this.TR.Direction = ((value & 0x01) != 0) ? PinDirection.Input : PinDirection.Output;
+			this.TH.Direction = ((value & 0x02) != 0) ? PinDirection.Input : PinDirection.Output;
+			this.TR.OutputState = ((value & 0x10) != 0);
+			this.TH.OutputState = ((value & 0x20) != 0);
 		}
 
 	}

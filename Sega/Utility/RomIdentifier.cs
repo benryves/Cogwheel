@@ -164,8 +164,9 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			emulator.Region = Countries.CountryToRegion(Info != null ? Info.Country : Country.None);
 			emulator.Cartridge = this.CreateCartridgeMapper(Data);
 
-			emulator.SetCapabilitiesByModel(
-				(emulator.Region == BeeDevelopment.Sega8Bit.Region.Japanese && Model == HardwareModel.MasterSystem2) ? HardwareModel.MasterSystem : Model
+			emulator.SetCapabilitiesByModelAndRegion(
+				(emulator.Region == BeeDevelopment.Sega8Bit.Region.Japanese && Model == HardwareModel.MasterSystem2) ? HardwareModel.MasterSystem : Model,
+				emulator.Region
 			);
 
 			return Info;

@@ -42,6 +42,7 @@
 			this.CustomiseControlsMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.OptionsSep0 = new System.Windows.Forms.ToolStripSeparator();
 			this.SimulateGameGearLcdMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.LinearInterpolationMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.AboutMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.HelpSep0 = new System.Windows.Forms.ToolStripSeparator();
@@ -50,7 +51,6 @@
 			this.Status = new System.Windows.Forms.StatusStrip();
 			this.MessageStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.MessageTicker = new System.Windows.Forms.Timer(this.components);
-			this.LinearInterpolationMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -186,6 +186,7 @@
 			this.CustomiseControlsMenu.Name = "CustomiseControlsMenu";
 			this.CustomiseControlsMenu.Size = new System.Drawing.Size(247, 22);
 			this.CustomiseControlsMenu.Text = "&Customise Controls...";
+			this.CustomiseControlsMenu.Click += new System.EventHandler(this.CustomiseControlsToolStripMenuItem_Click);
 			// 
 			// OptionsSep0
 			// 
@@ -198,6 +199,13 @@
 			this.SimulateGameGearLcdMenu.Size = new System.Drawing.Size(247, 22);
 			this.SimulateGameGearLcdMenu.Text = "Simulate Game Gear LCD &Scaling";
 			this.SimulateGameGearLcdMenu.Click += new System.EventHandler(this.SimulateGameGearLcdMenu_Click);
+			// 
+			// LinearInterpolationMenu
+			// 
+			this.LinearInterpolationMenu.Name = "LinearInterpolationMenu";
+			this.LinearInterpolationMenu.Size = new System.Drawing.Size(247, 22);
+			this.LinearInterpolationMenu.Text = "&Linear Interpolation (Smooth)";
+			this.LinearInterpolationMenu.Click += new System.EventHandler(this.LinearInterpolationMenu_Click);
 			// 
 			// HelpMenu
 			// 
@@ -256,13 +264,6 @@
 			this.MessageTicker.Enabled = true;
 			this.MessageTicker.Interval = 2500;
 			this.MessageTicker.Tick += new System.EventHandler(this.MessageTicker_Tick);
-			// 
-			// LinearInterpolationMenu
-			// 
-			this.LinearInterpolationMenu.Name = "LinearInterpolationMenu";
-			this.LinearInterpolationMenu.Size = new System.Drawing.Size(247, 22);
-			this.LinearInterpolationMenu.Text = "&Linear Interpolation (Smooth)";
-			this.LinearInterpolationMenu.Click += new System.EventHandler(this.LinearInterpolationMenu_Click);
 			// 
 			// MainForm
 			// 
