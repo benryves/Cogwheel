@@ -47,5 +47,14 @@
     <Setting Name="KeyP2TR" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">None</Value>
     </Setting>
+    <Setting Name="UrlBugReport" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://www.bee-dev.com/?go=cogwheel.bugs</Value>
+    </Setting>
+    <Setting Name="OptionSimulateGameGearLcdScaling" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="UrlWebsite" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://www.bee-dev.com/?go=cogwheel</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

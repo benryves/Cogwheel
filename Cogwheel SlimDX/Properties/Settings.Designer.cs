@@ -202,5 +202,41 @@ namespace CogwheelSlimDX.Properties {
                 this["KeyP2TR"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://www.bee-dev.com/?go=cogwheel.bugs")]
+        public string UrlBugReport {
+            get {
+                return ((string)(this["UrlBugReport"]));
+            }
+            set {
+                this["UrlBugReport"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool OptionSimulateGameGearLcdScaling {
+            get {
+                return ((bool)(this["OptionSimulateGameGearLcdScaling"]));
+            }
+            set {
+                this["OptionSimulateGameGearLcdScaling"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://www.bee-dev.com/?go=cogwheel")]
+        public string UrlWebsite {
+            get {
+                return ((string)(this["UrlWebsite"]));
+            }
+            set {
+                this["UrlWebsite"] = value;
+            }
+        }
     }
 }

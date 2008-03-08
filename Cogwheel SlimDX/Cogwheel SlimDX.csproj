@@ -44,6 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
     <Compile Include="AdvancedRomLoadDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,6 +91,9 @@
     <Compile Include="PixelDumper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AdvancedRomLoadDialog.resx">
       <DependentUpon>AdvancedRomLoadDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -206,6 +215,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cog.ico" />
+    <None Include="Resources\Html_About.txt" />
+    <None Include="Resources\Banner.png" />
+    <None Include="Resources\bug.png" />
     <None Include="Resources\joystick.png" />
     <None Include="Resources\controller.png" />
     <None Include="Resources\keyboard.png" />

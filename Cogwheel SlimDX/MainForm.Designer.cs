@@ -28,21 +28,28 @@
 			this.RenderPanel = new System.Windows.Forms.Panel();
 			this.Menus = new System.Windows.Forms.MenuStrip();
 			this.FileMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.QuickLoadRomMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.AdvancedLoadMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.FileSep0 = new System.Windows.Forms.ToolStripSeparator();
 			this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.EditMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.CopyScreenshotMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ToolsMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.GameGenieMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.GameGenieEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.GameGenieEditMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.CustomiseControlsMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.OpenRomDialog = new System.Windows.Forms.OpenFileDialog();
 			this.Status = new System.Windows.Forms.StatusStrip();
 			this.MessageStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.MessageTicker = new System.Windows.Forms.Timer(this.components);
-			this.AdvancedLoadMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.FileSep0 = new System.Windows.Forms.ToolStripSeparator();
+			this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.AboutMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.HelpSep0 = new System.Windows.Forms.ToolStripSeparator();
+			this.BugReportMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.QuickLoadRomMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.CopyScreenshotMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.GameGenieMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.GameGenieEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.GameGenieEditMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.OptionsMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.CustomiseControlsMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.OptionsSep0 = new System.Windows.Forms.ToolStripSeparator();
+			this.SimulateGameGearLcdMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -60,7 +67,8 @@
 			this.Menus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FileMenu,
             this.EditMenu,
-            this.ToolsMenu});
+            this.ToolsMenu,
+            this.HelpMenu});
 			this.Menus.Location = new System.Drawing.Point(0, 0);
 			this.Menus.Name = "Menus";
 			this.Menus.Size = new System.Drawing.Size(325, 24);
@@ -77,14 +85,17 @@
 			this.FileMenu.Size = new System.Drawing.Size(37, 20);
 			this.FileMenu.Text = "&File";
 			// 
-			// QuickLoadRomMenu
+			// AdvancedLoadMenu
 			// 
-			this.QuickLoadRomMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_SmsRom;
-			this.QuickLoadRomMenu.Name = "QuickLoadRomMenu";
-			this.QuickLoadRomMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-			this.QuickLoadRomMenu.Size = new System.Drawing.Size(216, 22);
-			this.QuickLoadRomMenu.Text = "&Quick Load ROM...";
-			this.QuickLoadRomMenu.Click += new System.EventHandler(this.QuickLoadRomMenu_Click);
+			this.AdvancedLoadMenu.Name = "AdvancedLoadMenu";
+			this.AdvancedLoadMenu.Size = new System.Drawing.Size(216, 22);
+			this.AdvancedLoadMenu.Text = "&Advanced Load...";
+			this.AdvancedLoadMenu.Click += new System.EventHandler(this.AdvancedLoadMenu_Click);
+			// 
+			// FileSep0
+			// 
+			this.FileSep0.Name = "FileSep0";
+			this.FileSep0.Size = new System.Drawing.Size(213, 6);
 			// 
 			// ExitMenu
 			// 
@@ -102,57 +113,14 @@
 			this.EditMenu.Size = new System.Drawing.Size(39, 20);
 			this.EditMenu.Text = "&Edit";
 			// 
-			// CopyScreenshotMenu
-			// 
-			this.CopyScreenshotMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Camera;
-			this.CopyScreenshotMenu.Name = "CopyScreenshotMenu";
-			this.CopyScreenshotMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-			this.CopyScreenshotMenu.Size = new System.Drawing.Size(205, 22);
-			this.CopyScreenshotMenu.Text = "&Copy Screenshot";
-			this.CopyScreenshotMenu.Click += new System.EventHandler(this.CopyScreenshotMenu_Click);
-			// 
 			// ToolsMenu
 			// 
 			this.ToolsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.GameGenieMenu,
-            this.CustomiseControlsMenu});
+            this.OptionsMenu});
 			this.ToolsMenu.Name = "ToolsMenu";
 			this.ToolsMenu.Size = new System.Drawing.Size(48, 20);
 			this.ToolsMenu.Text = "&Tools";
-			// 
-			// GameGenieMenu
-			// 
-			this.GameGenieMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.GameGenieEnabledMenu,
-            this.GameGenieEditMenu});
-			this.GameGenieMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_GameGenie;
-			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(187, 22);
-			this.GameGenieMenu.Text = "&Game Genie";
-			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
-			// 
-			// GameGenieEnabledMenu
-			// 
-			this.GameGenieEnabledMenu.CheckOnClick = true;
-			this.GameGenieEnabledMenu.Name = "GameGenieEnabledMenu";
-			this.GameGenieEnabledMenu.Size = new System.Drawing.Size(139, 22);
-			this.GameGenieEnabledMenu.Text = "&Enabled";
-			this.GameGenieEnabledMenu.Click += new System.EventHandler(this.GameGenieEnabledMenu_Click);
-			// 
-			// GameGenieEditMenu
-			// 
-			this.GameGenieEditMenu.Name = "GameGenieEditMenu";
-			this.GameGenieEditMenu.Size = new System.Drawing.Size(139, 22);
-			this.GameGenieEditMenu.Text = "Edit Codes...";
-			this.GameGenieEditMenu.Click += new System.EventHandler(this.GameGenieEditMenu_Click);
-			// 
-			// CustomiseControlsMenu
-			// 
-			this.CustomiseControlsMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Controller;
-			this.CustomiseControlsMenu.Name = "CustomiseControlsMenu";
-			this.CustomiseControlsMenu.Size = new System.Drawing.Size(187, 22);
-			this.CustomiseControlsMenu.Text = "&Customise Controls...";
-			this.CustomiseControlsMenu.Click += new System.EventHandler(this.CustomiseControlsToolStripMenuItem_Click);
 			// 
 			// OpenRomDialog
 			// 
@@ -181,17 +149,111 @@
 			this.MessageTicker.Interval = 2500;
 			this.MessageTicker.Tick += new System.EventHandler(this.MessageTicker_Tick);
 			// 
-			// AdvancedLoadMenu
+			// HelpMenu
 			// 
-			this.AdvancedLoadMenu.Name = "AdvancedLoadMenu";
-			this.AdvancedLoadMenu.Size = new System.Drawing.Size(216, 22);
-			this.AdvancedLoadMenu.Text = "&Advanced Load...";
-			this.AdvancedLoadMenu.Click += new System.EventHandler(this.AdvancedLoadMenu_Click);
+			this.HelpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AboutMenu,
+            this.HelpSep0,
+            this.BugReportMenu});
+			this.HelpMenu.Name = "HelpMenu";
+			this.HelpMenu.Size = new System.Drawing.Size(44, 20);
+			this.HelpMenu.Text = "&Help";
 			// 
-			// FileSep0
+			// AboutMenu
 			// 
-			this.FileSep0.Name = "FileSep0";
-			this.FileSep0.Size = new System.Drawing.Size(213, 6);
+			this.AboutMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Information;
+			this.AboutMenu.Name = "AboutMenu";
+			this.AboutMenu.Size = new System.Drawing.Size(152, 22);
+			this.AboutMenu.Text = "&About";
+			this.AboutMenu.Click += new System.EventHandler(this.AboutMenu_Click);
+			// 
+			// HelpSep0
+			// 
+			this.HelpSep0.Name = "HelpSep0";
+			this.HelpSep0.Size = new System.Drawing.Size(149, 6);
+			// 
+			// BugReportMenu
+			// 
+			this.BugReportMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Bug;
+			this.BugReportMenu.Name = "BugReportMenu";
+			this.BugReportMenu.Size = new System.Drawing.Size(152, 22);
+			this.BugReportMenu.Text = "&Report a Bug";
+			this.BugReportMenu.Click += new System.EventHandler(this.BugReportMenu_Click);
+			// 
+			// QuickLoadRomMenu
+			// 
+			this.QuickLoadRomMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_SmsRom;
+			this.QuickLoadRomMenu.Name = "QuickLoadRomMenu";
+			this.QuickLoadRomMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+			this.QuickLoadRomMenu.Size = new System.Drawing.Size(216, 22);
+			this.QuickLoadRomMenu.Text = "&Quick Load ROM...";
+			this.QuickLoadRomMenu.Click += new System.EventHandler(this.QuickLoadRomMenu_Click);
+			// 
+			// CopyScreenshotMenu
+			// 
+			this.CopyScreenshotMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Camera;
+			this.CopyScreenshotMenu.Name = "CopyScreenshotMenu";
+			this.CopyScreenshotMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+			this.CopyScreenshotMenu.Size = new System.Drawing.Size(205, 22);
+			this.CopyScreenshotMenu.Text = "&Copy Screenshot";
+			this.CopyScreenshotMenu.Click += new System.EventHandler(this.CopyScreenshotMenu_Click);
+			// 
+			// GameGenieMenu
+			// 
+			this.GameGenieMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.GameGenieEnabledMenu,
+            this.GameGenieEditMenu});
+			this.GameGenieMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_GameGenie;
+			this.GameGenieMenu.Name = "GameGenieMenu";
+			this.GameGenieMenu.Size = new System.Drawing.Size(152, 22);
+			this.GameGenieMenu.Text = "&Game Genie";
+			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
+			// 
+			// GameGenieEnabledMenu
+			// 
+			this.GameGenieEnabledMenu.CheckOnClick = true;
+			this.GameGenieEnabledMenu.Name = "GameGenieEnabledMenu";
+			this.GameGenieEnabledMenu.Size = new System.Drawing.Size(152, 22);
+			this.GameGenieEnabledMenu.Text = "&Enabled";
+			this.GameGenieEnabledMenu.Click += new System.EventHandler(this.GameGenieEnabledMenu_Click);
+			// 
+			// GameGenieEditMenu
+			// 
+			this.GameGenieEditMenu.Name = "GameGenieEditMenu";
+			this.GameGenieEditMenu.Size = new System.Drawing.Size(152, 22);
+			this.GameGenieEditMenu.Text = "Edit Codes...";
+			this.GameGenieEditMenu.Click += new System.EventHandler(this.GameGenieEditMenu_Click);
+			// 
+			// OptionsMenu
+			// 
+			this.OptionsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CustomiseControlsMenu,
+            this.OptionsSep0,
+            this.SimulateGameGearLcdMenu});
+			this.OptionsMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Wrench;
+			this.OptionsMenu.Name = "OptionsMenu";
+			this.OptionsMenu.Size = new System.Drawing.Size(152, 22);
+			this.OptionsMenu.Text = "&Options";
+			this.OptionsMenu.DropDownOpening += new System.EventHandler(this.OptionsMenu_DropDownOpening);
+			// 
+			// CustomiseControlsMenu
+			// 
+			this.CustomiseControlsMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Controller;
+			this.CustomiseControlsMenu.Name = "CustomiseControlsMenu";
+			this.CustomiseControlsMenu.Size = new System.Drawing.Size(247, 22);
+			this.CustomiseControlsMenu.Text = "&Customise Controls...";
+			// 
+			// OptionsSep0
+			// 
+			this.OptionsSep0.Name = "OptionsSep0";
+			this.OptionsSep0.Size = new System.Drawing.Size(244, 6);
+			// 
+			// SimulateGameGearLcdMenu
+			// 
+			this.SimulateGameGearLcdMenu.Name = "SimulateGameGearLcdMenu";
+			this.SimulateGameGearLcdMenu.Size = new System.Drawing.Size(247, 22);
+			this.SimulateGameGearLcdMenu.Text = "Simulate Game Gear LCD Scaling";
+			this.SimulateGameGearLcdMenu.Click += new System.EventHandler(this.SimulateGameGearLcdMenu_Click);
 			// 
 			// MainForm
 			// 
@@ -233,9 +295,16 @@
 		private System.Windows.Forms.ToolStripMenuItem GameGenieMenu;
 		private System.Windows.Forms.ToolStripMenuItem GameGenieEnabledMenu;
 		private System.Windows.Forms.ToolStripMenuItem GameGenieEditMenu;
-		private System.Windows.Forms.ToolStripMenuItem CustomiseControlsMenu;
 		private System.Windows.Forms.ToolStripMenuItem AdvancedLoadMenu;
 		private System.Windows.Forms.ToolStripSeparator FileSep0;
+		private System.Windows.Forms.ToolStripMenuItem HelpMenu;
+		private System.Windows.Forms.ToolStripMenuItem AboutMenu;
+		private System.Windows.Forms.ToolStripSeparator HelpSep0;
+		private System.Windows.Forms.ToolStripMenuItem BugReportMenu;
+		private System.Windows.Forms.ToolStripMenuItem OptionsMenu;
+		private System.Windows.Forms.ToolStripMenuItem CustomiseControlsMenu;
+		private System.Windows.Forms.ToolStripSeparator OptionsSep0;
+		private System.Windows.Forms.ToolStripMenuItem SimulateGameGearLcdMenu;
 	}
 }
 

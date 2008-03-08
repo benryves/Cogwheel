@@ -1,0 +1,10 @@
+<style>
+a { color: #369; text-decoration: none; }
+a:hover { color: #33F; text-decoration: underline; }
+</style>
+<p>Written by <a href="mailto:benryves@benryves.com">Ben Ryves</a> 2006-2008.</p>
+<p style="font-weight: bold;">Contributors</p>
+<ul>
+	<li>waveOut API wrapper written by <a href="http://www.chronotron.com/">Ianier Munoz</a>.</li>
+	<li>famfamfam silk icon set by <a href="http://www.famfamfam.com/">Mark James</a>.</li>
+</ul>

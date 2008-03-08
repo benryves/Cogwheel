@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Diagnostics;
 
 
 namespace CogwheelSlimDX {
@@ -264,11 +265,16 @@ namespace CogwheelSlimDX {
 					this.CurrentRomInfo = this.Identifier.QuickLoadEmulator(ref Filename, this.Emulator);
 				} catch (Exception ex) {
 					MessageBox.Show(this, ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					return;
 				}
 
 				this.Text = (this.CurrentRomInfo != null ? this.CurrentRomInfo.Title : Path.GetFileNameWithoutExtension(Filename)) + " - " + Application.ProductName;
 
 				if (this.CurrentRomInfo != null) {
+
+					if (this.CurrentRomInfo.Model == HardwareModel.GameGearMasterSystem && !Properties.Settings.Default.OptionSimulateGameGearLcdScaling) {
+						this.Emulator.Video.SetCapabilitiesByModel(HardwareModel.MasterSystem2);
+					}
 
 					this.AddMessage(Properties.Resources.Icon_Information, this.CurrentRomInfo.Title);
 					if (!string.IsNullOrEmpty(this.CurrentRomInfo.Author)) this.AddMessage(Properties.Resources.Icon_User, this.CurrentRomInfo.Author);
@@ -475,5 +481,36 @@ namespace CogwheelSlimDX {
 
 		#endregion
 
+		#region Help
+
+		private void AboutMenu_Click(object sender, EventArgs e) {
+			new About().ShowDialog(this);
+		}
+
+		private void GoToUrl(string url) {
+			try {
+				Process.Start(url);
+			} catch (Exception ex) {
+				MessageBox.Show(this, "Please visit " + url + " in your browser." + Environment.NewLine + "(Error: " + ex.Message + ")", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+		}
+
+		private void BugReportMenu_Click(object sender, EventArgs e) {
+			GoToUrl(Properties.Settings.Default.UrlBugReport);
+		}
+
+		#endregion
+
+		#region Options
+
+		private void OptionsMenu_DropDownOpening(object sender, EventArgs e) {
+			this.SimulateGameGearLcdMenu.Checked = Properties.Settings.Default.OptionSimulateGameGearLcdScaling;
+		}
+
+		private void SimulateGameGearLcdMenu_Click(object sender, EventArgs e) {
+			Properties.Settings.Default.OptionSimulateGameGearLcdScaling ^= true;
+		}
+
+		#endregion
 	}
 }

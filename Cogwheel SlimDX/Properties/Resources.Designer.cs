@@ -130,6 +130,30 @@ namespace CogwheelSlimDX.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;Written by &lt;a href=&quot;mailto:benryves@benryves.com&quot;&gt;Ben Ryves&lt;/a&gt; 2006-2007&lt;/p&gt;
+        ///&lt;p&gt;The following references were used in writing this software. 
+        ///Most can be downloaded from the documentation section of &lt;a href=&quot;http://bee-dev.com/?go=smsp&quot;&gt;SMS Power!&lt;/a&gt; or on the author&apos;s own site.&lt;/p&gt;
+        ///&lt;ul&gt;
+        ///    &lt;li&gt;&lt;a href=&quot;http://bee-dev.com/?go=cmcd&quot;&gt;Charles MacDonald&lt;/a&gt;
+        ///        &lt;ul&gt;
+        ///            &lt;li&gt;SMS/GG hardware notes.&lt;/li&gt;
+        ///            &lt;li&gt;Sega SC-3000H hardware notes.&lt;/li&gt;
+        ///            &lt;li&gt;Sega Master System [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Html_About {
+            get {
+                return ResourceManager.GetString("Html_About", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_Bug {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Bug", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Icon_Camera {
             get {
                 object obj = ResourceManager.GetObject("Icon_Camera", resourceCulture);
@@ -231,6 +255,13 @@ namespace CogwheelSlimDX.Properties {
         internal static System.Drawing.Bitmap Icon_Wrench {
             get {
                 object obj = ResourceManager.GetObject("Icon_Wrench", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Image_Banner {
+            get {
+                object obj = ResourceManager.GetObject("Image_Banner", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
