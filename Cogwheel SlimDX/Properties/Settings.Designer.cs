@@ -238,5 +238,17 @@ namespace CogwheelSlimDX.Properties {
                 this["UrlWebsite"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool OptionLinearInterpolation {
+            get {
+                return ((bool)(this["OptionLinearInterpolation"]));
+            }
+            set {
+                this["OptionLinearInterpolation"] = value;
+            }
+        }
     }
 }

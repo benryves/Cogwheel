@@ -67,6 +67,7 @@ namespace CogwheelSlimDX {
 
 			// Create a pixel dumper.
 			this.Dumper = new PixelDumper(this.RenderPanel);
+			this.Dumper.LinearInterpolation = Properties.Settings.Default.OptionLinearInterpolation;
 
 			// Initialise sound.
 			this.InitialiseSound();
@@ -505,12 +506,20 @@ namespace CogwheelSlimDX {
 
 		private void OptionsMenu_DropDownOpening(object sender, EventArgs e) {
 			this.SimulateGameGearLcdMenu.Checked = Properties.Settings.Default.OptionSimulateGameGearLcdScaling;
+			this.LinearInterpolationMenu.Checked = Properties.Settings.Default.OptionLinearInterpolation;
 		}
 
 		private void SimulateGameGearLcdMenu_Click(object sender, EventArgs e) {
 			Properties.Settings.Default.OptionSimulateGameGearLcdScaling ^= true;
 		}
 
+
+		private void LinearInterpolationMenu_Click(object sender, EventArgs e) {
+			Properties.Settings.Default.OptionLinearInterpolation ^= true;
+			this.Dumper.LinearInterpolation = Properties.Settings.Default.OptionLinearInterpolation;
+		}
+
 		#endregion
+
 	}
 }

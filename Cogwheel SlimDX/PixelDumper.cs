@@ -181,8 +181,8 @@ namespace CogwheelSlimDX {
 
 				this.GraphicsDevice.BeginScene();
 
-				this.GraphicsDevice.SetSamplerState(0, SamplerState.MinFilter, TextureFilter.Linear);
-				this.GraphicsDevice.SetSamplerState(0, SamplerState.MagFilter, TextureFilter.Point);
+
+				this.GraphicsDevice.SetSamplerState(0, SamplerState.MagFilter, this.LinearInterpolation ? TextureFilter.Linear : TextureFilter.Point);
 
 				this.GraphicsDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.Black, 1.0f, 0);
 
@@ -230,6 +230,11 @@ namespace CogwheelSlimDX {
 		/// Gets the <see cref="Control"/> that this dumps pixels to.
 		/// </summary>
 		public Control Control { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the whether to use bilinear interpolation.
+		/// </summary>
+		public bool LinearInterpolation { get; set; } 
 
 		#endregion
 
