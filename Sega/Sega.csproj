@@ -46,12 +46,16 @@
     <Compile Include="Hardware\ProgrammableSoundGenerator\IO.cs" />
     <Compile Include="Hardware\ProgrammableSoundGenerator\Registers.cs" />
     <Compile Include="Hardware\ProgrammableSoundGenerator\ProgrammableSoundGenerator.cs" />
+    <Compile Include="Mappers\Shared1KBios.cs" />
+    <Compile Include="Mappers\Ram2.cs" />
+    <Compile Include="Mappers\Ram8.cs" />
     <Compile Include="Mappers\IMemoryMapper.cs" />
+    <Compile Include="Mappers\Ram64.cs" />
     <Compile Include="MemoryCheat.cs" />
+    <Compile Include="MemoryDevice.cs" />
     <Compile Include="Region.cs" />
     <Compile Include="Emulator.Controllers.cs" />
     <Compile Include="Mappers\Codemasters.cs" />
-    <Compile Include="Mappers\Ram.cs" />
     <Compile Include="PinDirection.cs" />
     <Compile Include="Emulator.cs" />
     <Compile Include="Emulator.IO.cs" />

@@ -5,50 +5,15 @@ namespace BeeDevelopment.Sega8Bit {
 
 	public partial class Emulator {
 
-		#region Enabled Ports
+		#region Memory Devices
 
-		/// <summary>Gets or sets whether the expansion slot is enabled.</summary>
-		public bool ExpansionSlotEnabled { get; set; }
-
-		/// <summary>Gets or sets whether the cartridge slot is enabled.</summary>
-		public bool CartridgeSlotEnabled { get; set; }
-
-		/// <summary>Gets or sets whether the card slot is enabled.</summary>
-		public bool CardSlotEnabled { get; set; }
-
-		/// <summary>Gets or sets whether the work RAM is enabled.</summary>
-		public bool RamEnabled { get; set; }
-
-		/// <summary>Gets or sets whether the BIOS ROM is enabled.</summary>
-		public bool BiosEnabled { get; set; }
+		public MemoryDevice CartridgeSlot { get; private set; }
+		public MemoryDevice CardSlot { get; private set; }
+		public MemoryDevice ExpansionSlot { get; private set; }
+		public MemoryDevice Bios { get; private set; }
+		public MemoryDevice WorkRam { get; private set; }
 
 		#endregion
-
-		private byte[] ram;
-		/// <summary>
-		/// Gets the work RAM of the emulator.
-		/// </summary>
-		public byte[] Ram { get { return this.ram; } }
-
-		/// <summary>
-		/// Gets or sets the <see cref="ICartridgeMapper"/> inserted in the console's cartridge slot.
-		/// </summary>
-		public Mappers.IMemoryMapper Cartridge { get; set; }
-
-		/// <summary>
-		/// Gets or sets the <see cref="ICartridgeMapper"/> containing the console's ROM BIOS.
-		/// </summary>
-		public Mappers.IMemoryMapper Bios { get; set; }
-
-		/// <summary>
-		/// Gets or sets the <see cref="ICartridgeMapper"/> inserted in the console's card slot.
-		/// </summary>
-		public Mappers.IMemoryMapper CardSlot { get; set; }
-
-		/// <summary>
-		/// Gets or sets the <see cref="ICartridgeMapper"/> connected to the console's expansion slot.
-		/// </summary>
-		public Mappers.IMemoryMapper ExpansionSlot { get; set; }
 
 		/// <summary>
 		/// Gets a <see cref="MemoryCheatCollection"/> of cheats.
@@ -61,15 +26,15 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <param name="address">The address to write to .</param>
 		/// <param name="value">The data to write.</param>
 		public override void WriteMemory(ushort address, byte value) {
-
 			// Writes to RAM.
-			if (address >= 0xC000) this.ram[address & 0x1FFF] = value;
-
-			// Writes to cartridge.
-			if (this.Cartridge != null) this.Cartridge.WriteMemory(address, value);
+			if (address >= 0xC000) this.WorkRam.Write(address, value);
+			// Writes to all other devices.
+			this.CartridgeSlot.Write(address, value);
+			this.CardSlot.Write(address, value);
+			this.ExpansionSlot.Write(address, value);
+			this.Bios.Write(address, value);
 
 		}
-
 
 		/// <summary>
 		/// Reads a byte from memory.
@@ -77,44 +42,16 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <param name="address">The address to read from.</param>
 		/// <returns>The byte read from memory from address <paramref name="address"/>.</returns>
 		public override byte ReadMemory(ushort address) {
-
-
-
 			// Reads from RAM.
 			if (address >= 0xC000) {
-				return this.ram[address & 0x1FFF];
+				return this.WorkRam.Read(address);
 			} else {
-
-
-				// Reads from BIOS ROM.
-				if (this.BiosEnabled && this.Bios != null) return this.Bios.ReadMemory(address);
-
-				// Reads from card slot.
-				if (this.CardSlotEnabled && this.CardSlot != null) return this.CardSlot.ReadMemory(address);
-
-				// Reads from expansion slot.
-				if (this.ExpansionSlotEnabled && this.ExpansionSlot != null) return this.ExpansionSlot.ReadMemory(address);
-
-				// Reads from cartridge slot.
-				if (this.Cartridge != null) {
-
-					byte Source = this.Cartridge.ReadMemory(address);
-
-					if (!this.Cheats.Enabled) return Source;
-
-					var Cheat = this.Cheats[address];
-
-
-					if (Cheat != null && Cheat.Original == Source) {
-						return Cheat.Replacement;
-					} else {
-						return Source;
-					}
-
-				}
-				return 0xFF; // Default.
-
-				
+				return (byte)(
+					this.CartridgeSlot.Read(address) &
+					this.CardSlot.Read(address) &
+					this.ExpansionSlot.Read(address) &
+					this.Bios.Read(address)
+				);
 			}
 		}
 
@@ -122,26 +59,21 @@ namespace BeeDevelopment.Sega8Bit {
 		/// Resets all memory, including RAM and any inserted cartridges.
 		/// </summary>
 		public void ResetMemory() {
-			this.ram = new byte[0x2000]; // 8KB RAM
-			if (this.Cartridge != null) this.Cartridge.Reset();
-			if (this.Bios != null) this.Bios.Reset();
-			if (this.CardSlot != null) this.CardSlot.Reset();
-			if (this.ExpansionSlot != null) this.ExpansionSlot.Reset();
-			this.CartridgeSlotEnabled = true;
-			this.BiosEnabled = false;
-			this.CardSlotEnabled = false;
-			this.ExpansionSlotEnabled = false;
-			this.RamEnabled = true;
+			this.CartridgeSlot.Reset();
+			this.CardSlot.Reset();
+			this.ExpansionSlot.Reset();
+			this.Bios.Reset();
+			this.WorkRam.Reset();
 		}
 
 		/// <summary>
 		/// Removes all inserted media from the emulator.
 		/// </summary>
 		public void RemoveAllMedia() {
-			this.Cartridge = null;
-			this.Bios = null;
-			this.CardSlot = null;
-			this.ExpansionSlot = null;
+			this.CartridgeSlot.Memory = null;
+			this.Bios.Memory = null;
+			this.CardSlot.Memory = null;
+			this.ExpansionSlot.Memory = null;
 		}
 
 		

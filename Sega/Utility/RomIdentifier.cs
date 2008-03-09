@@ -116,8 +116,15 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 
 			RomInfo TryIdentifyHardware = this.GetRomInfo(data);
 			if (TryIdentifyHardware != null) {
-				if (TryIdentifyHardware.Model == HardwareModel.SG1000 || TryIdentifyHardware.Model == HardwareModel.SC3000) {
-					Result = new Ram();
+				switch (TryIdentifyHardware.Model) {
+					case HardwareModel.SG1000:
+					case HardwareModel.SC3000:
+						Result = new Ram64();
+						break;
+					case HardwareModel.GameGear:
+					case HardwareModel.GameGearMasterSystem:
+						if (TryIdentifyHardware.Type == RomInfo.RomType.Bios) Result = new Shared1KBios();
+						break;
 				}
 			}
 
@@ -162,12 +169,16 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			emulator.ResetAll();
 
 			emulator.Region = Countries.CountryToRegion(Info != null ? Info.Country : Country.None);
-			emulator.Cartridge = this.CreateCartridgeMapper(Data);
+			emulator.CartridgeSlot.Memory = this.CreateCartridgeMapper(Data);
 
 			emulator.SetCapabilitiesByModelAndRegion(
 				(emulator.Region == BeeDevelopment.Sega8Bit.Region.Japanese && Model == HardwareModel.MasterSystem2) ? HardwareModel.MasterSystem : Model,
 				emulator.Region
 			);
+
+			// As we are doing a "quick-load", without a BIOS, set state a bit more sensibly:
+			emulator.Bios.Enabled = false;
+			emulator.CartridgeSlot.Enabled = true;
 
 			return Info;
 

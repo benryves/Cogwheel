@@ -74,7 +74,6 @@ namespace CogwheelSlimDX {
 
 			// Load the emulator.
 			this.Emulator = new BeeDevelopment.Sega8Bit.Emulator();
-			this.Emulator.Cartridge = new BeeDevelopment.Sega8Bit.Mappers.Standard();
 
 			// Load the ROM data (if required).
 			string RomDataDir = Path.Combine(Application.StartupPath, "ROM Data");
@@ -340,9 +339,10 @@ namespace CogwheelSlimDX {
 
 				if (File.Exists(RomLoadDialog.BiosFileName)) {
 					string BiosName = RomLoadDialog.BiosFileName;
-					this.Emulator.Bios = this.Identifier.CreateCartridgeMapper(this.Identifier.LoadAndFixRomData(ref BiosName));
-					this.Emulator.BiosEnabled = true;
-					this.Emulator.CartridgeSlotEnabled = false;
+					this.Emulator.Bios.Memory = this.Identifier.CreateCartridgeMapper(this.Identifier.LoadAndFixRomData(ref BiosName));
+					if (this.Emulator.Bios.Memory is Shared1KBios) ((Shared1KBios)this.Emulator.Bios.Memory).SharedMapper = this.Emulator.CartridgeSlot.Memory;
+					this.Emulator.Bios.Enabled = true;
+					this.Emulator.CartridgeSlot.Enabled = false;
 				}
 			}
 		}

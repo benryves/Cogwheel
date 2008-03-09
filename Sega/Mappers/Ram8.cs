@@ -3,9 +3,9 @@
 namespace BeeDevelopment.Sega8Bit.Mappers {
 
 	/// <summary>
-	/// A simple 64KB of RAM.
+	/// A simple 8KB of RAM.
 	/// </summary>
-	public class Ram : IMemoryMapper {
+	public class Ram8 : IMemoryMapper {
 
 		#region Private Fields
 
@@ -24,7 +24,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		/// <param name="address">The address to read from.</param>
 		/// <returns>The byte read from memory from address <paramref name="address"/>.</returns>
 		public byte ReadMemory(ushort address) {
-			return this.Memory[address];
+			return this.Memory[address & 0x1FFF];
 		}
 
 		/// <summary>
@@ -33,7 +33,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		/// <param name="address">The address to write to .</param>
 		/// <param name="value">The data to write.</param>
 		public void WriteMemory(ushort address, byte value) {
-			this.Memory[address] = value;
+			this.Memory[address & 0x1FFF] = value;
 		}
 
 		#endregion
@@ -56,14 +56,12 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		}
 
 		/// <summary>
-		/// Creates an instance of the <see cref="Ram"/> mapper.
+		/// Creates an instance of the <see cref="Ram8"/> mapper.
 		/// </summary>
-		public Ram() {
-			this.Memory = new byte[0x10000];
+		public Ram8() {
+			this.Memory = new byte[0x2000];
 		}
 
 		#endregion
-
-
 	}
 }
