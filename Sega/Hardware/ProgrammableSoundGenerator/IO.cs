@@ -34,7 +34,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					case LatchMode.Tone:
 						this.toneRegisters[this.LatchedChannel] &= 0xFFF0;
 						this.toneRegisters[this.LatchedChannel] |= (ushort)(value & 0x0F);
-						if (this.LatchedChannel == 3) this.ShiftRegister = 0x8000;
+						if (this.LatchedChannel == 3) this.ShiftRegister = (ushort)(1 << (this.ShiftRegisterWidth - 1));
 						break;
 					case LatchMode.Volume:
 						this.volumeRegisters[this.LatchedChannel] = (byte)(value & 0x0F);

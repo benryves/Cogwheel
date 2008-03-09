@@ -17,8 +17,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 		private ushort ShiftRegister;
 
-		private ushort TappedBits = 0x9;
-
 		private bool NoiseTicking;
 
 		private int LastCpuClocks = 0;
@@ -71,7 +69,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 										}
 
 										if (this.NoiseTicking ^= true) {
-											this.ShiftRegister = (ushort)((this.ShiftRegister >> 1) | ((WhiteNoise ? ProgrammableSoundGenerator.CalculateParity(this.ShiftRegister & this.TappedBits) : this.ShiftRegister & 1) << 15));
+											this.ShiftRegister = (ushort)((this.ShiftRegister >> 1) | ((WhiteNoise ? ProgrammableSoundGenerator.CalculateParity(this.ShiftRegister & this.TappedBits) : this.ShiftRegister & 1) << (this.ShiftRegisterWidth - 1)));
 											this.Levels[3] = this.ShiftRegister & 1;
 										}
 
