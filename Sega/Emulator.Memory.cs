@@ -7,10 +7,15 @@ namespace BeeDevelopment.Sega8Bit {
 
 		#region Memory Devices
 
+		/// <summary>Gets the <see cref="MemoryDevice"/> that represents the console's cartridge slot.</summary>
 		public MemoryDevice CartridgeSlot { get; private set; }
+		/// <summary>Gets the <see cref="MemoryDevice"/> that represents the console's card slot.</summary>
 		public MemoryDevice CardSlot { get; private set; }
+		/// <summary>Gets the <see cref="MemoryDevice"/> that represents the console's expansion slot.</summary>
 		public MemoryDevice ExpansionSlot { get; private set; }
+		/// <summary>Gets the <see cref="MemoryDevice"/> that represents the console's BIOS ROM.</summary>
 		public MemoryDevice Bios { get; private set; }
+		/// <summary>Gets the <see cref="MemoryDevice"/> that represents the console's work RAM.</summary>
 		public MemoryDevice WorkRam { get; private set; }
 
 		#endregion
