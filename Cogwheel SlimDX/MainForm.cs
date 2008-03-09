@@ -339,7 +339,7 @@ namespace CogwheelSlimDX {
 
 				if (File.Exists(RomLoadDialog.BiosFileName)) {
 					string BiosName = RomLoadDialog.BiosFileName;
-					this.Emulator.Bios.Memory = this.Identifier.CreateCartridgeMapper(this.Identifier.LoadAndFixRomData(ref BiosName));
+					this.Emulator.Bios.Memory = this.Identifier.CreateMapper(this.Identifier.LoadAndFixRomData(ref BiosName));
 					if (this.Emulator.Bios.Memory is Shared1KBios) ((Shared1KBios)this.Emulator.Bios.Memory).SharedMapper = this.Emulator.CartridgeSlot.Memory;
 					this.Emulator.Bios.Enabled = true;
 					this.Emulator.CartridgeSlot.Enabled = false;

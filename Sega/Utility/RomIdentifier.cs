@@ -96,12 +96,12 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 		}
 
 		/// <summary>
-		/// Creates an <see cref="ICartridgeMapper"/> instance from a ROM dump.
+		/// Creates an <see cref="IMemoryMapper"/> instance from a ROM dump.
 		/// </summary>
-		/// <param name="data">The data to create the <see cref="ICartridgeMapper"/> instance from.</param>
-		/// <returns>An <see cref="ICartridgeMapper"/> with ROM dump data loaded.</returns>
+		/// <param name="data">The data to create the <see cref="IMemoryMapper"/> instance from.</param>
+		/// <returns>An <see cref="IMemoryMapper"/> with ROM dump data loaded.</returns>
 		/// <remarks>This method will attempt to guess the correct mapper to use.</remarks>
-		public IMemoryMapper CreateCartridgeMapper(byte[] data) {
+		public IMemoryMapper CreateMapper(byte[] data) {
 
 			IMemoryMapper Result = null;
 
@@ -169,7 +169,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			emulator.ResetAll();
 
 			emulator.Region = Countries.CountryToRegion(Info != null ? Info.Country : Country.None);
-			emulator.CartridgeSlot.Memory = this.CreateCartridgeMapper(Data);
+			emulator.CartridgeSlot.Memory = this.CreateMapper(Data);
 
 			emulator.SetCapabilitiesByModelAndRegion(
 				(emulator.Region == BeeDevelopment.Sega8Bit.Region.Japanese && Model == HardwareModel.MasterSystem2) ? HardwareModel.MasterSystem : Model,
