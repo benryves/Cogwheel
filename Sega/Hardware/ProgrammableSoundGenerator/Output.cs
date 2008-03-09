@@ -23,6 +23,13 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 		private int LastCpuClocks = 0;
 
+		/// <summary>
+		/// Creates some sound samples.
+		/// </summary>
+		/// <param name="buffer">The buffer to write the sound samples to.</param>
+		/// <remarks>
+		/// The output samples are all 16-bit stereo at 44.1KHz.
+		/// </remarks>
 		public void CreateSamples(short[] buffer) {
 
 			
@@ -40,7 +47,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 						int CorrespondingCycle = (int)(((UInt64)i * (UInt64)ElapsedCycles) / (UInt64)buffer.Length);
 
 						while (this.QueuedWrites.Count > 0 && (this.QueuedWrites.Peek().Key - this.LastCpuClocks) <= CorrespondingCycle) {
-							this.Write(this.QueuedWrites.Dequeue().Value);
+							this.WriteImmediate(this.QueuedWrites.Dequeue().Value);
 						}
 
 						this.CycleStepper -= this.ClockSpeed;
@@ -87,7 +94,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 					}
 
-					while (this.QueuedWrites.Count > 0) this.Write(this.QueuedWrites.Dequeue().Value);
+					while (this.QueuedWrites.Count > 0) this.WriteImmediate(this.QueuedWrites.Dequeue().Value);
 
 					this.LastCpuClocks = TotalCyclesExecuted;
 

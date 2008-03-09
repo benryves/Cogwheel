@@ -11,6 +11,11 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		private LatchMode LatchedMode;
 		private Queue<KeyValuePair<int, byte>> QueuedWrites;
 
+		/// <summary>
+		/// Queues a byte to later write to the <see cref="ProgrammableSoundGenerator"/>.
+		/// </summary>
+		/// <param name="value">The control byte to write.</param>
+		/// <remarks>The writes are committed by the <see cref="CreateSamples"/> method.</remarks>
 		public void WriteQueued(byte value) {
 			this.QueuedWrites.Enqueue(new KeyValuePair<int, byte>(this.Emulator.TotalExecutedCycles, value));
 		}
@@ -19,7 +24,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// Writes a control byte to the <see cref="ProgrammableSoundGenerator"/>.
 		/// </summary>
 		/// <param name="value">The control byte to write.</param>
-		public void Write(byte value) {
+		public void WriteImmediate(byte value) {
 
 			if ((value & 0x80) != 0x00) {
 				// Latch/Data write.
