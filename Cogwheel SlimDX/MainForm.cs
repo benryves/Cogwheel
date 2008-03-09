@@ -256,6 +256,21 @@ namespace CogwheelSlimDX {
 
 		#region ROM Loading
 
+		private void UpdateFormTitle(string filename) {
+			string Name = "";
+			if (this.CurrentRomInfo == null) {
+				if (filename == null) {
+					Name = "";
+				} else {
+					Name = Path.GetFileNameWithoutExtension(filename);
+				}
+			} else {
+				Name = this.CurrentRomInfo.Title;
+			}
+			if (!string.IsNullOrEmpty(Name)) Name += " - ";
+			this.Text = Name + Application.ProductName;
+		}
+
 		private void QuickLoadRomMenu_Click(object sender, EventArgs e) {
 			if (this.OpenRomDialog.ShowDialog(this) == DialogResult.OK) {
 
@@ -268,7 +283,7 @@ namespace CogwheelSlimDX {
 					return;
 				}
 
-				this.Text = (this.CurrentRomInfo != null ? this.CurrentRomInfo.Title : Path.GetFileNameWithoutExtension(Filename)) + " - " + Application.ProductName;
+				this.UpdateFormTitle(Filename);
 
 				if (this.CurrentRomInfo != null) {
 
@@ -329,21 +344,32 @@ namespace CogwheelSlimDX {
 			var RomLoadDialog = new AdvancedRomLoadDialog();
 			if (RomLoadDialog.ShowDialog(this) == DialogResult.OK) {
 
+				this.CurrentRomInfo = null;
+
 				this.Emulator.RemoveAllMedia();
 				this.Emulator.ResetAll();
 
 				if (File.Exists(RomLoadDialog.CartridgeFileName)) {
 					string CartridgeName = RomLoadDialog.CartridgeFileName;
-					this.Identifier.QuickLoadEmulator(ref CartridgeName, this.Emulator);
+					this.CurrentRomInfo = this.Identifier.QuickLoadEmulator(ref CartridgeName, this.Emulator);
 				}
 
 				if (File.Exists(RomLoadDialog.BiosFileName)) {
 					string BiosName = RomLoadDialog.BiosFileName;
 					this.Emulator.Bios.Memory = this.Identifier.CreateMapper(this.Identifier.LoadAndFixRomData(ref BiosName));
-					if (this.Emulator.Bios.Memory is Shared1KBios) ((Shared1KBios)this.Emulator.Bios.Memory).SharedMapper = this.Emulator.CartridgeSlot.Memory;
+					if (this.Emulator.Bios.Memory is Shared1KBios) {
+						((Shared1KBios)this.Emulator.Bios.Memory).SharedMapper = this.Emulator.CartridgeSlot.Memory;
+						if (Properties.Settings.Default.OptionSimulateGameGearLcdScaling) this.Emulator.Video.SetCapabilitiesByModel(HardwareModel.GameGearMasterSystem);
+						this.Emulator.HasGameGearPorts = true;
+						this.Emulator.RespondsToGameGearPorts = this.CurrentRomInfo != null && this.CurrentRomInfo.Model == HardwareModel.GameGear;
+					}
 					this.Emulator.Bios.Enabled = true;
 					this.Emulator.CartridgeSlot.Enabled = false;
 				}
+
+				this.UpdateFormTitle(null);
+
+
 			}
 		}
 

@@ -72,7 +72,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		/// Creates an instance of the <see cref="Shared1KBios"/> mapper.
 		/// </summary>
 		public Shared1KBios() {
-			this.Memory = new byte[0x400];
+			this.Memory = new byte[1024];
 		}
 
 		#endregion

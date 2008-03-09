@@ -22,6 +22,11 @@ namespace BeeDevelopment.Sega8Bit {
 		/// </summary>
 		public bool HasGameGearPorts { get; set; }
 
+		/// <summary>
+		/// Gets or sets whether the emulator reponds to Game Gear port writes.
+		/// </summary>
+		public bool RespondsToGameGearPorts { get; set; }
+
 		#endregion
 
 		/// <summary>
@@ -36,7 +41,7 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <returns>A value read from the device at address <paramref name="port"/>.</param>
 		public override byte ReadHardware(ushort port) {
 
-			if (this.HasGameGearPorts) {
+			if (this.HasGameGearPorts && this.RespondsToGameGearPorts) {
 				switch (port & 0xFF) {
 					case 0x00:
 						// D7: STT  - Start/Pause button (0 = on, 1 = off).
@@ -83,41 +88,44 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <param name="value">The value to write to the device at address <paramref name="port"/>.</param>
 		public override void WriteHardware(ushort port, byte value) {
 
-			if (this.HasGameGearPorts) {
-				switch (port & 0xFF) {
-					case 0x02:
-						this.Port2 = value;
+			if (this.HasGameGearPorts && (port & 0xFF) < 7) {
+				if (this.RespondsToGameGearPorts) {
+					switch (port & 0xFF) {
+						case 0x02:
+							this.Port2 = value;
+							break;
+					}
+				}
+			} else {
+
+				switch (port & 0xC1) {
+
+					case 0x00: // Memory controller.
+						this.ExpansionSlot.Enabled = (value & 0x80) == 0;
+						this.CartridgeSlot.Enabled = (value & 0x40) == 0;
+						this.CardSlot.Enabled = (value & 0x20) == 0;
+						this.WorkRam.Enabled = (value & 0x10) == 0;
+						this.Bios.Enabled = (value & 0x08) == 0;
+						break;
+
+					case 0x01: // I/O port (controller ports) control.
+						this.Ports[0].WriteState(value >> 0);
+						this.Ports[1].WriteState(value >> 2);
+						break;
+
+					case 0x40: // PSG.
+					case 0x41:
+						this.Sound.WriteQueued(value);
+						break;
+
+					case 0x80: // VDP Data.
+						this.Video.WriteData(value);
+						break;
+
+					case 0x81: // VDP Control.
+						this.Video.WriteControl(value);
 						break;
 				}
-			}
-
-			switch (port & 0xC1) { 
-
-				case 0x00: // Memory controller.
-					this.ExpansionSlot.Enabled = (value & 0x80) == 0;
-					this.CartridgeSlot.Enabled = (value & 0x40) == 0;
-					this.CardSlot.Enabled = (value & 0x20) == 0;
-					this.WorkRam.Enabled = (value & 0x10) == 0;
-					this.Bios.Enabled = (value & 0x08) == 0;
-					break;
-
-				case 0x01: // I/O port (controller ports) control.
-					this.Ports[0].WriteState(value >> 0);
-					this.Ports[1].WriteState(value >> 2);
-					break;
-				
-				case 0x40: // PSG.
-				case 0x41:
-					this.Sound.WriteQueued(value);
-					break;
-
-				case 0x80: // VDP Data.
-					this.Video.WriteData(value);
-					break;
-
-				case 0x81: // VDP Control.
-					this.Video.WriteControl(value);
-					break;
 			}
 
 		}

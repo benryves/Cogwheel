@@ -51,12 +51,21 @@ namespace BeeDevelopment.Sega8Bit {
 			if (address >= 0xC000) {
 				return this.WorkRam.Read(address);
 			} else {
-				return (byte)(
-					this.CartridgeSlot.Read(address) &
-					this.CardSlot.Read(address) &
-					this.ExpansionSlot.Read(address) &
-					this.Bios.Read(address)
-				);
+				//HACK: This is a nasty kludge to prevent the Game Gear BIOS and catridge ROM from being AND-ed together.
+				if (this.Bios.Memory != null && this.Bios.Memory is Mappers.Shared1KBios) {
+					if (this.Bios.Enabled) {
+						return this.Bios.Read(address);
+					} else {
+						return this.CartridgeSlot.Read(address);
+					}
+				} else {
+					return (byte)(
+						this.CartridgeSlot.Read(address) &
+						this.CardSlot.Read(address) &
+						this.ExpansionSlot.Read(address) &
+						this.Bios.Read(address)
+					);
+				}
 			}
 		}
 

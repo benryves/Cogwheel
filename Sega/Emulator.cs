@@ -86,7 +86,8 @@ namespace BeeDevelopment.Sega8Bit {
 					break;
 			}
 
-			this.HasGameGearPorts = (model == HardwareModel.GameGear);
+			this.HasGameGearPorts = (model == HardwareModel.GameGear || model == HardwareModel.GameGearMasterSystem);
+			this.RespondsToGameGearPorts = (model == HardwareModel.GameGear);
 			this.HasStartButton = (model == HardwareModel.GameGear);
 			this.HasResetButton = (model == HardwareModel.MasterSystem || model == HardwareModel.MasterSystem2);
 			this.HasPauseButton = (model != HardwareModel.GameGear);
