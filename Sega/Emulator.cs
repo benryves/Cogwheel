@@ -72,7 +72,19 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <param name="model">The <see cref="HardwareModel"/> to base the capabilities on.</param>
 		public void SetCapabilitiesByModelAndRegion(HardwareModel model, Region region) {
 	
+			// Video:
 			this.Video.SetCapabilitiesByModel(model);
+
+			// Sound:
+			switch (model) {
+				case HardwareModel.SG1000:
+				case HardwareModel.SC3000:
+					this.Sound.SetNoiseByPreset(ProgrammableSoundGenerator.NoisePresets.SC3000);
+					break;
+				default:
+					this.Sound.SetNoiseByPreset(ProgrammableSoundGenerator.NoisePresets.SegaMasterSystem);
+					break;
+			}
 
 			this.HasGameGearPorts = (model == HardwareModel.GameGear);
 			this.HasStartButton = (model == HardwareModel.GameGear);
@@ -82,6 +94,8 @@ namespace BeeDevelopment.Sega8Bit {
 			for (int i = 0; i < 2; ++i) {
 				this.Ports[i].SupportsOutput = (model == HardwareModel.MasterSystem || model == HardwareModel.MasterSystem2) && region != Region.Japanese;
 			}
+
+			#region Memory
 
 			// Make all memory devices available.
 			this.CartridgeSlot.Accessibility = MemoryDevice.AccessibilityMode.Optional;
@@ -119,6 +133,10 @@ namespace BeeDevelopment.Sega8Bit {
 			this.ExpansionSlot.Enabled = false;
 			this.Bios.Enabled = true;
 			this.WorkRam.Enabled = true;
+
+			#endregion
+
+
 
 		}
 	}
