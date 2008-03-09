@@ -21,23 +21,25 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 		private bool NoiseTicking;
 
+		private int LastCpuClocks = 0;
+
 		public void CreateSamples(short[] buffer) {
 
-			int CyclesExecuted;
+			
 
 			lock (this.Emulator) {
 				lock (this.QueuedWrites) {
 					
-					CyclesExecuted = this.Emulator.TotalExecutedCycles;
-					this.Emulator.TotalExecutedCycles = 0;
+					int TotalCyclesExecuted = this.Emulator.TotalExecutedCycles;
+					int ElapsedCycles = TotalCyclesExecuted - this.LastCpuClocks;
 
 					bool WhiteNoise = (this.toneRegisters[3] & 0x04) != 0;
 
 					for (int i = 0; i < buffer.Length; i += 2) {
 
-						int CorrespondingCycle = (int)(((UInt64)i * (UInt64)CyclesExecuted) / (UInt64)buffer.Length);
+						int CorrespondingCycle = (int)(((UInt64)i * (UInt64)ElapsedCycles) / (UInt64)buffer.Length);
 
-						while (this.QueuedWrites.Count > 0 && this.QueuedWrites.Peek().Key <= CorrespondingCycle) {
+						while (this.QueuedWrites.Count > 0 && (this.QueuedWrites.Peek().Key - this.LastCpuClocks) <= CorrespondingCycle) {
 							this.Write(this.QueuedWrites.Dequeue().Value);
 						}
 
@@ -87,9 +89,10 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 					while (this.QueuedWrites.Count > 0) this.Write(this.QueuedWrites.Dequeue().Value);
 
+					this.LastCpuClocks = TotalCyclesExecuted;
+
 				}
 			}
 		}
-
 	}
 }
