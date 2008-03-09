@@ -5,7 +5,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 	/// <summary>
 	/// A simple 64KB of RAM.
 	/// </summary>
-	public class Ram : ICartridgeMapper {
+	public class Ram : IMemoryMapper {
 
 		#region Private Fields
 

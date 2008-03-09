@@ -5,7 +5,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 	/// <summary>
 	/// The Codemasters cartridge mapper.
 	/// </summary>
-	public class Codemasters : Standard, ICartridgeMapper {
+	public class Codemasters : Standard, IMemoryMapper {
 
 
 		#region Reading and Writing

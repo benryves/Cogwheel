@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Provides a base interface for cartridge mappers.
 	/// </summary>
-	public interface ICartridgeMapper {
+	public interface IMemoryMapper {
 
 		/// <summary>
 		/// Reads a byte from memory.

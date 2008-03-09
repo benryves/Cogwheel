@@ -33,22 +33,22 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <summary>
 		/// Gets or sets the <see cref="ICartridgeMapper"/> inserted in the console's cartridge slot.
 		/// </summary>
-		public Mappers.ICartridgeMapper Cartridge { get; set; }
+		public Mappers.IMemoryMapper Cartridge { get; set; }
 
 		/// <summary>
 		/// Gets or sets the <see cref="ICartridgeMapper"/> containing the console's ROM BIOS.
 		/// </summary>
-		public Mappers.ICartridgeMapper Bios { get; set; }
+		public Mappers.IMemoryMapper Bios { get; set; }
 
 		/// <summary>
 		/// Gets or sets the <see cref="ICartridgeMapper"/> inserted in the console's card slot.
 		/// </summary>
-		public Mappers.ICartridgeMapper CardSlot { get; set; }
+		public Mappers.IMemoryMapper CardSlot { get; set; }
 
 		/// <summary>
 		/// Gets or sets the <see cref="ICartridgeMapper"/> connected to the console's expansion slot.
 		/// </summary>
-		public Mappers.ICartridgeMapper ExpansionSlot { get; set; }
+		public Mappers.IMemoryMapper ExpansionSlot { get; set; }
 
 		/// <summary>
 		/// Gets a <see cref="MemoryCheatCollection"/> of cheats.

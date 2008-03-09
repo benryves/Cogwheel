@@ -101,9 +101,9 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 		/// <param name="data">The data to create the <see cref="ICartridgeMapper"/> instance from.</param>
 		/// <returns>An <see cref="ICartridgeMapper"/> with ROM dump data loaded.</returns>
 		/// <remarks>This method will attempt to guess the correct mapper to use.</remarks>
-		public ICartridgeMapper CreateCartridgeMapper(byte[] data) {
+		public IMemoryMapper CreateCartridgeMapper(byte[] data) {
 
-			ICartridgeMapper Result = null;
+			IMemoryMapper Result = null;
 
 			if (data.Length >= 0x8000) {
 				ushort CodemastersChecksumA = BitConverter.ToUInt16(data, 0x7FE6);

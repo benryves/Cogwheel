@@ -46,6 +46,7 @@
     <Compile Include="Hardware\ProgrammableSoundGenerator\IO.cs" />
     <Compile Include="Hardware\ProgrammableSoundGenerator\Registers.cs" />
     <Compile Include="Hardware\ProgrammableSoundGenerator\ProgrammableSoundGenerator.cs" />
+    <Compile Include="Mappers\IMemoryMapper.cs" />
     <Compile Include="MemoryCheat.cs" />
     <Compile Include="Region.cs" />
     <Compile Include="Emulator.Controllers.cs" />
@@ -63,7 +64,6 @@
     <Compile Include="Hardware\VideoDisplayProcessor\IO.cs" />
     <Compile Include="Hardware\VideoDisplayProcessor\Registers.cs" />
     <Compile Include="Hardware\VideoDisplayProcessor\VideoDisplayProcessor.cs" />
-    <Compile Include="Mappers\ICartridgeMapper.cs" />
     <Compile Include="Mappers\Standard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\RomData.cs" />
