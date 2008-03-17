@@ -21,6 +21,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 		private int LastCpuClocks = 0;
 
+		private static double[] LogarithmicScale = { 1.0d, 0.794335765d, 0.630970183d, 0.501174963d, 0.398113956d, 0.316232795d, 0.251197851d, 0.20044557d, 0.15848262d, 0.125888852d, 0.100009156d, 0.07943968d, 0.063081759d, 0.050111393d, 0.039796136d, 0.0d };
+
 		/// <summary>
 		/// Creates some sound samples.
 		/// </summary>
@@ -81,12 +83,14 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 						}
 
 
-						int Mixer = 0;
+						double Mixer = 0;
 						for (int c = 0; c < 4; c++) {
-							Mixer += Levels[c] * (0xF - this.volumeRegisters[c]);
+							Mixer += Levels[c] * LogarithmicScale[this.volumeRegisters[c]];
 						}
 
-						buffer[i] = (short)(512 * Mixer);
+						Mixer *= 0.25d;
+
+						buffer[i] = (short)Math.Min(short.MaxValue, Math.Max(short.MinValue, (32768d * Mixer)));
 						buffer[i + 1] = buffer[i];
 
 
