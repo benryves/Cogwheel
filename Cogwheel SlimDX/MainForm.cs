@@ -80,7 +80,7 @@ namespace CogwheelSlimDX {
 			this.Identifier = new RomIdentifier();
 			if (Directory.Exists(RomDataDir)) {
 				try {
-					this.Identifier = new RomIdentifier("ROM Data");
+					this.Identifier = new RomIdentifier(RomDataDir);
 				} catch (Exception ex) {
 					MessageBox.Show(this, ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
