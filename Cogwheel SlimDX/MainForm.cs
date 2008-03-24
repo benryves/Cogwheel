@@ -358,6 +358,20 @@ namespace CogwheelSlimDX {
 				if (File.Exists(RomLoadDialog.CartridgeFileName)) {
 					string CartridgeName = RomLoadDialog.CartridgeFileName;
 					this.CurrentRomInfo = this.Identifier.QuickLoadEmulator(ref CartridgeName, this.Emulator);
+
+					if (File.Exists(RomLoadDialog.CartridgePatchFileName)) {
+						try {
+							string s = RomLoadDialog.CartridgeFileName;
+							var SourceStream = new MemoryStream(ZipLoader.FindRom(ref s));
+							s = RomLoadDialog.CartridgePatchFileName;
+							var PatchStream = new MemoryStream(ZipLoader.FindRom(ref s));
+							Patch.ApplyPatch(SourceStream, PatchStream);
+							this.Emulator.CartridgeSlot.Memory = this.Identifier.CreateMapper(SourceStream.ToArray());
+						} catch (Exception ex) {
+							MessageBox.Show(this, ex.Message, "Cartridge ROM Patch", MessageBoxButtons.OK, MessageBoxIcon.Error);
+						}
+					}
+
 				}
 
 				if (File.Exists(RomLoadDialog.BiosFileName)) {

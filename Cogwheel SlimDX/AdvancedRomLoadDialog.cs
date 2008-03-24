@@ -14,6 +14,11 @@ namespace CogwheelSlimDX {
 			set { this.BrowseCartridgeFileName.FileName = value; }
 		}
 
+		public string CartridgePatchFileName {
+			get { return this.BrowseCartridgePatchFileName.FileName; }
+			set { this.BrowseCartridgePatchFileName.FileName = value; }
+		}
+
 		public string BiosFileName {
 			get { return this.BrowseBiosFileName.FileName; }
 			set { this.BrowseBiosFileName.FileName = value; }
