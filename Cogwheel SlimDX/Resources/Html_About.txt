@@ -1,10 +1,59 @@
 <style>
-a { color: #369; text-decoration: none; }
+a { color: #36F; text-decoration: none; }
 a:hover { color: #33F; text-decoration: underline; }
+td, th { padding: 2px; text-align: left; vertical-align: top; border: 1px solid #999; }
+table { border-collapse: collapse; width: 100%; }
 </style>
 <p>Written by <a href="mailto:benryves@benryves.com">Ben Ryves</a> 2006-2008.</p>
 <p style="font-weight: bold;">Contributors</p>
 <ul>
 	<li>waveOut API wrapper written by <a href="http://www.chronotron.com/">Ianier Munoz</a>.</li>
+	<li>White noise parity calculation algorithm by Dave (finaldave).</li>
+	<li>Some Z80 CPU table calculations by <a href="http://users.hszk.bme.hu/~pg429/">Patai Gergely</a>.</li>
 	<li>famfamfam silk icon set by <a href="http://www.famfamfam.com/">Mark James</a>.</li>
 </ul>
+<p style="font-weight: bold;">References</p>
+<p>The following resources were extremely useful in the development of the emulator.</p>
+<table>
+	<tr>
+		<th>Type</th>
+		<th>Document</th>
+		<th>Author</th>
+	</tr>
+	<tr>
+		<th rowspan="3">General</th>
+		<td><a href="http://www.smspower.org/dev/docs/wiki/">SMS Power! dev wiki</a></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><a href="http://www.smspower.org/dev/docs/smstech-20021112.txt">SMS/GG Hardware Notes</a></td>
+		<td><a href="http://cgfm2.emuviews.com/">Charles MacDonald</a></td>
+	</tr>
+	<tr>
+		<td><a href="http://www.smspower.org/dev/docs/richard.txt">Sega Master System Technical Information</a></td>
+		<td>Richard Talbot-Watkins</td>
+	</tr>
+	<tr>
+		<th rowspan="2">Video</th>
+		<td><a href="http://www.smspower.org/dev/docs/msvdp-20021112.txt">SMS VDP Documentation</a></td>
+		<td><a href="http://cgfm2.emuviews.com/">Charles MacDonald</a></td>
+	</tr>
+	<tr>
+		<td><a href="http://www.smspower.org/dev/docs/TMS9918.pdf">TMS9918A Data Sheet</a></td>
+		<td><a href="http://www.ti.com/">Texas Instruments</a></td>
+	</tr>
+	<tr>
+		<th>Sound</th>
+		<td><a href="http://www.smspower.org/dev/docs/sound/SN76489-20030421.txt">SN79489 Notes</a></td>
+		<td><a href="http://www.smspower.org/maxim/">Maxim</a></td>
+	</tr>
+	<tr>
+		<th rowspan="2">Z80 CPU</th>
+		<td><a href="http://www.zilog.com/docs/z80/um0080.pdf">Z80 Family CPU User Manual</a></td>
+		<td><a href="http://www.zilog.com/">Zilog</a></td>
+	</tr>
+	<tr>
+		<td><a href="http://users.hszk.bme.hu/~pg429/z80guide/">Independent Z80 Assembly Guide</a></td>
+		<td><a href="http://users.hszk.bme.hu/~pg429/">Patai Gergely</a></td>
+	</tr>
+</table>
