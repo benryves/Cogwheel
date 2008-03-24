@@ -116,16 +116,25 @@ namespace CogwheelSlimDX {
 			}
 		}
 
+		// HACK: Refresh rate of the emulator (hard-coded to NTSC 60Hz at the moment.
+		int TargetRefreshRate = 60;
+		int SystemRefreshRate = PixelDumper.GetCurrentRefreshRate();
+		int RefreshStepper = 0;
+
 		void Application_Idle(object sender, EventArgs e) {
 
 			while (AppStillIdle) {
 				if (!this.Paused) {
-					this.Emulator.RunFrame();
-					short[] Buffer = new short[735 * 2];
-					this.Emulator.Sound.CreateSamples(Buffer);
-					this.GeneratedSoundSamples.Enqueue(Buffer);
-					this.Input.Poll();
-					this.Input.UpdateEmulatorState(this.Emulator);
+					RefreshStepper -= TargetRefreshRate;
+					while (RefreshStepper <= 0) {
+						RefreshStepper += SystemRefreshRate;
+						this.Emulator.RunFrame();
+						short[] Buffer = new short[735 * 2];
+						this.Emulator.Sound.CreateSamples(Buffer);
+						this.GeneratedSoundSamples.Enqueue(Buffer);
+						this.Input.Poll();
+						this.Input.UpdateEmulatorState(this.Emulator);
+					}
 				}
 				this.RepaintVideo();
 			}
@@ -141,14 +150,11 @@ namespace CogwheelSlimDX {
 
 		FormWindowState LastWindowState = FormWindowState.Normal;
 		private void MainForm_Resize(object sender, EventArgs e) {
-
 			if (this.WindowState == FormWindowState.Maximized || this.LastWindowState == FormWindowState.Maximized) {
 				this.Dumper.ReinitialiseRenderer();
 				this.LastWindowState = this.WindowState;
 			}
-
 			this.RepaintVideo();
-
 		}
 
 		private void MainForm_ResizeEnd(object sender, EventArgs e) {
