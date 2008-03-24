@@ -45,6 +45,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 									case ".sg":
 									case ".rom":
 									case ".mv":
+									case ".ips":
 										searchFileName = Path.Combine(searchFileName, ZipEntry.Name);
 										return ZipEntry.Data;
 								}
