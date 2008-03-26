@@ -30,6 +30,8 @@
 			// 
 			// FilePathTextBox
 			// 
+			this.FilePathTextBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+			this.FilePathTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
 			this.FilePathTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.FilePathTextBox.Location = new System.Drawing.Point(0, 0);
 			this.FilePathTextBox.Name = "FilePathTextBox";
