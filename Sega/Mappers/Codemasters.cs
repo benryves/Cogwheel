@@ -5,6 +5,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 	/// <summary>
 	/// The Codemasters cartridge mapper.
 	/// </summary>
+	[Serializable()]
 	public class Codemasters : Standard, IMemoryMapper {
 
 

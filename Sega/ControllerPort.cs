@@ -7,13 +7,13 @@ namespace BeeDevelopment.Sega8Bit {
 	/// <summary>
 	/// Emulates a controller port.
 	/// </summary>
+	[Serializable()]
 	public class ControllerPort  {
-
-
 
 		/// <summary>
 		/// Represents an input-only pin on the controller port.
 		/// </summary>
+		[Serializable()]
 		public class UnidirectionalPin {
 
 			/// <summary>
@@ -34,6 +34,7 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <summary>
 		/// Represents a bidirectional pin pin on the controller port.
 		/// </summary>
+		[Serializable()]
 		public class BidirectionalPin : UnidirectionalPin {
 
 

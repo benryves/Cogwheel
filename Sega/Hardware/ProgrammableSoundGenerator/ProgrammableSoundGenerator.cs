@@ -5,6 +5,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 	/// <summary>
 	/// Emulates an SN76489 programmable sound generator.
 	/// </summary>
+	[Serializable()]
 	public partial class ProgrammableSoundGenerator {
 
 		#region Types

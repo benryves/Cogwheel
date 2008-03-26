@@ -1,7 +1,9 @@
-﻿namespace BeeDevelopment.Sega8Bit.Hardware {
+﻿using System;
+namespace BeeDevelopment.Sega8Bit.Hardware {
 	/// <summary>
 	/// Emulates a TMS9918A video display processor with Sega Master System and Sega Game Gear extensions.
 	/// </summary>
+	[Serializable()]
 	public partial class VideoDisplayProcessor {
 
 		#region Types

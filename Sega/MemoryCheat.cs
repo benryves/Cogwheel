@@ -6,6 +6,7 @@ namespace BeeDevelopment.Sega8Bit {
 	/// <summary>
 	/// Represents a cheat that works by patching memory at runtime.
 	/// </summary>
+	[Serializable()]
 	public class MemoryCheat {
 
 		/// <summary>
@@ -96,6 +97,7 @@ namespace BeeDevelopment.Sega8Bit {
 	/// <summary>
 	/// Provides a class for maintaining collections of cheats.
 	/// </summary>
+	[Serializable()]
 	public class MemoryCheatCollection : ICollection<MemoryCheat> {
 
 		private List<MemoryCheat> Cheats;

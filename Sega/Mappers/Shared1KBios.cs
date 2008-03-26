@@ -5,6 +5,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 	/// <summary>
 	/// A 1KB BIOS ROM that shares the address space with another mapper.
 	/// </summary>
+	[Serializable()]
 	public class Shared1KBios : IMemoryMapper {
 
 		#region Private Fields

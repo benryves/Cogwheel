@@ -5,6 +5,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 	/// <summary>
 	/// A simple 2KB of RAM.
 	/// </summary>
+	[Serializable()]
 	public class Ram2 : IMemoryMapper {
 
 		#region Private Fields

@@ -1,4 +1,5 @@
-﻿using BeeDevelopment.Brazil;
+﻿using System;
+using BeeDevelopment.Brazil;
 using BeeDevelopment.Sega8Bit.Hardware;
 
 namespace BeeDevelopment.Sega8Bit {
@@ -6,6 +7,7 @@ namespace BeeDevelopment.Sega8Bit {
 	/// <summary>
 	/// Provides a basic Sega 8-bit emulator.
 	/// </summary>
+	[Serializable()]
 	public partial class Emulator : Z80A {
 
 		public override void Reset() {

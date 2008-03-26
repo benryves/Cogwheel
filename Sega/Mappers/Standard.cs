@@ -5,6 +5,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 	/// <summary>
 	/// The standard Sega cartridge mapper.
 	/// </summary>
+	[Serializable()]
 	public class Standard : IMemoryMapper {
 
 		#region Private Fields

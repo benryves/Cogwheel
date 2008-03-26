@@ -1,9 +1,11 @@
-﻿using BeeDevelopment.Sega8Bit.Mappers;
+﻿using System;
+using BeeDevelopment.Sega8Bit.Mappers;
 
 namespace BeeDevelopment.Sega8Bit {
 	/// <summary>
 	/// Represents a potential memory device.
 	/// </summary>
+	[Serializable()]
 	public class MemoryDevice {
 
 		#region Types
