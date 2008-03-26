@@ -30,7 +30,21 @@ namespace CogwheelSlimDX {
 		private void UpdateText() {
 			switch (this.Mode) {
 				case InputMode.Keyboard:
-					base.Text = key.ToString();
+					switch (this.key) {
+						case Keys.Back:
+							base.Text = "Backspace"; break;
+						case Keys.Menu:
+							base.Text = "Alt"; break;
+						case Keys.ControlKey:
+							base.Text = "Ctrl"; break;
+						case Keys.ShiftKey:
+							base.Text = "Shift"; break;
+						case Keys.Capital:
+							base.Text = "CapsLock"; break;
+						default:
+							base.Text = Key.ToString();
+							break;
+					}
 					break;
 				case InputMode.Joystick:
 					base.Text = JoystickTriggerToString(this.JoystickTrigger);
