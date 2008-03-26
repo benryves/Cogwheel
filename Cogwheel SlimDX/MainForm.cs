@@ -11,6 +11,7 @@ using BeeDevelopment.Sega8Bit;
 using BeeDevelopment.Sega8Bit.Mappers;
 using BeeDevelopment.Sega8Bit.Utility;
 using BeeDevelopment.Zip;
+using System.Threading;
 
 
 namespace CogwheelSlimDX {
@@ -125,19 +126,23 @@ namespace CogwheelSlimDX {
 		void Application_Idle(object sender, EventArgs e) {
 
 			while (AppStillIdle) {
-				if (!this.Paused) {
-					RefreshStepper -= TargetRefreshRate;
-					while (RefreshStepper <= 0) {
-						RefreshStepper += SystemRefreshRate;
-						this.Emulator.RunFrame();
-						short[] Buffer = new short[735 * 2];
-						this.Emulator.Sound.CreateSamples(Buffer);
-						this.GeneratedSoundSamples.Enqueue(Buffer);
-						this.Input.Poll();
-						this.Input.UpdateEmulatorState(this.Emulator);
+				if (this.WindowState == FormWindowState.Minimized) {
+					Thread.Sleep(100);
+				} else {
+					if (!this.Paused) {
+						RefreshStepper -= TargetRefreshRate;
+						while (RefreshStepper <= 0) {
+							RefreshStepper += SystemRefreshRate;
+							this.Emulator.RunFrame();
+							short[] Buffer = new short[735 * 2];
+							this.Emulator.Sound.CreateSamples(Buffer);
+							this.GeneratedSoundSamples.Enqueue(Buffer);
+							this.Input.Poll();
+							this.Input.UpdateEmulatorState(this.Emulator);
+						}
 					}
+					this.RepaintVideo();
 				}
-				this.RepaintVideo();
 			}
 		}
 
