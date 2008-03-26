@@ -11,6 +11,10 @@ using System.Drawing.Imaging;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Diagnostics;
+using System.Xml.Serialization;
+using System.IO.Compression;
+using System.Runtime.Serialization.Formatters.Binary;
+using BeeDevelopment.Zip;
 
 
 namespace CogwheelSlimDX {
@@ -403,31 +407,50 @@ namespace CogwheelSlimDX {
 		/// <returns>True if the screenshot was taken succesfully, false otherwise.</returns>
 		public bool TakeScreenshot() {
 
+			var ScreenshotBitmap = this.GetScreenshotBitmap();
+			if (ScreenshotBitmap != null) {
+				try {
+					// Store in clipboard.
+					Clipboard.SetData(DataFormats.Bitmap, ScreenshotBitmap);
+					return true;
+				} catch {
+					return false;
+				} finally {
+					ScreenshotBitmap.Dispose();
+				}
+			} else {
+				return false;
+			}
+		}
+
+		/// <summary>
+		/// Gets a screenshot of the current display as a <see cref="Bitmap"/>.
+		/// </summary>
+		/// <returns>A <see cref="Bitmap"/> if one was recorded, false otherwise.</returns>
+		private Bitmap GetScreenshotBitmap() {
+
 			// Quick sanity check that a frame has been generated.
-			if (this.Emulator.Video.LastCompleteFrameHeight + this.Emulator.Video.LastCompleteFrameWidth <= 0) return false;
+			if (this.Emulator.Video.LastCompleteFrameHeight + this.Emulator.Video.LastCompleteFrameWidth <= 0) return null;
 
 			try {
 				// Use a temporary Bitmap to store the screenshot image.
-				using (var ScreenshotImage = new Bitmap(this.Emulator.Video.LastCompleteFrameWidth, this.Emulator.Video.LastCompleteFrameHeight)) {
+				var ScreenshotImage = new Bitmap(this.Emulator.Video.LastCompleteFrameWidth, this.Emulator.Video.LastCompleteFrameHeight);
 
-					// Lock, copy, unlock.
-					var LockedData = ScreenshotImage.LockBits(new Rectangle(0, 0, ScreenshotImage.Width, ScreenshotImage.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppRgb);
-					try {
-						Marshal.Copy(this.Emulator.Video.LastCompleteFrame, 0, LockedData.Scan0, ScreenshotImage.Width * ScreenshotImage.Height);
-					} finally {
-						ScreenshotImage.UnlockBits(LockedData);
-					}
-
-					// Store in clipboard.
-					Clipboard.SetData(DataFormats.Bitmap, ScreenshotImage);
+				// Lock, copy, unlock.
+				var LockedData = ScreenshotImage.LockBits(new Rectangle(0, 0, ScreenshotImage.Width, ScreenshotImage.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppRgb);
+				try {
+					Marshal.Copy(this.Emulator.Video.LastCompleteFrame, 0, LockedData.Scan0, ScreenshotImage.Width * ScreenshotImage.Height);
+				} finally {
+					ScreenshotImage.UnlockBits(LockedData);
 				}
 
+
 				// Success!
-				return true;
+				return ScreenshotImage;
 			} catch {
 
 				// If anything goes wrong, return false.
-				return false;
+				return null;
 			}
 		}
 
@@ -563,6 +586,79 @@ namespace CogwheelSlimDX {
 		private void LinearInterpolationMenu_Click(object sender, EventArgs e) {
 			Properties.Settings.Default.OptionLinearInterpolation ^= true;
 			this.Dumper.LinearInterpolation = Properties.Settings.Default.OptionLinearInterpolation;
+		}
+
+		#endregion
+
+		#region State Saving
+
+		private void SaveStateMenu_Click(object sender, EventArgs e) {
+			if (this.SaveStateDialog.ShowDialog(this) == DialogResult.OK) {
+				try {
+					this.SaveState(this.SaveStateDialog.FileName);
+				} catch (Exception ex) {
+					MessageBox.Show(this, ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+			}
+		}
+
+		private void LoadStateMenu_Click(object sender, EventArgs e) {
+			if (this.OpenStateDialog.ShowDialog(this) == DialogResult.OK) {
+				try {
+					this.LoadState(this.OpenStateDialog.FileName);
+				} catch (Exception ex) {
+					MessageBox.Show(this, ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+			}
+		}
+
+		private void SaveState(string filename) {
+			var SavedState = new ZipFile();
+			var Serialiser = new BinaryFormatter();
+			using (var StateStream = new MemoryStream(2048)) {
+				Serialiser.Serialize(StateStream, this.Emulator);
+				SavedState.Add(new ZipFileEntry() {
+					Name = "State.bin",
+					Comment = "Raw saved state data (as created by BinaryFormatter).",
+					Data = StateStream.ToArray(),
+					LastWriteTime = DateTime.Now,
+				});
+			}
+
+			var ScreenshotBitmap = this.GetScreenshotBitmap();
+			if (ScreenshotBitmap != null) {
+				try {
+					using (var ScreenshotStream = new MemoryStream(2048)) {
+						ScreenshotBitmap.Save(ScreenshotStream, ImageFormat.Png);
+						SavedState.Add(new ZipFileEntry() {
+							Name = "Screenshot.png",
+							Comment = "A screenshot of the last video frame in PNG format.",
+							Data = ScreenshotStream.ToArray(),
+							LastWriteTime = DateTime.Now,
+						});
+					}
+				} finally {
+					ScreenshotBitmap.Dispose();
+				}
+			}
+
+			SavedState.Save(filename);
+		}
+
+		private void LoadState(string filename) {
+			var StateFile = ZipFile.FromFile(filename);
+			this.CurrentRomInfo = null;
+			this.UpdateFormTitle(null);
+			lock (this.Emulator) {
+				foreach (var Entry in StateFile) {
+					if (Entry.Name.ToLowerInvariant() == "state.bin") {
+						var Deserialiser = new BinaryFormatter();
+						using (var StateStream = new MemoryStream(Entry.Data)) {
+							this.Emulator = (Emulator)Deserialiser.Deserialize(StateStream);
+						}
+					}
+				}
+			}
 		}
 
 		#endregion

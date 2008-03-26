@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BeeZip, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binary Libraries\BeeZip.dll</HintPath>
+    </Reference>
     <Reference Include="SlimDX, Version=1.0.2863.23737, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binary Libraries\SlimDX.dll</HintPath>
@@ -216,6 +220,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cog.ico" />
+    <None Include="Resources\time_go.png" />
     <None Include="Resources\Html_About.txt" />
     <None Include="Resources\Banner.png" />
     <None Include="Resources\bug.png" />

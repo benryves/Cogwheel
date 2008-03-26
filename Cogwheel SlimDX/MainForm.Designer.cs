@@ -31,6 +31,9 @@
 			this.QuickLoadRomMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.AdvancedLoadMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.FileSep0 = new System.Windows.Forms.ToolStripSeparator();
+			this.LoadStateMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.SaveStateMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.FileSep1 = new System.Windows.Forms.ToolStripSeparator();
 			this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.EditMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.CopyScreenshotMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,6 +54,8 @@
 			this.Status = new System.Windows.Forms.StatusStrip();
 			this.MessageStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.MessageTicker = new System.Windows.Forms.Timer(this.components);
+			this.OpenStateDialog = new System.Windows.Forms.OpenFileDialog();
+			this.SaveStateDialog = new System.Windows.Forms.SaveFileDialog();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -81,6 +86,9 @@
             this.QuickLoadRomMenu,
             this.AdvancedLoadMenu,
             this.FileSep0,
+            this.LoadStateMenu,
+            this.SaveStateMenu,
+            this.FileSep1,
             this.ExitMenu});
 			this.FileMenu.Name = "FileMenu";
 			this.FileMenu.Size = new System.Drawing.Size(37, 20);
@@ -106,6 +114,26 @@
 			// 
 			this.FileSep0.Name = "FileSep0";
 			this.FileSep0.Size = new System.Drawing.Size(213, 6);
+			// 
+			// LoadStateMenu
+			// 
+			this.LoadStateMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_TimeGo;
+			this.LoadStateMenu.Name = "LoadStateMenu";
+			this.LoadStateMenu.Size = new System.Drawing.Size(216, 22);
+			this.LoadStateMenu.Text = "&Load State...";
+			this.LoadStateMenu.Click += new System.EventHandler(this.LoadStateMenu_Click);
+			// 
+			// SaveStateMenu
+			// 
+			this.SaveStateMenu.Name = "SaveStateMenu";
+			this.SaveStateMenu.Size = new System.Drawing.Size(216, 22);
+			this.SaveStateMenu.Text = "&Save State...";
+			this.SaveStateMenu.Click += new System.EventHandler(this.SaveStateMenu_Click);
+			// 
+			// FileSep1
+			// 
+			this.FileSep1.Name = "FileSep1";
+			this.FileSep1.Size = new System.Drawing.Size(213, 6);
 			// 
 			// ExitMenu
 			// 
@@ -148,7 +176,7 @@
             this.GameGenieEditMenu});
 			this.GameGenieMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(152, 22);
+			this.GameGenieMenu.Size = new System.Drawing.Size(138, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
 			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
 			// 
@@ -176,7 +204,7 @@
             this.LinearInterpolationMenu});
 			this.OptionsMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Wrench;
 			this.OptionsMenu.Name = "OptionsMenu";
-			this.OptionsMenu.Size = new System.Drawing.Size(152, 22);
+			this.OptionsMenu.Size = new System.Drawing.Size(138, 22);
 			this.OptionsMenu.Text = "&Options";
 			this.OptionsMenu.DropDownOpening += new System.EventHandler(this.OptionsMenu_DropDownOpening);
 			// 
@@ -265,6 +293,14 @@
 			this.MessageTicker.Interval = 2500;
 			this.MessageTicker.Tick += new System.EventHandler(this.MessageTicker_Tick);
 			// 
+			// OpenStateDialog
+			// 
+			this.OpenStateDialog.Filter = "Cogwheel Saved States (*.cogstate)|*.cogstate|All Files (*.*)|*.*";
+			// 
+			// SaveStateDialog
+			// 
+			this.SaveStateDialog.Filter = "Cogwheel Saved States (*.cogstate)|*.cogstate|All Files (*.*)|*.*";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -316,6 +352,11 @@
 		private System.Windows.Forms.ToolStripSeparator OptionsSep0;
 		private System.Windows.Forms.ToolStripMenuItem SimulateGameGearLcdMenu;
 		private System.Windows.Forms.ToolStripMenuItem LinearInterpolationMenu;
+		private System.Windows.Forms.ToolStripMenuItem LoadStateMenu;
+		private System.Windows.Forms.ToolStripMenuItem SaveStateMenu;
+		private System.Windows.Forms.ToolStripSeparator FileSep1;
+		private System.Windows.Forms.OpenFileDialog OpenStateDialog;
+		private System.Windows.Forms.SaveFileDialog SaveStateDialog;
 	}
 }
 
