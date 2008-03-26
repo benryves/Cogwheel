@@ -1,9 +1,10 @@
 
 using System;
+using System.Runtime.Serialization;
 namespace BeeDevelopment.Brazil {
-	public partial class Z80A {
+	public partial class Z80A : IDeserializationCallback {
 
-		public void InitialiseTables() {
+		private void InitialiseTables() {
 			this.InitTableInc();
 			this.InitTableDec();
 			this.InitTableParity();
@@ -317,5 +318,8 @@ namespace BeeDevelopment.Brazil {
 
 
 
+		public void OnDeserialization(object sender) {
+			this.InitialiseTables();
+		}
 	}
 }
