@@ -75,6 +75,7 @@ namespace CogwheelSlimDX {
 
 			// Initialise sound.
 			this.InitialiseSound();
+			this.SoundMuted = !Properties.Settings.Default.OptionEnableSound;
 
 			// Load the emulator.
 			this.Emulator = new BeeDevelopment.Sega8Bit.Emulator();
@@ -195,7 +196,7 @@ namespace CogwheelSlimDX {
 
 				short[] Generated = new short[size / 2];
 
-				if (SoundMuted) {
+				if (SoundMuted || Paused) {
 
 					this.GeneratedSoundSamples.Clear();
 
@@ -538,13 +539,11 @@ namespace CogwheelSlimDX {
 		#region Focus
 
 		protected override void OnLostFocus(EventArgs e) {
-			this.SoundMuted = true;
 			this.Paused = true;
 			base.OnLostFocus(e);
 		}
 
 		protected override void OnGotFocus(EventArgs e) {
-			this.SoundMuted = false;
 			this.Paused = false;
 			base.OnGotFocus(e);
 		}
@@ -576,6 +575,8 @@ namespace CogwheelSlimDX {
 		private void OptionsMenu_DropDownOpening(object sender, EventArgs e) {
 			this.SimulateGameGearLcdMenu.Checked = Properties.Settings.Default.OptionSimulateGameGearLcdScaling;
 			this.LinearInterpolationMenu.Checked = Properties.Settings.Default.OptionLinearInterpolation;
+			if (this.EnableSoundMenu.Image != null) this.EnableSoundMenu.Image.Dispose();
+			this.EnableSoundMenu.Image = Properties.Settings.Default.OptionEnableSound ? Properties.Resources.Icon_Sound : Properties.Resources.Icon_SoundMute;
 		}
 
 		private void SimulateGameGearLcdMenu_Click(object sender, EventArgs e) {
@@ -586,6 +587,12 @@ namespace CogwheelSlimDX {
 		private void LinearInterpolationMenu_Click(object sender, EventArgs e) {
 			Properties.Settings.Default.OptionLinearInterpolation ^= true;
 			this.Dumper.LinearInterpolation = Properties.Settings.Default.OptionLinearInterpolation;
+		}
+
+
+		private void EnableSoundMenu_Click(object sender, EventArgs e) {
+			Properties.Settings.Default.OptionEnableSound ^= true;
+			this.SoundMuted = !Properties.Settings.Default.OptionEnableSound;
 		}
 
 		#endregion
@@ -662,6 +669,7 @@ namespace CogwheelSlimDX {
 		}
 
 		#endregion
+
 
 	}
 }

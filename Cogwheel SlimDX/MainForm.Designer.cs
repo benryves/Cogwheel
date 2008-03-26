@@ -46,6 +46,7 @@
 			this.OptionsSep0 = new System.Windows.Forms.ToolStripSeparator();
 			this.SimulateGameGearLcdMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.LinearInterpolationMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.EnableSoundMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.AboutMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.HelpSep0 = new System.Windows.Forms.ToolStripSeparator();
@@ -176,7 +177,7 @@
             this.GameGenieEditMenu});
 			this.GameGenieMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(138, 22);
+			this.GameGenieMenu.Size = new System.Drawing.Size(152, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
 			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
 			// 
@@ -201,10 +202,11 @@
             this.CustomiseControlsMenu,
             this.OptionsSep0,
             this.SimulateGameGearLcdMenu,
-            this.LinearInterpolationMenu});
+            this.LinearInterpolationMenu,
+            this.EnableSoundMenu});
 			this.OptionsMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Wrench;
 			this.OptionsMenu.Name = "OptionsMenu";
-			this.OptionsMenu.Size = new System.Drawing.Size(138, 22);
+			this.OptionsMenu.Size = new System.Drawing.Size(152, 22);
 			this.OptionsMenu.Text = "&Options";
 			this.OptionsMenu.DropDownOpening += new System.EventHandler(this.OptionsMenu_DropDownOpening);
 			// 
@@ -234,6 +236,13 @@
 			this.LinearInterpolationMenu.Size = new System.Drawing.Size(247, 22);
 			this.LinearInterpolationMenu.Text = "&Linear Interpolation (Smooth)";
 			this.LinearInterpolationMenu.Click += new System.EventHandler(this.LinearInterpolationMenu_Click);
+			// 
+			// EnableSoundMenu
+			// 
+			this.EnableSoundMenu.Name = "EnableSoundMenu";
+			this.EnableSoundMenu.Size = new System.Drawing.Size(247, 22);
+			this.EnableSoundMenu.Text = "&Enable Sound";
+			this.EnableSoundMenu.Click += new System.EventHandler(this.EnableSoundMenu_Click);
 			// 
 			// HelpMenu
 			// 
@@ -357,6 +366,7 @@
 		private System.Windows.Forms.ToolStripSeparator FileSep1;
 		private System.Windows.Forms.OpenFileDialog OpenStateDialog;
 		private System.Windows.Forms.SaveFileDialog SaveStateDialog;
+		private System.Windows.Forms.ToolStripMenuItem EnableSoundMenu;
 	}
 }
 

@@ -247,6 +247,34 @@ namespace CogwheelSlimDX.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Icon_Sound {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Sound", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_SoundLow {
+            get {
+                object obj = ResourceManager.GetObject("Icon_SoundLow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_SoundMute {
+            get {
+                object obj = ResourceManager.GetObject("Icon_SoundMute", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_SoundNone {
+            get {
+                object obj = ResourceManager.GetObject("Icon_SoundNone", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Icon_TimeGo {
             get {
                 object obj = ResourceManager.GetObject("Icon_TimeGo", resourceCulture);
