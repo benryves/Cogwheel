@@ -31,15 +31,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BeeZip, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binary Libraries\BeeZip.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Source Libraries\BeeZip\Crc32.cs">
+      <Link>BeeZip\Crc32.cs</Link>
+    </Compile>
+    <Compile Include="..\Source Libraries\BeeZip\DosDateTime.cs">
+      <Link>BeeZip\DosDateTime.cs</Link>
+    </Compile>
+    <Compile Include="..\Source Libraries\BeeZip\ZipFile.cs">
+      <Link>BeeZip\ZipFile.cs</Link>
+    </Compile>
+    <Compile Include="..\Source Libraries\BeeZip\ZipFileEntry.cs">
+      <Link>BeeZip\ZipFileEntry.cs</Link>
+    </Compile>
     <Compile Include="ControllerPort.cs" />
     <Compile Include="Country.cs" />
     <Compile Include="Hardware\ProgrammableSoundGenerator\Output.cs" />

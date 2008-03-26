@@ -6,12 +6,12 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading;
 using System.Windows.Forms;
 using BeeDevelopment.Sega8Bit;
 using BeeDevelopment.Sega8Bit.Mappers;
 using BeeDevelopment.Sega8Bit.Utility;
 using BeeDevelopment.Zip;
-using System.Threading;
 
 
 namespace CogwheelSlimDX {
