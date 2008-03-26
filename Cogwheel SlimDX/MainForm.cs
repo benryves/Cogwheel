@@ -1,19 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Threading;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 using BeeDevelopment.Sega8Bit;
 using BeeDevelopment.Sega8Bit.Mappers;
 using BeeDevelopment.Sega8Bit.Utility;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Diagnostics;
-using System.Xml.Serialization;
-using System.IO.Compression;
-using System.Runtime.Serialization.Formatters.Binary;
 using BeeDevelopment.Zip;
 
 
