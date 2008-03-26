@@ -1,8 +1,9 @@
 
+using System;
 namespace BeeDevelopment.Brazil {
 	public partial class Z80A {
 
-		private void InitTables() {
+		public void InitialiseTables() {
 			this.InitTableInc();
 			this.InitTableDec();
 			this.InitTableParity();
@@ -15,6 +16,7 @@ namespace BeeDevelopment.Brazil {
 		}
 
 		#region 8-bit increment
+		[NonSerialized()]
 		private byte[] TableInc;
 		private void InitTableInc() {
 			TableInc = new byte[256];
@@ -24,6 +26,7 @@ namespace BeeDevelopment.Brazil {
 		#endregion
 
 		#region 8-bit decrement
+		[NonSerialized()]
 		private byte[] TableDec;
 		private void InitTableDec() {
 			TableDec = new byte[256];
@@ -33,6 +36,7 @@ namespace BeeDevelopment.Brazil {
 		#endregion
 
 		#region Parity
+		[NonSerialized()]
 		private bool[] TableParity;
 		private void InitTableParity() {
 			TableParity = new bool[256];
@@ -48,6 +52,7 @@ namespace BeeDevelopment.Brazil {
 
 		#region ALU operations
 
+		[NonSerialized()]
 		private ushort[, , ,] TableALU;
 		private void InitTableALU() {
 			TableALU = new ushort[8, 256, 256, 2]; // Class, OP1, OP2, Carry
@@ -156,6 +161,7 @@ namespace BeeDevelopment.Brazil {
 
 		#region 8-bit Half Carry/Borrow
 
+		[NonSerialized()]
 		private bool[,] TableHalfBorrow;
 		private void InitTableHalfBorrow() {
 			TableHalfBorrow = new bool[256, 256];
@@ -180,6 +186,7 @@ namespace BeeDevelopment.Brazil {
 
 		#region Rotate and Shift
 
+		[NonSerialized()]
 		private ushort[, ,] TableRotShift;
 		private void InitTableRotShift() {
 			TableRotShift = new ushort[2, 8, 65536]; // All, operation, AF
@@ -240,6 +247,7 @@ namespace BeeDevelopment.Brazil {
 		#endregion
 
 		#region Negation
+		[NonSerialized()]
 		private ushort[] TableNeg;
 		private void InitTableNeg() {
 			TableNeg = new ushort[65536];
@@ -255,6 +263,7 @@ namespace BeeDevelopment.Brazil {
 		#endregion
 
 		#region DAA
+		[NonSerialized()]
 		private ushort[] TableDaa;
 		private void InitTableDaa() {
 			TableDaa = new ushort[65536];

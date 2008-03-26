@@ -1,9 +1,11 @@
 using System.Runtime.InteropServices;
+using System;
 
 namespace BeeDevelopment.Brazil {
 	public partial class Z80A {
 
 		[StructLayout(LayoutKind.Explicit)]
+		[Serializable()]
 		struct RegisterPair {
 			
 			[FieldOffset(0)]

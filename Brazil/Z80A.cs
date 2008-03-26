@@ -1,16 +1,18 @@
 
+using System;
 namespace BeeDevelopment.Brazil {
 
 	/// <summary>
 	/// ZiLOG Z80A CPU Emulator
 	/// </summary>
+	[Serializable()]
 	public partial class Z80A {
 
 		/// <summary>
 		/// Creates an instance of the <see cref="Z80A"/> emulator class.
 		/// </summary>
 		public Z80A() {
-			InitTables();
+			InitialiseTables();
 			Reset();
 		}
 
