@@ -262,5 +262,65 @@ namespace CogwheelSlimDX.Properties {
                 this["OptionEnableSound"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StoredPathQuickLoad {
+            get {
+                return ((string)(this["StoredPathQuickLoad"]));
+            }
+            set {
+                this["StoredPathQuickLoad"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StoredPathState {
+            get {
+                return ((string)(this["StoredPathState"]));
+            }
+            set {
+                this["StoredPathState"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StoredPathAdvancedCartridge {
+            get {
+                return ((string)(this["StoredPathAdvancedCartridge"]));
+            }
+            set {
+                this["StoredPathAdvancedCartridge"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StoredPathAdvancedCartridgePatch {
+            get {
+                return ((string)(this["StoredPathAdvancedCartridgePatch"]));
+            }
+            set {
+                this["StoredPathAdvancedCartridgePatch"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StoredPathAdvancedBios {
+            get {
+                return ((string)(this["StoredPathAdvancedBios"]));
+            }
+            set {
+                this["StoredPathAdvancedBios"] = value;
+            }
+        }
     }
 }

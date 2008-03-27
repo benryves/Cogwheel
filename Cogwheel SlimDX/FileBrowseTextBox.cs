@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Text;
+using System.IO;
 using System.Windows.Forms;
 
 namespace BeeDevelopment.Sega8Bit {
@@ -12,6 +9,11 @@ namespace BeeDevelopment.Sega8Bit {
 		public string FileName {
 			get { return this.FilePathTextBox.Text; }
 			set { this.FilePathTextBox.Text = value; }
+		}
+
+		public string InitialDirectory {
+			get { return this.FileDialog.InitialDirectory; }
+			set { if (!string.IsNullOrEmpty(value) && Directory.Exists(value)) this.FileDialog.InitialDirectory = value; }
 		}
 
 		public string Filter {

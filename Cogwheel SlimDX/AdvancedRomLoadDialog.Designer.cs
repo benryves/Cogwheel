@@ -78,6 +78,7 @@
 			this.BrowseCartridgePatchFileName.Dock = System.Windows.Forms.DockStyle.Top;
 			this.BrowseCartridgePatchFileName.FileName = "";
 			this.BrowseCartridgePatchFileName.Filter = "";
+			this.BrowseCartridgePatchFileName.InitialDirectory = "";
 			this.BrowseCartridgePatchFileName.Location = new System.Drawing.Point(90, 31);
 			this.BrowseCartridgePatchFileName.Name = "BrowseCartridgePatchFileName";
 			this.BrowseCartridgePatchFileName.Size = new System.Drawing.Size(272, 20);
@@ -98,6 +99,7 @@
 			this.BrowseBiosFileName.Dock = System.Windows.Forms.DockStyle.Top;
 			this.BrowseBiosFileName.FileName = "";
 			this.BrowseBiosFileName.Filter = "";
+			this.BrowseBiosFileName.InitialDirectory = "";
 			this.BrowseBiosFileName.Location = new System.Drawing.Point(90, 59);
 			this.BrowseBiosFileName.Name = "BrowseBiosFileName";
 			this.BrowseBiosFileName.Size = new System.Drawing.Size(272, 20);
@@ -118,6 +120,7 @@
 			this.BrowseCartridgeFileName.Dock = System.Windows.Forms.DockStyle.Top;
 			this.BrowseCartridgeFileName.FileName = "";
 			this.BrowseCartridgeFileName.Filter = "";
+			this.BrowseCartridgeFileName.InitialDirectory = "";
 			this.BrowseCartridgeFileName.Location = new System.Drawing.Point(90, 3);
 			this.BrowseCartridgeFileName.Name = "BrowseCartridgeFileName";
 			this.BrowseCartridgeFileName.Size = new System.Drawing.Size(272, 20);
@@ -154,6 +157,7 @@
 			this.ButtonOK.TabIndex = 1;
 			this.ButtonOK.Text = "&OK";
 			this.ButtonOK.UseVisualStyleBackColor = true;
+			this.ButtonOK.Click += new System.EventHandler(this.ButtonOK_Click);
 			// 
 			// ButtonCancel
 			// 

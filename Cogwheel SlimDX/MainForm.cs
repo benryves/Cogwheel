@@ -284,7 +284,14 @@ namespace CogwheelSlimDX {
 		}
 
 		private void QuickLoadRomMenu_Click(object sender, EventArgs e) {
+
+			if (!string.IsNullOrEmpty(Properties.Settings.Default.StoredPathQuickLoad) && Directory.Exists(Properties.Settings.Default.StoredPathQuickLoad)) {
+				this.OpenRomDialog.InitialDirectory = Properties.Settings.Default.StoredPathQuickLoad;
+			}
+
 			if (this.OpenRomDialog.ShowDialog(this) == DialogResult.OK) {
+
+				Properties.Settings.Default.StoredPathQuickLoad = Path.GetDirectoryName(this.OpenRomDialog.FileName);
 
 				string Filename = this.OpenRomDialog.FileName;
 
@@ -601,8 +608,14 @@ namespace CogwheelSlimDX {
 		#region State Saving
 
 		private void SaveStateMenu_Click(object sender, EventArgs e) {
+
+			if (!string.IsNullOrEmpty(Properties.Settings.Default.StoredPathState) && Directory.Exists(Properties.Settings.Default.StoredPathState)) {
+				this.SaveStateDialog.InitialDirectory = Properties.Settings.Default.StoredPathState;
+			}
+
 			if (this.SaveStateDialog.ShowDialog(this) == DialogResult.OK) {
 				try {
+					Properties.Settings.Default.StoredPathState = Path.GetDirectoryName(this.SaveStateDialog.FileName);
 					this.SaveState(this.SaveStateDialog.FileName);
 				} catch (Exception ex) {
 					MessageBox.Show(this, ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -611,8 +624,14 @@ namespace CogwheelSlimDX {
 		}
 
 		private void LoadStateMenu_Click(object sender, EventArgs e) {
+			
+			if (!string.IsNullOrEmpty(Properties.Settings.Default.StoredPathState) && Directory.Exists(Properties.Settings.Default.StoredPathState)) {
+				this.OpenStateDialog.InitialDirectory = Properties.Settings.Default.StoredPathState;
+			}
+
 			if (this.OpenStateDialog.ShowDialog(this) == DialogResult.OK) {
 				try {
+					Properties.Settings.Default.StoredPathState = Path.GetDirectoryName(this.OpenStateDialog.FileName);
 					this.LoadState(this.OpenStateDialog.FileName);
 				} catch (Exception ex) {
 					MessageBox.Show(this, ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);

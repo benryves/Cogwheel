@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
 
 namespace CogwheelSlimDX {
 	public partial class AdvancedRomLoadDialog : Form {
@@ -26,6 +27,23 @@ namespace CogwheelSlimDX {
 
 		public AdvancedRomLoadDialog() {
 			InitializeComponent();
+			this.BrowseCartridgeFileName.InitialDirectory = Properties.Settings.Default.StoredPathAdvancedCartridge;
+			this.BrowseCartridgePatchFileName.InitialDirectory = Properties.Settings.Default.StoredPathAdvancedCartridgePatch;
+			this.BrowseBiosFileName.InitialDirectory = Properties.Settings.Default.StoredPathAdvancedBios;
 		}
+
+		private void ButtonOK_Click(object sender, EventArgs e) {
+			
+			if (!string.IsNullOrEmpty(this.BrowseCartridgeFileName.FileName) && File.Exists(this.BrowseCartridgeFileName.FileName))
+				Properties.Settings.Default.StoredPathAdvancedCartridge = Path.GetDirectoryName(this.BrowseCartridgeFileName.FileName);
+
+			if (!string.IsNullOrEmpty(this.BrowseCartridgePatchFileName.FileName) && File.Exists(this.BrowseCartridgePatchFileName.FileName))
+				Properties.Settings.Default.StoredPathAdvancedCartridgePatch = Path.GetDirectoryName(this.BrowseCartridgePatchFileName.FileName);
+
+			if (!string.IsNullOrEmpty(this.BrowseBiosFileName.FileName) && File.Exists(this.BrowseBiosFileName.FileName))
+				Properties.Settings.Default.StoredPathAdvancedBios = Path.GetDirectoryName(this.BrowseBiosFileName.FileName);
+		}
+
+
 	}
 }
