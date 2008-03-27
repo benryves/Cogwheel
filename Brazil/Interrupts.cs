@@ -48,8 +48,6 @@ namespace BeeDevelopment.Brazil {
 		/// </summary>
 		public bool Halted { get; set; }
 
-		public int InterruptCount { get; set; }
-
 		private void ResetInterrupts() {
 			this.IFF1 = false;
 			this.IFF2 = false;
@@ -66,7 +64,10 @@ namespace BeeDevelopment.Brazil {
 			InstructionsUntilEI = 0;
 		}
 
-		private int InstructionsUntilEI;
+		/// <summary>
+		/// Gets or sets the number of instructions to execute before interrupts are re-enabled.
+		/// </summary>
+		public int InstructionsUntilEI { get; set; }
 
 		private void EnableInterrupts() {
 			InstructionsUntilEI = 2;
