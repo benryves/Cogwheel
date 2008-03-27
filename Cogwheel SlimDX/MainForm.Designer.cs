@@ -57,6 +57,9 @@
 			this.MessageTicker = new System.Windows.Forms.Timer(this.components);
 			this.OpenStateDialog = new System.Windows.Forms.OpenFileDialog();
 			this.SaveStateDialog = new System.Windows.Forms.SaveFileDialog();
+			this.RecentRomsMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.FileSep2 = new System.Windows.Forms.ToolStripSeparator();
+			this.dummyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -90,6 +93,8 @@
             this.LoadStateMenu,
             this.SaveStateMenu,
             this.FileSep1,
+            this.RecentRomsMenu,
+            this.FileSep2,
             this.ExitMenu});
 			this.FileMenu.Name = "FileMenu";
 			this.FileMenu.Size = new System.Drawing.Size(37, 20);
@@ -177,7 +182,7 @@
             this.GameGenieEditMenu});
 			this.GameGenieMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(152, 22);
+			this.GameGenieMenu.Size = new System.Drawing.Size(138, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
 			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
 			// 
@@ -206,7 +211,7 @@
             this.EnableSoundMenu});
 			this.OptionsMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Wrench;
 			this.OptionsMenu.Name = "OptionsMenu";
-			this.OptionsMenu.Size = new System.Drawing.Size(152, 22);
+			this.OptionsMenu.Size = new System.Drawing.Size(138, 22);
 			this.OptionsMenu.Text = "&Options";
 			this.OptionsMenu.DropDownOpening += new System.EventHandler(this.OptionsMenu_DropDownOpening);
 			// 
@@ -310,6 +315,26 @@
 			// 
 			this.SaveStateDialog.Filter = "Cogwheel Saved States (*.cogstate)|*.cogstate|All Files (*.*)|*.*";
 			// 
+			// RecentRomsMenu
+			// 
+			this.RecentRomsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dummyToolStripMenuItem});
+			this.RecentRomsMenu.Name = "RecentRomsMenu";
+			this.RecentRomsMenu.Size = new System.Drawing.Size(216, 22);
+			this.RecentRomsMenu.Text = "&Recent ROMs";
+			this.RecentRomsMenu.DropDownOpening += new System.EventHandler(this.RecentRomsMenu_DropDownOpening);
+			// 
+			// FileSep2
+			// 
+			this.FileSep2.Name = "FileSep2";
+			this.FileSep2.Size = new System.Drawing.Size(213, 6);
+			// 
+			// dummyToolStripMenuItem
+			// 
+			this.dummyToolStripMenuItem.Name = "dummyToolStripMenuItem";
+			this.dummyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.dummyToolStripMenuItem.Text = "&Dummy";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -367,6 +392,9 @@
 		private System.Windows.Forms.OpenFileDialog OpenStateDialog;
 		private System.Windows.Forms.SaveFileDialog SaveStateDialog;
 		private System.Windows.Forms.ToolStripMenuItem EnableSoundMenu;
+		private System.Windows.Forms.ToolStripMenuItem RecentRomsMenu;
+		private System.Windows.Forms.ToolStripSeparator FileSep2;
+		private System.Windows.Forms.ToolStripMenuItem dummyToolStripMenuItem;
 	}
 }
 

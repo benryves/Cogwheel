@@ -322,5 +322,29 @@ namespace CogwheelSlimDX.Properties {
                 this["StoredPathAdvancedBios"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        public int OptionMaxMRUEntries {
+            get {
+                return ((int)(this["OptionMaxMRUEntries"]));
+            }
+            set {
+                this["OptionMaxMRUEntries"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StoredPathMRU {
+            get {
+                return ((string)(this["StoredPathMRU"]));
+            }
+            set {
+                this["StoredPathMRU"] = value;
+            }
+        }
     }
 }

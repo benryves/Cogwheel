@@ -93,6 +93,9 @@ namespace CogwheelSlimDX {
 			this.RenderPanelSize = new Size(256 * 2, 192 * 2);
 			this.CenterToScreen();
 
+			// Load MRU list.
+			this.LoadRecentItemsFromSettings();
+
 			// Attach render loop handler.
 			Application.Idle += new EventHandler(Application_Idle);
 			this.Disposed += new EventHandler(MainForm_Disposed);
@@ -283,79 +286,85 @@ namespace CogwheelSlimDX {
 			this.Text = Name + Application.ProductName;
 		}
 
-		private void QuickLoadRomMenu_Click(object sender, EventArgs e) {
+		/// <summary>
+		/// Quick-load a ROM.
+		/// </summary>
+		/// <param name="filename">The name of the ROM file to quick-load.</param>
+		private void QuickLoad(string filename) {
+			
+			string Filename = filename;
 
+			try {
+				this.CurrentRomInfo = this.Identifier.QuickLoadEmulator(ref Filename, this.Emulator);
+			} catch (Exception ex) {
+				MessageBox.Show(this, ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+
+			this.UpdateFormTitle(Filename);
+
+			this.AddRecentFile(filename);
+
+			if (this.CurrentRomInfo != null) {
+
+				if (this.CurrentRomInfo.Model == HardwareModel.GameGearMasterSystem && !Properties.Settings.Default.OptionSimulateGameGearLcdScaling) {
+					this.Emulator.Video.SetCapabilitiesByModel(HardwareModel.MasterSystem2);
+				}
+
+				this.AddMessage(Properties.Resources.Icon_Information, this.CurrentRomInfo.Title);
+				if (!string.IsNullOrEmpty(this.CurrentRomInfo.Author)) this.AddMessage(Properties.Resources.Icon_User, this.CurrentRomInfo.Author);
+
+				switch (this.CurrentRomInfo.Type) {
+					case RomInfo.RomType.HeaderedFootered:
+						if (this.CurrentRomInfo.FooterSize > 0) this.AddMessage(Properties.Resources.Icon_Exclamation, "Footered");
+						if (this.CurrentRomInfo.HeaderSize > 0) this.AddMessage(Properties.Resources.Icon_Exclamation, "Headered");
+						break;
+					case RomInfo.RomType.Overdumped:
+						this.AddMessage(Properties.Resources.Icon_Exclamation, "Overdumped");
+						break;
+					case RomInfo.RomType.Translation:
+						this.AddMessage(Properties.Resources.Icon_CommentEdit, "Translation");
+						break;
+					case RomInfo.RomType.Bios:
+						this.AddMessage(Properties.Resources.Icon_Lightning, "BIOS");
+						break;
+					case RomInfo.RomType.Bad:
+						this.AddMessage(Properties.Resources.Icon_Exclamation, "Fixable errors in dump");
+						break;
+					case RomInfo.RomType.VeryBad:
+						this.AddMessage(Properties.Resources.Icon_Error, "Unusable dump");
+						break;
+					case RomInfo.RomType.Demo:
+						this.AddMessage(Properties.Resources.Icon_House, "Homebrew");
+						break;
+					case RomInfo.RomType.Hack:
+						this.AddMessage(Properties.Resources.Icon_Wrench, "Hack");
+						break;
+				}
+
+				switch (this.CurrentRomInfo.Country) {
+					case Country.Japan: this.AddMessage(Properties.Resources.Flag_JP, "Japan"); break;
+					case Country.Brazil: this.AddMessage(Properties.Resources.Flag_BR, "Brazil"); break;
+					case Country.UnitedStates: this.AddMessage(Properties.Resources.Flag_US, "United States"); break;
+					case Country.Korea: this.AddMessage(Properties.Resources.Flag_KR, "Korea"); break;
+					case Country.France: this.AddMessage(Properties.Resources.Flag_FR, "France"); break;
+					case Country.Spain: this.AddMessage(Properties.Resources.Flag_ES, "Spain"); break;
+					case Country.Germany: this.AddMessage(Properties.Resources.Flag_DE, "Germany"); break;
+					case Country.Italy: this.AddMessage(Properties.Resources.Flag_IT, "Italy"); break;
+					case Country.England: this.AddMessage(Properties.Resources.Flag_EN, "England"); break;
+					case Country.NewZealand: this.AddMessage(Properties.Resources.Flag_NZ, "New Zealand"); break;
+				}
+			}
+
+		}
+
+		private void QuickLoadRomMenu_Click(object sender, EventArgs e) {
 			if (!string.IsNullOrEmpty(Properties.Settings.Default.StoredPathQuickLoad) && Directory.Exists(Properties.Settings.Default.StoredPathQuickLoad)) {
 				this.OpenRomDialog.InitialDirectory = Properties.Settings.Default.StoredPathQuickLoad;
 			}
-
 			if (this.OpenRomDialog.ShowDialog(this) == DialogResult.OK) {
-
 				Properties.Settings.Default.StoredPathQuickLoad = Path.GetDirectoryName(this.OpenRomDialog.FileName);
-
-				string Filename = this.OpenRomDialog.FileName;
-
-				try {
-					this.CurrentRomInfo = this.Identifier.QuickLoadEmulator(ref Filename, this.Emulator);
-				} catch (Exception ex) {
-					MessageBox.Show(this, ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
-				}
-
-				this.UpdateFormTitle(Filename);
-
-				if (this.CurrentRomInfo != null) {
-
-					if (this.CurrentRomInfo.Model == HardwareModel.GameGearMasterSystem && !Properties.Settings.Default.OptionSimulateGameGearLcdScaling) {
-						this.Emulator.Video.SetCapabilitiesByModel(HardwareModel.MasterSystem2);
-					}
-
-					this.AddMessage(Properties.Resources.Icon_Information, this.CurrentRomInfo.Title);
-					if (!string.IsNullOrEmpty(this.CurrentRomInfo.Author)) this.AddMessage(Properties.Resources.Icon_User, this.CurrentRomInfo.Author);
-
-					switch (this.CurrentRomInfo.Type) {
-						case RomInfo.RomType.HeaderedFootered:
-							if (this.CurrentRomInfo.FooterSize > 0) this.AddMessage(Properties.Resources.Icon_Exclamation, "Footered");
-							if (this.CurrentRomInfo.HeaderSize > 0) this.AddMessage(Properties.Resources.Icon_Exclamation, "Headered");
-							break;
-						case RomInfo.RomType.Overdumped:
-							this.AddMessage(Properties.Resources.Icon_Exclamation, "Overdumped");
-							break;
-						case RomInfo.RomType.Translation:
-							this.AddMessage(Properties.Resources.Icon_CommentEdit, "Translation");
-							break;
-						case RomInfo.RomType.Bios:
-							this.AddMessage(Properties.Resources.Icon_Lightning, "BIOS");
-							break;
-						case RomInfo.RomType.Bad:
-							this.AddMessage(Properties.Resources.Icon_Exclamation, "Fixable errors in dump");
-							break;
-						case RomInfo.RomType.VeryBad:
-							this.AddMessage(Properties.Resources.Icon_Error, "Unusable dump");
-							break;
-						case RomInfo.RomType.Demo:
-							this.AddMessage(Properties.Resources.Icon_House, "Homebrew");
-							break;
-						case RomInfo.RomType.Hack:
-							this.AddMessage(Properties.Resources.Icon_Wrench, "Hack");
-							break;
-					}
-
-					switch (this.CurrentRomInfo.Country) {
-						case Country.Japan: this.AddMessage(Properties.Resources.Flag_JP, "Japan"); break;
-						case Country.Brazil: this.AddMessage(Properties.Resources.Flag_BR, "Brazil"); break;
-						case Country.UnitedStates: this.AddMessage(Properties.Resources.Flag_US, "United States"); break;
-						case Country.Korea: this.AddMessage(Properties.Resources.Flag_KR, "Korea"); break;
-						case Country.France: this.AddMessage(Properties.Resources.Flag_FR, "France"); break;
-						case Country.Spain: this.AddMessage(Properties.Resources.Flag_ES, "Spain"); break;
-						case Country.Germany: this.AddMessage(Properties.Resources.Flag_DE, "Germany"); break;
-						case Country.Italy: this.AddMessage(Properties.Resources.Flag_IT, "Italy"); break;
-						case Country.England: this.AddMessage(Properties.Resources.Flag_EN, "England"); break;
-						case Country.NewZealand: this.AddMessage(Properties.Resources.Flag_NZ, "New Zealand"); break;
-					}
-				}
-
-				
+				this.QuickLoad(this.OpenRomDialog.FileName);
 			}
 		}
 
@@ -690,6 +699,61 @@ namespace CogwheelSlimDX {
 
 		#endregion
 
+		#region Recent Items
+
+		private LinkedList<string> RecentFiles = new LinkedList<string>();
+
+		private void AddRecentFile(string file) {
+			var ToRemove = new List<string>();
+			foreach (var RecentFile in RecentFiles) {
+				if (RecentFile.ToLowerInvariant() == file.ToLowerInvariant()) {
+					ToRemove.Add(RecentFile);
+				}
+			}
+			foreach (var RecentFile in ToRemove) {
+				RecentFiles.Remove(RecentFile);
+			}
+			this.RecentFiles.AddFirst(file);
+
+			while (this.RecentFiles.Count > Properties.Settings.Default.OptionMaxMRUEntries && this.RecentFiles.Count > 0) this.RecentFiles.RemoveLast();
+
+			this.SaveRecentItemsToSettings();
+		}
+
+		private void LoadRecentItemsFromSettings() {
+			this.RecentFiles.Clear();
+			if (!string.IsNullOrEmpty(Properties.Settings.Default.StoredPathMRU)) {
+				this.RecentFiles = new LinkedList<string>(Properties.Settings.Default.StoredPathMRU.Split('|'));
+			}
+		}
+
+		private void SaveRecentItemsToSettings() {
+			var MRUEntries = new string[this.RecentFiles.Count];
+			this.RecentFiles.CopyTo(MRUEntries,0);
+			Properties.Settings.Default.StoredPathMRU = string.Join("|", MRUEntries);
+		}
+
+		private void RecentRomsMenu_DropDownOpening(object sender, EventArgs e) {
+			var ToDispose = new List<IDisposable>();
+			foreach (IDisposable RecentItem in this.RecentRomsMenu.DropDownItems) ToDispose.Add(RecentItem);
+			this.RecentRomsMenu.DropDownItems.Clear();
+			foreach (IDisposable RecentItem in ToDispose) {
+				RecentItem.Dispose();
+			}
+
+			if (RecentFiles.Count == 0) {
+				this.RecentRomsMenu.DropDownItems.Add(new ToolStripMenuItem("(None)") { Enabled = false });
+			} else {
+				int i = 1;
+				foreach (var RecentFile in RecentFiles) {
+					this.RecentRomsMenu.DropDownItems.Add(new ToolStripMenuItem("&" + (i++) + " " + Path.GetFileNameWithoutExtension(RecentFile), null, (RecentFileMenu, e2) => this.QuickLoad(((ToolStripMenuItem)RecentFileMenu).Tag.ToString())) { Tag = RecentFile });
+				}
+			}
+
+			
+		}
+
+		#endregion
 
 	}
 }
