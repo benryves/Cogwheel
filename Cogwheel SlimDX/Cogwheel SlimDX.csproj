@@ -45,18 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Source Libraries\BeeZip\Crc32.cs">
-      <Link>Zip\Crc32.cs</Link>
-    </Compile>
-    <Compile Include="..\Source Libraries\BeeZip\DosDateTime.cs">
-      <Link>Zip\DosDateTime.cs</Link>
-    </Compile>
-    <Compile Include="..\Source Libraries\BeeZip\ZipFile.cs">
-      <Link>Zip\ZipFile.cs</Link>
-    </Compile>
-    <Compile Include="..\Source Libraries\BeeZip\ZipFileEntry.cs">
-      <Link>Zip\ZipFileEntry.cs</Link>
-    </Compile>
     <Compile Include="About.cs">
       <SubType>Form</SubType>
     </Compile>
