@@ -122,34 +122,47 @@ namespace BeeDevelopment.Brazil {
 
 		#region Public accessors
 
+		[StateNotSaved()]
 		public byte RegisterA {
 			get { return RegAF.High8; }
 			set { RegAF.High8 = value; }
 		}
+
+		[StateNotSaved()]
 		public byte RegisterF {
 			get { return RegAF.Low8; }
 			set { RegAF.Low8 = value; }
 		}
+
 		public ushort RegisterAF {
 			get { return RegAF.Value16; }
 			set { RegAF.Value16 = value; }
 		}
+
+		[StateNotSaved()]
 		public byte RegisterB {
 			get { return RegBC.High8; }
 			set { RegBC.High8 = value; }
 		}
+
+		[StateNotSaved()]
 		public byte RegisterC {
 			get { return RegBC.Low8; }
 			set { RegBC.Low8 = value; }
 		}
+
 		public ushort RegisterBC {
 			get { return RegBC.Value16; }
 			set { RegBC.Value16 = value; }
 		}
+
+		[StateNotSaved()]
 		public byte RegisterD {
 			get { return RegDE.High8; }
 			set { RegDE.High8 = value; }
 		}
+
+		[StateNotSaved()]
 		public byte RegisterE {
 			get { return RegDE.Low8; }
 			set { RegDE.Low8 = value; }
@@ -158,10 +171,14 @@ namespace BeeDevelopment.Brazil {
 			get { return RegDE.Value16; }
 			set { RegDE.Value16 = value; }
 		}
+
+		[StateNotSaved()]
 		public byte RegisterH {
 			get { return RegHL.High8; }
 			set { RegHL.High8 = value; }
 		}
+
+		[StateNotSaved()]
 		public byte RegisterL {
 			get { return RegHL.Low8; }
 			set { RegHL.Low8 = value; }

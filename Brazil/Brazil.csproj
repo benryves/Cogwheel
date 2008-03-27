@@ -32,6 +32,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Fetch Execute.cs" />
@@ -40,6 +42,7 @@
     <Compile Include="Memory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registers.cs" />
+    <Compile Include="StateNotSavedAttribute.cs" />
     <Compile Include="Tables.cs" />
     <Compile Include="Z80A.cs" />
   </ItemGroup>
