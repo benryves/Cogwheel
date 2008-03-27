@@ -233,6 +233,7 @@ namespace BeeDevelopment.Zip {
 		/// Creates an empty <see cref="ZipFileEntry"/> instance.
 		/// </summary>
 		public ZipFileEntry() {
+			this.LastWriteTime = DateTime.Now;
 			this.Method = CompressionMethod.Deflate;
 		}
 
