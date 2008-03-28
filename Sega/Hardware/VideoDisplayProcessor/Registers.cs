@@ -1,4 +1,5 @@
 ﻿using System;
+using BeeDevelopment.Brazil;
 namespace BeeDevelopment.Sega8Bit.Hardware {
 
 	public partial class VideoDisplayProcessor {
@@ -93,6 +94,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <summary>
 		/// Set to disable vertical scrolling for columns 24-31.
 		/// </summary>
+		[StateNotSaved()]
 		public bool InhibitScrollY {
 			get { return GetBit(0x0, 7); }
 			set { AdjustBit(0x0, 7, value); }
@@ -101,6 +103,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <summary>
 		/// Set to disable horizontal scrolling for rows 0-1.
 		/// </summary>
+		[StateNotSaved()]
 		public bool InhibitScrollX {
 			get { return GetBit(0x0, 6); }
 			set { AdjustBit(0x0, 6, value); }
@@ -109,6 +112,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <summary>
 		/// Set to mask column 0 with border colour.
 		/// </summary>
+		[StateNotSaved()]
 		public bool MaskColumn0 {
 			get { return GetBit(0x0, 5); }
 			set { AdjustBit(0x0, 5, value); }
@@ -117,6 +121,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <summary>
 		/// (IE1) Set to enable raster line interrupts.
 		/// </summary>
+		[StateNotSaved()]
 		public bool LineInterruptEnable {
 			get { return GetBit(0x0, 4); }
 			set { AdjustBit(0x0, 4, value); }
@@ -125,6 +130,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <summary>
 		/// (EC) Set to shift sprites left by 8 pixels.
 		/// </summary>
+		[StateNotSaved()]
 		public bool EarlyClock {
 			get { return GetBit(0x0, 3); }
 			set { AdjustBit(0x0, 3, value); }
@@ -133,6 +139,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <summary>
 		/// (M4) Set to use mode 4, reset to use TMS9918 modes.
 		/// </summary>
+		[StateNotSaved()]
 		public bool UseMode4 {
 			get { return GetBit(0x0, 2); }
 			set { AdjustBit(0x0, 2, value); }
@@ -141,6 +148,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <summary>
 		/// (M3) Set to allow mode 4 screen height changes.
 		/// </summary>
+		[StateNotSaved()]
 		public bool AllowMode4HeightChanges {
 			get { return GetBit(0x0, 1); }
 			set { AdjustBit(0x0, 1, value); }
@@ -149,6 +157,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <summary>
 		/// Set to disable synch.
 		/// </summary>
+		[StateNotSaved()]
 		public bool NoSynch {
 			get { return GetBit(0x0, 0); }
 			set { AdjustBit(0x0, 0, value); }
@@ -161,6 +170,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <summary>
 		/// (BLK) Set to make the display visible, reset to blank it.
 		/// </summary>
+		[StateNotSaved()]
 		public bool DisplayVisible {
 			get { return GetBit(0x1, 6); }
 			set { AdjustBit(0x1, 6, value); }
@@ -169,6 +179,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <summary>
 		/// (IE0) Set to enable frame interrupts.
 		/// </summary>
+		[StateNotSaved()]
 		public bool FrameInterruptEnable {
 			get { return GetBit(0x1, 5); }
 			set { AdjustBit(0x1, 5, value); }
@@ -178,6 +189,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// (M1) Set to use 224-line screen when in Mode 4.
 		/// </summary>
 		/// <remarks>M2 must also be set to allow the change.</remarks>
+		[StateNotSaved()]
 		public bool Use224LineMode {
 			get { return GetBit(0x1, 4); }
 			set { AdjustBit(0x1, 4, value); }
@@ -187,6 +199,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// (M3) Set to use 240-line screen when in Mode 4.
 		/// </summary>
 		/// <remarks>M2 must also be set to allow the change.</remarks>
+		[StateNotSaved()]
 		public bool Use240LineMode {
 			get { return GetBit(0x1, 3); }
 			set { AdjustBit(0x1, 3, value); }
@@ -195,6 +208,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <summary>
 		/// Set to join sprites (16x16 in TMS9918 modes, 8x16 in mode 4).
 		/// </summary>
+		[StateNotSaved()]
 		public bool JoinSprites {
 			get { return GetBit(0x1, 1); }
 			set { AdjustBit(0x1, 1, value); }
@@ -203,6 +217,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <summary>
 		/// Set to zoom sprites to double size.
 		/// </summary>
+		[StateNotSaved()]
 		public bool ZoomSprites {
 			get { return GetBit(0x1, 0); }
 			set { AdjustBit(0x1, 0, value); }
@@ -248,6 +263,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <summary>
 		/// Gets the current <see cref="VideoDisplayProcessor"/> mode.
 		/// </summary>
+		[StateNotSaved()]
 		public Mode CurrentMode {
 			get {
 

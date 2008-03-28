@@ -1,4 +1,5 @@
 ﻿using System;
+using BeeDevelopment.Brazil;
 namespace BeeDevelopment.Sega8Bit.Hardware {
 	/// <summary>
 	/// Emulates a TMS9918A video display processor with Sega Master System and Sega Game Gear extensions.
@@ -72,6 +73,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <summary>
 		/// Gets the <see cref="Emulator"/> that contains this <see cref="VideoDisplayProcessor"/>.
 		/// </summary>
+		[StateNotSaved()]
 		public Emulator Emulator { get; private set; }
 
 		#endregion
