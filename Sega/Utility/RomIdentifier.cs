@@ -170,6 +170,11 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 
 			emulator.Region = Countries.CountryToRegion(Info != null ? Info.Country : Country.None);
 
+			emulator.SetCapabilitiesByModelAndRegion(
+				(emulator.Region == BeeDevelopment.Sega8Bit.Region.Japanese && Model == HardwareModel.MasterSystem2) ? HardwareModel.MasterSystem : Model,
+				emulator.Region
+			);
+
 			if (Info != null && Info.Type == RomInfo.RomType.Bios) {
 				emulator.Bios.Memory = this.CreateMapper(Data);
 				emulator.Bios.Enabled = true;
@@ -179,12 +184,6 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 				emulator.Bios.Enabled = false;
 				emulator.CartridgeSlot.Enabled = true;
 			}
-
-			emulator.SetCapabilitiesByModelAndRegion(
-				(emulator.Region == BeeDevelopment.Sega8Bit.Region.Japanese && Model == HardwareModel.MasterSystem2) ? HardwareModel.MasterSystem : Model,
-				emulator.Region
-			);
-
 		
 
 			return Info;
