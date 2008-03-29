@@ -54,7 +54,7 @@ namespace CogwheelSlimDX {
 
 		#region Constructor/Initialiser
 
-		public MainForm() {
+		public MainForm(string[] arguments) {
 
 			InitializeComponent();
 
@@ -99,6 +99,20 @@ namespace CogwheelSlimDX {
 			// Attach render loop handler.
 			Application.Idle += new EventHandler(Application_Idle);
 			this.Disposed += new EventHandler(MainForm_Disposed);
+
+			// Parse command-line arguments.
+			if (arguments.Length == 1 && File.Exists(arguments[0])) {
+				try {
+					switch (Path.GetExtension(arguments[0]).ToLowerInvariant()) {
+						case ".cogstate":
+							this.LoadState(arguments[0]);
+							break;
+						default:
+							this.QuickLoad(arguments[0]);
+							break;
+					}
+				} catch { }
+			}
 
 		}
 
