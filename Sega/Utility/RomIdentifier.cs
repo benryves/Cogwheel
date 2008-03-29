@@ -169,16 +169,23 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			emulator.ResetAll();
 
 			emulator.Region = Countries.CountryToRegion(Info != null ? Info.Country : Country.None);
-			emulator.CartridgeSlot.Memory = this.CreateMapper(Data);
+
+			if (Info != null && Info.Type == RomInfo.RomType.Bios) {
+				emulator.Bios.Memory = this.CreateMapper(Data);
+				emulator.Bios.Enabled = true;
+				emulator.CartridgeSlot.Enabled = false;
+			} else {
+				emulator.CartridgeSlot.Memory = this.CreateMapper(Data);
+				emulator.Bios.Enabled = false;
+				emulator.CartridgeSlot.Enabled = true;
+			}
 
 			emulator.SetCapabilitiesByModelAndRegion(
 				(emulator.Region == BeeDevelopment.Sega8Bit.Region.Japanese && Model == HardwareModel.MasterSystem2) ? HardwareModel.MasterSystem : Model,
 				emulator.Region
 			);
 
-			// As we are doing a "quick-load", without a BIOS, set state a bit more sensibly:
-			emulator.Bios.Enabled = false;
-			emulator.CartridgeSlot.Enabled = true;
+		
 
 			return Info;
 
