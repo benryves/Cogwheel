@@ -107,6 +107,25 @@ namespace BeeDevelopment.Zip {
 
 		#endregion
 
+		#region Public Properties
+
+		/// <summary>
+		/// Gets a <see cref="ZipFileEntry"/> by name.
+		/// </summary>
+		/// <param name="name">The name of the <see cref="ZipFileEntry"/> to retrieve.</param>
+		/// <returns>The corresponding <see cref="ZipFileEntry"/> or <c>null</c> if a matching one wasn't found.</returns>
+		public ZipFileEntry this[string name] {
+			get {
+				string NormalisedName = name.Replace('\\', '/').ToLowerInvariant();
+				foreach (var File in this.Files) {
+					if (File.Name.Replace('\\', '/').ToLowerInvariant() == NormalisedName) return File;
+				}
+				return null;
+			}
+		}
+
+		#endregion
+
 		#region Constructors
 
 		/// <summary>
