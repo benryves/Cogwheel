@@ -34,6 +34,9 @@
 			this.LoadStateMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.SaveStateMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.FileSep1 = new System.Windows.Forms.ToolStripSeparator();
+			this.RecentRomsMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.dummyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.FileSep2 = new System.Windows.Forms.ToolStripSeparator();
 			this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.EditMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.CopyScreenshotMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,9 +60,6 @@
 			this.MessageTicker = new System.Windows.Forms.Timer(this.components);
 			this.OpenStateDialog = new System.Windows.Forms.OpenFileDialog();
 			this.SaveStateDialog = new System.Windows.Forms.SaveFileDialog();
-			this.RecentRomsMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.FileSep2 = new System.Windows.Forms.ToolStripSeparator();
-			this.dummyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -125,6 +125,7 @@
 			// 
 			this.LoadStateMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_TimeGo;
 			this.LoadStateMenu.Name = "LoadStateMenu";
+			this.LoadStateMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F8)));
 			this.LoadStateMenu.Size = new System.Drawing.Size(216, 22);
 			this.LoadStateMenu.Text = "&Load State...";
 			this.LoadStateMenu.Click += new System.EventHandler(this.LoadStateMenu_Click);
@@ -132,6 +133,7 @@
 			// SaveStateMenu
 			// 
 			this.SaveStateMenu.Name = "SaveStateMenu";
+			this.SaveStateMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F5)));
 			this.SaveStateMenu.Size = new System.Drawing.Size(216, 22);
 			this.SaveStateMenu.Text = "&Save State...";
 			this.SaveStateMenu.Click += new System.EventHandler(this.SaveStateMenu_Click);
@@ -140,6 +142,26 @@
 			// 
 			this.FileSep1.Name = "FileSep1";
 			this.FileSep1.Size = new System.Drawing.Size(213, 6);
+			// 
+			// RecentRomsMenu
+			// 
+			this.RecentRomsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dummyToolStripMenuItem});
+			this.RecentRomsMenu.Name = "RecentRomsMenu";
+			this.RecentRomsMenu.Size = new System.Drawing.Size(216, 22);
+			this.RecentRomsMenu.Text = "&Recent ROMs";
+			this.RecentRomsMenu.DropDownOpening += new System.EventHandler(this.RecentRomsMenu_DropDownOpening);
+			// 
+			// dummyToolStripMenuItem
+			// 
+			this.dummyToolStripMenuItem.Name = "dummyToolStripMenuItem";
+			this.dummyToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+			this.dummyToolStripMenuItem.Text = "&Dummy";
+			// 
+			// FileSep2
+			// 
+			this.FileSep2.Name = "FileSep2";
+			this.FileSep2.Size = new System.Drawing.Size(213, 6);
 			// 
 			// ExitMenu
 			// 
@@ -314,26 +336,6 @@
 			// SaveStateDialog
 			// 
 			this.SaveStateDialog.Filter = "Cogwheel Saved States (*.cogstate)|*.cogstate|All Files (*.*)|*.*";
-			// 
-			// RecentRomsMenu
-			// 
-			this.RecentRomsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.dummyToolStripMenuItem});
-			this.RecentRomsMenu.Name = "RecentRomsMenu";
-			this.RecentRomsMenu.Size = new System.Drawing.Size(216, 22);
-			this.RecentRomsMenu.Text = "&Recent ROMs";
-			this.RecentRomsMenu.DropDownOpening += new System.EventHandler(this.RecentRomsMenu_DropDownOpening);
-			// 
-			// FileSep2
-			// 
-			this.FileSep2.Name = "FileSep2";
-			this.FileSep2.Size = new System.Drawing.Size(213, 6);
-			// 
-			// dummyToolStripMenuItem
-			// 
-			this.dummyToolStripMenuItem.Name = "dummyToolStripMenuItem";
-			this.dummyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.dummyToolStripMenuItem.Text = "&Dummy";
 			// 
 			// MainForm
 			// 

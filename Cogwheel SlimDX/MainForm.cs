@@ -627,7 +627,7 @@ namespace CogwheelSlimDX {
 					Properties.Settings.Default.StoredPathState = Path.GetDirectoryName(this.SaveStateDialog.FileName);
 					this.SaveState(this.SaveStateDialog.FileName);
 				} catch (Exception ex) {
-					MessageBox.Show(this, ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show(this, "Could not save state: " + ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 		}
@@ -643,23 +643,16 @@ namespace CogwheelSlimDX {
 					Properties.Settings.Default.StoredPathState = Path.GetDirectoryName(this.OpenStateDialog.FileName);
 					this.LoadState(this.OpenStateDialog.FileName);
 				} catch (Exception ex) {
-					MessageBox.Show(this, ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show(this, "Could not load state: " + ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 		}
 
 		private void SaveState(string filename) {
+			
 			var SavedState = new ZipFile();
-			var Serialiser = new BinaryFormatter();
-			using (var StateStream = new MemoryStream(2048)) {
-				Serialiser.Serialize(StateStream, this.Emulator);
-				SavedState.Add(new ZipFileEntry() {
-					Name = "State.bin",
-					Comment = "Raw saved state data (as created by BinaryFormatter).",
-					Data = StateStream.ToArray(),
-					LastWriteTime = DateTime.Now,
-				});
-			}
+
+			BeeDevelopment.Sega8Bit.Utility.SaveState.Save(this.Emulator, SavedState);
 
 			var ScreenshotBitmap = this.GetScreenshotBitmap();
 			if (ScreenshotBitmap != null) {
@@ -685,16 +678,9 @@ namespace CogwheelSlimDX {
 			var StateFile = ZipFile.FromFile(filename);
 			this.CurrentRomInfo = null;
 			this.UpdateFormTitle(null);
-			lock (this.Emulator) {
-				foreach (var Entry in StateFile) {
-					if (Entry.Name.ToLowerInvariant() == "state.bin") {
-						var Deserialiser = new BinaryFormatter();
-						using (var StateStream = new MemoryStream(Entry.Data)) {
-							this.Emulator = (Emulator)Deserialiser.Deserialize(StateStream);
-						}
-					}
-				}
-			}
+			Emulator NewEmulator;
+			BeeDevelopment.Sega8Bit.Utility.SaveState.Load(out NewEmulator, StateFile);
+			this.Emulator = NewEmulator;
 		}
 
 		#endregion
