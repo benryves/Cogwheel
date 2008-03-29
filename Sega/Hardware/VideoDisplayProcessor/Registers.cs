@@ -38,7 +38,13 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <summary>
 		/// Accesses the video registers.
 		/// </summary>
-		public byte[] Registers { get { return this.registers; } }
+		public byte[] Registers {
+			get { return this.registers; }
+			set {
+				if (value == null || value.Length != this.registers.Length) throw new InvalidOperationException();
+				this.registers = value;
+			}
+		}
 		private byte[] registers;
 
 		#region Register bit manipulation and testing functions

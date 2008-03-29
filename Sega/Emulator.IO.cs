@@ -2,6 +2,7 @@
  * This source file relates to hardware device I/O.
  */
 using BeeDevelopment.Sega8Bit.Hardware;
+using BeeDevelopment.Brazil;
 namespace BeeDevelopment.Sega8Bit {
 	public partial class Emulator {
 
@@ -10,12 +11,14 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <summary>
 		/// Gets the <see cref="VideoDisplayProcessor"/>.
 		/// </summary>
-		public VideoDisplayProcessor Video { get; private set; }
+		[StateNotSaved()]
+		public VideoDisplayProcessor Video { get; internal set; }
 
 		/// <summary>
 		/// Gets the <see cref="ProgrammableSoundGenerator"/>.
 		/// </summary>
-		public ProgrammableSoundGenerator Sound { get; private set; }
+		[StateNotSaved()]
+		public ProgrammableSoundGenerator Sound { get; internal set; }
 
 		/// <summary>
 		/// Gets or sets whether the emulator has Game Gear ports.

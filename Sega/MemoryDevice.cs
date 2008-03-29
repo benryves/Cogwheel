@@ -1,5 +1,6 @@
 ﻿using System;
 using BeeDevelopment.Sega8Bit.Mappers;
+using BeeDevelopment.Brazil;
 
 namespace BeeDevelopment.Sega8Bit {
 	/// <summary>
@@ -36,6 +37,7 @@ namespace BeeDevelopment.Sega8Bit {
 		public bool Enabled { get; set; }
 
 		/// <summary>Gets whether the memory is currently accessible or not.</summary>
+		[StateNotSaved()]
 		public bool IsAccessible {
 			get {
 				switch (this.Accessibility) {

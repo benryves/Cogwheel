@@ -1,6 +1,7 @@
 ﻿/* 
  * This source file relates to memory access.
  */
+using BeeDevelopment.Brazil;
 namespace BeeDevelopment.Sega8Bit {
 
 	public partial class Emulator {
@@ -8,14 +9,19 @@ namespace BeeDevelopment.Sega8Bit {
 		#region Memory Devices
 
 		/// <summary>Gets the <see cref="MemoryDevice"/> that represents the console's cartridge slot.</summary>
+		[StateNotSaved()]
 		public MemoryDevice CartridgeSlot { get; private set; }
 		/// <summary>Gets the <see cref="MemoryDevice"/> that represents the console's card slot.</summary>
+		[StateNotSaved()]
 		public MemoryDevice CardSlot { get; private set; }
 		/// <summary>Gets the <see cref="MemoryDevice"/> that represents the console's expansion slot.</summary>
+		[StateNotSaved()]
 		public MemoryDevice ExpansionSlot { get; private set; }
 		/// <summary>Gets the <see cref="MemoryDevice"/> that represents the console's BIOS ROM.</summary>
+		[StateNotSaved()]
 		public MemoryDevice Bios { get; private set; }
 		/// <summary>Gets the <see cref="MemoryDevice"/> that represents the console's work RAM.</summary>
+		[StateNotSaved()]
 		public MemoryDevice WorkRam { get; private set; }
 
 		#endregion
@@ -23,6 +29,7 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <summary>
 		/// Gets a <see cref="MemoryCheatCollection"/> of cheats.
 		/// </summary>
+		[StateNotSaved()]
 		public MemoryCheatCollection Cheats { get; private set; }
 
 		/// <summary>

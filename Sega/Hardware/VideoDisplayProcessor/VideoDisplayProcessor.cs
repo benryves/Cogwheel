@@ -86,7 +86,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		public void Reset() {
 
 			// Clear out the VRAM.
-			this.vram = new byte[0x8000]; // 16KB
+			this.vram = new byte[0x4000]; // 16KB
 			this.FastPixelColourIndex = new int[512 * 8 * 8];
 
 			// Resets registers to default settings.

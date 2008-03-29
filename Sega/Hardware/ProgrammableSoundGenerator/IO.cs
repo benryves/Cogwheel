@@ -5,10 +5,12 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 	public partial class ProgrammableSoundGenerator {
 
 
-		private enum LatchMode { Tone, Volume }
+		public int LatchedChannel { get; set; }
 
-		private int LatchedChannel;
-		private LatchMode LatchedMode;
+		public enum LatchMode { Tone, Volume }
+
+		public LatchMode LatchedMode { get; set; }
+
 		private Queue<KeyValuePair<int, byte>> QueuedWrites;
 
 		/// <summary>

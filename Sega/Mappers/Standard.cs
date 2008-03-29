@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BeeDevelopment.Sega8Bit.Mappers {
 
@@ -13,17 +14,57 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		/// <summary>
 		/// The entire cartridge ROM in its "normal" order.
 		/// </summary>
-		protected byte[][] CartridgeRom;
+		protected byte[][] pagedCartridgeRom;
+
+		/// <summary>
+		/// Gets or sets the contents of ROM.
+		/// </summary>
+		public byte[] Rom {
+			get {
+				var Result = new List<byte>(16 * 1024);
+				foreach (var Page in this.pagedCartridgeRom) Result.AddRange(Page);
+				return Result.ToArray();
+			}
+			set {
+				if (value == null) throw new InvalidOperationException();
+				this.Load(value);
+			}
+		}
 
 		/// <summary>
 		/// The entire cartridge RAM.
 		/// </summary>
-		protected byte[] CartridgeRam;
+		protected byte[] cartridgeRam;
 
 		/// <summary>
-		/// Contains the current ROM bank numbers.
+		/// Gets or sets the contents of RAM.
 		/// </summary>
-		protected int[] BankNumbers;
+		public byte[] Ram {
+			get { return this.cartridgeRam; }
+			set {
+				if (value == null || value.Length != this.cartridgeRam.Length) throw new InvalidOperationException();
+				this.cartridgeRam = value;
+			}
+		}
+
+		protected virtual void UpdateMapperFromBankNumbers() {
+			this.MemoryModel[0] = this.pagedCartridgeRom[this.bankNumbers[0] % this.pagedCartridgeRom.Length];
+			this.MemoryModel[1] = this.pagedCartridgeRom[this.bankNumbers[1] % this.pagedCartridgeRom.Length];
+			this.MemoryModel[2] = this.RamEnabled ? this.cartridgeRam : this.pagedCartridgeRom[this.bankNumbers[2] % this.pagedCartridgeRom.Length];
+		}
+
+		protected int[] bankNumbers;
+		/// <summary>
+		/// Gets or sets the current ROM bank numbers.
+		/// </summary>
+		public int[] BankNumbers {
+			get { return this.bankNumbers; }
+			set {
+				if (value == null || value.Length != this.bankNumbers.Length) throw new InvalidOperationException();
+				this.bankNumbers = value;
+				this.UpdateMapperFromBankNumbers();
+			}
+		}
 
 		/// <summary>
 		/// Maps a slot to a 16KB array of bytes.
@@ -33,19 +74,20 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		/// <summary>
 		/// Bank number offset.
 		/// </summary>
-		protected int BankNumberOffset = 0;
+		public int BankNumberOffset { get; set; }
 
 		/// <summary>
 		/// Gets whether the on-cartridge RAM is enabled.
 		/// </summary>
-		protected bool RamEnabled;
+		public bool RamEnabled { get; set; }
 
 		/// <summary>
 		/// Gets or sets whether the first kilobyte should be protected or not.
 		/// </summary>
-		protected bool ProtectFirstKilobyte = true;
+		public bool ProtectFirstKilobyte { get; set; }
 
 		#endregion
+
 
 		#region Reading and Writing
 
@@ -59,7 +101,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 			switch (address & 0xC000) {
 				case 0x0000:
 					if (address < 1024 && this.ProtectFirstKilobyte) {
-						return this.CartridgeRom[0][address];
+						return this.pagedCartridgeRom[0][address];
 					} else {
 						return this.MemoryModel[0][address & 0x3FFF];
 					}
@@ -68,7 +110,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 				case 0x8000:
 					return this.MemoryModel[2][address & 0x3FFF];
 				default:
-					throw new InvalidOperationException();
+					return 0xFF;
 			}
 		}
 
@@ -86,26 +128,26 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 				if ((value & 0x08) != 0) {
 					// Cartridge RAM enabled
 					this.RamEnabled = true;
-					this.MemoryModel[2] = CartridgeRam;
+					this.MemoryModel[2] = cartridgeRam;
 				} else {
 					// Cartridge ROM enabled
 					this.RamEnabled = false;
-					this.MemoryModel[2] = this.CartridgeRom[this.BankNumbers[2]];
+					this.MemoryModel[2] = this.pagedCartridgeRom[this.bankNumbers[2]];
 				}
 
 
 			} else if (address > 0xFFFC) {
 
 				int SwitchedBank = address - 0xFFFD;
-				this.BankNumbers[SwitchedBank] = (value + BankNumberOffset) % this.CartridgeRom.Length;
+				this.bankNumbers[SwitchedBank] = (value + BankNumberOffset) % this.pagedCartridgeRom.Length;
 
 				if (!(SwitchedBank == 2 && this.RamEnabled)) {
-					this.MemoryModel[SwitchedBank] = this.CartridgeRom[this.BankNumbers[SwitchedBank]];
+					this.MemoryModel[SwitchedBank] = this.pagedCartridgeRom[this.bankNumbers[SwitchedBank]];
 				}
 			}
 
 			if (this.RamEnabled && (address & 0xC000) == 0x8000) {
-				this.CartridgeRam[address & 0x3FFF] = value;
+				this.cartridgeRam[address & 0x3FFF] = value;
 			}
 
 		}
@@ -120,7 +162,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		public virtual void Reset() {
 
 			// Clear cartridge RAM.
-			this.CartridgeRam = new byte[0x4000];
+			this.cartridgeRam = new byte[0x4000];
 
 			// Write default mapper values.
 			this.WriteMemory(0xFFFC, 0);
@@ -138,13 +180,13 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 			// First, calculate the smallest power-of-two > 2 pages that we'll offer.
 			int PageCount = 2;
 			while (PageCount * 0x4000 < data.Length) PageCount <<= 1;
-			this.CartridgeRom = new byte[PageCount][];
+			this.pagedCartridgeRom = new byte[PageCount][];
 
 			// Now copy the pages over.
 			for (int i = 0, StartCopy = 0; i < PageCount; ++i, StartCopy += 0x4000) {
-				this.CartridgeRom[i] = new byte[0x4000];
+				this.pagedCartridgeRom[i] = new byte[0x4000];
 				if (StartCopy < data.Length) {
-					Array.Copy(data, StartCopy, this.CartridgeRom[i], 0, Math.Min(0x4000, data.Length - StartCopy));
+					Array.Copy(data, StartCopy, this.pagedCartridgeRom[i], 0, Math.Min(0x4000, data.Length - StartCopy));
 				}
 			}
 
@@ -156,7 +198,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		/// Creates an instance of the <see cref="Standard"/> mapper.
 		/// </summary>
 		public Standard() {
-			this.BankNumbers = new int[3]; // Three bank numbers.
+			this.bankNumbers = new int[3]; // Three bank numbers.
 			this.MemoryModel = new byte[4][]; // Four slots.
 			for (int i = 0; i < 4; i++) this.MemoryModel[i] = new byte[0x4000]; // 16KB per slot.
 			

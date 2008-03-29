@@ -1,4 +1,5 @@
-﻿namespace BeeDevelopment.Sega8Bit.Hardware {
+﻿using System;
+namespace BeeDevelopment.Sega8Bit.Hardware {
 	public partial class VideoDisplayProcessor {
 
 		#region Properties
@@ -14,7 +15,13 @@
 		/// 
 		/// In certain modes the data in the colour RAM is ignored entirely when the display is rasterised.
 		/// </remarks>
-		public int[] ColourRam { get { return this.colourRam; } }
+		public int[] ColourRam { 
+			get { return this.colourRam; }
+			set {
+				if (value == null || value.Length != this.colourRam.Length) throw new InvalidOperationException();
+				this.colourRam = value; 
+			}
+		}
 		private int[] colourRam;
 
 		/// <summary>

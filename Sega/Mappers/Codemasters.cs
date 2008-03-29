@@ -8,7 +8,13 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 	[Serializable()]
 	public class Codemasters : Standard, IMemoryMapper {
 
-
+		protected override void UpdateMapperFromBankNumbers() {
+			for (int i = 0; i < 3; ++i) {
+				this.MemoryModel[i] = this.pagedCartridgeRom[this.bankNumbers[i] % this.pagedCartridgeRom.Length];
+			}
+			
+		}
+		
 		#region Reading and Writing
 
 		/// <summary>
@@ -23,8 +29,8 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 				case 0x4000:
 				case 0x8000:
 					int SwitchedBank = address / 0x4000;
-					this.BankNumbers[SwitchedBank] = value % this.CartridgeRom.Length;
-					this.MemoryModel[SwitchedBank] = this.CartridgeRom[this.BankNumbers[SwitchedBank]];
+					this.bankNumbers[SwitchedBank] = value % this.pagedCartridgeRom.Length;
+					this.MemoryModel[SwitchedBank] = this.pagedCartridgeRom[this.bankNumbers[SwitchedBank]];
 					break;
 			}
 
@@ -40,7 +46,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		public override void Reset() {
 
 			// Clear cartridge RAM.
-			this.CartridgeRam = new byte[0x4000];
+			this.cartridgeRam = new byte[0x4000];
 
 			// Write default mapper values.
 			this.WriteMemory(0x0000, 0);

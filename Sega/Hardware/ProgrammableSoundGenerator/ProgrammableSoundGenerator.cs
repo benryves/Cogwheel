@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BeeDevelopment.Brazil;
 namespace BeeDevelopment.Sega8Bit.Hardware {
 
 	/// <summary>
@@ -28,6 +29,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <summary>
 		/// Gets the <see cref="Emulator"/> that contains the <see cref="ProgrammableSoundGenerator"/>.
 		/// </summary>
+		[StateNotSaved()]
 		public Emulator Emulator { get; private set; }
 
 		/// <summary>

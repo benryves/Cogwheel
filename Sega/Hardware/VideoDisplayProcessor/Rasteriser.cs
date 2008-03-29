@@ -1,4 +1,5 @@
 ﻿using System;
+using BeeDevelopment.Brazil;
 namespace BeeDevelopment.Sega8Bit.Hardware {
 	public partial class VideoDisplayProcessor {
 
@@ -149,37 +150,37 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <summary>
 		/// Stores the Y scroll value taken at the start of the frame.
 		/// </summary>
-		private int YScroll;
+		public int YScrollAtStartOfFrame { get; private set; }
 
 		/// <summary>
 		/// Gets the total number of drawn scanlines this frame.
 		/// </summary>
-		private int ScanlinesDrawn;
+		public int ScanlinesDrawn { get; private set; }
 
 		/// <summary>
 		/// Gets the number of remaining scanlines in the current region.
 		/// </summary>
-		private int RemainingScanlinesInRegion;
+		public int RemainingScanlinesInRegion { get; private set; }
 
 		/// <summary>
 		/// Counts down to trigger line interrupts.
 		/// </summary>
-		private int LineInterruptCounter;
+		public int LineInterruptCounter { get; private set; }
 
 		/// <summary>
 		/// The height of the current frame being rendered.
 		/// </summary>
-		private int ActiveFrameHeight;
+		public int ActiveFrameHeight { get; private set; }
 
 		/// <summary>
 		/// The width of the current frame being rendered.
 		/// </summary>
-		private int CroppedFrameWidth;
+		public int CroppedFrameWidth { get; private set; }
 
 		/// <summary>
 		/// The cropped height of the current frame being rendered.
 		/// </summary>
-		private int CroppedFrameHeight;
+		public int CroppedFrameHeight { get; private set; }
 
 		/// <summary>
 		/// Fixed 256x256 buffer to store the image as it gets rendered.
@@ -198,7 +199,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		#endregion
 
 		#region Private Methods
-
 
 		/// <summary>
 		/// Starts a frame.
@@ -227,8 +227,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 
 			// Cache Y scroll.
-			this.YScroll = this.Registers[9];
-			if (this.RemainingScanlinesInRegion == 192) this.YScroll %= 224;
+			this.YScrollAtStartOfFrame = this.Registers[9];
+			if (this.RemainingScanlinesInRegion == 192) this.YScrollAtStartOfFrame %= 224;
 
 			// Reset backdrop to 0.
 			this.LastBackdropColour = 0;
@@ -237,8 +237,11 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		}
 
 		private int[] lastCompleteFrame;
+		[StateNotSaved()]
 		public int[] LastCompleteFrame { get { return this.lastCompleteFrame; } }
+		[StateNotSaved()]
 		public int LastCompleteFrameHeight { get; private set; }
+		[StateNotSaved()]
 		public int LastCompleteFrameWidth { get; private set; }
 
 		/// <summary>
@@ -421,7 +424,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 						case Mode.Mode4Resolution240: {
 								#region Mode 4 background layer
 
-								int NameTableOffset = GetNameTableOffset(this.YScroll);
+								int NameTableOffset = GetNameTableOffset(this.YScrollAtStartOfFrame);
 
 								int TileNum;
 								int TileOffset;
@@ -438,7 +441,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 								byte CurrentXScroll = this.InhibitScrollX && (this.ScanlinesDrawn < 16) ? (byte)0 : this.registers[0x8];
 
-								int MasterTileRowOffset = ((this.ScanlinesDrawn + this.YScroll) & 7);
+								int MasterTileRowOffset = ((this.ScanlinesDrawn + this.YScrollAtStartOfFrame) & 7);
 
 								int[] Colours = new int[8];
 

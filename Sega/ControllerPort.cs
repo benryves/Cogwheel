@@ -96,37 +96,44 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <summary>
 		/// Gets or sets the state of the Up pin.
 		/// </summary>
+		[StateNotSaved()]
 		public UnidirectionalPin Up { get; private set; }
 
 		/// <summary>
 		/// Gets or sets the state of the Down pin.
 		/// </summary>
+		[StateNotSaved()]
 		public UnidirectionalPin Down { get; private set; }
 
 		/// <summary>
 		/// Gets or sets the state of the Left pin.
 		/// </summary>
+		[StateNotSaved()]
 		public UnidirectionalPin Left { get; private set; }
 
 
 		/// <summary>
 		/// Gets or sets the state of the Right pin.
 		/// </summary>
+		[StateNotSaved()]
 		public UnidirectionalPin Right { get; private set; }
 
 		/// <summary>
 		/// Gets or sets the state of the TL pin.
 		/// </summary>
+		[StateNotSaved()]
 		public UnidirectionalPin TL { get; private set; }
 
 		/// <summary>
 		/// Gets the state of the TR pin.
 		/// </summary>
+		[StateNotSaved()]
 		public BidirectionalPin TR { get; private set; }
 
 		/// <summary>
 		/// Gets the state of the TH pin.
 		/// </summary>
+		[StateNotSaved()]
 		public BidirectionalPin TH { get; private set; }
 
 		/// <summary>

@@ -1,4 +1,5 @@
-﻿namespace BeeDevelopment.Sega8Bit.Hardware {
+﻿using System;
+namespace BeeDevelopment.Sega8Bit.Hardware {
 	public partial class VideoDisplayProcessor {
 
 		#region Types
@@ -32,7 +33,14 @@
 		/// <summary>
 		/// Provides access to the video RAM.
 		/// </summary>
-		public byte[] VideoRam { get { return this.vram; } }
+		public byte[] VideoRam { 
+			get { return this.vram; }
+			set {
+				if (value == null || value.Length != this.vram.Length) throw new InvalidOperationException();
+				this.vram = value;
+				for (ushort i = 0; i < this.vram.Length; ++i) this.CacheFastPixelColourIndex(i, this.vram[i]);
+			}
+		}
 		private byte[] vram;
 
 		/// <summary>
@@ -85,25 +93,24 @@
 				// Write to video RAM.
 				this.vram[this.address & 0x3FFF] = value;
 
-				// ...
-
-				int ModifiedTileSlice = ((this.address & 0x3FFF) / 4) * 8;
-				int PlaneBitmask = 1 << (this.address & 3);
-				int InverseBitmask = ~PlaneBitmask;
-				for (int i = 0; i < 8; ++i) {
-					if ((value & 0x80) == 0) {
-						this.FastPixelColourIndex[ModifiedTileSlice] &= InverseBitmask;
-					} else {
-						this.FastPixelColourIndex[ModifiedTileSlice] |= PlaneBitmask;
-					}
-					++ModifiedTileSlice;
-					value <<= 1;
-				}
-
-				// ...
-
+				this.CacheFastPixelColourIndex(this.address, value);
 			}
 			++this.address;
+		}
+
+		private void CacheFastPixelColourIndex(ushort address, byte value) {
+			int ModifiedTileSlice = ((address & 0x3FFF) / 4) * 8;
+			int PlaneBitmask = 1 << (address & 3);
+			int InverseBitmask = ~PlaneBitmask;
+			for (int i = 0; i < 8; ++i) {
+				if ((value & 0x80) == 0) {
+					this.FastPixelColourIndex[ModifiedTileSlice] &= InverseBitmask;
+				} else {
+					this.FastPixelColourIndex[ModifiedTileSlice] |= PlaneBitmask;
+				}
+				++ModifiedTileSlice;
+				value <<= 1;
+			}
 		}
 
 		/// <summary>

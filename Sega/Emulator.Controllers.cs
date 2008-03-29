@@ -1,13 +1,14 @@
 ﻿/* 
  * This source file relates to controller port I/O.
  */
-using BeeDevelopment.Sega8Bit.Hardware;
+using BeeDevelopment.Brazil;
 namespace BeeDevelopment.Sega8Bit {
 	public partial class Emulator {
 
 		/// <summary>
 		/// Gets the two <see cref="ControllerPort"/> instances connected to the 
 		/// </summary>
+		[StateNotSaved()]
 		public ControllerPort[] Ports { get; private set; }
 
 		/// <summary>

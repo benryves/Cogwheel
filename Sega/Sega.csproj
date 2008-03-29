@@ -82,6 +82,7 @@
     <Compile Include="Utility\RomData.cs" />
     <Compile Include="Utility\RomIdentifier.cs" />
     <Compile Include="Utility\RomInfo.cs" />
+    <Compile Include="Utility\SaveState.cs" />
     <Compile Include="Utility\ZipLoader.cs" />
   </ItemGroup>
   <ItemGroup>

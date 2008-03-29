@@ -2,8 +2,8 @@
 namespace BeeDevelopment.Sega8Bit.Hardware {
 	public partial class ProgrammableSoundGenerator {
 
-		private int[] CountDown;
-		private int[] Levels;
+		public int[] CountDown { get; set; }
+		public int[] Levels { get; set; }
 
 		private int CycleStepper = 0;
 
@@ -15,9 +15,9 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			return val;
 		}
 
-		private ushort ShiftRegister;
+		public ushort ShiftRegister { get; set; }
 
-		private bool NoiseTicking;
+		public bool NoiseTicking { get; set; }
 
 		private int LastCpuClocks = 0;
 
