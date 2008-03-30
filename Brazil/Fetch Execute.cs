@@ -11419,22 +11419,16 @@ namespace BeeDevelopment.Brazil {
 							break;
 					}
 
+					
 				}
-
-
 				
-
 				if (cycles == -1) break;
 				RunningCycles -= ClockCycles;
 				
 				this.ThisCycles = this.NextCycles;
 				this.NextCycles += ClockCycles;
 				
-
-			
-			}
-			//*/
+			}			
 		}
-		
 	}
 }
