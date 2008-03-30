@@ -60,6 +60,7 @@
 			this.MessageTicker = new System.Windows.Forms.Timer(this.components);
 			this.OpenStateDialog = new System.Windows.Forms.OpenFileDialog();
 			this.SaveStateDialog = new System.Windows.Forms.SaveFileDialog();
+			this.MaintainAspectRatioMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -204,7 +205,7 @@
             this.GameGenieEditMenu});
 			this.GameGenieMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(138, 22);
+			this.GameGenieMenu.Size = new System.Drawing.Size(152, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
 			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
 			// 
@@ -228,12 +229,13 @@
 			this.OptionsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.CustomiseControlsMenu,
             this.OptionsSep0,
+            this.EnableSoundMenu,
             this.SimulateGameGearLcdMenu,
             this.LinearInterpolationMenu,
-            this.EnableSoundMenu});
+            this.MaintainAspectRatioMenu});
 			this.OptionsMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Wrench;
 			this.OptionsMenu.Name = "OptionsMenu";
-			this.OptionsMenu.Size = new System.Drawing.Size(138, 22);
+			this.OptionsMenu.Size = new System.Drawing.Size(152, 22);
 			this.OptionsMenu.Text = "&Options";
 			this.OptionsMenu.DropDownOpening += new System.EventHandler(this.OptionsMenu_DropDownOpening);
 			// 
@@ -337,6 +339,13 @@
 			// 
 			this.SaveStateDialog.Filter = "Cogwheel Saved States (*.cogstate)|*.cogstate|All Files (*.*)|*.*";
 			// 
+			// MaintainAspectRatioMenu
+			// 
+			this.MaintainAspectRatioMenu.Name = "MaintainAspectRatioMenu";
+			this.MaintainAspectRatioMenu.Size = new System.Drawing.Size(247, 22);
+			this.MaintainAspectRatioMenu.Text = "Maintain &Aspect Ratio";
+			this.MaintainAspectRatioMenu.Click += new System.EventHandler(this.MaintainAspectRatioMenu_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -397,6 +406,7 @@
 		private System.Windows.Forms.ToolStripMenuItem RecentRomsMenu;
 		private System.Windows.Forms.ToolStripSeparator FileSep2;
 		private System.Windows.Forms.ToolStripMenuItem dummyToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem MaintainAspectRatioMenu;
 	}
 }
 

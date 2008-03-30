@@ -346,5 +346,17 @@ namespace CogwheelSlimDX.Properties {
                 this["StoredPathMRU"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool OptionMaintainAspectRatio {
+            get {
+                return ((bool)(this["OptionMaintainAspectRatio"]));
+            }
+            set {
+                this["OptionMaintainAspectRatio"] = value;
+            }
+        }
     }
 }

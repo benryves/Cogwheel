@@ -69,6 +69,7 @@ namespace CogwheelSlimDX {
 			// Create a pixel dumper.
 			this.Dumper = new PixelDumper(this.RenderPanel);
 			this.Dumper.LinearInterpolation = Properties.Settings.Default.OptionLinearInterpolation;
+			this.Dumper.ScaleMode = Properties.Settings.Default.OptionMaintainAspectRatio ? PixelDumper.ScaleModes.ZoomInside : PixelDumper.ScaleModes.Stretch;
 
 			// Initialise sound.
 			this.InitialiseSound();
@@ -606,6 +607,7 @@ namespace CogwheelSlimDX {
 		private void OptionsMenu_DropDownOpening(object sender, EventArgs e) {
 			this.SimulateGameGearLcdMenu.Checked = Properties.Settings.Default.OptionSimulateGameGearLcdScaling;
 			this.LinearInterpolationMenu.Checked = Properties.Settings.Default.OptionLinearInterpolation;
+			this.MaintainAspectRatioMenu.Checked = Properties.Settings.Default.OptionMaintainAspectRatio;
 			if (this.EnableSoundMenu.Image != null) this.EnableSoundMenu.Image.Dispose();
 			this.EnableSoundMenu.Image = Properties.Settings.Default.OptionEnableSound ? Properties.Resources.Icon_Sound : Properties.Resources.Icon_SoundMute;
 		}
@@ -626,6 +628,10 @@ namespace CogwheelSlimDX {
 			this.SoundMuted = !Properties.Settings.Default.OptionEnableSound;
 		}
 
+		private void MaintainAspectRatioMenu_Click(object sender, EventArgs e) {
+			Properties.Settings.Default.OptionMaintainAspectRatio ^= true;
+			this.Dumper.ScaleMode = Properties.Settings.Default.OptionMaintainAspectRatio ? PixelDumper.ScaleModes.ZoomInside : PixelDumper.ScaleModes.Stretch;
+		}
 		#endregion
 
 		#region State Saving
@@ -754,6 +760,7 @@ namespace CogwheelSlimDX {
 		}
 
 		#endregion
+
 
 	}
 }
