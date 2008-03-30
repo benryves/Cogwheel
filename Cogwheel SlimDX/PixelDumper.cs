@@ -87,6 +87,22 @@ namespace CogwheelSlimDX {
 		/// </summary>
 		private int VideoOutputHeight = 32;
 
+		/// <summary>
+		/// The width of the area that was last cleared to the backdrop colour.
+		/// </summary>
+		private int LastClearedWidth;
+
+		/// <summary>
+		/// The height of the area that was last cleared to the backdrop colour.
+		/// </summary>
+		private int LastClearedHeight;
+
+		/// <summary>
+		/// The colour of the area that was last cleared.
+		/// </summary>
+		private Color LastClearedColour;
+
+
 		#endregion
 
 		#region Private Methods
@@ -152,15 +168,21 @@ namespace CogwheelSlimDX {
 
 				// Create a texture to write to to create video ouptut.
 				this.VideoOutput = new Texture(this.GraphicsDevice, this.VideoOutputWidth, this.VideoOutputHeight, 0, Usage.None, Format.A8R8G8B8, Pool.Managed);
+
+
+				this.LastClearedHeight = 0;
+				this.LastClearedWidth = 0;
+
 			} catch {
 				Thread.Sleep(1000);
 			}
 		}
 
+
 		/// <summary>
 		/// Renders the <see cref="PixelDumper"/> output to the control.
 		/// </summary>
-		public void Render(int[] data, int width, int height) {
+		public void Render(int[] data, int width, int height, Color backgroundColour) {
 
 			if (this.GraphicsDevice == null) {
 				this.ReinitialiseRenderer();
@@ -179,15 +201,32 @@ namespace CogwheelSlimDX {
 						this.ReinitialiseRenderer();
 					}
 
-					var OutputStream = this.VideoOutput.LockRectangle(0, new Rectangle(0, 0, width, height), LockFlags.Discard);
-					int PitchOverflow = OutputStream.Pitch - width * 4;
-					for (int y = 0; y < height; ++y) {
-						OutputStream.Data.WriteRange(data, y * width, width);
-						OutputStream.Data.Seek(PitchOverflow, SeekOrigin.Current);
+					if (this.LastClearedWidth < this.VideoOutputWidth || this.LastClearedHeight < this.VideoOutputHeight || this.LastClearedColour != backgroundColour) {
+						var OutputStream = this.VideoOutput.LockRectangle(0, new Rectangle(0, 0, this.VideoOutputWidth, this.VideoOutputHeight), LockFlags.Discard);
+						var ClearedBuffer = new int[this.VideoOutputWidth];
+						for (int x = 0; x < ClearedBuffer.Length; ++x) ClearedBuffer[x] = backgroundColour.ToArgb();
+						int PitchOverflow = OutputStream.Pitch - this.VideoOutputWidth * 4;
+						for (int y = 0; y < this.VideoOutputHeight; ++y) {
+							OutputStream.Data.WriteRange(ClearedBuffer, 0, ClearedBuffer.Length);
+						}
+						this.VideoOutput.UnlockRectangle(0);
+						this.LastClearedColour = backgroundColour;
+						this.LastClearedWidth = this.VideoOutputWidth;
+						this.LastClearedHeight = this.VideoOutputHeight;
 					}
+					
+					{
+
+						var OutputStream = this.VideoOutput.LockRectangle(0, new Rectangle(0, 0, width, height), LockFlags.Discard);
+						int PitchOverflow = OutputStream.Pitch - width * 4;
+						for (int y = 0; y < height; ++y) {
+							OutputStream.Data.WriteRange(data, y * width, width);
+							OutputStream.Data.Seek(PitchOverflow, SeekOrigin.Current);
+						}
 
 
-					this.VideoOutput.UnlockRectangle(0);
+						this.VideoOutput.UnlockRectangle(0);
+					}
 				}
 
 				this.GraphicsDevice.SetRenderState(RenderState.CullMode, Cull.None);
@@ -198,7 +237,7 @@ namespace CogwheelSlimDX {
 
 				this.GraphicsDevice.SetSamplerState(0, SamplerState.MagFilter, this.LinearInterpolation ? TextureFilter.Linear : TextureFilter.Point);
 
-				this.GraphicsDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.Black, 1.0f, 0);
+				this.GraphicsDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, backgroundColour, 1.0f, 0);
 
 				float OffsetX = -.5f / (float)this.VideoOutputWidth;
 				float OffsetY = +.5f / (float)this.VideoOutputHeight;
@@ -256,7 +295,7 @@ namespace CogwheelSlimDX {
 					this.GraphicsDevice.Present();
 				} catch (DeviceLostException) {
 					this.ReinitialiseRenderer();
-					this.Render(data, width, height);
+					this.Render(data, width, height, backgroundColour);
 				}
 
 			} catch {

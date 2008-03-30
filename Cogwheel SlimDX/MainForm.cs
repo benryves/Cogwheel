@@ -168,7 +168,10 @@ namespace CogwheelSlimDX {
 		#region Video Output / Window State
 
 		private void RepaintVideo() {
-			this.Dumper.Render(this.Emulator.Video.LastCompleteFrame, this.Emulator.Video.LastCompleteFrameWidth, this.Emulator.Video.LastCompleteFrameHeight);
+			var BackdropColour = Color.FromArgb(Emulator.Video.LastBackdropColour);
+			this.Dumper.Render(this.Emulator.Video.LastCompleteFrame, this.Emulator.Video.LastCompleteFrameWidth, this.Emulator.Video.LastCompleteFrameHeight, BackdropColour);
+			this.RenderPanel.BackColor = BackdropColour;
+
 		}
 
 		FormWindowState LastWindowState = FormWindowState.Normal;

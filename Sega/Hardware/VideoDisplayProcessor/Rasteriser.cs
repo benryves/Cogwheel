@@ -101,6 +101,11 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// </summary>
 		public int InvalidSpriteIndex { get; set; }
 
+		/// <summary>
+		/// Gets or sets the last background colour as a 32-bit RGB value.
+		/// </summary>
+		public int LastBackdropColour { get; set; }
+
 		#endregion
 
 		#region Display Timing
@@ -193,8 +198,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		private int[] TempPixelBuffer;
 
 		private int[] FastPixelColourIndex;
-
-		private int LastBackdropColour;
 
 		#endregion
 
