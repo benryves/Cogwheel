@@ -7,7 +7,10 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 		public int LatchedChannel { get; set; }
 
-		public enum LatchMode { Tone, Volume }
+		public enum LatchMode {
+			Tone,
+			Volume 
+		}
 
 		public LatchMode LatchedMode { get; set; }
 

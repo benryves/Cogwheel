@@ -40,8 +40,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					int TotalCyclesExecuted = this.Emulator.TotalExecutedCycles;
 					int ElapsedCycles = TotalCyclesExecuted - this.LastCpuClocks;
 
-					bool WhiteNoise = (this.toneRegisters[3] & 0x04) != 0;
-
 					for (int i = 0; i < buffer.Length; i += 2) {
 
 						int CorrespondingCycle = (int)(((UInt64)i * (UInt64)ElapsedCycles) / (UInt64)buffer.Length);
@@ -50,9 +48,18 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 							this.WriteImmediate(this.QueuedWrites.Dequeue().Value);
 						}
 
+						bool WhiteNoise = (this.toneRegisters[3] & 0x04) != 0;
+
 						this.CycleStepper -= this.ClockSpeed;
+
+						int[] SampleTotal = new int[4];
+						int[] SampleCount = new int[4];
+
 						while (this.CycleStepper < 0) {
 							for (int c = 0; c < 4; ++c) {
+
+								if (this.CountDown[c] != 0) --CountDown[c];
+
 								if (this.CountDown[c] <= 0) {
 
 									if (c != 3) {
@@ -77,15 +84,18 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 									}
 								}
-								--CountDown[c];
+
+								SampleTotal[c] += this.Levels[c];
+								++SampleCount[c];
 							}
 							CycleStepper += 44100;
 						}
 
-
 						double Mixer = 0;
 						for (int c = 0; c < 4; c++) {
-							Mixer += Levels[c] * LogarithmicScale[this.volumeRegisters[c]];
+							double Level = this.Levels[c];
+							if (SampleCount[c] != 0) Level = (double)SampleTotal[c] / (double)SampleCount[c];
+							Mixer += Level * LogarithmicScale[this.volumeRegisters[c]];
 						}
 
 						Mixer *= 0.25d;
