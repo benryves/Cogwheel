@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
 using BeeDevelopment.Sega8Bit;
