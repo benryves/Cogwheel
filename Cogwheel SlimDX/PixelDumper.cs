@@ -46,6 +46,18 @@ namespace CogwheelSlimDX {
 
 		}
 
+		/// <summary>
+		/// Defines the way that the image is stretched to fill the control.
+		/// </summary>
+		public enum ScaleModes {
+			/// <summary>The image fills the entire control, ignoring it aspect ratio.</summary>
+			Stretch,
+			/// <summary>The image is zoomed, retaining its aspect ratio, so that it just fits inside the control (leaving borders).</summary>
+			ZoomInside,
+			/// <summary>The image is zoomed, retaining its aspect ratio, so that it entirely fills the control, cropping some of itself.</summary>
+			ZoomOutside,
+		}
+
 		#endregion
 
 		#region Private Fields
@@ -193,6 +205,32 @@ namespace CogwheelSlimDX {
 
 				OffsetX = 0f; OffsetY = 0f;
 
+				float ScaleX = 1f, ScaleY = 1f;
+				switch (this.ScaleMode) {
+					case ScaleModes.ZoomInside:
+					case ScaleModes.ZoomOutside:
+						float DestinationAspectRatio = (float)this.Control.ClientSize.Width / (float)this.Control.ClientSize.Height;
+						float SourceAspectRatio = (float)width / (float)height;
+						switch (this.ScaleMode) {
+							case ScaleModes.ZoomInside:
+								if (SourceAspectRatio > DestinationAspectRatio) {
+									ScaleY = SourceAspectRatio / DestinationAspectRatio;
+								} else {
+									ScaleX = DestinationAspectRatio / SourceAspectRatio;
+								}
+								break;
+							case ScaleModes.ZoomOutside:
+								if (SourceAspectRatio < DestinationAspectRatio) {
+									ScaleY = SourceAspectRatio / DestinationAspectRatio;
+								} else {
+									ScaleX = DestinationAspectRatio / SourceAspectRatio;
+								}
+								break;
+						}
+						
+						break;
+				}
+
 				this.GraphicsDevice.SetTransform(TransformState.World, Matrix.Translation(
 					OffsetX + (((float)(this.VideoOutputWidth - width)) / (float)this.VideoOutputWidth) * 0.5f,
 					OffsetY + (((float)(this.VideoOutputHeight - height)) / (float)this.VideoOutputHeight) * -0.5f,
@@ -200,8 +238,11 @@ namespace CogwheelSlimDX {
 
 
 				this.GraphicsDevice.SetTransform(TransformState.View, Matrix.LookAtLH(new Vector3(0f, 0f, -5f), Vector3.Zero, Vector3.UnitY));
-				this.GraphicsDevice.SetTransform(TransformState.Projection, Matrix.OrthoLH((float)width / (float)this.VideoOutputWidth, (float)height / (float)this.VideoOutputHeight, 0f, 10f));
-
+				
+				this.GraphicsDevice.SetTransform(
+					TransformState.Projection,
+					Matrix.OrthoLH(((float)width / (float)this.VideoOutputWidth * ScaleX), ((float)height / (float)this.VideoOutputHeight * ScaleY), 0f, 10f)
+				);
 
 
 				this.GraphicsDevice.SetTexture(0, this.VideoOutput);
@@ -253,7 +294,12 @@ namespace CogwheelSlimDX {
 		/// <summary>
 		/// Gets or sets the whether to use bilinear interpolation.
 		/// </summary>
-		public bool LinearInterpolation { get; set; } 
+		public bool LinearInterpolation { get; set; }
+
+		/// <summary>
+		/// Gets the <see cref="ScaleModes"/> used to scale the image.
+		/// </summary>
+		public ScaleModes ScaleMode { get; set; }
 
 		#endregion
 
@@ -265,6 +311,7 @@ namespace CogwheelSlimDX {
 		/// <param name="handle"><see cref="Control"/> to render to.</param>
 		public PixelDumper(Control control) {
 			this.Control = control;
+			this.ScaleMode = ScaleModes.ZoomInside;
 			this.ReinitialiseRenderer();
 		}
 
