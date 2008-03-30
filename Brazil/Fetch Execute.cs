@@ -13,7 +13,7 @@ namespace BeeDevelopment.Brazil {
 		private int ThisCycles = 0;
 		private int NextCycles =  0;
 		private int RunningCycles;
-
+		
 		/// <summary>
 		/// Runs the CPU for a particular number of clock cycles.
 		/// </summary>
@@ -41,48 +41,48 @@ namespace BeeDevelopment.Brazil {
 					}
 				}
 
-				if (this.IFF1) { // Are interrupts enabled?
+				// IRQ
+				if (this.IFF1 && this.Interrupt) { // Are interrupts enabled?
 
-					// IRQ
-					if (this.Interrupt) {
+					this.Halted = false;
 
-						this.Halted = false;
+					this.IFF1 = false;
+					this.IFF2 = false;
 
-						this.IFF1 = false;
-						this.IFF2 = false;
-
-						switch (interruptMode) {
-							case 0:
-								break;
-							case 1:
-								WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
-								RegPC.Value16 = 0x38;
-								ClockCycles += 13;
-								break;
-							case 2:
-								TUS = (ushort)(RegI * 256 + 0);
-								WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
-								RegPC.Low8 = ReadMemory(TUS++); RegPC.High8 = ReadMemory(TUS);
-								ClockCycles += 19;
-								break;
-						}
+					switch (interruptMode) {
+						case 0:
+							ClockCycles += 11;
+							break;
+						case 1:
+							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
+							RegPC.Value16 = 0x38;
+							ClockCycles += 13;
+							break;
+						case 2:
+							TUS = (ushort)(RegI * 256 + 0);
+							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
+							RegPC.Low8 = ReadMemory(TUS++); RegPC.High8 = ReadMemory(TUS);
+							ClockCycles += 19;
+							break;
 					}
-
-					// NMI
-					if (this.NonMaskableInterruptPending) {
-
-						this.Halted = false;
-						this.NonMaskableInterruptPending = false;
-
-						this.IFF2 = this.IFF1;
-						this.IFF1 = false;
-
-						WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
-						RegPC.Value16 = 0x66;
-						ClockCycles += 13;
-					}
+					
 				}
 
+
+				// NMI
+				if (this.NonMaskableInterruptPending) {
+
+					this.Halted = false;
+					this.NonMaskableInterruptPending = false;
+
+					this.IFF2 = this.IFF1;
+					this.IFF1 = false;
+
+					WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
+					RegPC.Value16 = 0x66;
+					ClockCycles += 11;
+				}
+				
 				#endregion
 
 				if (this.Halted) {
