@@ -166,23 +166,112 @@ namespace CogwheelSlimDX {
 
 		#endregion
 
-		#region Video Output
+		#region Video Output / Window State
 
 		private void RepaintVideo() {
 			this.Dumper.Render(this.Emulator.Video.LastCompleteFrame, this.Emulator.Video.LastCompleteFrameWidth, this.Emulator.Video.LastCompleteFrameHeight);
 		}
 
 		FormWindowState LastWindowState = FormWindowState.Normal;
+		private bool TogglingFullScreen = false;
 		private void MainForm_Resize(object sender, EventArgs e) {
+			
 			if (this.WindowState == FormWindowState.Maximized || this.LastWindowState == FormWindowState.Maximized) {
 				this.Dumper.ReinitialiseRenderer();
 				this.LastWindowState = this.WindowState;
 			}
+
+			if (!this.TogglingFullScreen) {
+			
+				if (this.WindowState == FormWindowState.Maximized && this.FormBorderStyle == FormBorderStyle.Sizable) {
+					this.TogglingFullScreen = true;
+					this.FormBorderStyle = FormBorderStyle.None;
+					this.Menus.Visible = false;
+					this.Status.Visible = false;
+					this.Visible = false;
+					this.WindowState = FormWindowState.Normal;
+					this.WindowState = FormWindowState.Maximized;
+					this.Visible = true;
+					this.RenderPanel.SendToBack();
+					this.BringToFront();
+					this.CursorHider.Start();
+					this.TogglingFullScreen = false;
+				}
+
+				if (this.WindowState == FormWindowState.Normal && this.FormBorderStyle == FormBorderStyle.None) {
+					this.TogglingFullScreen = true;
+					this.Menus.Visible = true;
+					this.Status.Visible = true;
+					this.FormBorderStyle = FormBorderStyle.Sizable;
+					this.ShowIcon = false;
+					this.ShowIcon = true;
+					this.RenderPanel.BringToFront();
+					this.ShowCursor();
+					this.CursorHider.Stop();
+					this.TogglingFullScreen = false;
+				}
+			}
+
 			this.RepaintVideo();
 		}
 
 		private void MainForm_ResizeEnd(object sender, EventArgs e) {
 			this.Dumper.ReinitialiseRenderer();
+		}
+
+		private void ToggleFullScreenMenu_Click(object sender, EventArgs e) {
+			if (this.WindowState == FormWindowState.Normal) {
+				this.WindowState = FormWindowState.Maximized;
+			} else if (this.WindowState == FormWindowState.Maximized) {
+				this.WindowState = FormWindowState.Normal;
+			}
+		}
+
+		private void RenderPanel_MouseMove(object sender, MouseEventArgs e) {
+			if (this.WindowState == FormWindowState.Maximized) {
+				this.Menus.Visible = e.Y < this.Menus.ClientSize.Height;
+				this.Status.Visible = e.Y >= this.RenderPanel.ClientSize.Height - this.Status.ClientSize.Height;
+				this.ShowCursor();
+				if (!(this.Menus.Visible || this.Status.Visible)) {
+					this.CursorHider.Start();
+				} else {
+					this.CursorHider.Stop();
+				}
+			}
+		}
+
+
+		#endregion
+
+		#region Cursor Hiding/Showing
+
+		bool CursorVisible = true;
+
+		/// <summary>
+		/// Shows the mouse cursor.
+		/// </summary>
+		private void ShowCursor() {
+			if (CursorVisible) return;
+			Cursor.Show();
+			CursorVisible = true;
+		}
+
+		/// <summary>
+		/// Hides the mouse cursor.
+		/// </summary>
+		private void HideCursor() {
+			if (!CursorVisible) return;
+			Cursor.Hide();
+			CursorVisible = false;
+		}
+
+
+		/// <summary>
+		/// Hides the mouse after a delay.
+		/// </summary>
+		private void CursorHider_Tick(object sender, EventArgs e) {
+			this.HideCursor();
+			this.CursorHider.Stop();
 		}
 
 		#endregion
@@ -760,7 +849,6 @@ namespace CogwheelSlimDX {
 		}
 
 		#endregion
-
 
 	}
 }

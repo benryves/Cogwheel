@@ -240,6 +240,13 @@ namespace CogwheelSlimDX.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Icon_Monitor {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Monitor", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Icon_SmsRom {
             get {
                 object obj = ResourceManager.GetObject("Icon_SmsRom", resourceCulture);

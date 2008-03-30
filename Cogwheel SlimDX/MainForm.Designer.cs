@@ -38,8 +38,9 @@
 			this.dummyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.FileSep2 = new System.Windows.Forms.ToolStripSeparator();
 			this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.EditMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.ViewMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.CopyScreenshotMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.ToggleFullScreenMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ToolsMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.GameGenieMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.GameGenieEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,9 +48,10 @@
 			this.OptionsMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.CustomiseControlsMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.OptionsSep0 = new System.Windows.Forms.ToolStripSeparator();
+			this.EnableSoundMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.SimulateGameGearLcdMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.LinearInterpolationMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.EnableSoundMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.MaintainAspectRatioMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.AboutMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.HelpSep0 = new System.Windows.Forms.ToolStripSeparator();
@@ -60,24 +62,26 @@
 			this.MessageTicker = new System.Windows.Forms.Timer(this.components);
 			this.OpenStateDialog = new System.Windows.Forms.OpenFileDialog();
 			this.SaveStateDialog = new System.Windows.Forms.SaveFileDialog();
-			this.MaintainAspectRatioMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.CursorHider = new System.Windows.Forms.Timer(this.components);
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// RenderPanel
 			// 
+			this.RenderPanel.BackColor = System.Drawing.Color.Black;
 			this.RenderPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.RenderPanel.Location = new System.Drawing.Point(0, 24);
 			this.RenderPanel.Name = "RenderPanel";
 			this.RenderPanel.Size = new System.Drawing.Size(325, 262);
 			this.RenderPanel.TabIndex = 0;
+			this.RenderPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RenderPanel_MouseMove);
 			// 
 			// Menus
 			// 
 			this.Menus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FileMenu,
-            this.EditMenu,
+            this.ViewMenu,
             this.ToolsMenu,
             this.HelpMenu});
 			this.Menus.Location = new System.Drawing.Point(0, 0);
@@ -172,13 +176,14 @@
 			this.ExitMenu.Text = "E&xit";
 			this.ExitMenu.Click += new System.EventHandler(this.ExitMenu_Click);
 			// 
-			// EditMenu
+			// ViewMenu
 			// 
-			this.EditMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.CopyScreenshotMenu});
-			this.EditMenu.Name = "EditMenu";
-			this.EditMenu.Size = new System.Drawing.Size(39, 20);
-			this.EditMenu.Text = "&Edit";
+			this.ViewMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CopyScreenshotMenu,
+            this.ToggleFullScreenMenu});
+			this.ViewMenu.Name = "ViewMenu";
+			this.ViewMenu.Size = new System.Drawing.Size(44, 20);
+			this.ViewMenu.Text = "&View";
 			// 
 			// CopyScreenshotMenu
 			// 
@@ -188,6 +193,15 @@
 			this.CopyScreenshotMenu.Size = new System.Drawing.Size(205, 22);
 			this.CopyScreenshotMenu.Text = "&Copy Screenshot";
 			this.CopyScreenshotMenu.Click += new System.EventHandler(this.CopyScreenshotMenu_Click);
+			// 
+			// ToggleFullScreenMenu
+			// 
+			this.ToggleFullScreenMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Monitor;
+			this.ToggleFullScreenMenu.Name = "ToggleFullScreenMenu";
+			this.ToggleFullScreenMenu.ShortcutKeys = System.Windows.Forms.Keys.F11;
+			this.ToggleFullScreenMenu.Size = new System.Drawing.Size(205, 22);
+			this.ToggleFullScreenMenu.Text = "Toggle &Full Screen";
+			this.ToggleFullScreenMenu.Click += new System.EventHandler(this.ToggleFullScreenMenu_Click);
 			// 
 			// ToolsMenu
 			// 
@@ -205,7 +219,7 @@
             this.GameGenieEditMenu});
 			this.GameGenieMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(152, 22);
+			this.GameGenieMenu.Size = new System.Drawing.Size(138, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
 			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
 			// 
@@ -235,7 +249,7 @@
             this.MaintainAspectRatioMenu});
 			this.OptionsMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Wrench;
 			this.OptionsMenu.Name = "OptionsMenu";
-			this.OptionsMenu.Size = new System.Drawing.Size(152, 22);
+			this.OptionsMenu.Size = new System.Drawing.Size(138, 22);
 			this.OptionsMenu.Text = "&Options";
 			this.OptionsMenu.DropDownOpening += new System.EventHandler(this.OptionsMenu_DropDownOpening);
 			// 
@@ -252,6 +266,13 @@
 			this.OptionsSep0.Name = "OptionsSep0";
 			this.OptionsSep0.Size = new System.Drawing.Size(244, 6);
 			// 
+			// EnableSoundMenu
+			// 
+			this.EnableSoundMenu.Name = "EnableSoundMenu";
+			this.EnableSoundMenu.Size = new System.Drawing.Size(247, 22);
+			this.EnableSoundMenu.Text = "&Enable Sound";
+			this.EnableSoundMenu.Click += new System.EventHandler(this.EnableSoundMenu_Click);
+			// 
 			// SimulateGameGearLcdMenu
 			// 
 			this.SimulateGameGearLcdMenu.Name = "SimulateGameGearLcdMenu";
@@ -266,12 +287,12 @@
 			this.LinearInterpolationMenu.Text = "&Linear Interpolation (Smooth)";
 			this.LinearInterpolationMenu.Click += new System.EventHandler(this.LinearInterpolationMenu_Click);
 			// 
-			// EnableSoundMenu
+			// MaintainAspectRatioMenu
 			// 
-			this.EnableSoundMenu.Name = "EnableSoundMenu";
-			this.EnableSoundMenu.Size = new System.Drawing.Size(247, 22);
-			this.EnableSoundMenu.Text = "&Enable Sound";
-			this.EnableSoundMenu.Click += new System.EventHandler(this.EnableSoundMenu_Click);
+			this.MaintainAspectRatioMenu.Name = "MaintainAspectRatioMenu";
+			this.MaintainAspectRatioMenu.Size = new System.Drawing.Size(247, 22);
+			this.MaintainAspectRatioMenu.Text = "Maintain &Aspect Ratio";
+			this.MaintainAspectRatioMenu.Click += new System.EventHandler(this.MaintainAspectRatioMenu_Click);
 			// 
 			// HelpMenu
 			// 
@@ -339,12 +360,10 @@
 			// 
 			this.SaveStateDialog.Filter = "Cogwheel Saved States (*.cogstate)|*.cogstate|All Files (*.*)|*.*";
 			// 
-			// MaintainAspectRatioMenu
+			// CursorHider
 			// 
-			this.MaintainAspectRatioMenu.Name = "MaintainAspectRatioMenu";
-			this.MaintainAspectRatioMenu.Size = new System.Drawing.Size(247, 22);
-			this.MaintainAspectRatioMenu.Text = "Maintain &Aspect Ratio";
-			this.MaintainAspectRatioMenu.Click += new System.EventHandler(this.MaintainAspectRatioMenu_Click);
+			this.CursorHider.Interval = 1000;
+			this.CursorHider.Tick += new System.EventHandler(this.CursorHider_Tick);
 			// 
 			// MainForm
 			// 
@@ -377,7 +396,7 @@
 		private System.Windows.Forms.ToolStripMenuItem QuickLoadRomMenu;
 		private System.Windows.Forms.ToolStripMenuItem ExitMenu;
 		private System.Windows.Forms.OpenFileDialog OpenRomDialog;
-		private System.Windows.Forms.ToolStripMenuItem EditMenu;
+		private System.Windows.Forms.ToolStripMenuItem ViewMenu;
 		private System.Windows.Forms.ToolStripMenuItem CopyScreenshotMenu;
 		private System.Windows.Forms.StatusStrip Status;
 		private System.Windows.Forms.ToolStripStatusLabel MessageStatus;
@@ -407,6 +426,8 @@
 		private System.Windows.Forms.ToolStripSeparator FileSep2;
 		private System.Windows.Forms.ToolStripMenuItem dummyToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem MaintainAspectRatioMenu;
+		private System.Windows.Forms.ToolStripMenuItem ToggleFullScreenMenu;
+		private System.Windows.Forms.Timer CursorHider;
 	}
 }
 

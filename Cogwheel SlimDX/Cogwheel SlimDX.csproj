@@ -218,6 +218,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cog.ico" />
+    <None Include="Resources\monitor.png" />
     <None Include="Resources\sound_low.png" />
     <None Include="Resources\sound.png" />
     <None Include="Resources\sound_none.png" />
