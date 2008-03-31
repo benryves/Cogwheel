@@ -106,6 +106,23 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// </summary>
 		public int LastBackdropColour { get; set; }
 
+		/// <summary>
+		/// Gets the frame rate of the VDP in Hertz.
+		/// </summary>
+		[StateNotSaved()]
+		public int FrameRate {
+			get {
+				switch (this.System) {
+					case VideoSystem.Ntsc:
+						return 60;
+					case VideoSystem.Pal:
+						return 50;
+					default:
+						throw new InvalidOperationException();
+				}
+			}
+		}
+
 		#endregion
 
 		#region Display Timing
