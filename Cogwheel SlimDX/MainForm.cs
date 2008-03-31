@@ -175,8 +175,12 @@ namespace CogwheelSlimDX {
 		}
 
 		FormWindowState LastWindowState = FormWindowState.Normal;
+		Size LastClientSize;
+
+
 		private bool TogglingFullScreen = false;
 		private void MainForm_Resize(object sender, EventArgs e) {
+
 			
 			if (this.WindowState == FormWindowState.Maximized || this.LastWindowState == FormWindowState.Maximized) {
 				this.Dumper.ReinitialiseRenderer();
@@ -184,7 +188,11 @@ namespace CogwheelSlimDX {
 			}
 
 			if (!this.TogglingFullScreen) {
-			
+
+				if (this.WindowState == FormWindowState.Normal && this.FormBorderStyle == FormBorderStyle.Sizable) {
+					this.LastClientSize = this.ClientSize;
+				}
+	
 				if (this.WindowState == FormWindowState.Maximized && this.FormBorderStyle == FormBorderStyle.Sizable) {
 					this.TogglingFullScreen = true;
 					this.FormBorderStyle = FormBorderStyle.None;
@@ -210,6 +218,8 @@ namespace CogwheelSlimDX {
 					this.RenderPanel.BringToFront();
 					this.ShowCursor();
 					this.CursorHider.Stop();
+					this.ClientSize = this.LastClientSize;
+					this.MainForm_ResizeEnd(sender, e);
 					this.TogglingFullScreen = false;
 				}
 			}
