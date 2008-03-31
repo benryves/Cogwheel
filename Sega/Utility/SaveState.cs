@@ -20,31 +20,36 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 		/// <param name="zipFile">The <see cref="ZipFile"/> to save the state to.</param>
 		public static void Save(Emulator emulator, ZipFile zipFile) {
 
-			IniSerialiseObject(emulator, "", "Main.ini", zipFile);
-			IniSerialiseObject(emulator.Video, "Video", "Video.ini", zipFile);
-			IniSerialiseObject(emulator.Sound, "Sound", "PSG.ini", zipFile);
-			
-			for (int i = 0; i < 2; ++i) {
-				IniSerialiseObject(emulator.Ports[i], Path.Combine("Controllers", i.ToString()), "Port.ini", zipFile);
-				foreach (var Property in emulator.Ports[i].GetType().GetProperties()) {
-					if (Property.PropertyType == typeof(ControllerPort.UnidirectionalPin) || Property.PropertyType == typeof(ControllerPort.BidirectionalPin)) {
-						IniSerialiseObject(Property.GetValue(emulator.Ports[i], null), Path.Combine("Controllers", i.ToString()), Property.Name + ".ini", zipFile);
-					}
-				}
-			}
+			lock (emulator) {
 
-			for (int i = 0; i < 2; ++i) {
-				IniSerialiseObject(emulator.Ports[i], Path.Combine("Controllers", i.ToString()), "Port.ini", zipFile);
-				foreach (var Property in emulator.Ports[i].GetType().GetProperties()) {
-					if (Property.PropertyType == typeof(ControllerPort.UnidirectionalPin) || Property.PropertyType == typeof(ControllerPort.BidirectionalPin)) {
-						IniSerialiseObject(Property.GetValue(emulator.Ports[i], null), Path.Combine("Controllers", i.ToString()), Property.Name + ".ini", zipFile);
+				emulator.Sound.FlushQueuedWrites();
+
+				IniSerialiseObject(emulator, "", "Main.ini", zipFile);
+				IniSerialiseObject(emulator.Video, "Video", "Video.ini", zipFile);
+				IniSerialiseObject(emulator.Sound, "Sound", "PSG.ini", zipFile);
+
+				for (int i = 0; i < 2; ++i) {
+					IniSerialiseObject(emulator.Ports[i], Path.Combine("Controllers", i.ToString()), "Port.ini", zipFile);
+					foreach (var Property in emulator.Ports[i].GetType().GetProperties()) {
+						if (Property.PropertyType == typeof(ControllerPort.UnidirectionalPin) || Property.PropertyType == typeof(ControllerPort.BidirectionalPin)) {
+							IniSerialiseObject(Property.GetValue(emulator.Ports[i], null), Path.Combine("Controllers", i.ToString()), Property.Name + ".ini", zipFile);
+						}
 					}
 				}
-			}
-			
-			foreach (var Property in emulator.GetType().GetProperties()) {
-				if (Property.PropertyType == typeof(MemoryDevice)) {
-					IniSerialiseObject(Property.GetValue(emulator, null), Path.Combine("Memory", Property.Name), Property.Name + ".ini", zipFile);
+
+				for (int i = 0; i < 2; ++i) {
+					IniSerialiseObject(emulator.Ports[i], Path.Combine("Controllers", i.ToString()), "Port.ini", zipFile);
+					foreach (var Property in emulator.Ports[i].GetType().GetProperties()) {
+						if (Property.PropertyType == typeof(ControllerPort.UnidirectionalPin) || Property.PropertyType == typeof(ControllerPort.BidirectionalPin)) {
+							IniSerialiseObject(Property.GetValue(emulator.Ports[i], null), Path.Combine("Controllers", i.ToString()), Property.Name + ".ini", zipFile);
+						}
+					}
+				}
+
+				foreach (var Property in emulator.GetType().GetProperties()) {
+					if (Property.PropertyType == typeof(MemoryDevice)) {
+						IniSerialiseObject(Property.GetValue(emulator, null), Path.Combine("Memory", Property.Name), Property.Name + ".ini", zipFile);
+					}
 				}
 			}
 		}
@@ -55,23 +60,24 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 		/// <param name="emulator">The emulator to load into.</param>
 		/// <param name="zipFile">The <see cref="ZipFile"/> to load the state from.</param>
 		public static void Load(out Emulator emulator, ZipFile zipFile) {
-			
-			emulator = (Emulator)IniDeserialiseObject(null, "", "Main.ini", zipFile);			
-			IniDeserialiseObject(emulator.Video, "Video", "Video.ini", zipFile);
-			IniDeserialiseObject(emulator.Sound, "Sound", "Sound.ini", zipFile);
+			emulator = (Emulator)IniDeserialiseObject(null, "", "Main.ini", zipFile);
+			lock (emulator) {
+				IniDeserialiseObject(emulator.Video, "Video", "Video.ini", zipFile);
+				IniDeserialiseObject(emulator.Sound, "Sound", "Sound.ini", zipFile);
 
-			for (int i = 0; i < 2; ++i) {
-				IniDeserialiseObject(emulator.Ports[i], Path.Combine("Controllers", i.ToString()), "Port.ini", zipFile);
-				foreach (var Property in emulator.Ports[i].GetType().GetProperties()) {
-					if (Property.PropertyType == typeof(ControllerPort.UnidirectionalPin) || Property.PropertyType == typeof(ControllerPort.BidirectionalPin)) {
-						Property.SetValue(emulator.Ports[i], IniDeserialiseObject(Property.GetValue(emulator.Ports[i], null), Path.Combine("Controllers", i.ToString()), Property.Name + ".ini", zipFile), null);
+				for (int i = 0; i < 2; ++i) {
+					IniDeserialiseObject(emulator.Ports[i], Path.Combine("Controllers", i.ToString()), "Port.ini", zipFile);
+					foreach (var Property in emulator.Ports[i].GetType().GetProperties()) {
+						if (Property.PropertyType == typeof(ControllerPort.UnidirectionalPin) || Property.PropertyType == typeof(ControllerPort.BidirectionalPin)) {
+							Property.SetValue(emulator.Ports[i], IniDeserialiseObject(Property.GetValue(emulator.Ports[i], null), Path.Combine("Controllers", i.ToString()), Property.Name + ".ini", zipFile), null);
+						}
 					}
 				}
-			}
 
-			foreach (var Property in emulator.GetType().GetProperties()) {
-				if (Property.PropertyType == typeof(MemoryDevice)) {
-					IniDeserialiseObject(Property.GetValue(emulator, null), Path.Combine("Memory", Property.Name), Property.Name + ".ini", zipFile);
+				foreach (var Property in emulator.GetType().GetProperties()) {
+					if (Property.PropertyType == typeof(MemoryDevice)) {
+						IniDeserialiseObject(Property.GetValue(emulator, null), Path.Combine("Memory", Property.Name), Property.Name + ".ini", zipFile);
+					}
 				}
 			}
 		}
