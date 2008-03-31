@@ -17,7 +17,7 @@ namespace CogwheelSlimDX {
 			try {
 				Direct3D.Initialize();
 			} catch (Exception ex) {
-				MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Could not initialise Direct3D: " + Environment.NewLine + ex.Message + Environment.NewLine + Environment.NewLine + "Make sure you have Direct3D 9.0c and the latest updates installed.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 
