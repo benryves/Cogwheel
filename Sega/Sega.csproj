@@ -56,6 +56,7 @@
     <Compile Include="Hardware\ProgrammableSoundGenerator\QueuedWrite.cs" />
     <Compile Include="Hardware\ProgrammableSoundGenerator\Registers.cs" />
     <Compile Include="Hardware\ProgrammableSoundGenerator\ProgrammableSoundGenerator.cs" />
+    <Compile Include="Mappers\Ram1.cs" />
     <Compile Include="Mappers\Shared1KBios.cs" />
     <Compile Include="Mappers\Ram2.cs" />
     <Compile Include="Mappers\Ram8.cs" />
