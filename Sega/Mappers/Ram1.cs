@@ -72,7 +72,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		/// <summary>
 		/// Creates an instance of the <see cref="Ram1"/> mapper.
 		/// </summary>
-		public Ram2() {
+		public Ram1() {
 			this.memory = new byte[0x400];
 		}
 
