@@ -32,8 +32,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// </remarks>
 		public void CreateSamples(short[] buffer) {
 
-			
-
 			lock (this.Emulator) {
 				lock (this.QueuedWrites) {
 					
@@ -44,8 +42,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 						int CorrespondingCycle = (int)(((UInt64)i * (UInt64)ElapsedCycles) / (UInt64)buffer.Length);
 
-						while (this.QueuedWrites.Count > 0 && (this.QueuedWrites.Peek().Key - this.LastCpuClocks) <= CorrespondingCycle) {
-							this.WriteImmediate(this.QueuedWrites.Dequeue().Value);
+						while (this.QueuedWrites.Count > 0 && (this.QueuedWrites.Peek().Time - this.LastCpuClocks) <= CorrespondingCycle) {
+							this.QueuedWrites.Dequeue().Commit();
 						}
 
 						bool WhiteNoise = (this.toneRegisters[3] & 0x04) != 0;
@@ -91,23 +89,22 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 							CycleStepper += 44100;
 						}
 
-						double Mixer = 0;
+						var Mixer = new double[2];
 						for (int c = 0; c < 4; c++) {
 							double Level = this.Levels[c];
 							if (SampleCount[c] != 0) Level = (double)SampleTotal[c] / (double)SampleCount[c];
-							Mixer += Level * LogarithmicScale[this.volumeRegisters[c]];
+							double ScaledValue = Level * LogarithmicScale[this.volumeRegisters[c]];
+							for (int StereoChannel = 0; StereoChannel < 2; ++StereoChannel) {
+								if ((this.StereoDistribution & (1 << (c + 4 * (1 - StereoChannel)))) != 0) Mixer[StereoChannel] += ScaledValue;
+							}
 						}
 
-						Mixer *= 0.25d;
-
-						buffer[i] = (short)Math.Min(short.MaxValue, Math.Max(short.MinValue, (32768d * Mixer)));
-						buffer[i + 1] = buffer[i];
-
-
+						for (int StereoChannel = 0; StereoChannel < 2; ++StereoChannel) {
+							buffer[i + StereoChannel] = (short)Math.Min(short.MaxValue, Math.Max(short.MinValue, (32768d * Mixer[StereoChannel] * 0.25d)));
+						}
 					}
 
-					while (this.QueuedWrites.Count > 0) this.WriteImmediate(this.QueuedWrites.Dequeue().Value);
-
+					this.FlushQueuedWrites();
 					this.LastCpuClocks = TotalCyclesExecuted;
 
 				}

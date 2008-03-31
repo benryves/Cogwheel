@@ -97,6 +97,9 @@ namespace BeeDevelopment.Sega8Bit {
 						case 0x02:
 							this.Port2 = value;
 							break;
+						case 0x06:
+							this.Sound.WriteStereoDistributionQueued(value);
+							break;
 					}
 				}
 			} else {

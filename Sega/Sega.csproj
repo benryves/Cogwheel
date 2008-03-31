@@ -50,8 +50,10 @@
     </Compile>
     <Compile Include="ControllerPort.cs" />
     <Compile Include="Country.cs" />
+    <Compile Include="Hardware\ProgrammableSoundGenerator\StereoDistribution.cs" />
     <Compile Include="Hardware\ProgrammableSoundGenerator\Output.cs" />
     <Compile Include="Hardware\ProgrammableSoundGenerator\IO.cs" />
+    <Compile Include="Hardware\ProgrammableSoundGenerator\QueuedWrite.cs" />
     <Compile Include="Hardware\ProgrammableSoundGenerator\Registers.cs" />
     <Compile Include="Hardware\ProgrammableSoundGenerator\ProgrammableSoundGenerator.cs" />
     <Compile Include="Mappers\Shared1KBios.cs" />

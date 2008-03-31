@@ -78,12 +78,13 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		public void Reset() {
 			this.LatchedChannel = 0;
 			this.LatchedMode = LatchMode.Tone;
-			this.QueuedWrites = new Queue<KeyValuePair<int, byte>>(256);
+			this.QueuedWrites = new Queue<QueuedWrite>(256);
 			this.volumeRegisters = new byte[] { 0x0F, 0x0F, 0x0F, 0x0F };
 			this.toneRegisters = new ushort[4];
 			this.CountDown = new int[4];
 			this.Levels = new int[] { 1, 1, 1, 1 };
 			this.ShiftRegister = (ushort)(1 << (this.ShiftRegisterWidth - 1));
+			this.StereoDistribution = 0xFF;
 		}
 
 		/// <summary>
