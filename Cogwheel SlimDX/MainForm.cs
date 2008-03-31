@@ -135,8 +135,6 @@ namespace CogwheelSlimDX {
 			}
 		}
 
-		// HACK: Refresh rate of the emulator (hard-coded to NTSC 60Hz at the moment.
-		int TargetRefreshRate = 60;
 		int SystemRefreshRate = PixelDumper.GetCurrentRefreshRate();
 		int RefreshStepper = 0;
 
@@ -147,7 +145,7 @@ namespace CogwheelSlimDX {
 					Thread.Sleep(100);
 				} else {
 					if (!this.Paused) {
-						RefreshStepper -= TargetRefreshRate;
+						RefreshStepper -= this.Emulator.Video.FrameRate;
 						while (RefreshStepper <= 0) {
 							RefreshStepper += SystemRefreshRate;
 							this.Emulator.RunFrame();
