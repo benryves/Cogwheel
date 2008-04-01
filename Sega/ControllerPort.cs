@@ -5,10 +5,10 @@ namespace BeeDevelopment.Sega8Bit {
 
 
 	/// <summary>
-	/// Emulates a controller port.
+	/// Emulates a Sega controller port.
 	/// </summary>
 	[Serializable()]
-	public class ControllerPort  {
+	public class SegaControllerPort  {
 
 		/// <summary>
 		/// Represents an input-only pin on the controller port.
@@ -41,12 +41,12 @@ namespace BeeDevelopment.Sega8Bit {
 			/// <summary>
 			/// Gets or sets the <see cref="ControllerPort"/> that this pin is part of.
 			/// </summary>
-			public ControllerPort Port { get; private set; }
+			public SegaControllerPort Port { get; private set; }
 
 			/// <summary>
 			/// Creates an instance of a <see cref="BidirectionalPin"/>.
 			/// </summary>
-			public BidirectionalPin(ControllerPort port) {
+			public BidirectionalPin(SegaControllerPort port) {
 				this.Port = port;
 				this.InputState = true;
 				this.OutputState = false;
@@ -139,7 +139,7 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <summary>
 		/// Creates an instance of a <see cref="ControllerPort"/>.
 		/// </summary>
-		public ControllerPort() {
+		public SegaControllerPort() {
 			this.Up = new UnidirectionalPin();
 			this.Down = new UnidirectionalPin();
 			this.Left = new UnidirectionalPin();

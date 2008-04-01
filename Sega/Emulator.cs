@@ -142,7 +142,7 @@ namespace BeeDevelopment.Sega8Bit {
 			this.HasPauseButton = !(model == HardwareModel.GameGear || model == HardwareModel.ColecoVision);
 
 			for (int i = 0; i < 2; ++i) {
-				this.Ports[i].SupportsOutput = (model == HardwareModel.MasterSystem || model == HardwareModel.MasterSystem2) && region != Region.Japanese;
+				this.SegaPorts[i].SupportsOutput = (model == HardwareModel.MasterSystem || model == HardwareModel.MasterSystem2) && region != Region.Japanese;
 			}
 
 			#region Memory

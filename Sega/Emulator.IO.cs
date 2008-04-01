@@ -91,9 +91,9 @@ namespace BeeDevelopment.Sega8Bit {
 						case 0x81: // VDP Control.
 							return this.Video.ReadControl();
 						case 0xC0: // I/O port A.
-							return this.ReadIOPortA();
+							return this.ReadSegaIOPortA();
 						case 0xC1: // I/O port B.
-							return this.ReadIOPortB();
+							return this.ReadSegaIOPortB();
 					}
 
 					break;
@@ -156,8 +156,8 @@ namespace BeeDevelopment.Sega8Bit {
 								break;
 
 							case 0x01: // I/O port (controller ports) control.
-								this.Ports[0].WriteState(value >> 0);
-								this.Ports[1].WriteState(value >> 2);
+								this.SegaPorts[0].WriteState(value >> 0);
+								this.SegaPorts[1].WriteState(value >> 2);
 								break;
 
 							case 0x40: // PSG.

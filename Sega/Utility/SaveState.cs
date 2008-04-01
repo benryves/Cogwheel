@@ -29,19 +29,10 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 				IniSerialiseObject(emulator.Sound, "Sound", "PSG.ini", zipFile);
 
 				for (int i = 0; i < 2; ++i) {
-					IniSerialiseObject(emulator.Ports[i], Path.Combine("Controllers", i.ToString()), "Port.ini", zipFile);
-					foreach (var Property in emulator.Ports[i].GetType().GetProperties()) {
-						if (Property.PropertyType == typeof(ControllerPort.UnidirectionalPin) || Property.PropertyType == typeof(ControllerPort.BidirectionalPin)) {
-							IniSerialiseObject(Property.GetValue(emulator.Ports[i], null), Path.Combine("Controllers", i.ToString()), Property.Name + ".ini", zipFile);
-						}
-					}
-				}
-
-				for (int i = 0; i < 2; ++i) {
-					IniSerialiseObject(emulator.Ports[i], Path.Combine("Controllers", i.ToString()), "Port.ini", zipFile);
-					foreach (var Property in emulator.Ports[i].GetType().GetProperties()) {
-						if (Property.PropertyType == typeof(ControllerPort.UnidirectionalPin) || Property.PropertyType == typeof(ControllerPort.BidirectionalPin)) {
-							IniSerialiseObject(Property.GetValue(emulator.Ports[i], null), Path.Combine("Controllers", i.ToString()), Property.Name + ".ini", zipFile);
+					IniSerialiseObject(emulator.SegaPorts[i], Path.Combine(@"Controllers\Sega", i.ToString()), "Port.ini", zipFile);
+					foreach (var Property in emulator.SegaPorts[i].GetType().GetProperties()) {
+						if (Property.PropertyType == typeof(SegaControllerPort.UnidirectionalPin) || Property.PropertyType == typeof(SegaControllerPort.BidirectionalPin)) {
+							IniSerialiseObject(Property.GetValue(emulator.SegaPorts[i], null), Path.Combine(@"Controllers\Sega", i.ToString()), Property.Name + ".ini", zipFile);
 						}
 					}
 				}
@@ -66,10 +57,11 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 				IniDeserialiseObject(emulator.Sound, "Sound", "Sound.ini", zipFile);
 
 				for (int i = 0; i < 2; ++i) {
-					IniDeserialiseObject(emulator.Ports[i], Path.Combine("Controllers", i.ToString()), "Port.ini", zipFile);
-					foreach (var Property in emulator.Ports[i].GetType().GetProperties()) {
-						if (Property.PropertyType == typeof(ControllerPort.UnidirectionalPin) || Property.PropertyType == typeof(ControllerPort.BidirectionalPin)) {
-							Property.SetValue(emulator.Ports[i], IniDeserialiseObject(Property.GetValue(emulator.Ports[i], null), Path.Combine("Controllers", i.ToString()), Property.Name + ".ini", zipFile), null);
+					IniDeserialiseObject(emulator.SegaPorts[i], Path.Combine(@"Controllers\Sega", i.ToString()), "Port.ini", zipFile);
+					foreach (var Property in emulator.SegaPorts[i].GetType().GetProperties()) {
+						if (Property.PropertyType == typeof(SegaControllerPort.UnidirectionalPin) || Property.PropertyType == typeof(SegaControllerPort.BidirectionalPin)) {
+							var DeserialisedPort = IniDeserialiseObject(Property.GetValue(emulator.SegaPorts[i], null), Path.Combine(@"Controllers\Sega", i.ToString()), Property.Name + ".ini", zipFile);
+							if (DeserialisedPort != null) Property.SetValue(emulator.SegaPorts[i], DeserialisedPort, null);
 						}
 					}
 				}

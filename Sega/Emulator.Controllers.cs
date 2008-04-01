@@ -9,15 +9,15 @@ namespace BeeDevelopment.Sega8Bit {
 		/// Gets the two <see cref="ControllerPort"/> instances connected to the 
 		/// </summary>
 		[StateNotSaved()]
-		public ControllerPort[] Ports { get; private set; }
+		public SegaControllerPort[] SegaPorts { get; private set; }
 
 		/// <summary>
 		/// Resets the controller ports to their default state.
 		/// </summary>
 		public void ResetPorts() {
-			this.Ports = new ControllerPort[] {
-				new ControllerPort(),
-				new ControllerPort()
+			this.SegaPorts = new SegaControllerPort[] {
+				new SegaControllerPort(),
+				new SegaControllerPort()
 			};
 			this.ResetButton = false;
 		}
@@ -26,16 +26,16 @@ namespace BeeDevelopment.Sega8Bit {
 		/// Reads I/O port A.
 		/// </summary>
 		/// <returns>The state of I/O port A.</returns>
-		private byte ReadIOPortA() {
+		private byte ReadSegaIOPortA() {
 			return (byte)(
-				(this.Ports[0].Up.State ? 0x01 : 0x00) |
-				(this.Ports[0].Down.State ? 0x02 : 0x00) |
-				(this.Ports[0].Left.State ? 0x04 : 0x00) |
-				(this.Ports[0].Right.State ? 0x08 : 0x00) |
-				(this.Ports[0].TL.State ? 0x10 : 0x00) |
-				(this.Ports[0].TR.State ? 0x20 : 0x00) |
-				(this.Ports[1].Up.State ? 0x40 : 0x00) |
-				(this.Ports[1].Down.State ? 0x80 : 0x00)
+				(this.SegaPorts[0].Up.State ? 0x01 : 0x00) |
+				(this.SegaPorts[0].Down.State ? 0x02 : 0x00) |
+				(this.SegaPorts[0].Left.State ? 0x04 : 0x00) |
+				(this.SegaPorts[0].Right.State ? 0x08 : 0x00) |
+				(this.SegaPorts[0].TL.State ? 0x10 : 0x00) |
+				(this.SegaPorts[0].TR.State ? 0x20 : 0x00) |
+				(this.SegaPorts[1].Up.State ? 0x40 : 0x00) |
+				(this.SegaPorts[1].Down.State ? 0x80 : 0x00)
 			);
 		}
 
@@ -43,16 +43,16 @@ namespace BeeDevelopment.Sega8Bit {
 		/// Reads I/O port B.
 		/// </summary>
 		/// <returns>The state of I/O port B.</returns>
-		private byte ReadIOPortB() {
+		private byte ReadSegaIOPortB() {
 			return (byte)(
-				(this.Ports[1].Left.State ? 0x01 : 0x00) |
-				(this.Ports[1].Right.State ? 0x02 : 0x00) |
-				(this.Ports[1].TL.State ? 0x04 : 0x00) |
-				(this.Ports[1].TR.State ? 0x08 : 0x00) |
+				(this.SegaPorts[1].Left.State ? 0x01 : 0x00) |
+				(this.SegaPorts[1].Right.State ? 0x02 : 0x00) |
+				(this.SegaPorts[1].TL.State ? 0x04 : 0x00) |
+				(this.SegaPorts[1].TR.State ? 0x08 : 0x00) |
 				(this.ResetButton ? 0x00 : 0x10) |
 				0x20 |
-				(this.Ports[0].TH.State ? 0x40 : 0x00) |
-				(this.Ports[1].TH.State ? 0x80 : 0x00)
+				(this.SegaPorts[0].TH.State ? 0x40 : 0x00) |
+				(this.SegaPorts[1].TH.State ? 0x80 : 0x00)
 			);
 		}
 
