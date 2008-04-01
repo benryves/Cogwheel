@@ -38,7 +38,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		/// <param name="address">The address to read from.</param>
 		/// <returns>The byte read from memory from address <paramref name="address"/>.</returns>
 		public byte ReadMemory(ushort address) {
-			return this.memory[address & 0x7FF];
+			return this.memory[address & 0x3FF];
 		}
 
 		/// <summary>
@@ -47,7 +47,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		/// <param name="address">The address to write to .</param>
 		/// <param name="value">The data to write.</param>
 		public void WriteMemory(ushort address, byte value) {
-			this.memory[address & 0x7FF] = value;
+			this.memory[address & 0x3FF] = value;
 		}
 
 		#endregion
