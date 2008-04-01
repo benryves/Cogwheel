@@ -84,18 +84,18 @@ namespace CogwheelSlimDX {
 		/// <param name="emulator">The emulator to update.</param>
 		/// <remarks>This polls the input devices and sets the input state of the emulator for you.</remarks>
 		public void UpdateEmulatorState(Emulator emulator) {
-			emulator.Ports[0].TL.State = !this.Player1TL;
-			emulator.Ports[0].TR.InputState = !this.Player1TR;
-			emulator.Ports[0].Up.State = !this.Player1Up;
-			emulator.Ports[0].Down.State = !this.Player1Down;
-			emulator.Ports[0].Left.State = !this.Player1Left;
-			emulator.Ports[0].Right.State = !this.Player1Right;
-			emulator.Ports[1].TL.State = !this.Player2TL;
-			emulator.Ports[1].TR.InputState = !this.Player2TR;
-			emulator.Ports[1].Up.State = !this.Player2Up;
-			emulator.Ports[1].Down.State = !this.Player2Down;
-			emulator.Ports[1].Left.State = !this.Player2Left;
-			emulator.Ports[1].Right.State = !this.Player2Right;
+			emulator.SegaPorts[0].TL.State = !this.Player1TL;
+			emulator.SegaPorts[0].TR.InputState = !this.Player1TR;
+			emulator.SegaPorts[0].Up.State = !this.Player1Up;
+			emulator.SegaPorts[0].Down.State = !this.Player1Down;
+			emulator.SegaPorts[0].Left.State = !this.Player1Left;
+			emulator.SegaPorts[0].Right.State = !this.Player1Right;
+			emulator.SegaPorts[1].TL.State = !this.Player2TL;
+			emulator.SegaPorts[1].TR.InputState = !this.Player2TR;
+			emulator.SegaPorts[1].Up.State = !this.Player2Up;
+			emulator.SegaPorts[1].Down.State = !this.Player2Down;
+			emulator.SegaPorts[1].Left.State = !this.Player2Left;
+			emulator.SegaPorts[1].Right.State = !this.Player2Right;
 			if (emulator.HasPauseButton) emulator.PauseButton = this.Pause;
 			if (emulator.HasResetButton) emulator.ResetButton = this.Reset;
 			if (emulator.HasStartButton) emulator.StartButton = this.Start;
