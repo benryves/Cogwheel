@@ -150,18 +150,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 
 			var Data = LoadAndFixRomData(ref romFileName, out Info);
 
-			switch (Path.GetExtension(romFileName)) {
-				case ".gg":
-					Model = HardwareModel.GameGear;
-					break;
-				case ".sc":
-					Model = HardwareModel.SC3000;
-					break;
-				case ".mv":
-				case ".sg":
-					Model = HardwareModel.SG1000;
-					break;
-			}
+			Model = RomIdentifier.GetModelFromExtension(Path.GetExtension(romFileName));
 
 			if (Info != null) Model = Info.Model;
 
@@ -213,6 +202,35 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 		public byte[] LoadAndFixRomData(ref string filename) {
 			RomInfo Dud;
 			return LoadAndFixRomData(ref filename, out Dud);
+		}
+
+
+		/// <summary>
+		/// Identifies a particular <see cref="HardwareModel"/> from the file extension typically used for its ROM dumps.
+		/// </summary>
+		/// <param name="extension">The file extension to check for (with or without a leading dot).</param>
+		/// <returns>The corresponding <see cref="HardwareModel"/> for the file extension.</returns>
+		public static HardwareModel GetModelFromExtension(string extension) {
+			if (string.IsNullOrEmpty(extension)) return HardwareModel.Default;
+			if (extension[0] == '.') extension = extension.Substring(1);
+			switch (extension.ToLowerInvariant()) {
+				case "sms":
+					return HardwareModel.MasterSystem2;
+				case "gg":
+					return HardwareModel.GameGear;
+				case "sg":
+				case "mv":  // These two are the "Othello Multivision",
+				case "omv": // a console compatible with the SG-1000.
+					return HardwareModel.SG1000;
+				case "sc":
+					return HardwareModel.SC3000;
+				case "sf7":
+					return HardwareModel.SF7000;
+				case "rom":
+				case "col":
+					return HardwareModel.ColecoVision;
+			}
+			return HardwareModel.Default; // No idea!
 		}
 	}
 }

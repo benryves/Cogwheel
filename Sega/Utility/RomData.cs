@@ -72,20 +72,8 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 							this.Extensions = Array.ConvertAll(CurrentLine.Substring(1).ToLowerInvariant().Split('.'), Extension => "." + Extension.Trim());
 
 							foreach (var Extension in this.Extensions) {
-								switch (Extension) {
-									case ".sms":
-										this.Model = HardwareModel.MasterSystem2;
-										break;
-									case ".gg":
-										this.Model = HardwareModel.GameGear;
-										break;
-									case ".sc":
-										this.Model = HardwareModel.SC3000;
-										break;
-									case ".sg":
-										this.Model = HardwareModel.SG1000;
-										break;
-								}
+								this.Model = RomIdentifier.GetModelFromExtension(Extension);
+								if (this.Model != HardwareModel.Default) break;
 							}
 
 						} else if (this.Comments == null) {
