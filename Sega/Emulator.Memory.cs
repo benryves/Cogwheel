@@ -38,14 +38,24 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <param name="address">The address to write to .</param>
 		/// <param name="value">The data to write.</param>
 		public override void WriteMemory(ushort address, byte value) {
-			// Writes to RAM.
-			if (address >= 0xC000) this.WorkRam.Write(address, value);
-			// Writes to all other devices.
-			this.CartridgeSlot.Write(address, value);
-			this.CardSlot.Write(address, value);
-			this.ExpansionSlot.Write(address, value);
-			this.Bios.Write(address, value);
 
+			switch (this.Family) {
+				case HardwareFamily.ColecoVision: // ColecoVision memory map.
+					if (address >= 0x6000 && address < 0x8000) {
+						this.WorkRam.Write(address, value);
+					}
+					break;
+
+				default: // Sega (default) memory map.
+					// Writes to RAM.
+					if (address >= 0xC000) this.WorkRam.Write(address, value);
+					// Writes to all other devices.
+					this.CartridgeSlot.Write(address, value);
+					this.CardSlot.Write(address, value);
+					this.ExpansionSlot.Write(address, value);
+					this.Bios.Write(address, value);
+					break;
+			}
 		}
 
 		/// <summary>
@@ -54,26 +64,43 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <param name="address">The address to read from.</param>
 		/// <returns>The byte read from memory from address <paramref name="address"/>.</returns>
 		public override byte ReadMemory(ushort address) {
-			// Reads from RAM.
-			if (address >= 0xC000) {
-				return this.WorkRam.Read(address);
-			} else {
-				//HACK: This is a nasty kludge to prevent the Game Gear BIOS and catridge ROM from being AND-ed together.
-				if (this.Bios.Memory != null && this.Bios.Memory is Mappers.Shared1KBios) {
-					if (this.Bios.Enabled) {
+
+			switch (this.Family) {
+				case HardwareFamily.ColecoVision: // ColecoVision memory map.
+					if (address < 0x2000) {
 						return this.Bios.Read(address);
-					} else {
+					} else if (address >= 0x2000 && address < 0x6000) {
+						return this.ExpansionSlot.Read(address);
+					} else if (address >= 0x6000 && address < 0x8000) {
+						return this.WorkRam.Read((ushort)(address & 1023));
+					} else if (address >= 0x8000) {
 						return this.CartridgeSlot.Read(address);
 					}
-				} else {
-					return (byte)(
-						this.CartridgeSlot.Read(address) &
-						this.CardSlot.Read(address) &
-						this.ExpansionSlot.Read(address) &
-						this.Bios.Read(address)
-					);
-				}
+					break;
+				default: // Sega (default) memory map.
+					// Reads from RAM.
+					if (address >= 0xC000) {
+						return this.WorkRam.Read(address);
+					} else {
+						//HACK: This is a nasty kludge to prevent the Game Gear BIOS and catridge ROM from being AND-ed together.
+						if (this.Bios.Memory != null && this.Bios.Memory is Mappers.Shared1KBios) {
+							if (this.Bios.Enabled) {
+								return this.Bios.Read(address);
+							} else {
+								return this.CartridgeSlot.Read(address);
+							}
+						} else {
+							return (byte)(
+								this.CartridgeSlot.Read(address) &
+								this.CardSlot.Read(address) &
+								this.ExpansionSlot.Read(address) &
+								this.Bios.Read(address)
+							);
+						}
+					}
 			}
+
+			return 0xFF;
 		}
 
 		/// <summary>

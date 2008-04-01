@@ -10,6 +10,48 @@ namespace BeeDevelopment.Sega8Bit {
 	[Serializable()]
 	public partial class Emulator : Z80A {
 
+		#region Public Properties
+
+		/// <summary>
+		/// Gets or sets the <see cref="Region"/> of the emulator.
+		/// </summary>
+		public Region Region { get; set; }
+
+		/// <summary>
+		/// Gets or sets the <see cref="HardwareFamily"/> of the emulator.
+		/// </summary>
+		public HardwareFamily Family { get; set; }
+
+		#endregion
+
+		#region Public Methods
+
+		/// <summary>
+		/// Returns the a <see cref="HardwareFamily"/> that a particular <see cref="HardwareModel"/> is a member of.
+		/// </summary>
+		/// <param name="model">The <see cref="HardwareModel"/> to find the family of.</param>
+		/// <returns>The <see cref="HardwareFamily"/> that the <paramref="model"/> is a member of.</returns>
+		public static HardwareFamily GetFamilyFromModel(HardwareModel model) {
+			switch (model) {
+				case HardwareModel.SG1000:
+				case HardwareModel.SC3000:
+				case HardwareModel.SF7000:
+				case HardwareModel.MasterSystem:
+				case HardwareModel.MasterSystem2:
+				case HardwareModel.GameGear:
+				case HardwareModel.GameGearMasterSystem:
+					return HardwareFamily.Sega;
+				case HardwareModel.ColecoVision:
+					return HardwareFamily.ColecoVision;
+				default:
+					return HardwareFamily.Default;
+			}
+		}
+
+
+		/// <summary>
+		/// Resets the emulator to its original state.
+		/// </summary>
 		public override void Reset() {
 			base.Reset();
 			this.RegisterSP = 0xDFF0;
@@ -25,6 +67,10 @@ namespace BeeDevelopment.Sega8Bit {
 			this.Video.Reset();
 			this.Sound.Reset();
 		}
+
+		#endregion
+
+		#region Construtor
 
 		/// <summary>
 		/// Creates an instance of the <see cref="Emulator"/> class.
@@ -47,6 +93,7 @@ namespace BeeDevelopment.Sega8Bit {
 			this.ResetAll();
 		}
 
+
 		/// <summary>
 		/// Runs the emulator for a single scanline.
 		/// </summary>
@@ -63,17 +110,17 @@ namespace BeeDevelopment.Sega8Bit {
 			while (!this.RunScanline()) ;
 		}
 
-		/// <summary>
-		/// Gets or sets the <see cref="Region"/> of the emulator.
-		/// </summary>
-		public Region Region { get; set; }
+
 
 		/// <summary>
 		/// Sets the capabilities of the <see cref="Emulator"/> based on a particular hardware version.
 		/// </summary>
 		/// <param name="model">The <see cref="HardwareModel"/> to base the capabilities on.</param>
 		public void SetCapabilitiesByModelAndRegion(HardwareModel model, Region region) {
-	
+
+			// Family:
+			this.Family = Emulator.GetFamilyFromModel(model);
+
 			// Video:
 			this.Video.SetCapabilitiesByModel(model);
 
@@ -100,47 +147,66 @@ namespace BeeDevelopment.Sega8Bit {
 
 			#region Memory
 
-			// Make all memory devices available.
-			this.CartridgeSlot.Accessibility = MemoryDevice.AccessibilityMode.Optional;
-			this.CardSlot.Accessibility = MemoryDevice.AccessibilityMode.Optional;
-			this.ExpansionSlot.Accessibility = MemoryDevice.AccessibilityMode.Optional;
-			this.Bios.Accessibility = MemoryDevice.AccessibilityMode.Optional;
-			this.WorkRam.Accessibility = MemoryDevice.AccessibilityMode.Optional;
+			switch (this.Family) {
+				case HardwareFamily.ColecoVision:
 
-			// If SMS2 or Game Gear - we have no card or expansion slots.
-			if (model == HardwareModel.MasterSystem2 || model == HardwareModel.GameGear || model == HardwareModel.GameGearMasterSystem) {
-				this.CardSlot.Accessibility = MemoryDevice.AccessibilityMode.Never;
-				this.ExpansionSlot.Accessibility = MemoryDevice.AccessibilityMode.Never;
-			}
+					this.Bios.Accessibility = MemoryDevice.AccessibilityMode.Always;
+					this.ExpansionSlot.Accessibility = MemoryDevice.AccessibilityMode.Always;
+					this.WorkRam.Accessibility = MemoryDevice.AccessibilityMode.Always;
+					this.CartridgeSlot.Accessibility = MemoryDevice.AccessibilityMode.Always;					
+					this.CardSlot.Accessibility = MemoryDevice.AccessibilityMode.Never;
 
-			// If Game Gear, we cannot modify the state of the expansion, cartridge, card or IO.
-			if (model == HardwareModel.GameGear || model == HardwareModel.GameGearMasterSystem) {
-				this.CartridgeSlot.Accessibility = MemoryDevice.AccessibilityMode.Always;
-				this.WorkRam.Accessibility = MemoryDevice.AccessibilityMode.Always;
-			}
+					// 1KB RAM (massive!)
+					this.WorkRam.Memory = new Mappers.Ram1();
 
-			// Set RAM size according to model.
-			switch (model) {
-				case HardwareModel.SG1000:
-				case HardwareModel.SC3000:
-					this.WorkRam.Memory = new Mappers.Ram2(); // 2KB RAM in the SG1000/SC3000.
 					break;
+
 				default:
-					this.WorkRam.Memory = new Mappers.Ram8(); // 8KB RAM in everything else.
+
+					// Make all memory devices available.
+					this.CartridgeSlot.Accessibility = MemoryDevice.AccessibilityMode.Optional;
+					this.CardSlot.Accessibility = MemoryDevice.AccessibilityMode.Optional;
+					this.ExpansionSlot.Accessibility = MemoryDevice.AccessibilityMode.Optional;
+					this.Bios.Accessibility = MemoryDevice.AccessibilityMode.Optional;
+					this.WorkRam.Accessibility = MemoryDevice.AccessibilityMode.Optional;
+
+					// If SMS2 or Game Gear - we have no card or expansion slots.
+					if (model == HardwareModel.MasterSystem2 || model == HardwareModel.GameGear || model == HardwareModel.GameGearMasterSystem) {
+						this.CardSlot.Accessibility = MemoryDevice.AccessibilityMode.Never;
+						this.ExpansionSlot.Accessibility = MemoryDevice.AccessibilityMode.Never;
+					}
+
+					// If Game Gear, we cannot modify the state of the expansion, cartridge, card or IO.
+					if (model == HardwareModel.GameGear || model == HardwareModel.GameGearMasterSystem) {
+						this.CartridgeSlot.Accessibility = MemoryDevice.AccessibilityMode.Always;
+						this.WorkRam.Accessibility = MemoryDevice.AccessibilityMode.Always;
+					}
+
+					// Set RAM size according to model.
+					switch (model) {
+						case HardwareModel.SG1000:
+						case HardwareModel.SC3000:
+							this.WorkRam.Memory = new Mappers.Ram2(); // 2KB RAM in the SG1000/SC3000.
+							break;
+						default:
+							this.WorkRam.Memory = new Mappers.Ram8(); // 8KB RAM in everything else.
+							break;
+					}
+
+					// Default enabled devices:
+					this.CartridgeSlot.Enabled = false;
+					this.CardSlot.Enabled = false;
+					this.ExpansionSlot.Enabled = false;
+					this.Bios.Enabled = true;
+					this.WorkRam.Enabled = true;
+
 					break;
 			}
-
-			// Default enabled devices:
-			this.CartridgeSlot.Enabled = false;
-			this.CardSlot.Enabled = false;
-			this.ExpansionSlot.Enabled = false;
-			this.Bios.Enabled = true;
-			this.WorkRam.Enabled = true;
 
 			#endregion
 
-
-
 		}
+
+		#endregion
 	}
 }
