@@ -20,12 +20,24 @@
 		private bool frameInterruptPending;
 
 		/// <summary>
-		/// Updates the state of the Z80's IRQ line.
+		/// Updates the state of the Z80's interrupt lines.
 		/// </summary>
 		private void UpdateIrq() {
-			this.Emulator.Interrupt =
+
+			// Calculate the state of the interrupt pin.
+			bool InterruptPinState = 
 				(this.LineInterruptEnable && this.lineInterruptPending) ||
 				(this.FrameInterruptEnable && this.frameInterruptPending);
+			
+			// Assign the state to the relevant pin.
+			switch (this.InterruptPin) {
+				case InterruptPins.Maskable:
+					this.Emulator.Interrupt = InterruptPinState;
+					break;
+				case InterruptPins.NonMaskable:
+					this.Emulator.NonMaskableInterrupt = InterruptPinState;
+					break;
+			}
 		}
 	
 	}

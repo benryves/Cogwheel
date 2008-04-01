@@ -71,6 +71,20 @@
 			Scaled,
 		}
 
+		/// <summary>
+		/// Defines the types of CPU interrupt pin that the <see cref="VideoDisplayProcessor"/> can be attached to.
+		/// </summary>
+		public enum InterruptPins {
+			/// <summary>The device is not connected to any interrupt pins.</summary>
+			None,
+			/// <summary>The device is not connected to the CPU's maskable interrupt pin.</summary>
+			Maskable,
+			/// <summary>The device is not connected to the CPU's non-maskable interrupt pin.</summary>
+			NonMaskable,
+		}
+
+		/// <summary>Gets or sets the <see cref="InterruptPins"/> that the device is attached to.</summary>
+		public InterruptPins InterruptPin { get; set; }
 
 		/// <summary>
 		/// Gets or sets the palette mode used with the legacy TMS9918 video modes.
@@ -98,11 +112,10 @@
 		public void SetCapabilitiesByModel(HardwareModel model) {
 
 			// Is it a Mark III or later?
-			bool Mark3OrLater = !(model == HardwareModel.SG1000 || model == HardwareModel.SC3000);
+			bool Mark3OrLater = !(model == HardwareModel.SG1000 || model == HardwareModel.SC3000 || model == HardwareModel.SF7000 || model == HardwareModel.ColecoVision);
 
 			// General.
 			this.SupportsMode4 = Mark3OrLater;
-			this.SupportsLineInterrupts = Mark3OrLater;
 			this.SupportsExtendedResolutions = Mark3OrLater && model != HardwareModel.MasterSystem; // Original SMS VDP doesn't support the extended resolutions.
 			this.SupportsMirroredNameTable = model == HardwareModel.MasterSystem;
 
@@ -117,6 +130,9 @@
 			this.FixedPaletteMode = Mark3OrLater ? FixedPaletteModes.MasterSystem : FixedPaletteModes.Tms9918;
 			this.ResizingMode = (model == HardwareModel.GameGear ? ResizingModes.Cropped : (model == HardwareModel.GameGearMasterSystem ? ResizingModes.Scaled : ResizingModes.Normal));
 
+			// Interrupts:
+			this.SupportsLineInterrupts = Mark3OrLater;
+			this.InterruptPin = model == HardwareModel.ColecoVision ? InterruptPins.NonMaskable : InterruptPins.Maskable;
 
 		}
 
