@@ -170,7 +170,6 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 
 			// Clear cartridge RAM.
 			this.cartridgeRam = new byte[0x4000];
-			this.Load(new byte[0]);
 
 			// Write default mapper values.
 			this.WriteMemory(0xFFFC, 0);
