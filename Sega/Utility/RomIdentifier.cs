@@ -2,6 +2,7 @@
 using System.IO;
 using System;
 using BeeDevelopment.Sega8Bit.Mappers;
+using System.Diagnostics;
 
 namespace BeeDevelopment.Sega8Bit.Utility {
 	public class RomIdentifier {
@@ -174,7 +175,12 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 				emulator.CartridgeSlot.Enabled = true;
 
 				if (Model == HardwareModel.ColecoVision) {
-					emulator.Bios.Memory = this.CreateMapper(File.ReadAllBytes(@"C:\Program Files\VColeco\COLECO.ROM"));
+					try {
+						string ColecoBiosRomPath = Path.Combine(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName), "COLECO.ROM");
+						if (File.Exists(ColecoBiosRomPath)) {
+							emulator.Bios.Memory = this.CreateMapper(File.ReadAllBytes(ColecoBiosRomPath));
+						}
+					} catch { }
 				}
 
 			}
