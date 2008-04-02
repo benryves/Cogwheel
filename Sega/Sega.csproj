@@ -56,12 +56,9 @@
     <Compile Include="Hardware\ProgrammableSoundGenerator\QueuedWrite.cs" />
     <Compile Include="Hardware\ProgrammableSoundGenerator\Registers.cs" />
     <Compile Include="Hardware\ProgrammableSoundGenerator\ProgrammableSoundGenerator.cs" />
-    <Compile Include="Mappers\Ram1.cs" />
+    <Compile Include="Mappers\FlatMemory.cs" />
     <Compile Include="Mappers\Shared1KBios.cs" />
-    <Compile Include="Mappers\Ram2.cs" />
-    <Compile Include="Mappers\Ram8.cs" />
     <Compile Include="Mappers\IMemoryMapper.cs" />
-    <Compile Include="Mappers\Ram64.cs" />
     <Compile Include="MemoryCheat.cs" />
     <Compile Include="MemoryDevice.cs" />
     <Compile Include="Region.cs" />
