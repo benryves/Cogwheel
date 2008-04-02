@@ -29,6 +29,31 @@ namespace CogwheelSlimDX {
 		/// <summary>Gets the state of the player 1 right button.</summary>
 		bool Player1Right { get; }
 
+		/// <summary>Gets the state of the player 1 number pad 0 button.</summary>
+		bool Player1Num0 { get; }
+		/// <summary>Gets the state of the player 1 number pad 1 button.</summary>
+		bool Player1Num1 { get; }
+		/// <summary>Gets the state of the player 1 number pad 2 button.</summary>
+		bool Player1Num2 { get; }
+		/// <summary>Gets the state of the player 1 number pad 3 button.</summary>
+		bool Player1Num3 { get; }
+		/// <summary>Gets the state of the player 1 number pad 4 button.</summary>
+		bool Player1Num4 { get; }
+		/// <summary>Gets the state of the player 1 number pad 5 button.</summary>
+		bool Player1Num5 { get; }
+		/// <summary>Gets the state of the player 1 number pad 6 button.</summary>
+		bool Player1Num6 { get; }
+		/// <summary>Gets the state of the player 1 number pad 7 button.</summary>
+		bool Player1Num7 { get; }
+		/// <summary>Gets the state of the player 1 number pad 8 button.</summary>
+		bool Player1Num8 { get; }
+		/// <summary>Gets the state of the player 1 number pad 9 button.</summary>
+		bool Player1Num9 { get; }
+		/// <summary>Gets the state of the player 1 star button.</summary>
+		bool Player1Star { get; }
+		/// <summary>Gets the state of the player 1 hash button.</summary>
+		bool Player1Hash { get; }
+
 		/// <summary>Gets the state of the player 2 TL button (1).</summary>
 		bool Player2TL { get; }
 		/// <summary>Gets the state of the player 2 TL button (2).</summary>
@@ -41,6 +66,31 @@ namespace CogwheelSlimDX {
 		bool Player2Left { get; }
 		/// <summary>Gets the state of the player 2 right button.</summary>
 		bool Player2Right { get; }
+
+		/// <summary>Gets the state of the player 1 number pad 0 button.</summary>
+		bool Player2Num0 { get; }
+		/// <summary>Gets the state of the player 1 number pad 1 button.</summary>
+		bool Player2Num1 { get; }
+		/// <summary>Gets the state of the player 1 number pad 2 button.</summary>
+		bool Player2Num2 { get; }
+		/// <summary>Gets the state of the player 1 number pad 3 button.</summary>
+		bool Player2Num3 { get; }
+		/// <summary>Gets the state of the player 1 number pad 4 button.</summary>
+		bool Player2Num4 { get; }
+		/// <summary>Gets the state of the player 1 number pad 5 button.</summary>
+		bool Player2Num5 { get; }
+		/// <summary>Gets the state of the player 1 number pad 6 button.</summary>
+		bool Player2Num6 { get; }
+		/// <summary>Gets the state of the player 1 number pad 7 button.</summary>
+		bool Player2Num7 { get; }
+		/// <summary>Gets the state of the player 1 number pad 8 button.</summary>
+		bool Player2Num8 { get; }
+		/// <summary>Gets the state of the player 1 number pad 9 button.</summary>
+		bool Player2Num9 { get; }
+		/// <summary>Gets the state of the player 1 star button.</summary>
+		bool Player2Star { get; }
+		/// <summary>Gets the state of the player 1 hash button.</summary>
+		bool Player2Hash { get; }
 
 		/// <summary>Gets the state of the pause button.</summary>
 		bool Pause { get; }
@@ -104,12 +154,39 @@ namespace CogwheelSlimDX {
 			emulator.ColecoVisionPorts[0].Down = this.Player1Down;
 			emulator.ColecoVisionPorts[0].Left = this.Player1Left;
 			emulator.ColecoVisionPorts[0].Right = this.Player1Right;
+
+			emulator.ColecoVisionPorts[0].Number0 = this.Player1Num0;
+			emulator.ColecoVisionPorts[0].Number1 = this.Player1Num1;
+			emulator.ColecoVisionPorts[0].Number2 = this.Player1Num2;
+			emulator.ColecoVisionPorts[0].Number3 = this.Player1Num3;
+			emulator.ColecoVisionPorts[0].Number4 = this.Player1Num4;
+			emulator.ColecoVisionPorts[0].Number5 = this.Player1Num5;
+			emulator.ColecoVisionPorts[0].Number6 = this.Player1Num6;
+			emulator.ColecoVisionPorts[0].Number7 = this.Player1Num7;
+			emulator.ColecoVisionPorts[0].Number8 = this.Player1Num8;
+			emulator.ColecoVisionPorts[0].Number9 = this.Player1Num9;
+			emulator.ColecoVisionPorts[0].Star = this.Player1Star;
+			emulator.ColecoVisionPorts[0].Hash = this.Player1Hash;
+
 			emulator.ColecoVisionPorts[1].Fire1 = this.Player2TL;
 			emulator.ColecoVisionPorts[1].Fire2 = this.Player2TR;
 			emulator.ColecoVisionPorts[1].Up = this.Player2Up;
 			emulator.ColecoVisionPorts[1].Down = this.Player2Down;
 			emulator.ColecoVisionPorts[1].Left = this.Player2Left;
 			emulator.ColecoVisionPorts[1].Right = this.Player2Right;
+
+			emulator.ColecoVisionPorts[1].Number0 = this.Player2Num0;
+			emulator.ColecoVisionPorts[1].Number1 = this.Player2Num1;
+			emulator.ColecoVisionPorts[1].Number2 = this.Player2Num2;
+			emulator.ColecoVisionPorts[1].Number3 = this.Player2Num3;
+			emulator.ColecoVisionPorts[1].Number4 = this.Player2Num4;
+			emulator.ColecoVisionPorts[1].Number5 = this.Player2Num5;
+			emulator.ColecoVisionPorts[1].Number6 = this.Player2Num6;
+			emulator.ColecoVisionPorts[1].Number7 = this.Player2Num7;
+			emulator.ColecoVisionPorts[1].Number8 = this.Player2Num8;
+			emulator.ColecoVisionPorts[1].Number9 = this.Player2Num9;
+			emulator.ColecoVisionPorts[1].Star = this.Player2Star;
+			emulator.ColecoVisionPorts[1].Hash = this.Player2Hash;
 
 			if (emulator.HasPauseButton) emulator.PauseButton = this.Pause;
 			if (emulator.HasResetButton) emulator.ResetButton = this.Reset;
@@ -126,12 +203,38 @@ namespace CogwheelSlimDX {
 		public bool Player1Left { get { foreach (var Source in this.Sources) { if (Source.Player1Left) return true; } return false; } }
 		public bool Player1Right { get { foreach (var Source in this.Sources) { if (Source.Player1Right) return true; } return false; } }
 
+		public bool Player1Num0 { get { foreach (var Source in this.Sources) { if (Source.Player1Num0) return true; } return false; } }
+		public bool Player1Num1 { get { foreach (var Source in this.Sources) { if (Source.Player1Num1) return true; } return false; } }
+		public bool Player1Num2 { get { foreach (var Source in this.Sources) { if (Source.Player1Num2) return true; } return false; } }
+		public bool Player1Num3 { get { foreach (var Source in this.Sources) { if (Source.Player1Num3) return true; } return false; } }
+		public bool Player1Num4 { get { foreach (var Source in this.Sources) { if (Source.Player1Num4) return true; } return false; } }
+		public bool Player1Num5 { get { foreach (var Source in this.Sources) { if (Source.Player1Num5) return true; } return false; } }
+		public bool Player1Num6 { get { foreach (var Source in this.Sources) { if (Source.Player1Num6) return true; } return false; } }
+		public bool Player1Num7 { get { foreach (var Source in this.Sources) { if (Source.Player1Num7) return true; } return false; } }
+		public bool Player1Num8 { get { foreach (var Source in this.Sources) { if (Source.Player1Num8) return true; } return false; } }
+		public bool Player1Num9 { get { foreach (var Source in this.Sources) { if (Source.Player1Num9) return true; } return false; } }
+		public bool Player1Star { get { foreach (var Source in this.Sources) { if (Source.Player1Star) return true; } return false; } }
+		public bool Player1Hash { get { foreach (var Source in this.Sources) { if (Source.Player1Hash) return true; } return false; } }
+
 		public bool Player2TL { get { foreach (var Source in this.Sources) { if (Source.Player2TL) return true; } return false; } }
 		public bool Player2TR { get { foreach (var Source in this.Sources) { if (Source.Player2TR) return true; } return false; } }
 		public bool Player2Up { get { foreach (var Source in this.Sources) { if (Source.Player2Up) return true; } return false; } }
 		public bool Player2Down { get { foreach (var Source in this.Sources) { if (Source.Player2Down) return true; } return false; } }
 		public bool Player2Left { get { foreach (var Source in this.Sources) { if (Source.Player2Left) return true; } return false; } }
 		public bool Player2Right { get { foreach (var Source in this.Sources) { if (Source.Player2Right) return true; } return false; } }
+
+		public bool Player2Num0 { get { foreach (var Source in this.Sources) { if (Source.Player2Num0) return true; } return false; } }
+		public bool Player2Num1 { get { foreach (var Source in this.Sources) { if (Source.Player2Num1) return true; } return false; } }
+		public bool Player2Num2 { get { foreach (var Source in this.Sources) { if (Source.Player2Num2) return true; } return false; } }
+		public bool Player2Num3 { get { foreach (var Source in this.Sources) { if (Source.Player2Num3) return true; } return false; } }
+		public bool Player2Num4 { get { foreach (var Source in this.Sources) { if (Source.Player2Num4) return true; } return false; } }
+		public bool Player2Num5 { get { foreach (var Source in this.Sources) { if (Source.Player2Num5) return true; } return false; } }
+		public bool Player2Num6 { get { foreach (var Source in this.Sources) { if (Source.Player2Num6) return true; } return false; } }
+		public bool Player2Num7 { get { foreach (var Source in this.Sources) { if (Source.Player2Num7) return true; } return false; } }
+		public bool Player2Num8 { get { foreach (var Source in this.Sources) { if (Source.Player2Num8) return true; } return false; } }
+		public bool Player2Num9 { get { foreach (var Source in this.Sources) { if (Source.Player2Num9) return true; } return false; } }
+		public bool Player2Star { get { foreach (var Source in this.Sources) { if (Source.Player2Star) return true; } return false; } }
+		public bool Player2Hash { get { foreach (var Source in this.Sources) { if (Source.Player2Hash) return true; } return false; } }
 
 		public bool Pause { get { foreach (var Source in this.Sources) { if (Source.Pause) return true; } return false; } }
 		public bool Reset { get { foreach (var Source in this.Sources) { if (Source.Reset) return true; } return false; } }
@@ -164,12 +267,38 @@ namespace CogwheelSlimDX {
 		public bool Player1Left { get; set; }
 		public bool Player1Right { get; set; }
 
+		public bool Player1Num0 { get; set; }
+		public bool Player1Num1 { get; set; }
+		public bool Player1Num2 { get; set; }
+		public bool Player1Num3 { get; set; }
+		public bool Player1Num4 { get; set; }
+		public bool Player1Num5 { get; set; }
+		public bool Player1Num6 { get; set; }
+		public bool Player1Num7 { get; set; }
+		public bool Player1Num8 { get; set; }
+		public bool Player1Num9 { get; set; }
+		public bool Player1Star { get; set; }
+		public bool Player1Hash { get; set; }
+
 		public bool Player2TL { get; set; }
 		public bool Player2TR { get; set; }
 		public bool Player2Up { get; set; }
 		public bool Player2Down { get; set; }
 		public bool Player2Left { get; set; }
 		public bool Player2Right { get; set; }
+
+		public bool Player2Num0 { get; set; }
+		public bool Player2Num1 { get; set; }
+		public bool Player2Num2 { get; set; }
+		public bool Player2Num3 { get; set; }
+		public bool Player2Num4 { get; set; }
+		public bool Player2Num5 { get; set; }
+		public bool Player2Num6 { get; set; }
+		public bool Player2Num7 { get; set; }
+		public bool Player2Num8 { get; set; }
+		public bool Player2Num9 { get; set; }
+		public bool Player2Star { get; set; }
+		public bool Player2Hash { get; set; }
 
 		public bool Pause { get; set; }
 		public bool Reset { get; set; }
@@ -192,6 +321,19 @@ namespace CogwheelSlimDX {
 		/// <summary>Defines the <see cref="Keys"/> to map to player 1 right.</summary>
 		public Keys KeyPlayer1Right { get; set; }
 
+		public Keys KeyPlayer1Num0 { get; set; }
+		public Keys KeyPlayer1Num1 { get; set; }
+		public Keys KeyPlayer1Num2 { get; set; }
+		public Keys KeyPlayer1Num3 { get; set; }
+		public Keys KeyPlayer1Num4 { get; set; }
+		public Keys KeyPlayer1Num5 { get; set; }
+		public Keys KeyPlayer1Num6 { get; set; }
+		public Keys KeyPlayer1Num7 { get; set; }
+		public Keys KeyPlayer1Num8 { get; set; }
+		public Keys KeyPlayer1Num9 { get; set; }
+		public Keys KeyPlayer1Star { get; set; }
+		public Keys KeyPlayer1Hash { get; set; }
+
 		/// <summary>Defines the <see cref="Keys"/> to map to player 2 TL (1).</summary>
 		public Keys KeyPlayer2TL { get; set; }
 		/// <summary>Defines the <see cref="Keys"/> to map to player 2 TR (2).</summary>
@@ -204,6 +346,19 @@ namespace CogwheelSlimDX {
 		public Keys KeyPlayer2Left { get; set; }
 		/// <summary>Defines the <see cref="Keys"/> to map to player 2 right.</summary>
 		public Keys KeyPlayer2Right { get; set; }
+
+		public Keys KeyPlayer2Num0 { get; set; }
+		public Keys KeyPlayer2Num1 { get; set; }
+		public Keys KeyPlayer2Num2 { get; set; }
+		public Keys KeyPlayer2Num3 { get; set; }
+		public Keys KeyPlayer2Num4 { get; set; }
+		public Keys KeyPlayer2Num5 { get; set; }
+		public Keys KeyPlayer2Num6 { get; set; }
+		public Keys KeyPlayer2Num7 { get; set; }
+		public Keys KeyPlayer2Num8 { get; set; }
+		public Keys KeyPlayer2Num9 { get; set; }
+		public Keys KeyPlayer2Star { get; set; }
+		public Keys KeyPlayer2Hash { get; set; }
 
 		/// <summary>Defines the <see cref="Keys"/> to map to pause.</summary>
 		public Keys KeyPause { get; set; }
@@ -232,7 +387,32 @@ namespace CogwheelSlimDX {
 				|| key == KeyPlayer2Right
 				|| key == KeyPause
 				|| key == KeyReset
-				|| key == KeyStart;
+				|| key == KeyStart
+				|| key == KeyPlayer1Num0
+				|| key == KeyPlayer1Num1
+				|| key == KeyPlayer1Num2
+				|| key == KeyPlayer1Num3
+				|| key == KeyPlayer1Num4
+				|| key == KeyPlayer1Num5
+				|| key == KeyPlayer1Num6
+				|| key == KeyPlayer1Num7
+				|| key == KeyPlayer1Num8
+				|| key == KeyPlayer1Num9
+				|| key == KeyPlayer1Star
+				|| key == KeyPlayer1Hash
+				|| key == KeyPlayer2Num0
+				|| key == KeyPlayer2Num1
+				|| key == KeyPlayer2Num2
+				|| key == KeyPlayer2Num3
+				|| key == KeyPlayer2Num4
+				|| key == KeyPlayer2Num5
+				|| key == KeyPlayer2Num6
+				|| key == KeyPlayer2Num7
+				|| key == KeyPlayer2Num8
+				|| key == KeyPlayer2Num9
+				|| key == KeyPlayer2Star
+				|| key == KeyPlayer2Hash;
+			;
 		}
 
 		/// <summary>
@@ -248,12 +428,38 @@ namespace CogwheelSlimDX {
 			if (key.KeyCode == this.KeyPlayer1Left) this.Player1Left = pressed;
 			if (key.KeyCode == this.KeyPlayer1Right) this.Player1Right = pressed;
 
+			if (key.KeyCode == this.KeyPlayer1Num0) this.Player1Num0 = pressed;
+			if (key.KeyCode == this.KeyPlayer1Num1) this.Player1Num1 = pressed;
+			if (key.KeyCode == this.KeyPlayer1Num2) this.Player1Num2 = pressed;
+			if (key.KeyCode == this.KeyPlayer1Num3) this.Player1Num3 = pressed;
+			if (key.KeyCode == this.KeyPlayer1Num4) this.Player1Num4 = pressed;
+			if (key.KeyCode == this.KeyPlayer1Num5) this.Player1Num5 = pressed;
+			if (key.KeyCode == this.KeyPlayer1Num6) this.Player1Num6 = pressed;
+			if (key.KeyCode == this.KeyPlayer1Num7) this.Player1Num7 = pressed;
+			if (key.KeyCode == this.KeyPlayer1Num8) this.Player1Num8 = pressed;
+			if (key.KeyCode == this.KeyPlayer1Num9) this.Player1Num9 = pressed;
+			if (key.KeyCode == this.KeyPlayer1Star) this.Player1Star = pressed;
+			if (key.KeyCode == this.KeyPlayer1Hash) this.Player1Hash = pressed;
+
 			if (key.KeyCode == this.KeyPlayer2TL) this.Player2TL = pressed;
 			if (key.KeyCode == this.KeyPlayer2TR) this.Player2TR = pressed;
 			if (key.KeyCode == this.KeyPlayer2Up) this.Player2Up = pressed;
 			if (key.KeyCode == this.KeyPlayer2Down) this.Player2Down = pressed;
 			if (key.KeyCode == this.KeyPlayer2Left) this.Player2Left = pressed;
 			if (key.KeyCode == this.KeyPlayer2Right) this.Player2Right = pressed;
+
+			if (key.KeyCode == this.KeyPlayer2Num0) this.Player2Num0 = pressed;
+			if (key.KeyCode == this.KeyPlayer2Num1) this.Player2Num1 = pressed;
+			if (key.KeyCode == this.KeyPlayer2Num2) this.Player2Num2 = pressed;
+			if (key.KeyCode == this.KeyPlayer2Num3) this.Player2Num3 = pressed;
+			if (key.KeyCode == this.KeyPlayer2Num4) this.Player2Num4 = pressed;
+			if (key.KeyCode == this.KeyPlayer2Num5) this.Player2Num5 = pressed;
+			if (key.KeyCode == this.KeyPlayer2Num6) this.Player2Num6 = pressed;
+			if (key.KeyCode == this.KeyPlayer2Num7) this.Player2Num7 = pressed;
+			if (key.KeyCode == this.KeyPlayer2Num8) this.Player2Num8 = pressed;
+			if (key.KeyCode == this.KeyPlayer2Num9) this.Player2Num9 = pressed;
+			if (key.KeyCode == this.KeyPlayer2Star) this.Player2Star = pressed;
+			if (key.KeyCode == this.KeyPlayer2Hash) this.Player2Hash = pressed;
 
 			if (key.KeyCode == this.KeyPause) this.Pause = pressed;
 			if (key.KeyCode == this.KeyReset) this.Reset = pressed;
@@ -273,12 +479,36 @@ namespace CogwheelSlimDX {
 			this.KeyPlayer1Down = Properties.Settings.Default.KeyP1Down;
 			this.KeyPlayer1Left = Properties.Settings.Default.KeyP1Left;
 			this.KeyPlayer1Right = Properties.Settings.Default.KeyP1Right;
+			this.KeyPlayer1Num0 = Properties.Settings.Default.KeyP1Num0;
+			this.KeyPlayer1Num1 = Properties.Settings.Default.KeyP1Num1;
+			this.KeyPlayer1Num2 = Properties.Settings.Default.KeyP1Num2;
+			this.KeyPlayer1Num3 = Properties.Settings.Default.KeyP1Num3;
+			this.KeyPlayer1Num4 = Properties.Settings.Default.KeyP1Num4;
+			this.KeyPlayer1Num5 = Properties.Settings.Default.KeyP1Num5;
+			this.KeyPlayer1Num6 = Properties.Settings.Default.KeyP1Num6;
+			this.KeyPlayer1Num7 = Properties.Settings.Default.KeyP1Num7;
+			this.KeyPlayer1Num8 = Properties.Settings.Default.KeyP1Num8;
+			this.KeyPlayer1Num9 = Properties.Settings.Default.KeyP1Num9;
+			this.KeyPlayer1Star = Properties.Settings.Default.KeyP1Star;
+			this.KeyPlayer1Hash = Properties.Settings.Default.KeyP1Hash;
 			this.KeyPlayer2TL = Properties.Settings.Default.KeyP2TL;
 			this.KeyPlayer2TR = Properties.Settings.Default.KeyP2TR;
 			this.KeyPlayer2Up = Properties.Settings.Default.KeyP2Up;
 			this.KeyPlayer2Down = Properties.Settings.Default.KeyP2Down;
 			this.KeyPlayer2Left = Properties.Settings.Default.KeyP2Left;
 			this.KeyPlayer2Right = Properties.Settings.Default.KeyP2Right;
+			this.KeyPlayer2Num0 = Properties.Settings.Default.KeyP2Num0;
+			this.KeyPlayer2Num1 = Properties.Settings.Default.KeyP2Num1;
+			this.KeyPlayer2Num2 = Properties.Settings.Default.KeyP2Num2;
+			this.KeyPlayer2Num3 = Properties.Settings.Default.KeyP2Num3;
+			this.KeyPlayer2Num4 = Properties.Settings.Default.KeyP2Num4;
+			this.KeyPlayer2Num5 = Properties.Settings.Default.KeyP2Num5;
+			this.KeyPlayer2Num6 = Properties.Settings.Default.KeyP2Num6;
+			this.KeyPlayer2Num7 = Properties.Settings.Default.KeyP2Num7;
+			this.KeyPlayer2Num8 = Properties.Settings.Default.KeyP2Num8;
+			this.KeyPlayer2Num9 = Properties.Settings.Default.KeyP2Num9;
+			this.KeyPlayer2Star = Properties.Settings.Default.KeyP2Star;
+			this.KeyPlayer2Hash = Properties.Settings.Default.KeyP2Hash;
 			this.KeyPause = Properties.Settings.Default.KeyPause;
 			this.KeyReset = Properties.Settings.Default.KeyReset;
 			this.KeyStart = Properties.Settings.Default.KeyStart;
@@ -508,12 +738,38 @@ namespace CogwheelSlimDX {
 		public bool Player1Left { get; set; }
 		public bool Player1Right { get; set; }
 
+		public bool Player1Num0 { get; set; }
+		public bool Player1Num1 { get; set; }
+		public bool Player1Num2 { get; set; }
+		public bool Player1Num3 { get; set; }
+		public bool Player1Num4 { get; set; }
+		public bool Player1Num5 { get; set; }
+		public bool Player1Num6 { get; set; }
+		public bool Player1Num7 { get; set; }
+		public bool Player1Num8 { get; set; }
+		public bool Player1Num9 { get; set; }
+		public bool Player1Star { get; set; }
+		public bool Player1Hash { get; set; }
+
 		public bool Player2TL { get; set; }
 		public bool Player2TR { get; set; }
 		public bool Player2Up { get; set; }
 		public bool Player2Down { get; set; }
 		public bool Player2Left { get; set; }
 		public bool Player2Right { get; set; }
+
+		public bool Player2Num0 { get; set; }
+		public bool Player2Num1 { get; set; }
+		public bool Player2Num2 { get; set; }
+		public bool Player2Num3 { get; set; }
+		public bool Player2Num4 { get; set; }
+		public bool Player2Num5 { get; set; }
+		public bool Player2Num6 { get; set; }
+		public bool Player2Num7 { get; set; }
+		public bool Player2Num8 { get; set; }
+		public bool Player2Num9 { get; set; }
+		public bool Player2Star { get; set; }
+		public bool Player2Hash { get; set; }
 
 		public bool Pause { get; set; }
 		public bool Reset { get; set; }

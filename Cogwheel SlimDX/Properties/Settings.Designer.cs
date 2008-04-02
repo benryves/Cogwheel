@@ -358,5 +358,293 @@ namespace CogwheelSlimDX.Properties {
                 this["OptionMaintainAspectRatio"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public global::System.Windows.Forms.Keys KeyP1Num0 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Num0"]));
+            }
+            set {
+                this["KeyP1Num0"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public global::System.Windows.Forms.Keys KeyP1Num1 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Num1"]));
+            }
+            set {
+                this["KeyP1Num1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public global::System.Windows.Forms.Keys KeyP1Num2 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Num2"]));
+            }
+            set {
+                this["KeyP1Num2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public global::System.Windows.Forms.Keys KeyP1Num3 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Num3"]));
+            }
+            set {
+                this["KeyP1Num3"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        public global::System.Windows.Forms.Keys KeyP1Num4 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Num4"]));
+            }
+            set {
+                this["KeyP1Num4"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public global::System.Windows.Forms.Keys KeyP1Num5 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Num5"]));
+            }
+            set {
+                this["KeyP1Num5"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        public global::System.Windows.Forms.Keys KeyP1Num6 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Num6"]));
+            }
+            set {
+                this["KeyP1Num6"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("7")]
+        public global::System.Windows.Forms.Keys KeyP1Num7 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Num7"]));
+            }
+            set {
+                this["KeyP1Num7"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        public global::System.Windows.Forms.Keys KeyP1Num8 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Num8"]));
+            }
+            set {
+                this["KeyP1Num8"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9")]
+        public global::System.Windows.Forms.Keys KeyP1Num9 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Num9"]));
+            }
+            set {
+                this["KeyP1Num9"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("OemMinus")]
+        public global::System.Windows.Forms.Keys KeyP1Star {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Star"]));
+            }
+            set {
+                this["KeyP1Star"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Oemplus")]
+        public global::System.Windows.Forms.Keys KeyP1Hash {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP1Hash"]));
+            }
+            set {
+                this["KeyP1Hash"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NumPad0")]
+        public global::System.Windows.Forms.Keys KeyP2Num0 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP2Num0"]));
+            }
+            set {
+                this["KeyP2Num0"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NumPad1")]
+        public global::System.Windows.Forms.Keys KeyP2Num1 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP2Num1"]));
+            }
+            set {
+                this["KeyP2Num1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NumPad2")]
+        public global::System.Windows.Forms.Keys KeyP2Num2 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP2Num2"]));
+            }
+            set {
+                this["KeyP2Num2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NumPad3")]
+        public global::System.Windows.Forms.Keys KeyP2Num3 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP2Num3"]));
+            }
+            set {
+                this["KeyP2Num3"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NumPad4")]
+        public global::System.Windows.Forms.Keys KeyP2Num4 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP2Num4"]));
+            }
+            set {
+                this["KeyP2Num4"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NumPad5")]
+        public global::System.Windows.Forms.Keys KeyP2Num5 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP2Num5"]));
+            }
+            set {
+                this["KeyP2Num5"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NumPad6")]
+        public global::System.Windows.Forms.Keys KeyP2Num6 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP2Num6"]));
+            }
+            set {
+                this["KeyP2Num6"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NumPad7")]
+        public global::System.Windows.Forms.Keys KeyP2Num7 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP2Num7"]));
+            }
+            set {
+                this["KeyP2Num7"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NumPad8")]
+        public global::System.Windows.Forms.Keys KeyP2Num8 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP2Num8"]));
+            }
+            set {
+                this["KeyP2Num8"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NumPad9")]
+        public global::System.Windows.Forms.Keys KeyP2Num9 {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP2Num9"]));
+            }
+            set {
+                this["KeyP2Num9"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("None")]
+        public global::System.Windows.Forms.Keys KeyP2Star {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP2Star"]));
+            }
+            set {
+                this["KeyP2Star"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("None")]
+        public global::System.Windows.Forms.Keys KeyP2Hash {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["KeyP2Hash"]));
+            }
+            set {
+                this["KeyP2Hash"] = value;
+            }
+        }
     }
 }

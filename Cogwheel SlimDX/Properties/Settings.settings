@@ -86,5 +86,77 @@
     <Setting Name="OptionMaintainAspectRatio" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="KeyP1Num0" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="KeyP1Num1" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="KeyP1Num2" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="KeyP1Num3" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="KeyP1Num4" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
+    <Setting Name="KeyP1Num5" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="KeyP1Num6" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">6</Value>
+    </Setting>
+    <Setting Name="KeyP1Num7" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">7</Value>
+    </Setting>
+    <Setting Name="KeyP1Num8" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">8</Value>
+    </Setting>
+    <Setting Name="KeyP1Num9" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">9</Value>
+    </Setting>
+    <Setting Name="KeyP1Star" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">OemMinus</Value>
+    </Setting>
+    <Setting Name="KeyP1Hash" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Oemplus</Value>
+    </Setting>
+    <Setting Name="KeyP2Num0" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">NumPad0</Value>
+    </Setting>
+    <Setting Name="KeyP2Num1" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">NumPad1</Value>
+    </Setting>
+    <Setting Name="KeyP2Num2" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">NumPad2</Value>
+    </Setting>
+    <Setting Name="KeyP2Num3" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">NumPad3</Value>
+    </Setting>
+    <Setting Name="KeyP2Num4" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">NumPad4</Value>
+    </Setting>
+    <Setting Name="KeyP2Num5" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">NumPad5</Value>
+    </Setting>
+    <Setting Name="KeyP2Num6" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">NumPad6</Value>
+    </Setting>
+    <Setting Name="KeyP2Num7" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">NumPad7</Value>
+    </Setting>
+    <Setting Name="KeyP2Num8" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">NumPad8</Value>
+    </Setting>
+    <Setting Name="KeyP2Num9" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">NumPad9</Value>
+    </Setting>
+    <Setting Name="KeyP2Star" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">None</Value>
+    </Setting>
+    <Setting Name="KeyP2Hash" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">None</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -342,55 +342,11 @@ namespace CogwheelSlimDX {
 
 		#region Keyboard Input
 
-		private void ColecoKey(Keys key, bool pressed) {
-			switch (key) {
-				case Keys.D0:
-					this.Emulator.ColecoVisionPorts[0].Number0 = pressed;
-					break;
-				case Keys.D1:
-					this.Emulator.ColecoVisionPorts[0].Number1 = pressed;
-					break;
-				case Keys.D2:
-					this.Emulator.ColecoVisionPorts[0].Number2 = pressed;
-					break;
-				case Keys.D3:
-					this.Emulator.ColecoVisionPorts[0].Number3 = pressed;
-					break;
-				case Keys.D4:
-					this.Emulator.ColecoVisionPorts[0].Number4 = pressed;
-					break;
-				case Keys.D5:
-					this.Emulator.ColecoVisionPorts[0].Number5 = pressed;
-					break;
-				case Keys.D6:
-					this.Emulator.ColecoVisionPorts[0].Number6 = pressed;
-					break;
-				case Keys.D7:
-					this.Emulator.ColecoVisionPorts[0].Number7 = pressed;
-					break;
-				case Keys.D8:
-					this.Emulator.ColecoVisionPorts[0].Number8 = pressed;
-					break;
-				case Keys.D9:
-					this.Emulator.ColecoVisionPorts[0].Number9 = pressed;
-					break;
-				case Keys.Oemcomma:
-					this.Emulator.ColecoVisionPorts[0].Star = pressed;
-					break;
-				case Keys.OemPeriod:
-					this.Emulator.ColecoVisionPorts[0].Hash = pressed;
-					break;
-
-			}
-		}
-
 		protected override void OnKeyDown(KeyEventArgs e) {
-			this.ColecoKey(e.KeyCode, true);
 			this.KeyboardInput.KeyChange(e, true);
 		}
 
 		protected override void OnKeyUp(KeyEventArgs e) {
-			this.ColecoKey(e.KeyData, false);
 			this.KeyboardInput.KeyChange(e, false);
 		}
 
