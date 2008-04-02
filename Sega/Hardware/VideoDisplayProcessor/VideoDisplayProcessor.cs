@@ -28,7 +28,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			/// <summary>
 			/// TMS9918 "Multicolor" mode.
 			/// </summary>
-			Multicolour = 4,
+			Multicolor = 4,
 			/// <summary>
 			/// Sega Master System and Game Gear extended mode 4.
 			/// </summary>

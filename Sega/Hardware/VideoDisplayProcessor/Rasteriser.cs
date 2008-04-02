@@ -424,7 +424,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					switch (this.CurrentMode) {
 						case Mode.Graphic1:
 						case Mode.Graphic2:
-						case Mode.Multicolour:
+						case Mode.Multicolor:
 						case Mode.Text:
 							this.LastBackdropColour = FixedPalette[this.Registers[0x7] & 0xF];
 							break;
@@ -530,7 +530,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 								this.LastBackdropColour = FixedPalette[this.Registers[0x7] & 0xF];
 
 								int NameTableStartAddress = (this.Registers[0x2] & 0x0F) << 10;
-
 								int PatternGeneratorAddress = (this.Registers[0x4] & 0x04) << 11;
 
 								int CharacterOffset = (this.ScanlinesDrawn / 64) * 0x100;
@@ -608,8 +607,38 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 								#endregion
 							} break;
 
+						case Mode.Multicolor: {
+								#region Multicolor Mode
+
+								int NameTableStartAddress = (this.Registers[0x2] & 0x0F) << 10;
+								int PatternGeneratorAddress = (this.Registers[0x4] & 0x04) << 11;
+
+								int Row = this.ScanlinesDrawn / 8;
+								int HalfRowOffset = (this.ScanlinesDrawn / 4) & 1;
+
+								for (int Column = 0, PixelPosition = startPixel; Column < 32; ++Column) {
+
+									byte ValueFromNameTable = this.vram[(NameTableStartAddress + Row * 32 + Column) & 0x3FFF];
+									int PatternGeneratorOffset = HalfRowOffset + (ValueFromNameTable * 8) + (Row & 3) * 2;
+
+									byte ColourAttribute = this.vram[(PatternGeneratorAddress + PatternGeneratorOffset) & 0x3FFF];
+
+									for (int i = 0; i < 2; ++i) {
+
+										int Colour = (ColourAttribute & 0xF0) == 0 ? this.LastBackdropColour : FixedPalette[ColourAttribute >> 4];
+										ColourAttribute <<= 4;
+
+										for (int j = 0; j < 4; ++j) {
+											this.PixelBuffer[PixelPosition++] = Colour;
+										}
+									}
+								}
+
+								#endregion
+							} break;
+
 						default:
-							#region Random noise
+							#region Blank
 							for (int i = 0; i < 256; ++i) {
 								PixelBuffer[startPixel + i] = unchecked((int)0xFF000000);
 							}
@@ -624,7 +653,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 						case Mode.Mode4:
 						case Mode.Mode4Resolution224:
 						case Mode.Mode4Resolution240:
-
 							#region Sprites
 
 							int SAT = (Registers[5] & 0x7E) * 128;
@@ -711,6 +739,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 						case Mode.Graphic1:
 						case Mode.Graphic2:
+						case Mode.Multicolor:
 							#region Sprites
 
 							bool[] SpriteCollisions = new bool[320];

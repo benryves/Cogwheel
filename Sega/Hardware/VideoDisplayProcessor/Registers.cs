@@ -285,7 +285,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					case ModeBits.M2:
 						return Mode.Graphic2;
 					case ModeBits.M3:
-						return Mode.Multicolour;
+						return Mode.Multicolor;
 
 					case ModeBits.M1 | ModeBits.M2:
 					case ModeBits.M2 | ModeBits.M3:
