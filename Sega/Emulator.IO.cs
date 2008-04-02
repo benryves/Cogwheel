@@ -50,15 +50,14 @@ namespace BeeDevelopment.Sega8Bit {
 
 				case HardwareFamily.ColecoVision: // ColecoVision I/O map.
 
-					switch (port & 0xFF) {
-						case 0xBE:
+					switch (port & 0xE1) {
+						case 0xA0:
 							return this.Video.ReadData();
-						case 0xBF:
+						case 0xA1:
 							return this.Video.ReadControl();
-						case 0xFC:
-							return this.ReadingColecoVisionJoysticks ? this.ColecoVisionPorts[0].ReadJoystick() : this.ColecoVisionPorts[0].ReadNumberPad();
-						case 0xFF:
-							return this.ReadingColecoVisionJoysticks ? this.ColecoVisionPorts[1].ReadJoystick() : this.ColecoVisionPorts[1].ReadNumberPad();
+						case 0xE0:
+						case 0xE1:
+							return this.ReadingColecoVisionJoysticks ? this.ColecoVisionPorts[port & 1].ReadJoystick() : this.ColecoVisionPorts[port & 1].ReadNumberPad();
 					}
 					break;
 
@@ -121,25 +120,24 @@ namespace BeeDevelopment.Sega8Bit {
 			switch (this.Family) {
 				case HardwareFamily.ColecoVision: // ColecoVision I/O map.
 
-					switch (port & 0xFF) {
+					switch (port & 0xE0) {
 						case 0x80:
 							this.ReadingColecoVisionJoysticks = false;
+							break;
+						case 0xA0:
+							if ((port & 1) == 0) {
+								this.Video.WriteData(value);
+							} else {
+								this.Video.WriteControl(value);
+							}
 							break;
 						case 0xC0:
 							this.ReadingColecoVisionJoysticks = true;
 							break;
-						case 0xBE:
-							this.Video.WriteData(value);
-							break;
-						case 0xBF:
-							this.Video.WriteControl(value);
-							break;
-						case 0xFF:
+						case 0xE0:
 							this.Sound.WriteQueued(value);
 							break;
-
 					}
-
 					break;
 				
 				default: // Sega (default) I/O map.
