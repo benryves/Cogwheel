@@ -29,6 +29,11 @@
 		/// </summary>
 		/// <param name="data">Data taken from a ROM dump.</param>
 		void Load(byte[] data);
+
+		/// <summary>
+		/// Gets the CRC-32 checksum of the ROM contents.
+		/// </summary>
+		int Crc32 { get; }
 	
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using BeeDevelopment.Brazil;
 
 namespace BeeDevelopment.Sega8Bit.Mappers {
 
@@ -23,6 +24,12 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		/// Gets or sets the <see cref="IMemoryMapper"/> that shares the address space with the 1KB BIOS ROM.
 		/// </summary>
 		public IMemoryMapper SharedMapper { get; set; }
+
+		/// <summary>
+		/// Gets the CRC-32 checksum of the ROM contents.
+		/// </summary>
+		[StateNotSaved]
+		public int Crc32 { get; private set; }
 
 		#endregion
 
@@ -67,6 +74,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		/// <param name="data">Data taken from a ROM dump.</param>
 		public void Load(byte[] data) {
 			Array.Copy(data,this.Memory,Math.Min(data.Length, this.Memory.Length));
+			this.Crc32 = Zip.Crc32.Calculate(data);
 		}
 
 		/// <summary>
@@ -74,6 +82,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		/// </summary>
 		public Shared1KBios() {
 			this.Memory = new byte[1024];
+			this.Load(new byte[0]);
 		}
 
 		#endregion

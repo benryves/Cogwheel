@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using BeeDevelopment.Brazil;
 
 namespace BeeDevelopment.Sega8Bit.Mappers {
 
@@ -21,6 +20,12 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 				this.memory = value;
 			}
 		}
+
+		/// <summary>
+		/// Gets the CRC-32 checksum of the ROM contents.
+		/// </summary>
+		[StateNotSaved]
+		public int Crc32 { get; private set; }
 
 		/// <summary>
 		/// Gets the size of the memory.
@@ -62,6 +67,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		/// <param name="data">The data to load.</param>
 		public void Load(byte[] data) {
 			Array.Copy(data, this.memory, Math.Min(data.Length, this.memory.Length));
+			this.Crc32 = Zip.Crc32.Calculate(data);
 		}
 
 		/// <summary>
@@ -73,6 +79,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 			for (int i = 0, j = this.Size; i < 32; ++i, j >>= 1) BitCount += j & 1;
 			if (BitCount != 1) throw new InvalidOperationException();
 			this.memory = new byte[this.Size];
+			this.Load(new byte[0]);
 		}
 	}
 

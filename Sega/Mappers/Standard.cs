@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BeeDevelopment.Brazil;
 
 namespace BeeDevelopment.Sega8Bit.Mappers {
 
@@ -86,6 +87,12 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		/// </summary>
 		public bool ProtectFirstKilobyte { get; set; }
 
+		/// <summary>
+		/// Gets the CRC-32 checksum of the ROM contents.
+		/// </summary>
+		[StateNotSaved]
+		public int Crc32 { get; private set; }
+
 		#endregion
 
 
@@ -163,6 +170,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 
 			// Clear cartridge RAM.
 			this.cartridgeRam = new byte[0x4000];
+			this.Load(new byte[0]);
 
 			// Write default mapper values.
 			this.WriteMemory(0xFFFC, 0);
@@ -192,6 +200,8 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 
 			// Finally, reset the state of the ROM mapper.
 			this.Reset();
+
+			this.Crc32 = Zip.Crc32.Calculate(data);
 		}
 
 		/// <summary>
