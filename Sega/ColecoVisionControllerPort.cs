@@ -49,19 +49,25 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <summary>Gets or sets whether the hash button is pressed.</summary>
 		public bool Hash { get; set; }
 
+		/// <summary>
+		/// Reads the state of the controller's joystick.
+		/// </summary>
 		public byte ReadJoystick() {
-			return (byte)~(
-					(this.Fire1 ? 0x40 : 0x00) |
-					(this.Up ? 0x08 : 0x00) |
-					(this.Right ? 0x04 : 0x00) |
-					(this.Down ? 0x02 : 0x00) |
-					(this.Left ? 0x01 : 0x00)
+			return (byte)(
+				(this.Up ? 0x7E : 0x7F) &
+				(this.Down ? 0x7B : 0x7F) &
+				(this.Left ? 0x77 : 0x7F) &
+				(this.Right ? 0x7D : 0x7F) &
+				(this.Fire1 ? 0x3F : 0x7F)
 			);
 		}
 
+		/// <summary>
+		/// Reads the state of the controller's number pad.
+		/// </summary>
 		public byte ReadNumberPad() {
 
-			byte Key = 0xF;
+			byte Key = 0x0;
 
 			//                      0x0;
 			if (this.Number8) Key = 0x1;
@@ -79,7 +85,7 @@ namespace BeeDevelopment.Sega8Bit {
 			if (this.Number1) Key = 0xD;
 			if (this.Number6) Key = 0xE;
 			
-			return (byte)(Key | (this.Fire2 ? 0x40 : 0x00));
+			return (byte)(Key | (this.Fire2 ? 0x30 : 0x70));
 		}
 
 	}
