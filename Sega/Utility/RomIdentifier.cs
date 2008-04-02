@@ -126,6 +126,9 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 					case HardwareModel.GameGearMasterSystem:
 						if (TryIdentifyHardware.Type == RomInfo.RomType.Bios) Result = new Shared1KBios();
 						break;
+					case HardwareModel.ColecoVision:
+						Result = new Rom32();
+						break;
 				}
 			}
 
@@ -178,15 +181,13 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 					try {
 						string ColecoBiosRomPath = Path.Combine(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName), "COLECO.ROM");
 						if (File.Exists(ColecoBiosRomPath)) {
-							emulator.Bios.Memory = this.CreateMapper(File.ReadAllBytes(ColecoBiosRomPath));
+							emulator.Bios.Memory = new Rom8();
+							emulator.Bios.Memory.Load(File.ReadAllBytes(ColecoBiosRomPath));
 						}
 					} catch { }
 				}
 
 			}
-
-			
-
 			return Info;
 
 		}
