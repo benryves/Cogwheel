@@ -24,8 +24,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		/// <summary>
 		/// Gets the CRC-32 checksum of the ROM contents.
 		/// </summary>
-		[StateNotSaved]
-		public int Crc32 { get; private set; }
+		public int Crc32 { get; internal set; }
 
 		/// <summary>
 		/// Gets the size of the memory.
