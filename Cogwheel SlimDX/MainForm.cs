@@ -28,7 +28,6 @@ namespace CogwheelSlimDX {
 		// Emulator stuff.
 		private Emulator Emulator;
 		private RomIdentifier Identifier;
-		private RomInfo CurrentRomInfo;
 		protected bool Paused = false;
 
 		#endregion
@@ -387,15 +386,16 @@ namespace CogwheelSlimDX {
 
 		private void UpdateFormTitle(string filename) {
 			string Name = "";
-			if (this.CurrentRomInfo == null) {
-				if (filename == null) {
-					Name = "";
-				} else {
-					Name = Path.GetFileNameWithoutExtension(filename);
-				}
-			} else {
-				Name = this.CurrentRomInfo.Title;
-			}
+			
+			RomInfo Info = null;
+
+			if (this.Emulator.Bios.Memory != null) Info = this.Identifier.GetRomInfo(this.Emulator.Bios.Memory.Crc32);
+			if (this.Emulator.ExpansionSlot.Memory != null) Info = this.Identifier.GetRomInfo(this.Emulator.ExpansionSlot.Memory.Crc32) ?? Info;
+			if (this.Emulator.CardSlot.Memory != null) Info = this.Identifier.GetRomInfo(this.Emulator.CardSlot.Memory.Crc32) ?? Info;
+			if (this.Emulator.CartridgeSlot.Memory != null) Info = this.Identifier.GetRomInfo(this.Emulator.CartridgeSlot.Memory.Crc32) ?? Info;
+
+			if (Info != null) Name = Info.Title;
+
 			if (!string.IsNullOrEmpty(Name)) Name += " - ";
 			this.Text = Name + Application.ProductName;
 		}
@@ -408,8 +408,10 @@ namespace CogwheelSlimDX {
 			
 			string Filename = filename;
 
+
+			RomInfo LoadingRomInfo = null;
 			try {
-				this.CurrentRomInfo = this.Identifier.QuickLoadEmulator(ref Filename, this.Emulator);
+				LoadingRomInfo  = this.Identifier.QuickLoadEmulator(ref Filename, this.Emulator);
 			} catch (Exception ex) {
 				MessageBox.Show(this, ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
@@ -419,19 +421,20 @@ namespace CogwheelSlimDX {
 
 			this.AddRecentFile(filename);
 
-			if (this.CurrentRomInfo != null) {
 
-				if (this.CurrentRomInfo.Model == HardwareModel.GameGearMasterSystem && !Properties.Settings.Default.OptionSimulateGameGearLcdScaling) {
+			if (LoadingRomInfo != null) {
+
+				if (LoadingRomInfo.Model == HardwareModel.GameGearMasterSystem && !Properties.Settings.Default.OptionSimulateGameGearLcdScaling) {
 					this.Emulator.Video.SetCapabilitiesByModel(HardwareModel.MasterSystem2);
 				}
 
-				this.AddMessage(Properties.Resources.Icon_Information, this.CurrentRomInfo.Title);
-				if (!string.IsNullOrEmpty(this.CurrentRomInfo.Author)) this.AddMessage(Properties.Resources.Icon_User, this.CurrentRomInfo.Author);
+				this.AddMessage(Properties.Resources.Icon_Information, LoadingRomInfo.Title);
+				if (!string.IsNullOrEmpty(LoadingRomInfo.Author)) this.AddMessage(Properties.Resources.Icon_User, LoadingRomInfo.Author);
 
-				switch (this.CurrentRomInfo.Type) {
+				switch (LoadingRomInfo.Type) {
 					case RomInfo.RomType.HeaderedFootered:
-						if (this.CurrentRomInfo.FooterSize > 0) this.AddMessage(Properties.Resources.Icon_Exclamation, "Footered");
-						if (this.CurrentRomInfo.HeaderSize > 0) this.AddMessage(Properties.Resources.Icon_Exclamation, "Headered");
+						if (LoadingRomInfo.FooterSize > 0) this.AddMessage(Properties.Resources.Icon_Exclamation, "Footered");
+						if (LoadingRomInfo.HeaderSize > 0) this.AddMessage(Properties.Resources.Icon_Exclamation, "Headered");
 						break;
 					case RomInfo.RomType.Overdumped:
 						this.AddMessage(Properties.Resources.Icon_Exclamation, "Overdumped");
@@ -456,7 +459,7 @@ namespace CogwheelSlimDX {
 						break;
 				}
 
-				switch (this.CurrentRomInfo.Country) {
+				switch (LoadingRomInfo.Country) {
 					case Country.Japan: this.AddMessage(Properties.Resources.Flag_JP, "Japan"); break;
 					case Country.Brazil: this.AddMessage(Properties.Resources.Flag_BR, "Brazil"); break;
 					case Country.UnitedStates: this.AddMessage(Properties.Resources.Flag_US, "United States"); break;
@@ -486,14 +489,15 @@ namespace CogwheelSlimDX {
 			var RomLoadDialog = new AdvancedRomLoadDialog();
 			if (RomLoadDialog.ShowDialog(this) == DialogResult.OK) {
 
-				this.CurrentRomInfo = null;
 
 				this.Emulator.RemoveAllMedia();
 				this.Emulator.ResetAll();
 
+				RomInfo LoadingRomInfo = null;
+
 				if (File.Exists(RomLoadDialog.CartridgeFileName)) {
 					string CartridgeName = RomLoadDialog.CartridgeFileName;
-					this.CurrentRomInfo = this.Identifier.QuickLoadEmulator(ref CartridgeName, this.Emulator);
+					LoadingRomInfo = this.Identifier.QuickLoadEmulator(ref CartridgeName, this.Emulator);
 
 					if (File.Exists(RomLoadDialog.CartridgePatchFileName)) {
 						try {
@@ -517,7 +521,7 @@ namespace CogwheelSlimDX {
 						((Shared1KBios)this.Emulator.Bios.Memory).SharedMapper = this.Emulator.CartridgeSlot.Memory;
 						if (Properties.Settings.Default.OptionSimulateGameGearLcdScaling) this.Emulator.Video.SetCapabilitiesByModel(HardwareModel.GameGearMasterSystem);
 						this.Emulator.HasGameGearPorts = true;
-						this.Emulator.RespondsToGameGearPorts = this.CurrentRomInfo != null && this.CurrentRomInfo.Model == HardwareModel.GameGear;
+						this.Emulator.RespondsToGameGearPorts = LoadingRomInfo != null && LoadingRomInfo.Model == HardwareModel.GameGear;
 					}
 					this.Emulator.Bios.Enabled = true;
 					this.Emulator.CartridgeSlot.Enabled = false;
@@ -794,12 +798,14 @@ namespace CogwheelSlimDX {
 		}
 
 		private void LoadState(string filename) {
-			var StateFile = ZipFile.FromFile(filename);
-			this.CurrentRomInfo = null;
-			this.UpdateFormTitle(null);
-			Emulator NewEmulator;
-			BeeDevelopment.Sega8Bit.Utility.SaveState.Load(out NewEmulator, StateFile);
-			this.Emulator = NewEmulator;
+			try {
+				var StateFile = ZipFile.FromFile(filename);
+				Emulator NewEmulator;
+				BeeDevelopment.Sega8Bit.Utility.SaveState.Load(out NewEmulator, StateFile);
+				this.Emulator = NewEmulator;
+			} finally {
+				this.UpdateFormTitle(null);
+			}
 		}
 
 		#endregion
