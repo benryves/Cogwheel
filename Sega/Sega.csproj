@@ -48,7 +48,7 @@
     <Compile Include="..\Source Libraries\BeeZip\ZipFileEntry.cs">
       <Link>BeeZip\ZipFileEntry.cs</Link>
     </Compile>
-    <Compile Include="ControllerPort.cs" />
+    <Compile Include="ColecoVisionControllerPort.cs" />
     <Compile Include="Country.cs" />
     <Compile Include="Hardware\ProgrammableSoundGenerator\StereoDistribution.cs" />
     <Compile Include="Hardware\ProgrammableSoundGenerator\Output.cs" />
@@ -82,6 +82,7 @@
     <Compile Include="Hardware\VideoDisplayProcessor\VideoDisplayProcessor.cs" />
     <Compile Include="Mappers\Standard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SegaControllerPort.cs" />
     <Compile Include="Utility\Patch.cs" />
     <Compile Include="Utility\RomData.cs" />
     <Compile Include="Utility\RomIdentifier.cs" />

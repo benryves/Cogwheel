@@ -84,6 +84,7 @@ namespace CogwheelSlimDX {
 		/// <param name="emulator">The emulator to update.</param>
 		/// <remarks>This polls the input devices and sets the input state of the emulator for you.</remarks>
 		public void UpdateEmulatorState(Emulator emulator) {
+			
 			emulator.SegaPorts[0].TL.State = !this.Player1TL;
 			emulator.SegaPorts[0].TR.InputState = !this.Player1TR;
 			emulator.SegaPorts[0].Up.State = !this.Player1Up;
@@ -96,6 +97,20 @@ namespace CogwheelSlimDX {
 			emulator.SegaPorts[1].Down.State = !this.Player2Down;
 			emulator.SegaPorts[1].Left.State = !this.Player2Left;
 			emulator.SegaPorts[1].Right.State = !this.Player2Right;
+
+			emulator.ColecoVisionPorts[0].Fire1 = this.Player1TL;
+			emulator.ColecoVisionPorts[0].Fire2 = this.Player1TR;
+			emulator.ColecoVisionPorts[0].Up = this.Player1Up;
+			emulator.ColecoVisionPorts[0].Down = this.Player1Down;
+			emulator.ColecoVisionPorts[0].Left = this.Player1Left;
+			emulator.ColecoVisionPorts[0].Right = this.Player1Right;
+			emulator.ColecoVisionPorts[1].Fire1 = this.Player2TL;
+			emulator.ColecoVisionPorts[1].Fire2 = this.Player2TR;
+			emulator.ColecoVisionPorts[1].Up = this.Player2Up;
+			emulator.ColecoVisionPorts[1].Down = this.Player2Down;
+			emulator.ColecoVisionPorts[1].Left = this.Player2Left;
+			emulator.ColecoVisionPorts[1].Right = this.Player2Right;
+
 			if (emulator.HasPauseButton) emulator.PauseButton = this.Pause;
 			if (emulator.HasResetButton) emulator.ResetButton = this.Reset;
 			if (emulator.HasStartButton) emulator.StartButton = this.Start;

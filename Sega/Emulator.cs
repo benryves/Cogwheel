@@ -130,6 +130,9 @@ namespace BeeDevelopment.Sega8Bit {
 				case HardwareModel.SC3000:
 					this.Sound.SetNoiseByPreset(ProgrammableSoundGenerator.NoisePresets.SC3000);
 					break;
+				case HardwareModel.ColecoVision:
+					this.Sound.SetNoiseByPreset(ProgrammableSoundGenerator.NoisePresets.BbcMicro);
+					break;
 				default:
 					this.Sound.SetNoiseByPreset(ProgrammableSoundGenerator.NoisePresets.SegaMasterSystem);
 					break;

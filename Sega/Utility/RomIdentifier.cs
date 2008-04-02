@@ -172,8 +172,14 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 				emulator.CartridgeSlot.Memory = this.CreateMapper(Data);
 				emulator.Bios.Enabled = false;
 				emulator.CartridgeSlot.Enabled = true;
+
+				if (Model == HardwareModel.ColecoVision) {
+					emulator.Bios.Memory = this.CreateMapper(File.ReadAllBytes(@"C:\Program Files\VColeco\COLECO.ROM"));
+				}
+
 			}
-		
+
+			
 
 			return Info;
 

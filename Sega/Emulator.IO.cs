@@ -37,6 +37,8 @@ namespace BeeDevelopment.Sega8Bit {
 		/// </summary>
 		private byte Port2 = 0; //HACK: Find somewhere better for this.
 
+		public bool ReadingColecoVisionJoysticks { get; set; }
+
 		/// <summary>
 		/// Reads a byte to from a hardware device.
 		/// </summary>
@@ -47,12 +49,16 @@ namespace BeeDevelopment.Sega8Bit {
 			switch (this.Family) {
 
 				case HardwareFamily.ColecoVision: // ColecoVision I/O map.
-					
+
 					switch (port & 0xFF) {
 						case 0xBE:
 							return this.Video.ReadData();
 						case 0xBF:
 							return this.Video.ReadControl();
+						case 0xFC:
+							return this.ReadingColecoVisionJoysticks ? this.ColecoVisionPorts[0].ReadJoystick() : this.ColecoVisionPorts[0].ReadNumberPad();
+						case 0xFF:
+							return this.ReadingColecoVisionJoysticks ? this.ColecoVisionPorts[1].ReadJoystick() : this.ColecoVisionPorts[1].ReadNumberPad();
 					}
 					break;
 
@@ -116,6 +122,12 @@ namespace BeeDevelopment.Sega8Bit {
 				case HardwareFamily.ColecoVision: // ColecoVision I/O map.
 
 					switch (port & 0xFF) {
+						case 0x80:
+							this.ReadingColecoVisionJoysticks = false;
+							break;
+						case 0xC0:
+							this.ReadingColecoVisionJoysticks = true;
+							break;
 						case 0xBE:
 							this.Video.WriteData(value);
 							break;

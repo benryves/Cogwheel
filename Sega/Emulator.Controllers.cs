@@ -6,10 +6,16 @@ namespace BeeDevelopment.Sega8Bit {
 	public partial class Emulator {
 
 		/// <summary>
-		/// Gets the two <see cref="ControllerPort"/> instances connected to the 
+		/// Gets the two <see cref="SegaControllerPort"/> instances connected to the console.
 		/// </summary>
 		[StateNotSaved()]
 		public SegaControllerPort[] SegaPorts { get; private set; }
+
+		/// <summary>
+		/// Gets the two <see cref="ColecoVisionControllerPort"/> instances connected to the console.
+		/// </summary>
+		[StateNotSaved()]
+		public ColecoVisionControllerPort[] ColecoVisionPorts { get; private set; }
 
 		/// <summary>
 		/// Resets the controller ports to their default state.
@@ -19,6 +25,11 @@ namespace BeeDevelopment.Sega8Bit {
 				new SegaControllerPort(),
 				new SegaControllerPort()
 			};
+			this.ColecoVisionPorts = new ColecoVisionControllerPort[] { 
+				new ColecoVisionControllerPort(),
+				new ColecoVisionControllerPort()
+			};
+			this.ReadingColecoVisionJoysticks = false;
 			this.ResetButton = false;
 		}
 
