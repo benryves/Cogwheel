@@ -84,6 +84,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 		/// <returns>A <see cref="RomInfo"/> instance describing the ROM, or <c>null</c> if no ROM was found.</returns>
 		/// <remarks>The filename does not have to be a full, valid path - only the extension is used.</remarks>
 		public RomInfo GetRomInfo(byte[] data, string filename) {
+			if (data == null) return null;
 			return this.GetRomInfo(Zip.Crc32.Calculate(data), filename);
 		}
 
@@ -127,7 +128,13 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 						if (TryIdentifyHardware.Type == RomInfo.RomType.Bios) Result = new Shared1KBios();
 						break;
 					case HardwareModel.ColecoVision:
-						Result = new Rom32();
+						if (data.Length <= 0x2000) {
+							Result = new Rom8();
+						} else if (data.Length <= 0x4000) {
+							Result = new Rom16();
+						} else {
+							Result = new Rom32();
+						}						
 						break;
 				}
 			}
