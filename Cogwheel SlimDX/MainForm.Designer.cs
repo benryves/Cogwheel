@@ -160,7 +160,7 @@
 			// dummyToolStripMenuItem
 			// 
 			this.dummyToolStripMenuItem.Name = "dummyToolStripMenuItem";
-			this.dummyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.dummyToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
 			this.dummyToolStripMenuItem.Text = "&Dummy";
 			// 
 			// FileSep2
@@ -219,7 +219,7 @@
             this.GameGenieEditMenu});
 			this.GameGenieMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(152, 22);
+			this.GameGenieMenu.Size = new System.Drawing.Size(138, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
 			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
 			// 
@@ -227,14 +227,14 @@
 			// 
 			this.GameGenieEnabledMenu.CheckOnClick = true;
 			this.GameGenieEnabledMenu.Name = "GameGenieEnabledMenu";
-			this.GameGenieEnabledMenu.Size = new System.Drawing.Size(152, 22);
+			this.GameGenieEnabledMenu.Size = new System.Drawing.Size(139, 22);
 			this.GameGenieEnabledMenu.Text = "&Enabled";
 			this.GameGenieEnabledMenu.Click += new System.EventHandler(this.GameGenieEnabledMenu_Click);
 			// 
 			// GameGenieEditMenu
 			// 
 			this.GameGenieEditMenu.Name = "GameGenieEditMenu";
-			this.GameGenieEditMenu.Size = new System.Drawing.Size(152, 22);
+			this.GameGenieEditMenu.Size = new System.Drawing.Size(139, 22);
 			this.GameGenieEditMenu.Text = "Edit Codes...";
 			this.GameGenieEditMenu.Click += new System.EventHandler(this.GameGenieEditMenu_Click);
 			// 
@@ -249,7 +249,7 @@
             this.MaintainAspectRatioMenu});
 			this.OptionsMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Wrench;
 			this.OptionsMenu.Name = "OptionsMenu";
-			this.OptionsMenu.Size = new System.Drawing.Size(152, 22);
+			this.OptionsMenu.Size = new System.Drawing.Size(138, 22);
 			this.OptionsMenu.Text = "&Options";
 			this.OptionsMenu.DropDownOpening += new System.EventHandler(this.OptionsMenu_DropDownOpening);
 			// 
@@ -308,27 +308,26 @@
 			// 
 			this.AboutMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Information;
 			this.AboutMenu.Name = "AboutMenu";
-			this.AboutMenu.Size = new System.Drawing.Size(152, 22);
+			this.AboutMenu.Size = new System.Drawing.Size(142, 22);
 			this.AboutMenu.Text = "&About";
 			this.AboutMenu.Click += new System.EventHandler(this.AboutMenu_Click);
 			// 
 			// HelpSep0
 			// 
 			this.HelpSep0.Name = "HelpSep0";
-			this.HelpSep0.Size = new System.Drawing.Size(149, 6);
+			this.HelpSep0.Size = new System.Drawing.Size(139, 6);
 			// 
 			// BugReportMenu
 			// 
 			this.BugReportMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Bug;
 			this.BugReportMenu.Name = "BugReportMenu";
-			this.BugReportMenu.Size = new System.Drawing.Size(152, 22);
+			this.BugReportMenu.Size = new System.Drawing.Size(142, 22);
 			this.BugReportMenu.Text = "&Report a Bug";
 			this.BugReportMenu.Click += new System.EventHandler(this.BugReportMenu_Click);
 			// 
 			// OpenRomDialog
 			// 
-			this.OpenRomDialog.Filter = "ROM Files (*.zip;*.sms;*.gg;*.sg;*.sc;*.mv)|*.zip;*.sms;*.gg;*.sg;*.sc;*.mv|All F" +
-				"iles (*.*)|*.*";
+			this.OpenRomDialog.Filter = resources.GetString("OpenRomDialog.Filter");
 			// 
 			// Status
 			// 

@@ -123,6 +123,9 @@
   <metadata name="OpenRomDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>222, 17</value>
   </metadata>
+  <data name="OpenRomDialog.Filter" xml:space="preserve">
+    <value>ROM file (all types)|*.zip;*.sms;*.gg;*.sg;*.sc;*.mv;*.omv;*.col;*.rom|Sega Master System ROM file (*.sms)|*.sms|Sega Game Gear ROM file (*.gg)|*.gg|SG-1000 ROM file (*.sg)|*.sg|SC-3000 ROM file (*.sc)|*.sc|Othello Multivision ROM file (*.omv;*.mv)|*.omv;*.mv|ColecoVision ROM file (*.col;*.rom)|*.col;*.rom|Any file (*.*)|*.*</value>
+  </data>
   <metadata name="Status.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>364, 17</value>
   </metadata>
