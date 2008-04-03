@@ -10,6 +10,14 @@ Right=>0.Right
 ControlKey=>0.Trigger1
 Menu=>0.Trigger2
 
+; Player 2 joypad:
+Home=>1.Up
+End=>1.Down
+Delete=>1.Left
+PageDown=>1.Right
+Insert=>1.Trigger1
+PageUp=>1.Trigger2
+
 ; Player 1 number pad:
 D0=>0.Number0
 D1=>0.Number1
