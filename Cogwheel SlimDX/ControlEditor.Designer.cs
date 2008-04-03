@@ -79,7 +79,6 @@
 			this.InputTabs.SelectedIndex = 0;
 			this.InputTabs.Size = new System.Drawing.Size(363, 324);
 			this.InputTabs.TabIndex = 0;
-			this.InputTabs.SelectedIndexChanged += new System.EventHandler(this.InputTabs_SelectedIndexChanged);
 			// 
 			// KeyboardTab
 			// 
@@ -215,12 +214,11 @@
 			// 
 			this.Player1TL.Appearance = System.Windows.Forms.Appearance.Button;
 			this.Player1TL.AutoCheck = false;
+			this.Player1TL.InputButton = CogwheelSlimDX.InputButton.Trigger1;
+			this.Player1TL.ControllerIndex = 0;
 			this.Player1TL.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Player1TL.JoystickSource = null;
-			this.Player1TL.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player1TL.Key = System.Windows.Forms.Keys.None;
 			this.Player1TL.Location = new System.Drawing.Point(117, 3);
-			this.Player1TL.Mode = CogwheelSlimDX.KeyButton.InputMode.Keyboard;
 			this.Player1TL.Name = "Player1TL";
 			this.Player1TL.Size = new System.Drawing.Size(108, 22);
 			this.Player1TL.TabIndex = 6;
@@ -232,12 +230,11 @@
 			// 
 			this.Player1TR.Appearance = System.Windows.Forms.Appearance.Button;
 			this.Player1TR.AutoCheck = false;
+			this.Player1TR.InputButton = CogwheelSlimDX.InputButton.Trigger2;
+			this.Player1TR.ControllerIndex = 0;
 			this.Player1TR.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Player1TR.JoystickSource = null;
-			this.Player1TR.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player1TR.Key = System.Windows.Forms.Keys.None;
 			this.Player1TR.Location = new System.Drawing.Point(117, 31);
-			this.Player1TR.Mode = CogwheelSlimDX.KeyButton.InputMode.Keyboard;
 			this.Player1TR.Name = "Player1TR";
 			this.Player1TR.Size = new System.Drawing.Size(108, 22);
 			this.Player1TR.TabIndex = 7;
@@ -249,12 +246,11 @@
 			// 
 			this.Player1Up.Appearance = System.Windows.Forms.Appearance.Button;
 			this.Player1Up.AutoCheck = false;
+			this.Player1Up.InputButton = CogwheelSlimDX.InputButton.Up;
+			this.Player1Up.ControllerIndex = 0;
 			this.Player1Up.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Player1Up.JoystickSource = null;
-			this.Player1Up.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player1Up.Key = System.Windows.Forms.Keys.None;
 			this.Player1Up.Location = new System.Drawing.Point(117, 59);
-			this.Player1Up.Mode = CogwheelSlimDX.KeyButton.InputMode.Keyboard;
 			this.Player1Up.Name = "Player1Up";
 			this.Player1Up.Size = new System.Drawing.Size(108, 22);
 			this.Player1Up.TabIndex = 8;
@@ -266,12 +262,11 @@
 			// 
 			this.Player1Down.Appearance = System.Windows.Forms.Appearance.Button;
 			this.Player1Down.AutoCheck = false;
+			this.Player1Down.InputButton = CogwheelSlimDX.InputButton.Down;
+			this.Player1Down.ControllerIndex = 0;
 			this.Player1Down.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Player1Down.JoystickSource = null;
-			this.Player1Down.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player1Down.Key = System.Windows.Forms.Keys.None;
 			this.Player1Down.Location = new System.Drawing.Point(117, 87);
-			this.Player1Down.Mode = CogwheelSlimDX.KeyButton.InputMode.Keyboard;
 			this.Player1Down.Name = "Player1Down";
 			this.Player1Down.Size = new System.Drawing.Size(108, 22);
 			this.Player1Down.TabIndex = 9;
@@ -283,12 +278,11 @@
 			// 
 			this.Player1Left.Appearance = System.Windows.Forms.Appearance.Button;
 			this.Player1Left.AutoCheck = false;
+			this.Player1Left.InputButton = CogwheelSlimDX.InputButton.Left;
+			this.Player1Left.ControllerIndex = 0;
 			this.Player1Left.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Player1Left.JoystickSource = null;
-			this.Player1Left.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player1Left.Key = System.Windows.Forms.Keys.None;
 			this.Player1Left.Location = new System.Drawing.Point(117, 115);
-			this.Player1Left.Mode = CogwheelSlimDX.KeyButton.InputMode.Keyboard;
 			this.Player1Left.Name = "Player1Left";
 			this.Player1Left.Size = new System.Drawing.Size(108, 22);
 			this.Player1Left.TabIndex = 10;
@@ -300,12 +294,11 @@
 			// 
 			this.Player1Right.Appearance = System.Windows.Forms.Appearance.Button;
 			this.Player1Right.AutoCheck = false;
+			this.Player1Right.InputButton = CogwheelSlimDX.InputButton.Right;
+			this.Player1Right.ControllerIndex = 0;
 			this.Player1Right.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Player1Right.JoystickSource = null;
-			this.Player1Right.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player1Right.Key = System.Windows.Forms.Keys.None;
 			this.Player1Right.Location = new System.Drawing.Point(117, 143);
-			this.Player1Right.Mode = CogwheelSlimDX.KeyButton.InputMode.Keyboard;
 			this.Player1Right.Name = "Player1Right";
 			this.Player1Right.Size = new System.Drawing.Size(108, 23);
 			this.Player1Right.TabIndex = 12;
@@ -317,12 +310,11 @@
 			// 
 			this.Player2TL.Appearance = System.Windows.Forms.Appearance.Button;
 			this.Player2TL.AutoCheck = false;
+			this.Player2TL.InputButton = CogwheelSlimDX.InputButton.Trigger1;
+			this.Player2TL.ControllerIndex = 1;
 			this.Player2TL.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Player2TL.JoystickSource = null;
-			this.Player2TL.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player2TL.Key = System.Windows.Forms.Keys.None;
 			this.Player2TL.Location = new System.Drawing.Point(231, 3);
-			this.Player2TL.Mode = CogwheelSlimDX.KeyButton.InputMode.Keyboard;
 			this.Player2TL.Name = "Player2TL";
 			this.Player2TL.Size = new System.Drawing.Size(109, 22);
 			this.Player2TL.TabIndex = 11;
@@ -334,12 +326,11 @@
 			// 
 			this.Player2TR.Appearance = System.Windows.Forms.Appearance.Button;
 			this.Player2TR.AutoCheck = false;
+			this.Player2TR.InputButton = CogwheelSlimDX.InputButton.Trigger2;
+			this.Player2TR.ControllerIndex = 1;
 			this.Player2TR.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Player2TR.JoystickSource = null;
-			this.Player2TR.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player2TR.Key = System.Windows.Forms.Keys.None;
 			this.Player2TR.Location = new System.Drawing.Point(231, 31);
-			this.Player2TR.Mode = CogwheelSlimDX.KeyButton.InputMode.Keyboard;
 			this.Player2TR.Name = "Player2TR";
 			this.Player2TR.Size = new System.Drawing.Size(109, 22);
 			this.Player2TR.TabIndex = 13;
@@ -351,12 +342,11 @@
 			// 
 			this.Player2Up.Appearance = System.Windows.Forms.Appearance.Button;
 			this.Player2Up.AutoCheck = false;
+			this.Player2Up.InputButton = CogwheelSlimDX.InputButton.Up;
+			this.Player2Up.ControllerIndex = 1;
 			this.Player2Up.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Player2Up.JoystickSource = null;
-			this.Player2Up.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player2Up.Key = System.Windows.Forms.Keys.None;
 			this.Player2Up.Location = new System.Drawing.Point(231, 59);
-			this.Player2Up.Mode = CogwheelSlimDX.KeyButton.InputMode.Keyboard;
 			this.Player2Up.Name = "Player2Up";
 			this.Player2Up.Size = new System.Drawing.Size(109, 22);
 			this.Player2Up.TabIndex = 14;
@@ -368,12 +358,11 @@
 			// 
 			this.Player2Down.Appearance = System.Windows.Forms.Appearance.Button;
 			this.Player2Down.AutoCheck = false;
+			this.Player2Down.InputButton = CogwheelSlimDX.InputButton.Down;
+			this.Player2Down.ControllerIndex = 1;
 			this.Player2Down.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Player2Down.JoystickSource = null;
-			this.Player2Down.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player2Down.Key = System.Windows.Forms.Keys.None;
 			this.Player2Down.Location = new System.Drawing.Point(231, 87);
-			this.Player2Down.Mode = CogwheelSlimDX.KeyButton.InputMode.Keyboard;
 			this.Player2Down.Name = "Player2Down";
 			this.Player2Down.Size = new System.Drawing.Size(109, 22);
 			this.Player2Down.TabIndex = 15;
@@ -385,12 +374,11 @@
 			// 
 			this.Player2Left.Appearance = System.Windows.Forms.Appearance.Button;
 			this.Player2Left.AutoCheck = false;
+			this.Player2Left.InputButton = CogwheelSlimDX.InputButton.Left;
+			this.Player2Left.ControllerIndex = 1;
 			this.Player2Left.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Player2Left.JoystickSource = null;
-			this.Player2Left.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player2Left.Key = System.Windows.Forms.Keys.None;
 			this.Player2Left.Location = new System.Drawing.Point(231, 115);
-			this.Player2Left.Mode = CogwheelSlimDX.KeyButton.InputMode.Keyboard;
 			this.Player2Left.Name = "Player2Left";
 			this.Player2Left.Size = new System.Drawing.Size(109, 22);
 			this.Player2Left.TabIndex = 16;
@@ -402,12 +390,11 @@
 			// 
 			this.Player2Right.Appearance = System.Windows.Forms.Appearance.Button;
 			this.Player2Right.AutoCheck = false;
+			this.Player2Right.InputButton = CogwheelSlimDX.InputButton.Right;
+			this.Player2Right.ControllerIndex = 1;
 			this.Player2Right.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Player2Right.JoystickSource = null;
-			this.Player2Right.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player2Right.Key = System.Windows.Forms.Keys.None;
 			this.Player2Right.Location = new System.Drawing.Point(231, 143);
-			this.Player2Right.Mode = CogwheelSlimDX.KeyButton.InputMode.Keyboard;
 			this.Player2Right.Name = "Player2Right";
 			this.Player2Right.Size = new System.Drawing.Size(109, 23);
 			this.Player2Right.TabIndex = 17;
@@ -481,12 +468,11 @@
 			// 
 			this.ConsolePause.Appearance = System.Windows.Forms.Appearance.Button;
 			this.ConsolePause.AutoCheck = false;
+			this.ConsolePause.InputButton = CogwheelSlimDX.InputButton.Pause;
+			this.ConsolePause.ControllerIndex = 0;
 			this.ConsolePause.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ConsolePause.JoystickSource = null;
-			this.ConsolePause.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.ConsolePause.Key = System.Windows.Forms.Keys.None;
 			this.ConsolePause.Location = new System.Drawing.Point(117, 3);
-			this.ConsolePause.Mode = CogwheelSlimDX.KeyButton.InputMode.Keyboard;
 			this.ConsolePause.Name = "ConsolePause";
 			this.ConsolePause.Size = new System.Drawing.Size(223, 22);
 			this.ConsolePause.TabIndex = 18;
@@ -498,12 +484,11 @@
 			// 
 			this.ConsoleReset.Appearance = System.Windows.Forms.Appearance.Button;
 			this.ConsoleReset.AutoCheck = false;
+			this.ConsoleReset.InputButton = CogwheelSlimDX.InputButton.Reset;
+			this.ConsoleReset.ControllerIndex = 0;
 			this.ConsoleReset.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ConsoleReset.JoystickSource = null;
-			this.ConsoleReset.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.ConsoleReset.Key = System.Windows.Forms.Keys.None;
 			this.ConsoleReset.Location = new System.Drawing.Point(117, 31);
-			this.ConsoleReset.Mode = CogwheelSlimDX.KeyButton.InputMode.Keyboard;
 			this.ConsoleReset.Name = "ConsoleReset";
 			this.ConsoleReset.Size = new System.Drawing.Size(223, 22);
 			this.ConsoleReset.TabIndex = 20;
@@ -515,12 +500,11 @@
 			// 
 			this.ConsoleStart.Appearance = System.Windows.Forms.Appearance.Button;
 			this.ConsoleStart.AutoCheck = false;
+			this.ConsoleStart.InputButton = CogwheelSlimDX.InputButton.Start;
+			this.ConsoleStart.ControllerIndex = 0;
 			this.ConsoleStart.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ConsoleStart.JoystickSource = null;
-			this.ConsoleStart.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.ConsoleStart.Key = System.Windows.Forms.Keys.None;
 			this.ConsoleStart.Location = new System.Drawing.Point(117, 59);
-			this.ConsoleStart.Mode = CogwheelSlimDX.KeyButton.InputMode.Keyboard;
 			this.ConsoleStart.Name = "ConsoleStart";
 			this.ConsoleStart.Size = new System.Drawing.Size(223, 22);
 			this.ConsoleStart.TabIndex = 19;

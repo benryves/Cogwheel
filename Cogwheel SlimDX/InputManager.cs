@@ -9,6 +9,64 @@ using System.Xml.Serialization;
 
 namespace CogwheelSlimDX {
 
+	#region Types
+
+	/// <summary>
+	/// Defines the various input buttons for a single player.
+	/// </summary>
+	public enum InputButton {
+		/// <summary>No input.</summary>
+		None,
+		/// <summary>The "up" direction.</summary>
+		Up,
+		/// <summary>The "down" direction.</summary>
+		Down,
+		/// <summary>The "left" direction.</summary>
+		Left,
+		/// <summary>The "right" direction.</summary>
+		Right,
+		/// <summary>The first trigger button.</summary>
+		Trigger1,
+		/// <summary>The second trigger button.</summary>
+		Trigger2,
+		/// <summary>The third trigger button.</summary>
+		Trigger3,
+		/// <summary>The fourth trigger button.</summary>
+		Trigger4,
+		/// <summary>The Pause button.</summary>
+		Pause,
+		/// <summary>The Reset button.</summary>
+		Reset,
+		/// <summary>The Start button.</summary>
+		Start,
+		/// <summary>The 0 number button.</summary>
+		Number0,
+		/// <summary>The 1 number button.</summary>
+		Number1,
+		/// <summary>The 2 number button.</summary>
+		Number2,
+		/// <summary>The 3 number button.</summary>
+		Number3,
+		/// <summary>The 4 number button.</summary>
+		Number4,
+		/// <summary>The 5 number button.</summary>
+		Number5,
+		/// <summary>The 6 number button.</summary>
+		Number6,
+		/// <summary>The 7 number button.</summary>
+		Number7,
+		/// <summary>The 8 number button.</summary>
+		Number8,
+		/// <summary>The 9 number button.</summary>
+		Number9,
+		/// <summary>The Star (*) button.</summary>
+		Star,
+		/// <summary>The Hash (#) button.</summary>
+		Hash,		
+	}
+
+	#endregion
+
 	#region General Input Management
 
 	/// <summary>
@@ -16,88 +74,13 @@ namespace CogwheelSlimDX {
 	/// </summary>
 	public interface IInputSource {
 
-		/// <summary>Gets the state of the player 1 TL button (1).</summary>
-		bool Player1TL { get; }
-		/// <summary>Gets the state of the player 1 TR button (2).</summary>
-		bool Player1TR { get; }
-		/// <summary>Gets the state of the player 1 up button.</summary>
-		bool Player1Up { get; }
-		/// <summary>Gets the state of the player 1 down button.</summary>
-		bool Player1Down { get; }
-		/// <summary>Gets the state of the player 1 left button.</summary>
-		bool Player1Left { get; }
-		/// <summary>Gets the state of the player 1 right button.</summary>
-		bool Player1Right { get; }
-
-		/// <summary>Gets the state of the player 1 number pad 0 button.</summary>
-		bool Player1Num0 { get; }
-		/// <summary>Gets the state of the player 1 number pad 1 button.</summary>
-		bool Player1Num1 { get; }
-		/// <summary>Gets the state of the player 1 number pad 2 button.</summary>
-		bool Player1Num2 { get; }
-		/// <summary>Gets the state of the player 1 number pad 3 button.</summary>
-		bool Player1Num3 { get; }
-		/// <summary>Gets the state of the player 1 number pad 4 button.</summary>
-		bool Player1Num4 { get; }
-		/// <summary>Gets the state of the player 1 number pad 5 button.</summary>
-		bool Player1Num5 { get; }
-		/// <summary>Gets the state of the player 1 number pad 6 button.</summary>
-		bool Player1Num6 { get; }
-		/// <summary>Gets the state of the player 1 number pad 7 button.</summary>
-		bool Player1Num7 { get; }
-		/// <summary>Gets the state of the player 1 number pad 8 button.</summary>
-		bool Player1Num8 { get; }
-		/// <summary>Gets the state of the player 1 number pad 9 button.</summary>
-		bool Player1Num9 { get; }
-		/// <summary>Gets the state of the player 1 star button.</summary>
-		bool Player1Star { get; }
-		/// <summary>Gets the state of the player 1 hash button.</summary>
-		bool Player1Hash { get; }
-
-		/// <summary>Gets the state of the player 2 TL button (1).</summary>
-		bool Player2TL { get; }
-		/// <summary>Gets the state of the player 2 TL button (2).</summary>
-		bool Player2TR { get; }
-		/// <summary>Gets the state of the player 2 up button.</summary>
-		bool Player2Up { get; }
-		/// <summary>Gets the state of the player 2 down button.</summary>
-		bool Player2Down { get; }
-		/// <summary>Gets the state of the player 2 left button.</summary>
-		bool Player2Left { get; }
-		/// <summary>Gets the state of the player 2 right button.</summary>
-		bool Player2Right { get; }
-
-		/// <summary>Gets the state of the player 1 number pad 0 button.</summary>
-		bool Player2Num0 { get; }
-		/// <summary>Gets the state of the player 1 number pad 1 button.</summary>
-		bool Player2Num1 { get; }
-		/// <summary>Gets the state of the player 1 number pad 2 button.</summary>
-		bool Player2Num2 { get; }
-		/// <summary>Gets the state of the player 1 number pad 3 button.</summary>
-		bool Player2Num3 { get; }
-		/// <summary>Gets the state of the player 1 number pad 4 button.</summary>
-		bool Player2Num4 { get; }
-		/// <summary>Gets the state of the player 1 number pad 5 button.</summary>
-		bool Player2Num5 { get; }
-		/// <summary>Gets the state of the player 1 number pad 6 button.</summary>
-		bool Player2Num6 { get; }
-		/// <summary>Gets the state of the player 1 number pad 7 button.</summary>
-		bool Player2Num7 { get; }
-		/// <summary>Gets the state of the player 1 number pad 8 button.</summary>
-		bool Player2Num8 { get; }
-		/// <summary>Gets the state of the player 1 number pad 9 button.</summary>
-		bool Player2Num9 { get; }
-		/// <summary>Gets the state of the player 1 star button.</summary>
-		bool Player2Star { get; }
-		/// <summary>Gets the state of the player 1 hash button.</summary>
-		bool Player2Hash { get; }
-
-		/// <summary>Gets the state of the pause button.</summary>
-		bool Pause { get; }
-		/// <summary>Gets the state of the reset button.</summary>
-		bool Reset { get; }
-		/// <summary>Gets the state of the start button.</summary>
-		bool Start { get; }
+		/// <summary>
+		/// Gets the state of an individual button.
+		/// </summary>
+		/// <param name="controllerIndex">The index of the controller.</param>
+		/// <param name="button">The button to get the state of.</param>
+		/// <returns>True if the button is pressed; false otherwise.</returns>
+		bool GetButtonState(int controllerIndex, InputButton button);
 
 		/// <summary>Release all held keys.</summary>
 		void ReleaseAll();
@@ -110,6 +93,22 @@ namespace CogwheelSlimDX {
 
 		/// <summary>Saves settings to the project settings file.</summary>
 		void UpdateSettings();
+
+		/// <summary>
+		/// Sets a particular trigger for a particular input button.
+		/// </summary>
+		/// <param name="controllerIndex">The index of the controller to set the trigger for.</param>
+		/// <param name="button">The button on the controller you wish to set the trigger for.</param>
+		/// <param name="trigger">The trigger to set.</param>
+		void SetTrigger(int controllerIndex, InputButton button, object trigger);
+
+		/// <summary>
+		/// Gets a particular trigger for a particular input button.
+		/// </summary>
+		/// <param name="controllerIndex">The index of the controller to get the trigger for.</param>
+		/// <param name="button">The button on the controller you wish to get the trigger for.</param>
+		/// <returns>The corresponding trigger.</returns>
+		object GetTrigger(int controllerIndex, InputButton button);
 
 	}
 
@@ -130,118 +129,73 @@ namespace CogwheelSlimDX {
 			this.Sources = new List<IInputSource>();
 		}
 
+		public bool GetButtonState(int controllerIndex, InputButton button) {
+			foreach (var Source in Sources) if (Source.GetButtonState(controllerIndex, button)) return true;
+			return false;
+		}
+
 
 		/// <summary>
 		/// Updates the input state of an <see cref="Emulator"/> instance.
 		/// </summary>
 		/// <param name="emulator">The emulator to update.</param>
-		/// <remarks>This polls the input devices and sets the input state of the emulator for you.</remarks>
 		public void UpdateEmulatorState(Emulator emulator) {
-			
-			emulator.SegaPorts[0].TL.State = !this.Player1TL;
-			emulator.SegaPorts[0].TR.InputState = !this.Player1TR;
-			emulator.SegaPorts[0].Up.State = !this.Player1Up;
-			emulator.SegaPorts[0].Down.State = !this.Player1Down;
-			emulator.SegaPorts[0].Left.State = !this.Player1Left;
-			emulator.SegaPorts[0].Right.State = !this.Player1Right;
-			emulator.SegaPorts[1].TL.State = !this.Player2TL;
-			emulator.SegaPorts[1].TR.InputState = !this.Player2TR;
-			emulator.SegaPorts[1].Up.State = !this.Player2Up;
-			emulator.SegaPorts[1].Down.State = !this.Player2Down;
-			emulator.SegaPorts[1].Left.State = !this.Player2Left;
-			emulator.SegaPorts[1].Right.State = !this.Player2Right;
 
-			emulator.ColecoVisionPorts[0].Fire1 = this.Player1TL;
-			emulator.ColecoVisionPorts[0].Fire2 = this.Player1TR;
-			emulator.ColecoVisionPorts[0].Up = this.Player1Up;
-			emulator.ColecoVisionPorts[0].Down = this.Player1Down;
-			emulator.ColecoVisionPorts[0].Left = this.Player1Left;
-			emulator.ColecoVisionPorts[0].Right = this.Player1Right;
+			for (int Player = 0; Player< 2; ++Player) {
 
-			emulator.ColecoVisionPorts[0].Number0 = this.Player1Num0;
-			emulator.ColecoVisionPorts[0].Number1 = this.Player1Num1;
-			emulator.ColecoVisionPorts[0].Number2 = this.Player1Num2;
-			emulator.ColecoVisionPorts[0].Number3 = this.Player1Num3;
-			emulator.ColecoVisionPorts[0].Number4 = this.Player1Num4;
-			emulator.ColecoVisionPorts[0].Number5 = this.Player1Num5;
-			emulator.ColecoVisionPorts[0].Number6 = this.Player1Num6;
-			emulator.ColecoVisionPorts[0].Number7 = this.Player1Num7;
-			emulator.ColecoVisionPorts[0].Number8 = this.Player1Num8;
-			emulator.ColecoVisionPorts[0].Number9 = this.Player1Num9;
-			emulator.ColecoVisionPorts[0].Star = this.Player1Star;
-			emulator.ColecoVisionPorts[0].Hash = this.Player1Hash;
+				#region Common D-Pad and Triggers
 
-			emulator.ColecoVisionPorts[1].Fire1 = this.Player2TL;
-			emulator.ColecoVisionPorts[1].Fire2 = this.Player2TR;
-			emulator.ColecoVisionPorts[1].Up = this.Player2Up;
-			emulator.ColecoVisionPorts[1].Down = this.Player2Down;
-			emulator.ColecoVisionPorts[1].Left = this.Player2Left;
-			emulator.ColecoVisionPorts[1].Right = this.Player2Right;
+				// Get the state of common buttons:
+				var Trigger1 = this.GetButtonState(Player, InputButton.Trigger1);
+				var Trigger2 = this.GetButtonState(Player, InputButton.Trigger2);
+				var Up = this.GetButtonState(Player, InputButton.Up);
+				var Down = this.GetButtonState(Player, InputButton.Down);
+				var Left = this.GetButtonState(Player, InputButton.Left);
+				var Right = this.GetButtonState(Player, InputButton.Right);
 
-			emulator.ColecoVisionPorts[1].Number0 = this.Player2Num0;
-			emulator.ColecoVisionPorts[1].Number1 = this.Player2Num1;
-			emulator.ColecoVisionPorts[1].Number2 = this.Player2Num2;
-			emulator.ColecoVisionPorts[1].Number3 = this.Player2Num3;
-			emulator.ColecoVisionPorts[1].Number4 = this.Player2Num4;
-			emulator.ColecoVisionPorts[1].Number5 = this.Player2Num5;
-			emulator.ColecoVisionPorts[1].Number6 = this.Player2Num6;
-			emulator.ColecoVisionPorts[1].Number7 = this.Player2Num7;
-			emulator.ColecoVisionPorts[1].Number8 = this.Player2Num8;
-			emulator.ColecoVisionPorts[1].Number9 = this.Player2Num9;
-			emulator.ColecoVisionPorts[1].Star = this.Player2Star;
-			emulator.ColecoVisionPorts[1].Hash = this.Player2Hash;
+				// Assign to the state of the Sega controller ports:
+				emulator.SegaPorts[Player].TL.State = !Trigger1;
+				emulator.SegaPorts[Player].TR.InputState = !Trigger2;
+				emulator.SegaPorts[Player].Up.State = !Up;
+				emulator.SegaPorts[Player].Down.State = !Down;
+				emulator.SegaPorts[Player].Left.State = !Left;
+				emulator.SegaPorts[Player].Right.State = !Right;
 
-			if (emulator.HasPauseButton) emulator.PauseButton = this.Pause;
-			if (emulator.HasResetButton) emulator.ResetButton = this.Reset;
-			if (emulator.HasStartButton) emulator.StartButton = this.Start;
+				// Assign to the state of the ColecoVision controller ports:
+				emulator.ColecoVisionPorts[Player].Fire1 = Trigger1;
+				emulator.ColecoVisionPorts[Player].Fire2 = Trigger2;
+				emulator.ColecoVisionPorts[Player].Up = Up;
+				emulator.ColecoVisionPorts[Player].Down = Down;
+				emulator.ColecoVisionPorts[Player].Left = Left;
+				emulator.ColecoVisionPorts[Player].Right = Right;
+
+				#endregion
+
+				#region ColecoVision Number Pad
+
+				emulator.ColecoVisionPorts[Player].Number0 = this.GetButtonState(Player, InputButton.Number0);
+				emulator.ColecoVisionPorts[Player].Number1 = this.GetButtonState(Player, InputButton.Number1);
+				emulator.ColecoVisionPorts[Player].Number2 = this.GetButtonState(Player, InputButton.Number2);
+				emulator.ColecoVisionPorts[Player].Number3 = this.GetButtonState(Player, InputButton.Number3);
+				emulator.ColecoVisionPorts[Player].Number4 = this.GetButtonState(Player, InputButton.Number4);
+				emulator.ColecoVisionPorts[Player].Number5 = this.GetButtonState(Player, InputButton.Number5);
+				emulator.ColecoVisionPorts[Player].Number6 = this.GetButtonState(Player, InputButton.Number6);
+				emulator.ColecoVisionPorts[Player].Number7 = this.GetButtonState(Player, InputButton.Number7);
+				emulator.ColecoVisionPorts[Player].Number8 = this.GetButtonState(Player, InputButton.Number8);
+				emulator.ColecoVisionPorts[Player].Number9 = this.GetButtonState(Player, InputButton.Number9);
+				emulator.ColecoVisionPorts[Player].Star = this.GetButtonState(Player, InputButton.Star);
+				emulator.ColecoVisionPorts[Player].Hash = this.GetButtonState(Player, InputButton.Hash);
+
+				#endregion
+
+			}
+
+			// Special non-player-specific buttons.
+			if (emulator.HasPauseButton) emulator.PauseButton = this.GetButtonState(0, InputButton.Pause);
+			if (emulator.HasResetButton) emulator.ResetButton = this.GetButtonState(0, InputButton.Reset);
+			if (emulator.HasStartButton) emulator.StartButton = this.GetButtonState(0, InputButton.Start);
 
 		}
-
-		#region IInputSource Members
-
-		public bool Player1TL { get { foreach (var Source in this.Sources) { if (Source.Player1TL) return true; } return false; } }
-		public bool Player1TR { get { foreach (var Source in this.Sources) { if (Source.Player1TR) return true; } return false; } }
-		public bool Player1Up { get { foreach (var Source in this.Sources) { if (Source.Player1Up) return true; } return false; } }
-		public bool Player1Down { get { foreach (var Source in this.Sources) { if (Source.Player1Down) return true; } return false; } }
-		public bool Player1Left { get { foreach (var Source in this.Sources) { if (Source.Player1Left) return true; } return false; } }
-		public bool Player1Right { get { foreach (var Source in this.Sources) { if (Source.Player1Right) return true; } return false; } }
-
-		public bool Player1Num0 { get { foreach (var Source in this.Sources) { if (Source.Player1Num0) return true; } return false; } }
-		public bool Player1Num1 { get { foreach (var Source in this.Sources) { if (Source.Player1Num1) return true; } return false; } }
-		public bool Player1Num2 { get { foreach (var Source in this.Sources) { if (Source.Player1Num2) return true; } return false; } }
-		public bool Player1Num3 { get { foreach (var Source in this.Sources) { if (Source.Player1Num3) return true; } return false; } }
-		public bool Player1Num4 { get { foreach (var Source in this.Sources) { if (Source.Player1Num4) return true; } return false; } }
-		public bool Player1Num5 { get { foreach (var Source in this.Sources) { if (Source.Player1Num5) return true; } return false; } }
-		public bool Player1Num6 { get { foreach (var Source in this.Sources) { if (Source.Player1Num6) return true; } return false; } }
-		public bool Player1Num7 { get { foreach (var Source in this.Sources) { if (Source.Player1Num7) return true; } return false; } }
-		public bool Player1Num8 { get { foreach (var Source in this.Sources) { if (Source.Player1Num8) return true; } return false; } }
-		public bool Player1Num9 { get { foreach (var Source in this.Sources) { if (Source.Player1Num9) return true; } return false; } }
-		public bool Player1Star { get { foreach (var Source in this.Sources) { if (Source.Player1Star) return true; } return false; } }
-		public bool Player1Hash { get { foreach (var Source in this.Sources) { if (Source.Player1Hash) return true; } return false; } }
-
-		public bool Player2TL { get { foreach (var Source in this.Sources) { if (Source.Player2TL) return true; } return false; } }
-		public bool Player2TR { get { foreach (var Source in this.Sources) { if (Source.Player2TR) return true; } return false; } }
-		public bool Player2Up { get { foreach (var Source in this.Sources) { if (Source.Player2Up) return true; } return false; } }
-		public bool Player2Down { get { foreach (var Source in this.Sources) { if (Source.Player2Down) return true; } return false; } }
-		public bool Player2Left { get { foreach (var Source in this.Sources) { if (Source.Player2Left) return true; } return false; } }
-		public bool Player2Right { get { foreach (var Source in this.Sources) { if (Source.Player2Right) return true; } return false; } }
-
-		public bool Player2Num0 { get { foreach (var Source in this.Sources) { if (Source.Player2Num0) return true; } return false; } }
-		public bool Player2Num1 { get { foreach (var Source in this.Sources) { if (Source.Player2Num1) return true; } return false; } }
-		public bool Player2Num2 { get { foreach (var Source in this.Sources) { if (Source.Player2Num2) return true; } return false; } }
-		public bool Player2Num3 { get { foreach (var Source in this.Sources) { if (Source.Player2Num3) return true; } return false; } }
-		public bool Player2Num4 { get { foreach (var Source in this.Sources) { if (Source.Player2Num4) return true; } return false; } }
-		public bool Player2Num5 { get { foreach (var Source in this.Sources) { if (Source.Player2Num5) return true; } return false; } }
-		public bool Player2Num6 { get { foreach (var Source in this.Sources) { if (Source.Player2Num6) return true; } return false; } }
-		public bool Player2Num7 { get { foreach (var Source in this.Sources) { if (Source.Player2Num7) return true; } return false; } }
-		public bool Player2Num8 { get { foreach (var Source in this.Sources) { if (Source.Player2Num8) return true; } return false; } }
-		public bool Player2Num9 { get { foreach (var Source in this.Sources) { if (Source.Player2Num9) return true; } return false; } }
-		public bool Player2Star { get { foreach (var Source in this.Sources) { if (Source.Player2Star) return true; } return false; } }
-		public bool Player2Hash { get { foreach (var Source in this.Sources) { if (Source.Player2Hash) return true; } return false; } }
-
-		public bool Pause { get { foreach (var Source in this.Sources) { if (Source.Pause) return true; } return false; } }
-		public bool Reset { get { foreach (var Source in this.Sources) { if (Source.Reset) return true; } return false; } }
-		public bool Start { get { foreach (var Source in this.Sources) { if (Source.Start) return true; } return false; } }
 
 		public void Poll() { foreach (var Source in this.Sources) Source.Poll(); }
 
@@ -250,11 +204,12 @@ namespace CogwheelSlimDX {
 
 		public void ReleaseAll() { foreach (var Source in this.Sources) Source.ReleaseAll(); }
 
+		public void SetTrigger(int controllerIndex, InputButton button, object trigger) { }
+
+		public object GetTrigger(int controllerIndex, InputButton button) { return null; }
+
 		#endregion
 	}
-
-
-	#endregion
 
 	#region Keyboard
 
@@ -263,715 +218,181 @@ namespace CogwheelSlimDX {
 	/// </summary>
 	public class KeyboardInputSource : IInputSource {
 
-		#region IInputSource Members
+		private Dictionary<Keys, KeyValuePair<int, InputButton>[]> KeyMapping;
+		private Dictionary<InputButton, bool>[] CurrentKeyStates;
 
-		public bool Player1TL { get; set; }
-		public bool Player1TR { get; set; }
-		public bool Player1Up { get; set; }
-		public bool Player1Down { get; set; }
-		public bool Player1Left { get; set; }
-		public bool Player1Right { get; set; }
+		#region Input Source Methods
 
-		public bool Player1Num0 { get; set; }
-		public bool Player1Num1 { get; set; }
-		public bool Player1Num2 { get; set; }
-		public bool Player1Num3 { get; set; }
-		public bool Player1Num4 { get; set; }
-		public bool Player1Num5 { get; set; }
-		public bool Player1Num6 { get; set; }
-		public bool Player1Num7 { get; set; }
-		public bool Player1Num8 { get; set; }
-		public bool Player1Num9 { get; set; }
-		public bool Player1Star { get; set; }
-		public bool Player1Hash { get; set; }
-
-		public bool Player2TL { get; set; }
-		public bool Player2TR { get; set; }
-		public bool Player2Up { get; set; }
-		public bool Player2Down { get; set; }
-		public bool Player2Left { get; set; }
-		public bool Player2Right { get; set; }
-
-		public bool Player2Num0 { get; set; }
-		public bool Player2Num1 { get; set; }
-		public bool Player2Num2 { get; set; }
-		public bool Player2Num3 { get; set; }
-		public bool Player2Num4 { get; set; }
-		public bool Player2Num5 { get; set; }
-		public bool Player2Num6 { get; set; }
-		public bool Player2Num7 { get; set; }
-		public bool Player2Num8 { get; set; }
-		public bool Player2Num9 { get; set; }
-		public bool Player2Star { get; set; }
-		public bool Player2Hash { get; set; }
-
-		public bool Pause { get; set; }
-		public bool Reset { get; set; }
-		public bool Start { get; set; }
-
+		/// <summary>
+		/// Do nothing (keyboards aren't polled).
+		/// </summary>
 		public void Poll() { }
 
-		#endregion
-
-		/// <summary>Defines the <see cref="Keys"/> to map to player 1 TL (1).</summary>
-		public Keys KeyPlayer1TL { get; set; }
-		/// <summary>Defines the <see cref="Keys"/> to map to player 1 TR (2).</summary>
-		public Keys KeyPlayer1TR { get; set; }
-		/// <summary>Defines the <see cref="Keys"/> to map to player 1 up.</summary>
-		public Keys KeyPlayer1Up { get; set; }
-		/// <summary>Defines the <see cref="Keys"/> to map to player 1 down.</summary>
-		public Keys KeyPlayer1Down { get; set; }
-		/// <summary>Defines the <see cref="Keys"/> to map to player 1 left.</summary>
-		public Keys KeyPlayer1Left { get; set; }
-		/// <summary>Defines the <see cref="Keys"/> to map to player 1 right.</summary>
-		public Keys KeyPlayer1Right { get; set; }
-
-		public Keys KeyPlayer1Num0 { get; set; }
-		public Keys KeyPlayer1Num1 { get; set; }
-		public Keys KeyPlayer1Num2 { get; set; }
-		public Keys KeyPlayer1Num3 { get; set; }
-		public Keys KeyPlayer1Num4 { get; set; }
-		public Keys KeyPlayer1Num5 { get; set; }
-		public Keys KeyPlayer1Num6 { get; set; }
-		public Keys KeyPlayer1Num7 { get; set; }
-		public Keys KeyPlayer1Num8 { get; set; }
-		public Keys KeyPlayer1Num9 { get; set; }
-		public Keys KeyPlayer1Star { get; set; }
-		public Keys KeyPlayer1Hash { get; set; }
-
-		/// <summary>Defines the <see cref="Keys"/> to map to player 2 TL (1).</summary>
-		public Keys KeyPlayer2TL { get; set; }
-		/// <summary>Defines the <see cref="Keys"/> to map to player 2 TR (2).</summary>
-		public Keys KeyPlayer2TR { get; set; }
-		/// <summary>Defines the <see cref="Keys"/> to map to player 2 up.</summary>
-		public Keys KeyPlayer2Up { get; set; }
-		/// <summary>Defines the <see cref="Keys"/> to map to player 2 down.</summary>
-		public Keys KeyPlayer2Down { get; set; }
-		/// <summary>Defines the <see cref="Keys"/> to map to player 2 left.</summary>
-		public Keys KeyPlayer2Left { get; set; }
-		/// <summary>Defines the <see cref="Keys"/> to map to player 2 right.</summary>
-		public Keys KeyPlayer2Right { get; set; }
-
-		public Keys KeyPlayer2Num0 { get; set; }
-		public Keys KeyPlayer2Num1 { get; set; }
-		public Keys KeyPlayer2Num2 { get; set; }
-		public Keys KeyPlayer2Num3 { get; set; }
-		public Keys KeyPlayer2Num4 { get; set; }
-		public Keys KeyPlayer2Num5 { get; set; }
-		public Keys KeyPlayer2Num6 { get; set; }
-		public Keys KeyPlayer2Num7 { get; set; }
-		public Keys KeyPlayer2Num8 { get; set; }
-		public Keys KeyPlayer2Num9 { get; set; }
-		public Keys KeyPlayer2Star { get; set; }
-		public Keys KeyPlayer2Hash { get; set; }
-
-		/// <summary>Defines the <see cref="Keys"/> to map to pause.</summary>
-		public Keys KeyPause { get; set; }
-		/// <summary>Defines the <see cref="Keys"/> to map to reset.</summary>
-		public Keys KeyReset { get; set; }
-		/// <summary>Defines the <see cref="Keys"/> to map to start.</summary>
-		public Keys KeyStart { get; set; }
-
 		/// <summary>
-		/// Check whether a particular key is mapped as an input key.
-		/// </summary>
-		/// <param name="key">The key to check for.</param>
-		/// <returns>True if the key is mapped as an input key, false otherwise.</returns>
-		public bool IsInputKey(Keys key) {
-			return key == KeyPlayer1TL
-				|| key == KeyPlayer1TR
-				|| key == KeyPlayer1Up
-				|| key == KeyPlayer1Down
-				|| key == KeyPlayer1Left
-				|| key == KeyPlayer1Right
-				|| key == KeyPlayer2TL
-				|| key == KeyPlayer2TR
-				|| key == KeyPlayer2Up
-				|| key == KeyPlayer2Down
-				|| key == KeyPlayer2Left
-				|| key == KeyPlayer2Right
-				|| key == KeyPause
-				|| key == KeyReset
-				|| key == KeyStart
-				|| key == KeyPlayer1Num0
-				|| key == KeyPlayer1Num1
-				|| key == KeyPlayer1Num2
-				|| key == KeyPlayer1Num3
-				|| key == KeyPlayer1Num4
-				|| key == KeyPlayer1Num5
-				|| key == KeyPlayer1Num6
-				|| key == KeyPlayer1Num7
-				|| key == KeyPlayer1Num8
-				|| key == KeyPlayer1Num9
-				|| key == KeyPlayer1Star
-				|| key == KeyPlayer1Hash
-				|| key == KeyPlayer2Num0
-				|| key == KeyPlayer2Num1
-				|| key == KeyPlayer2Num2
-				|| key == KeyPlayer2Num3
-				|| key == KeyPlayer2Num4
-				|| key == KeyPlayer2Num5
-				|| key == KeyPlayer2Num6
-				|| key == KeyPlayer2Num7
-				|| key == KeyPlayer2Num8
-				|| key == KeyPlayer2Num9
-				|| key == KeyPlayer2Star
-				|| key == KeyPlayer2Hash;
-			;
-		}
-
-		/// <summary>
-		/// Process a key up or key down event.
-		/// </summary>
-		/// <param name="key">The <see cref="KeyEventArgs"/> referencing the key that was pressed.</param>
-		/// <param name="pressed">True if the key was pressed, false if it was released.</param>
-		public void KeyChange(KeyEventArgs key, bool pressed) {
-			if (key.KeyCode == this.KeyPlayer1TL) this.Player1TL = pressed;
-			if (key.KeyCode == this.KeyPlayer1TR) this.Player1TR = pressed;
-			if (key.KeyCode == this.KeyPlayer1Up) this.Player1Up = pressed;
-			if (key.KeyCode == this.KeyPlayer1Down) this.Player1Down = pressed;
-			if (key.KeyCode == this.KeyPlayer1Left) this.Player1Left = pressed;
-			if (key.KeyCode == this.KeyPlayer1Right) this.Player1Right = pressed;
-
-			if (key.KeyCode == this.KeyPlayer1Num0) this.Player1Num0 = pressed;
-			if (key.KeyCode == this.KeyPlayer1Num1) this.Player1Num1 = pressed;
-			if (key.KeyCode == this.KeyPlayer1Num2) this.Player1Num2 = pressed;
-			if (key.KeyCode == this.KeyPlayer1Num3) this.Player1Num3 = pressed;
-			if (key.KeyCode == this.KeyPlayer1Num4) this.Player1Num4 = pressed;
-			if (key.KeyCode == this.KeyPlayer1Num5) this.Player1Num5 = pressed;
-			if (key.KeyCode == this.KeyPlayer1Num6) this.Player1Num6 = pressed;
-			if (key.KeyCode == this.KeyPlayer1Num7) this.Player1Num7 = pressed;
-			if (key.KeyCode == this.KeyPlayer1Num8) this.Player1Num8 = pressed;
-			if (key.KeyCode == this.KeyPlayer1Num9) this.Player1Num9 = pressed;
-			if (key.KeyCode == this.KeyPlayer1Star) this.Player1Star = pressed;
-			if (key.KeyCode == this.KeyPlayer1Hash) this.Player1Hash = pressed;
-
-			if (key.KeyCode == this.KeyPlayer2TL) this.Player2TL = pressed;
-			if (key.KeyCode == this.KeyPlayer2TR) this.Player2TR = pressed;
-			if (key.KeyCode == this.KeyPlayer2Up) this.Player2Up = pressed;
-			if (key.KeyCode == this.KeyPlayer2Down) this.Player2Down = pressed;
-			if (key.KeyCode == this.KeyPlayer2Left) this.Player2Left = pressed;
-			if (key.KeyCode == this.KeyPlayer2Right) this.Player2Right = pressed;
-
-			if (key.KeyCode == this.KeyPlayer2Num0) this.Player2Num0 = pressed;
-			if (key.KeyCode == this.KeyPlayer2Num1) this.Player2Num1 = pressed;
-			if (key.KeyCode == this.KeyPlayer2Num2) this.Player2Num2 = pressed;
-			if (key.KeyCode == this.KeyPlayer2Num3) this.Player2Num3 = pressed;
-			if (key.KeyCode == this.KeyPlayer2Num4) this.Player2Num4 = pressed;
-			if (key.KeyCode == this.KeyPlayer2Num5) this.Player2Num5 = pressed;
-			if (key.KeyCode == this.KeyPlayer2Num6) this.Player2Num6 = pressed;
-			if (key.KeyCode == this.KeyPlayer2Num7) this.Player2Num7 = pressed;
-			if (key.KeyCode == this.KeyPlayer2Num8) this.Player2Num8 = pressed;
-			if (key.KeyCode == this.KeyPlayer2Num9) this.Player2Num9 = pressed;
-			if (key.KeyCode == this.KeyPlayer2Star) this.Player2Star = pressed;
-			if (key.KeyCode == this.KeyPlayer2Hash) this.Player2Hash = pressed;
-
-			if (key.KeyCode == this.KeyPause) this.Pause = pressed;
-			if (key.KeyCode == this.KeyReset) this.Reset = pressed;
-			if (key.KeyCode == this.KeyStart) this.Start = pressed;
-
-			key.Handled = IsInputKey(key.KeyCode);
-
-		}
-
-		/// <summary>
-		/// Updates the internal key map from the project settings.
+		/// Loads all settings from the settings file.
 		/// </summary>
 		public void ReloadSettings() {
-			this.KeyPlayer1TL = Properties.Settings.Default.KeyP1TL;
-			this.KeyPlayer1TR = Properties.Settings.Default.KeyP1TR;
-			this.KeyPlayer1Up = Properties.Settings.Default.KeyP1Up;
-			this.KeyPlayer1Down = Properties.Settings.Default.KeyP1Down;
-			this.KeyPlayer1Left = Properties.Settings.Default.KeyP1Left;
-			this.KeyPlayer1Right = Properties.Settings.Default.KeyP1Right;
-			this.KeyPlayer1Num0 = Properties.Settings.Default.KeyP1Num0;
-			this.KeyPlayer1Num1 = Properties.Settings.Default.KeyP1Num1;
-			this.KeyPlayer1Num2 = Properties.Settings.Default.KeyP1Num2;
-			this.KeyPlayer1Num3 = Properties.Settings.Default.KeyP1Num3;
-			this.KeyPlayer1Num4 = Properties.Settings.Default.KeyP1Num4;
-			this.KeyPlayer1Num5 = Properties.Settings.Default.KeyP1Num5;
-			this.KeyPlayer1Num6 = Properties.Settings.Default.KeyP1Num6;
-			this.KeyPlayer1Num7 = Properties.Settings.Default.KeyP1Num7;
-			this.KeyPlayer1Num8 = Properties.Settings.Default.KeyP1Num8;
-			this.KeyPlayer1Num9 = Properties.Settings.Default.KeyP1Num9;
-			this.KeyPlayer1Star = Properties.Settings.Default.KeyP1Star;
-			this.KeyPlayer1Hash = Properties.Settings.Default.KeyP1Hash;
-			this.KeyPlayer2TL = Properties.Settings.Default.KeyP2TL;
-			this.KeyPlayer2TR = Properties.Settings.Default.KeyP2TR;
-			this.KeyPlayer2Up = Properties.Settings.Default.KeyP2Up;
-			this.KeyPlayer2Down = Properties.Settings.Default.KeyP2Down;
-			this.KeyPlayer2Left = Properties.Settings.Default.KeyP2Left;
-			this.KeyPlayer2Right = Properties.Settings.Default.KeyP2Right;
-			this.KeyPlayer2Num0 = Properties.Settings.Default.KeyP2Num0;
-			this.KeyPlayer2Num1 = Properties.Settings.Default.KeyP2Num1;
-			this.KeyPlayer2Num2 = Properties.Settings.Default.KeyP2Num2;
-			this.KeyPlayer2Num3 = Properties.Settings.Default.KeyP2Num3;
-			this.KeyPlayer2Num4 = Properties.Settings.Default.KeyP2Num4;
-			this.KeyPlayer2Num5 = Properties.Settings.Default.KeyP2Num5;
-			this.KeyPlayer2Num6 = Properties.Settings.Default.KeyP2Num6;
-			this.KeyPlayer2Num7 = Properties.Settings.Default.KeyP2Num7;
-			this.KeyPlayer2Num8 = Properties.Settings.Default.KeyP2Num8;
-			this.KeyPlayer2Num9 = Properties.Settings.Default.KeyP2Num9;
-			this.KeyPlayer2Star = Properties.Settings.Default.KeyP2Star;
-			this.KeyPlayer2Hash = Properties.Settings.Default.KeyP2Hash;
-			this.KeyPause = Properties.Settings.Default.KeyPause;
-			this.KeyReset = Properties.Settings.Default.KeyReset;
-			this.KeyStart = Properties.Settings.Default.KeyStart;
+			this.KeyMapping.Clear();
+
+			// Check if the default mapping exists. If not, dump in settings from the project resources.
+			if (!File.Exists(this.SettingsPath)) {
+				try {
+					File.WriteAllText(this.SettingsPath, Properties.Resources.Config_DefaultKeyMapping);
+				} catch { }
+			}
+
+			if (File.Exists(this.SettingsPath)) {
+				foreach (var ConfigLine in File.ReadAllLines(this.SettingsPath)) {
+
+					// Skip comments.
+					if (ConfigLine.TrimStart().StartsWith(";")) continue; 
+
+					// Split into two halves -- Key=>Mapping
+					var KeyComponents = ConfigLine.Split(new[] { "=>" }, StringSplitOptions.RemoveEmptyEntries);
+
+					// Check that it's a valid pair, otherwise skip.
+					if (KeyComponents.Length != 2) continue;
+
+					// Quick-and-dirty conversion.
+					try {
+						Keys MappedKey = (Keys)Enum.Parse(typeof(Keys), KeyComponents[0]);
+						var KeyTargets = Array.ConvertAll(KeyComponents[1].Split(';'), C => {
+							var SubComponents = C.Split('.');
+							return new KeyValuePair<int, InputButton>(int.Parse(SubComponents[0]), (InputButton)Enum.Parse(typeof(InputButton), SubComponents[1]));
+						});
+						if (KeyTargets != null && KeyTargets.Length != 0) {
+							if (this.KeyMapping.ContainsKey(MappedKey)) {
+								this.KeyMapping.Remove(MappedKey);
+							}
+							this.KeyMapping.Add(MappedKey, KeyTargets);
+						}
+					} catch { }
+						
+				}
+			}
 		}
 
+		/// <summary>
+		/// Saves all settings to the settings file.
+		/// </summary>
 		public void UpdateSettings() {
-			Properties.Settings.Default.KeyP1TL = this.KeyPlayer1TL;
-			Properties.Settings.Default.KeyP1TR = this.KeyPlayer1TR;
-			Properties.Settings.Default.KeyP1Up= this.KeyPlayer1Up;
-			Properties.Settings.Default.KeyP1Down=this.KeyPlayer1Down;
-			Properties.Settings.Default.KeyP1Left = this.KeyPlayer1Left;
-			Properties.Settings.Default.KeyP1Right= this.KeyPlayer1Right;
-			Properties.Settings.Default.KeyP2TL = this.KeyPlayer2TL;
-			Properties.Settings.Default.KeyP2TR = this.KeyPlayer2TR;
-			Properties.Settings.Default.KeyP2Up = this.KeyPlayer2Up;
-			Properties.Settings.Default.KeyP2Down = this.KeyPlayer2Down;
-			Properties.Settings.Default.KeyP2Left = this.KeyPlayer2Left;
-			Properties.Settings.Default.KeyP2Right = this.KeyPlayer2Right;
-			Properties.Settings.Default.KeyPause = this.KeyPause;
-			Properties.Settings.Default.KeyReset = this.KeyReset;
-			Properties.Settings.Default.KeyStart=this.KeyStart;
+			var OutputLines = new List<string>();
+			foreach (var Mapping in this.KeyMapping) {
+				OutputLines.Add(
+					string.Format(
+						"{0}=>{1}", 
+						Mapping.Key,
+						string.Join(";", Array.ConvertAll(Mapping.Value, C=>string.Format("{0}.{1}", C.Key,C.Value))))
+				);
+			}
+			File.WriteAllLines(this.SettingsPath, OutputLines.ToArray());
+		}
+
+		public bool GetButtonState(int controllerIndex, InputButton button) {
+			if (controllerIndex < 0 || controllerIndex > 1) return false;
+			bool Result = false;
+			return this.CurrentKeyStates[controllerIndex].TryGetValue(button, out Result) ? Result : false;
 		}
 
 		public void ReleaseAll() {
-			this.Player1TL = false;
-			this.Player1TR = false;
-			this.Player1Up = false;
-			this.Player1Down = false;
-			this.Player1Left = false;
-			this.Player1Right = false;
-
-			this.Player1Num0 = false;
-			this.Player1Num1 = false;
-			this.Player1Num2 = false;
-			this.Player1Num3 = false;
-			this.Player1Num4 = false;
-			this.Player1Num5 = false;
-			this.Player1Num6 = false;
-			this.Player1Num7 = false;
-			this.Player1Num8 = false;
-			this.Player1Num9 = false;
-			this.Player1Star = false;
-			this.Player1Hash = false;
-
-			this.Player2TL = false;
-			this.Player2TR = false;
-			this.Player2Up = false;
-			this.Player2Down = false;
-			this.Player2Left = false;
-			this.Player2Right = false;
-
-			this.Player2Num0 = false;
-			this.Player2Num1 = false;
-			this.Player2Num2 = false;
-			this.Player2Num3 = false;
-			this.Player2Num4 = false;
-			this.Player2Num5 = false;
-			this.Player2Num6 = false;
-			this.Player2Num7 = false;
-			this.Player2Num8 = false;
-			this.Player2Num9 = false;
-			this.Player2Star = false;
-			this.Player2Hash = false;
-
-			this.Pause = false;
-			this.Reset = false;
-			this.Start = false;
+			this.CurrentKeyStates = new Dictionary<InputButton, bool>[2];
+			for (int Player = 0; Player < 2; ++Player) {
+				this.CurrentKeyStates[Player] = new Dictionary<InputButton, bool>();
+				foreach (InputButton Button in Enum.GetValues(typeof(InputButton))) {
+					this.CurrentKeyStates[Player].Add(Button, false);
+				}
+			}
 		}
+
+		public void SetTrigger(int controllerIndex, InputButton button, object trigger) {
+			if (trigger is Keys) {
+				Keys Trigger = (Keys)trigger;
+				
+				// Remove any existing matching trigger.
+				var NewMapping = new Dictionary<Keys, KeyValuePair<int, InputButton>[]>();
+				foreach (var Mapping in this.KeyMapping) {
+					var CleanedMapping = new List<KeyValuePair<int, InputButton>>();
+					foreach (var ExistingMapping in Mapping.Value) {
+						if (ExistingMapping.Key != controllerIndex || ExistingMapping.Value != button) {
+							CleanedMapping.Add(ExistingMapping);
+						}
+					}
+					if (CleanedMapping.Count > 0) NewMapping.Add(Mapping.Key, CleanedMapping.ToArray());					
+				}
+				this.KeyMapping = NewMapping;
+
+
+				// If it's a key of any worth, add it.
+				if (Trigger != Keys.None) {
+					var AddedTrigger = new List<KeyValuePair<int, InputButton>>();
+					if (this.KeyMapping.ContainsKey(Trigger)) {
+						AddedTrigger.AddRange(this.KeyMapping[Trigger]);
+					} else {
+						this.KeyMapping.Add(Trigger, null);
+					}
+					AddedTrigger.Add(new KeyValuePair<int, InputButton>(controllerIndex, button));
+					this.KeyMapping[Trigger] = AddedTrigger.ToArray();
+
+				}
+			}
+		}
+
+		public object GetTrigger(int controllerIndex, InputButton button) {
+			foreach (var MappedKey in this.KeyMapping) {
+				foreach (var TargetButtons in MappedKey.Value) {
+					if (TargetButtons.Key == controllerIndex && TargetButtons.Value == button) return MappedKey.Key;
+				}
+			}
+			return Keys.None;
+		}
+
+		#endregion
+
+		#region Public Methods
+
+		/// <summary>
+		/// Checks whether a particular keyboard key is mapped to a button.
+		/// </summary>
+		/// <param name="key">The key to check.</param>
+		/// <returns>True if the key is a valid input key; false otherwise.</returns>
+		public bool IsInputKey(Keys key) {
+			return this.KeyMapping.ContainsKey(key);
+		}
+
+		public void KeyChange(KeyEventArgs key, bool state) {
+			KeyValuePair<int, InputButton>[] MappedButtons;
+			if (this.KeyMapping.TryGetValue(key.KeyCode, out MappedButtons)) {
+				foreach (var MappedButton in MappedButtons) {
+					this.CurrentKeyStates[MappedButton.Key][MappedButton.Value] = state;
+				}
+			}
+		}
+
+		#endregion
+
+		#region Private Methods
+
+		/// <summary>
+		/// Gets the full path to the settings file.
+		/// </summary>
+		private string SettingsPath {
+			get {
+				string DirectoryPath = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Application.CompanyName), "Cogwheel");
+				if (!Directory.Exists(DirectoryPath)) Directory.CreateDirectory(DirectoryPath);
+				return Path.Combine(DirectoryPath, "Keyboard.config");
+			}
+		}
+
+		#endregion
+
+		public KeyboardInputSource() {
+			this.KeyMapping = new Dictionary<Keys, KeyValuePair<int, InputButton>[]>(32);
+			this.ReleaseAll();
+			
+		}
+
 	}
 	
 	#endregion
-
-	#region Joystick
-
-	/// <summary>
-	/// Retrieves input from a joystick.
-	/// </summary>
-	public class JoystickInputSource : IInputSource {
-
-		/// <summary>
-		/// Defines a trigger for a joystick event.
-		/// </summary>
-		public enum InputTrigger {
-			/// <summary>No trigger is selected.</summary>
-			None,
-			/// <summary>Button 1.</summary>
-			Button1,
-			/// <summary>Button 2.</summary>
-			Button2,
-			/// <summary>Button 3.</summary>
-			Button3,
-			/// <summary>Button 4.</summary>
-			Button4,
-			/// <summary>Button 5.</summary>
-			Button5,
-			/// <summary>Button 6.</summary>
-			Button6,
-			/// <summary>Button 7.</summary>
-			Button7,
-			/// <summary>Button 8.</summary>
-			Button8,
-			/// <summary>Button 9.</summary>
-			Button9,
-			/// <summary>Button 10.</summary>
-			Button10,
-			/// <summary>Button 11.</summary>
-			Button11,
-			/// <summary>Button 12.</summary>
-			Button12,
-			/// <summary>Button 13.</summary>
-			Button13,
-			/// <summary>Button 14.</summary>
-			Button14,
-			/// <summary>Button 15.</summary>
-			Button15,
-			/// <summary>Button 16.</summary>
-			Button16,
-			/// <summary>Button 17.</summary>
-			Button17,
-			/// <summary>Button 18.</summary>
-			Button18,
-			/// <summary>Button 19.</summary>
-			Button19,
-			/// <summary>Button 20.</summary>
-			Button20,
-			/// <summary>Button 21.</summary>
-			Button21,
-			/// <summary>Button 22.</summary>
-			Button22,
-			/// <summary>Button 23.</summary>
-			Button23,
-			/// <summary>Button 24.</summary>
-			Button24,
-			/// <summary>Button 25.</summary>
-			Button25,
-			/// <summary>Button 26.</summary>
-			Button26,
-			/// <summary>Button 27.</summary>
-			Button27,
-			/// <summary>Button 28.</summary>
-			Button28,
-			/// <summary>Button 29.</summary>
-			Button29,
-			/// <summary>Button 30.</summary>
-			Button30,
-			/// <summary>Button 31.</summary>
-			Button31,
-			/// <summary>Button 32.</summary>
-			Button32,
-			/// <summary>The value of the X axis is decreased past the threshold.</summary>
-			XAxisDecrease,
-			/// <summary>The value of the X axis is increased past the threshold.</summary>
-			XAxisIncrease,
-			/// <summary>The value of the Y axis is decreased past the threshold.</summary>
-			YAxisDecrease,
-			/// <summary>The value of the Y axis is increased past the threshold.</summary>
-			YAxisIncrease,
-			/// <summary>The value of the Z axis is decreased past the threshold.</summary>
-			ZAxisDecrease,
-			/// <summary>The value of the Z axis is increased past the threshold.</summary>
-			ZAxisIncrease,
-			/// <summary>The value of the R axis is decreased past the threshold.</summary>
-			RudderDecrease,
-			/// <summary>The value of the R axis is increased past the threshold.</summary>
-			RudderIncrease,
-			/// <summary>The value of the U axis is decreased past the threshold.</summary>
-			UAxisDecrease,
-			/// <summary>The value of the U axis is increased past the threshold.</summary>
-			UAxisIncrease,
-			/// <summary>The value of the V axis is decreased past the threshold.</summary>
-			VAxisDecrease,
-			/// <summary>The value of the V axis is increased past the threshold.</summary>
-			VAxisIncrease,
-		}
-
-		/// <summary>
-		/// Gets the joystick that this <see cref="JoystickInputSource"/> polls for data.
-		/// </summary>
-		public Joystick Joystick { get; private set; }
-
-		/// <summary>
-		/// Gets or sets the threshold used.
-		/// </summary>
-		public float Threshold { get; private set; }
-
-		/// <summary>
-		/// Creates an instance of <see cref="JoystickInputSource"/>.
-		/// </summary>
-		/// <param name="joystick">The <see cref="Joystick"/> to poll for data.</param>
-		public JoystickInputSource(Joystick joystick) {
-			this.Mapping = new Mappings();
-			this.Joystick = joystick; 
-			this.Threshold = 0.3f; 
-		}
-
-		public bool SupportsTrigger(InputTrigger trigger) {
-			if (trigger >= InputTrigger.Button1 && trigger <= InputTrigger.Button32) {
-				return (int)trigger <= this.Joystick.ButtonCount;
-			} else {
-				switch (trigger) {
-					case InputTrigger.XAxisDecrease:
-					case InputTrigger.XAxisIncrease:
-						return this.Joystick.HasXAxis;
-					case InputTrigger.YAxisDecrease:
-					case InputTrigger.YAxisIncrease:
-						return this.Joystick.HasYAxis;
-					case InputTrigger.ZAxisDecrease:
-					case InputTrigger.ZAxisIncrease:
-						return this.Joystick.HasZAxis;
-					case InputTrigger.RudderDecrease:
-					case InputTrigger.RudderIncrease:
-						return this.Joystick.HasRudder;
-					case InputTrigger.UAxisDecrease:
-					case InputTrigger.UAxisIncrease:
-						return this.Joystick.HasUAxis;
-					case InputTrigger.VAxisDecrease:
-					case InputTrigger.VAxisIncrease:
-						return this.Joystick.HasVAxis;
-
-				}
-			}
-			return false;
-		}
-
-		#region Mappings
-
-		[Serializable]
-		public class Mappings {
-			/// <summary>Defines the <see cref="InputTrigger"/> to map to player 1 TL (1).</summary>
-			public InputTrigger TriggerPlayer1TL { get; set; }
-			/// <summary>Defines the <see cref="InputTrigger"/> to map to player 1 TR (2).</summary>
-			public InputTrigger TriggerPlayer1TR { get; set; }
-			/// <summary>Defines the <see cref="InputTrigger"/> to map to player 1 up.</summary>
-			public InputTrigger TriggerPlayer1Up { get; set; }
-			/// <summary>Defines the <see cref="InputTrigger"/> to map to player 1 down.</summary>
-			public InputTrigger TriggerPlayer1Down { get; set; }
-			/// <summary>Defines the <see cref="InputTrigger"/> to map to player 1 left.</summary>
-			public InputTrigger TriggerPlayer1Left { get; set; }
-			/// <summary>Defines the <see cref="InputTrigger"/> to map to player 1 right.</summary>
-			public InputTrigger TriggerPlayer1Right { get; set; }
-
-			/// <summary>Defines the <see cref="InputTrigger"/> to map to player 2 TL (1).</summary>
-			public InputTrigger TriggerPlayer2TL { get; set; }
-			/// <summary>Defines the <see cref="InputTrigger"/> to map to player 2 TR (2).</summary>
-			public InputTrigger TriggerPlayer2TR { get; set; }
-			/// <summary>Defines the <see cref="InputTrigger"/> to map to player 2 up.</summary>
-			public InputTrigger TriggerPlayer2Up { get; set; }
-			/// <summary>Defines the <see cref="InputTrigger"/> to map to player 2 down.</summary>
-			public InputTrigger TriggerPlayer2Down { get; set; }
-			/// <summary>Defines the <see cref="InputTrigger"/> to map to player 2 left.</summary>
-			public InputTrigger TriggerPlayer2Left { get; set; }
-			/// <summary>Defines the <see cref="InputTrigger"/> to map to player 2 right.</summary>
-			public InputTrigger TriggerPlayer2Right { get; set; }
-
-			/// <summary>Defines the <see cref="InputTrigger"/> to map to pause.</summary>
-			public InputTrigger TriggerPause { get; set; }
-			/// <summary>Defines the <see cref="InputTrigger"/> to map to reset.</summary>
-			public InputTrigger TriggerReset { get; set; }
-			/// <summary>Defines the <see cref="InputTrigger"/> to map to start.</summary>
-			public InputTrigger TriggerStart { get; set; }
-		}
-
-		public Mappings Mapping { get; private set; }
-
-		#endregion
-
-		#region IInputSource Members
-
-		public bool Player1TL { get; set; }
-		public bool Player1TR { get; set; }
-		public bool Player1Up { get; set; }
-		public bool Player1Down { get; set; }
-		public bool Player1Left { get; set; }
-		public bool Player1Right { get; set; }
-
-		public bool Player1Num0 { get; set; }
-		public bool Player1Num1 { get; set; }
-		public bool Player1Num2 { get; set; }
-		public bool Player1Num3 { get; set; }
-		public bool Player1Num4 { get; set; }
-		public bool Player1Num5 { get; set; }
-		public bool Player1Num6 { get; set; }
-		public bool Player1Num7 { get; set; }
-		public bool Player1Num8 { get; set; }
-		public bool Player1Num9 { get; set; }
-		public bool Player1Star { get; set; }
-		public bool Player1Hash { get; set; }
-
-		public bool Player2TL { get; set; }
-		public bool Player2TR { get; set; }
-		public bool Player2Up { get; set; }
-		public bool Player2Down { get; set; }
-		public bool Player2Left { get; set; }
-		public bool Player2Right { get; set; }
-
-		public bool Player2Num0 { get; set; }
-		public bool Player2Num1 { get; set; }
-		public bool Player2Num2 { get; set; }
-		public bool Player2Num3 { get; set; }
-		public bool Player2Num4 { get; set; }
-		public bool Player2Num5 { get; set; }
-		public bool Player2Num6 { get; set; }
-		public bool Player2Num7 { get; set; }
-		public bool Player2Num8 { get; set; }
-		public bool Player2Num9 { get; set; }
-		public bool Player2Star { get; set; }
-		public bool Player2Hash { get; set; }
-
-		public bool Pause { get; set; }
-		public bool Reset { get; set; }
-		public bool Start { get; set; }
-
-
-		public void Poll() {
-			var State = this.Joystick.GetState();
-			if (State != null) {
-				this.Player1TL = this.TranslateState(State, this.Mapping.TriggerPlayer1TL);
-				this.Player1TR = this.TranslateState(State, this.Mapping.TriggerPlayer1TR);
-				this.Player1Up = this.TranslateState(State, this.Mapping.TriggerPlayer1Up);
-				this.Player1Down = this.TranslateState(State, this.Mapping.TriggerPlayer1Down);
-				this.Player1Left = this.TranslateState(State, this.Mapping.TriggerPlayer1Left);
-				this.Player1Right = this.TranslateState(State, this.Mapping.TriggerPlayer1Right);
-				this.Player2TL = this.TranslateState(State, this.Mapping.TriggerPlayer2TL);
-				this.Player2TR = this.TranslateState(State, this.Mapping.TriggerPlayer2TR);
-				this.Player2Up = this.TranslateState(State, this.Mapping.TriggerPlayer2Up);
-				this.Player2Down = this.TranslateState(State, this.Mapping.TriggerPlayer2Down);
-				this.Player2Left = this.TranslateState(State, this.Mapping.TriggerPlayer2Left);
-				this.Player2Right = this.TranslateState(State, this.Mapping.TriggerPlayer2Right);
-				this.Pause = this.TranslateState(State, this.Mapping.TriggerPause);
-				this.Reset = this.TranslateState(State, this.Mapping.TriggerReset);
-				this.Start = this.TranslateState(State, this.Mapping.TriggerStart);
-			}
-		}
-
-		private bool TranslateState(JoystickState state, InputTrigger trigger) {
-			switch (trigger) {
-				case InputTrigger.Button1: return (state.Buttons & Buttons.Button1) != Buttons.None;
-				case InputTrigger.Button2: return (state.Buttons & Buttons.Button2) != Buttons.None;
-				case InputTrigger.Button3: return (state.Buttons & Buttons.Button3) != Buttons.None;
-				case InputTrigger.Button4: return (state.Buttons & Buttons.Button4) != Buttons.None;
-				case InputTrigger.Button5: return (state.Buttons & Buttons.Button5) != Buttons.None;
-				case InputTrigger.Button6: return (state.Buttons & Buttons.Button6) != Buttons.None;
-				case InputTrigger.Button7: return (state.Buttons & Buttons.Button7) != Buttons.None;
-				case InputTrigger.Button8: return (state.Buttons & Buttons.Button8) != Buttons.None;
-				case InputTrigger.Button9: return (state.Buttons & Buttons.Button9) != Buttons.None;
-				case InputTrigger.Button10: return (state.Buttons & Buttons.Button10) != Buttons.None;
-				case InputTrigger.Button11: return (state.Buttons & Buttons.Button11) != Buttons.None;
-				case InputTrigger.Button12: return (state.Buttons & Buttons.Button12) != Buttons.None;
-				case InputTrigger.Button13: return (state.Buttons & Buttons.Button13) != Buttons.None;
-				case InputTrigger.Button14: return (state.Buttons & Buttons.Button14) != Buttons.None;
-				case InputTrigger.Button15: return (state.Buttons & Buttons.Button15) != Buttons.None;
-				case InputTrigger.Button16: return (state.Buttons & Buttons.Button16) != Buttons.None;
-				case InputTrigger.Button17: return (state.Buttons & Buttons.Button17) != Buttons.None;
-				case InputTrigger.Button18: return (state.Buttons & Buttons.Button18) != Buttons.None;
-				case InputTrigger.Button19: return (state.Buttons & Buttons.Button19) != Buttons.None;
-				case InputTrigger.Button20: return (state.Buttons & Buttons.Button20) != Buttons.None;
-				case InputTrigger.Button21: return (state.Buttons & Buttons.Button21) != Buttons.None;
-				case InputTrigger.Button22: return (state.Buttons & Buttons.Button22) != Buttons.None;
-				case InputTrigger.Button23: return (state.Buttons & Buttons.Button23) != Buttons.None;
-				case InputTrigger.Button24: return (state.Buttons & Buttons.Button24) != Buttons.None;
-				case InputTrigger.Button25: return (state.Buttons & Buttons.Button25) != Buttons.None;
-				case InputTrigger.Button26: return (state.Buttons & Buttons.Button26) != Buttons.None;
-				case InputTrigger.Button27: return (state.Buttons & Buttons.Button27) != Buttons.None;
-				case InputTrigger.Button28: return (state.Buttons & Buttons.Button28) != Buttons.None;
-				case InputTrigger.Button29: return (state.Buttons & Buttons.Button29) != Buttons.None;
-				case InputTrigger.Button30: return (state.Buttons & Buttons.Button30) != Buttons.None;
-				case InputTrigger.Button31: return (state.Buttons & Buttons.Button31) != Buttons.None;
-				case InputTrigger.XAxisDecrease: return state.XAxis < -this.Threshold;
-				case InputTrigger.XAxisIncrease: return state.XAxis > +this.Threshold;
-				case InputTrigger.YAxisDecrease: return state.YAxis < -this.Threshold;
-				case InputTrigger.YAxisIncrease: return state.YAxis > +this.Threshold;
-				case InputTrigger.ZAxisDecrease: return state.ZAxis < -this.Threshold;
-				case InputTrigger.ZAxisIncrease: return state.ZAxis > +this.Threshold;
-				case InputTrigger.RudderDecrease: return state.Rudder < -this.Threshold;
-				case InputTrigger.RudderIncrease: return state.Rudder > +this.Threshold;
-				case InputTrigger.UAxisDecrease: return state.UAxis < -this.Threshold;
-				case InputTrigger.UAxisIncrease: return state.UAxis > +this.Threshold;
-				case InputTrigger.VAxisDecrease: return state.VAxis < -this.Threshold;
-				case InputTrigger.VAxisIncrease: return state.VAxis > +this.Threshold;
-				default: return false;
-			}
-		}
-
-		public void ReloadSettings() {
-			this.Mapping = new Mappings();
-			if (!File.Exists(GetSettingsPath())) return;
-			using (FileStream Config = File.OpenRead(GetSettingsPath())) {
-				XmlSerializer Deserialiser = new XmlSerializer(typeof(Mappings));
-				try {
-					this.Mapping = (Mappings)Deserialiser.Deserialize(Config);
-				} catch {
-					this.Mapping = new Mappings();
-				}
-			}
-		}
-
-		public void UpdateSettings() {
-			using (FileStream Config = File.Create(GetSettingsPath())) {
-				XmlSerializer Serialiser = new XmlSerializer(typeof(Mappings));
-				Serialiser.Serialize(Config, this.Mapping);
-			}
-		}
-
-		private string GetSettingsPath() {
-			string DirectoryPath = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Application.CompanyName), "Cogwheel");
-			if (!Directory.Exists(DirectoryPath)) Directory.CreateDirectory(DirectoryPath);
-			return Path.Combine(DirectoryPath, string.Format("Joystick_{0:X4}_{1:X4}.config", this.Joystick.VendorId, this.Joystick.ProductId));
-		}
-
-		public void ReleaseAll() {
-			this.Player1TL = false;
-			this.Player1TR = false;
-			this.Player1Up = false;
-			this.Player1Down = false;
-			this.Player1Left = false;
-			this.Player1Right = false;
-
-			this.Player1Num0 = false;
-			this.Player1Num1 = false;
-			this.Player1Num2 = false;
-			this.Player1Num3 = false;
-			this.Player1Num4 = false;
-			this.Player1Num5 = false;
-			this.Player1Num6 = false;
-			this.Player1Num7 = false;
-			this.Player1Num8 = false;
-			this.Player1Num9 = false;
-			this.Player1Star = false;
-			this.Player1Hash = false;
-
-			this.Player2TL = false;
-			this.Player2TR = false;
-			this.Player2Up = false;
-			this.Player2Down = false;
-			this.Player2Left = false;
-			this.Player2Right = false;
-
-			this.Player2Num0 = false;
-			this.Player2Num1 = false;
-			this.Player2Num2 = false;
-			this.Player2Num3 = false;
-			this.Player2Num4 = false;
-			this.Player2Num5 = false;
-			this.Player2Num6 = false;
-			this.Player2Num7 = false;
-			this.Player2Num8 = false;
-			this.Player2Num9 = false;
-			this.Player2Star = false;
-			this.Player2Hash = false;
-
-			this.Pause = false;
-			this.Reset = false;
-			this.Start = false;
-		}
-
-		#endregion
-	}
-	#endregion
-
 
 }

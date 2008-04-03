@@ -60,9 +60,7 @@ namespace CogwheelSlimDX {
 			this.Input = new InputManager();
 			this.KeyboardInput = new KeyboardInputSource();
 			this.Input.Sources.Add(this.KeyboardInput);
-			foreach (var Stick in new JoystickInput.JoystickCollection().Joysticks) this.Input.Sources.Add(new JoystickInputSource(Stick));	
-			this.Input.ReloadSettings();
-			
+			this.Input.ReloadSettings();			
 
 			// Create a pixel dumper.
 			this.Dumper = new PixelDumper(this.RenderPanel);

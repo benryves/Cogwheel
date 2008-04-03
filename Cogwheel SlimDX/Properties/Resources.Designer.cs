@@ -60,6 +60,21 @@ namespace CogwheelSlimDX.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to ; 
+        ///Up=&gt;0.Up
+        ///Down=&gt;0.Down
+        ///Left=&gt;0.Left
+        ///Right=&gt;0.Right
+        ///ControlKey=&gt;0.Trigger1
+        ///Menu=&gt;0.Trigger2.
+        /// </summary>
+        internal static string Config_DefaultKeyMapping {
+            get {
+                return ResourceManager.GetString("Config_DefaultKeyMapping", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap Flag_BR {
             get {
                 object obj = ResourceManager.GetObject("Flag_BR", resourceCulture);

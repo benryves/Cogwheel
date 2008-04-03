@@ -1,0 +1,37 @@
+﻿; General buttons:
+Space=>0.Start;0.Pause
+Back=>0.Reset
+
+; Player 1 joypad:
+Up=>0.Up
+Down=>0.Down
+Left=>0.Left
+Right=>0.Right
+ControlKey=>0.Trigger1
+Menu=>0.Trigger2
+
+; Player 1 number pad:
+D0=>0.Number0
+D1=>0.Number1
+D2=>0.Number2
+D3=>0.Number3
+D4=>0.Number4
+D5=>0.Number5
+D6=>0.Number6
+D7=>0.Number7
+D8=>0.Number8
+D9=>0.Number9
+OemMinus=>0.Star
+Oemplus=>0.Hash
+
+; Player 2 number pad:
+NumPad0=>1.Number0
+NumPad1=>1.Number1
+NumPad2=>1.Number2
+NumPad3=>1.Number3
+NumPad4=>1.Number4
+NumPad5=>1.Number5
+NumPad6=>1.Number6
+NumPad7=>1.Number7
+NumPad8=>1.Number8
+NumPad9=>1.Number9
