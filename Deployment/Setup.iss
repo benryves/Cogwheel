@@ -2,7 +2,7 @@
 ; Ben Ryves / Bee Development 2008.
 [Setup]
 AppName=Cogwheel
-AppVerName=Cogwheel Beta 3
+AppVerName=Cogwheel Beta 4
 AppPublisher=Bee Development
 AppPublisherURL=http://www.bee-dev.com/?go=cogwheel
 AppSupportURL=http://www.bee-dev.com/?go=cogwheel
@@ -32,6 +32,7 @@ Source: "..\Cogwheel SlimDX\bin\Release\ROM Data\Game Gear.romdata"; DestDir: "{
 Source: "..\Cogwheel SlimDX\bin\Release\ROM Data\SG-1000.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
 Source: "..\Cogwheel SlimDX\bin\Release\ROM Data\SC-3000.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
 Source: "..\Cogwheel SlimDX\bin\Release\ROM Data\SF-7000.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
+Source: "..\Cogwheel SlimDX\bin\Release\ROM Data\ColecoVision.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
 
 [Registry]
 ; Register .cogstate file type:
