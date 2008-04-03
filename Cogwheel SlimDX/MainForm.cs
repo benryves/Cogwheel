@@ -675,6 +675,7 @@ namespace CogwheelSlimDX {
 
 		protected override void OnLostFocus(EventArgs e) {
 			this.Paused = true;
+			this.Input.ReleaseAll();
 			base.OnLostFocus(e);
 		}
 

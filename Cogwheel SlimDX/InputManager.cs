@@ -99,6 +99,9 @@ namespace CogwheelSlimDX {
 		/// <summary>Gets the state of the start button.</summary>
 		bool Start { get; }
 
+		/// <summary>Release all held keys.</summary>
+		void ReleaseAll();
+
 		/// <summary>This method is called immediately before reading the individual button states.</summary>
 		void Poll();
 
@@ -244,6 +247,8 @@ namespace CogwheelSlimDX {
 
 		public void ReloadSettings() { foreach (var Source in this.Sources) Source.ReloadSettings(); }
 		public void UpdateSettings() { foreach (var Source in this.Sources) Source.UpdateSettings(); }
+
+		public void ReleaseAll() { foreach (var Source in this.Sources) Source.ReleaseAll(); }
 
 		#endregion
 	}
@@ -530,6 +535,52 @@ namespace CogwheelSlimDX {
 			Properties.Settings.Default.KeyPause = this.KeyPause;
 			Properties.Settings.Default.KeyReset = this.KeyReset;
 			Properties.Settings.Default.KeyStart=this.KeyStart;
+		}
+
+		public void ReleaseAll() {
+			this.Player1TL = false;
+			this.Player1TR = false;
+			this.Player1Up = false;
+			this.Player1Down = false;
+			this.Player1Left = false;
+			this.Player1Right = false;
+
+			this.Player1Num0 = false;
+			this.Player1Num1 = false;
+			this.Player1Num2 = false;
+			this.Player1Num3 = false;
+			this.Player1Num4 = false;
+			this.Player1Num5 = false;
+			this.Player1Num6 = false;
+			this.Player1Num7 = false;
+			this.Player1Num8 = false;
+			this.Player1Num9 = false;
+			this.Player1Star = false;
+			this.Player1Hash = false;
+
+			this.Player2TL = false;
+			this.Player2TR = false;
+			this.Player2Up = false;
+			this.Player2Down = false;
+			this.Player2Left = false;
+			this.Player2Right = false;
+
+			this.Player2Num0 = false;
+			this.Player2Num1 = false;
+			this.Player2Num2 = false;
+			this.Player2Num3 = false;
+			this.Player2Num4 = false;
+			this.Player2Num5 = false;
+			this.Player2Num6 = false;
+			this.Player2Num7 = false;
+			this.Player2Num8 = false;
+			this.Player2Num9 = false;
+			this.Player2Star = false;
+			this.Player2Hash = false;
+
+			this.Pause = false;
+			this.Reset = false;
+			this.Start = false;
 		}
 	}
 	
@@ -872,6 +923,51 @@ namespace CogwheelSlimDX {
 			return Path.Combine(DirectoryPath, string.Format("Joystick_{0:X4}_{1:X4}.config", this.Joystick.VendorId, this.Joystick.ProductId));
 		}
 
+		public void ReleaseAll() {
+			this.Player1TL = false;
+			this.Player1TR = false;
+			this.Player1Up = false;
+			this.Player1Down = false;
+			this.Player1Left = false;
+			this.Player1Right = false;
+
+			this.Player1Num0 = false;
+			this.Player1Num1 = false;
+			this.Player1Num2 = false;
+			this.Player1Num3 = false;
+			this.Player1Num4 = false;
+			this.Player1Num5 = false;
+			this.Player1Num6 = false;
+			this.Player1Num7 = false;
+			this.Player1Num8 = false;
+			this.Player1Num9 = false;
+			this.Player1Star = false;
+			this.Player1Hash = false;
+
+			this.Player2TL = false;
+			this.Player2TR = false;
+			this.Player2Up = false;
+			this.Player2Down = false;
+			this.Player2Left = false;
+			this.Player2Right = false;
+
+			this.Player2Num0 = false;
+			this.Player2Num1 = false;
+			this.Player2Num2 = false;
+			this.Player2Num3 = false;
+			this.Player2Num4 = false;
+			this.Player2Num5 = false;
+			this.Player2Num6 = false;
+			this.Player2Num7 = false;
+			this.Player2Num8 = false;
+			this.Player2Num9 = false;
+			this.Player2Star = false;
+			this.Player2Hash = false;
+
+			this.Pause = false;
+			this.Reset = false;
+			this.Start = false;
+		}
 
 		#endregion
 	}
