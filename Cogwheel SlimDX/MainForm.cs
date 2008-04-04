@@ -317,13 +317,16 @@ namespace CogwheelSlimDX {
 
 				} else {
 
-					for (int i = 0; i < Generated.Length; i += 735 * 2) {
+					for (int i = 0; i < Generated.Length; ) {
 						if (this.GeneratedSoundSamples.Count > 0) {
-							Array.Copy(this.GeneratedSoundSamples.Dequeue(), 0, Generated, i, 735 * 2);
+							short[] Samples = this.GeneratedSoundSamples.Dequeue();
+							Array.Copy(Samples, 0, Generated, i, Samples.Length);
+							i += Samples.Length;
 						} else {
-							short[] Temp = new short[735 * 2];
+							short[] Temp = new short[Generated.Length-i];
 							if (this.Emulator != null) this.Emulator.Sound.CreateSamples(Temp);
-							Array.Copy(Temp, 0, Generated, i, 735 * 2);
+							Array.Copy(Temp, 0, Generated, i, Temp.Length);
+							i += Temp.Length;
 						}
 					}
 
