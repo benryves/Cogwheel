@@ -113,9 +113,29 @@ namespace CogwheelSlimDX {
 		/// <summary>
 		/// Gets or sets the current <see cref="Keys"/> that this button is mapped to.
 		/// </summary>
-		public Keys Key {
+		public Keys KeyboardTrigger {
 			get { return this.key; }
 			set { this.key = value; this.UpdateText(); }
+		}
+
+		private JoystickInputSource.InputTrigger joystickTrigger;
+		/// <summary>
+		/// Gets or sets the current <see cref="JoystickInputSource.InputTrigger"/> trigger that this button is mapped to.
+		/// </summary>
+		public JoystickInputSource.InputTrigger JoystickTrigger {
+			get { return this.joystickTrigger; }
+			set { this.joystickTrigger = value; this.UpdateText(); }
+		}
+
+		public enum Modes {
+			Keyboard,
+			Joystick,
+		}
+
+		private Modes mode;
+		public Modes Mode {
+			get { return this.mode; }
+			set { this.mode = value; this.UpdateText(); }
 		}
 
 		#endregion
@@ -139,19 +159,20 @@ namespace CogwheelSlimDX {
 					break;
 				case MouseButtons.Right:
 					this.Checked = false;
-					this.Key = Keys.None;
+					this.KeyboardTrigger = Keys.None;
+					this.JoystickTrigger = JoystickInputSource.InputTrigger.None;
 					this.OnSettingChanged(new EventArgs());
 					break;
 			}
 		}
 
 		protected override void OnKeyDown(KeyEventArgs e) {
-			if (this.Checked) {
+			if (this.Checked && this.mode == Modes.Keyboard) {
 				e.Handled = true;
-				this.Key = e.KeyCode;
-				this.Checked = false;
+				this.KeyboardTrigger = e.KeyCode;
 				this.OnSettingChanged(new EventArgs());
 			}
+			this.Checked = false;
 			base.OnKeyDown(e);
 		}
 
@@ -159,7 +180,18 @@ namespace CogwheelSlimDX {
 
 
 		private void UpdateText() {
-			base.Text = GetKeyName(this.Key);
+			switch (this.Mode) { 
+				case Modes.Keyboard:
+					base.Text = GetKeyName(this.KeyboardTrigger);
+					break;
+				case Modes.Joystick:
+					base.Text = this.JoystickTrigger.ToString();
+					break;
+				default:
+					base.Text = "";
+					break;
+			}
+			
 
 		}
 
@@ -169,7 +201,8 @@ namespace CogwheelSlimDX {
 		}
 
 		public KeyButton() {
-			this.Key = Keys.None;
+			this.KeyboardTrigger = Keys.None;
+			this.JoystickTrigger = JoystickInputSource.InputTrigger.None;
 			this.Appearance = Appearance.Button;
 			this.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.AutoCheck = false;

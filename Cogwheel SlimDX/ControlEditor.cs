@@ -32,8 +32,26 @@ namespace CogwheelSlimDX {
 			foreach (var Source in this.Manager.Sources) {
 				if (Source is KeyboardInputSource) {
 					this.KeyboardTab.Tag = Source;
+				} else if (Source is JoystickInputSource) {
+					var JoystickSource = (JoystickInputSource)Source;
+					this.InputTabs.TabPages.Add(new TabPage() {
+						Text = JoystickSource.Joystick.Name,
+						Tag = JoystickSource,
+						ImageIndex = 1,
+						UseVisualStyleBackColor = true,
+					});
 				}
 			}
+
+			this.InputTabs.SelectedIndexChanged += (sender, e) => {
+				this.JoystickEventPoller.Stop();
+				this.InputTabs.SelectedTab.Controls.Add(this.EditorPanel);
+				this.SetKeyButtonValues();
+				if (this.InputTabs.SelectedTab.Tag is JoystickInputSource) {
+					this.JoystickPollCount = 0;
+					this.JoystickEventPoller.Start();
+				}
+			};
 
 			// Gather up all of the config buttons
 			this.KeyButtons = new List<KeyButton>();
@@ -48,7 +66,9 @@ namespace CogwheelSlimDX {
 					var Sender = sender as KeyButton;
 					if (CurrentInputSource != null && Sender != null) {
 						if (CurrentInputSource is KeyboardInputSource) {
-							CurrentInputSource.SetTrigger(Sender.ControllerIndex, Sender.InputButton, Sender.Key);
+							CurrentInputSource.SetTrigger(Sender.ControllerIndex, Sender.InputButton, Sender.KeyboardTrigger);
+						} else if (CurrentInputSource is JoystickInputSource) {
+							CurrentInputSource.SetTrigger(Sender.ControllerIndex, Sender.InputButton, Sender.JoystickTrigger);
 						}
 					}
 				};
@@ -67,7 +87,11 @@ namespace CogwheelSlimDX {
 			if (CurrentInputSource != null) {
 				foreach (var KeyButton in this.KeyButtons) {
 					if (CurrentInputSource is KeyboardInputSource) {
-						KeyButton.Key = (Keys)CurrentInputSource.GetTrigger(KeyButton.ControllerIndex, KeyButton.InputButton);
+						KeyButton.KeyboardTrigger = (Keys)CurrentInputSource.GetTrigger(KeyButton.ControllerIndex, KeyButton.InputButton);
+						KeyButton.Mode = KeyButton.Modes.Keyboard;
+					} else if (CurrentInputSource is JoystickInputSource) {
+						KeyButton.JoystickTrigger = (JoystickInputSource.InputTrigger)CurrentInputSource.GetTrigger(KeyButton.ControllerIndex, KeyButton.InputButton);
+						KeyButton.Mode = KeyButton.Modes.Joystick;
 					}
 				}
 			}
@@ -80,6 +104,28 @@ namespace CogwheelSlimDX {
 
 		private void ControllerEditing_SelectedIndexChanged(object sender, EventArgs e) {
 			if (ControllerEditing.SelectedItem != null) ((Control)((ComboBoxItem)ControllerEditing.SelectedItem).Tag).BringToFront();
+		}
+
+		private int JoystickPollCount = 0;
+		private void JoystickEventPoller_Tick(object sender, EventArgs e) {
+			if (this.InputTabs.SelectedTab.Tag is JoystickInputSource) {
+				var JoystickEventSource = (JoystickInputSource)this.InputTabs.SelectedTab.Tag;
+				var Events = JoystickEventSource.GetTriggeredEvents();
+				if (JoystickPollCount > 2) {
+					foreach (var Event in Events) {
+						foreach (var PossibleButtonMatch in this.KeyButtons) {
+							if (Event.Value) {
+								if (PossibleButtonMatch.Checked) {
+									PossibleButtonMatch.JoystickTrigger = Event.Key;
+									PossibleButtonMatch.Checked = false;
+									JoystickEventSource.SetTrigger(PossibleButtonMatch.ControllerIndex, PossibleButtonMatch.InputButton, PossibleButtonMatch.JoystickTrigger);
+								}
+							}
+						}	
+					}					
+				}
+				++JoystickPollCount;
+			}
 		}
 
 	}

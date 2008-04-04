@@ -208,25 +208,32 @@ namespace CogwheelSlimDX {
 
 		public object GetTrigger(int controllerIndex, InputButton button) { return null; }
 
-		#endregion
 	}
 
-	#region Keyboard
+	#endregion
 
-	/// <summary>
-	/// Retrieves input from a keyboard.
-	/// </summary>
-	public class KeyboardInputSource : IInputSource {
+	public abstract class TriggeredInputSource<T> : IInputSource {
 
-		private Dictionary<Keys, KeyValuePair<int, InputButton>[]> KeyMapping;
-		private Dictionary<InputButton, bool>[] CurrentKeyStates;
+		protected Dictionary<T, KeyValuePair<int, InputButton>[]> KeyMapping;
+		protected Dictionary<InputButton, bool>[] CurrentStates;
 
-		#region Input Source Methods
+		public virtual void Poll() { }
 
-		/// <summary>
-		/// Do nothing (keyboards aren't polled).
-		/// </summary>
-		public void Poll() { }
+		public abstract string SettingsFilename { get; }
+
+		private string SettingsPath {
+			get{
+				string DirectoryPath = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Application.CompanyName), "Cogwheel");
+				if (!Directory.Exists(DirectoryPath)) Directory.CreateDirectory(DirectoryPath);
+				return Path.Combine(DirectoryPath, this.SettingsFilename);
+			}
+		}
+
+		public virtual string DefaultSettingsFile {
+			get {
+				return null;
+			}
+		}
 
 		/// <summary>
 		/// Loads all settings from the settings file.
@@ -235,9 +242,9 @@ namespace CogwheelSlimDX {
 			this.KeyMapping.Clear();
 
 			// Check if the default mapping exists. If not, dump in settings from the project resources.
-			if (!File.Exists(this.SettingsPath)) {
+			if (!File.Exists(this.SettingsPath) && !string.IsNullOrEmpty(this.DefaultSettingsFile)) {
 				try {
-					File.WriteAllText(this.SettingsPath, Properties.Resources.Config_DefaultKeyMapping);
+					File.WriteAllText(this.SettingsPath, this.DefaultSettingsFile);
 				} catch { }
 			}
 
@@ -245,7 +252,7 @@ namespace CogwheelSlimDX {
 				foreach (var ConfigLine in File.ReadAllLines(this.SettingsPath)) {
 
 					// Skip comments.
-					if (ConfigLine.TrimStart().StartsWith(";")) continue; 
+					if (ConfigLine.TrimStart().StartsWith(";")) continue;
 
 					// Split into two halves -- Key=>Mapping
 					var KeyComponents = ConfigLine.Split(new[] { "=>" }, StringSplitOptions.RemoveEmptyEntries);
@@ -255,7 +262,7 @@ namespace CogwheelSlimDX {
 
 					// Quick-and-dirty conversion.
 					try {
-						Keys MappedKey = (Keys)Enum.Parse(typeof(Keys), KeyComponents[0]);
+						T MappedKey = (T)Enum.Parse(typeof(T), KeyComponents[0]);
 						var KeyTargets = Array.ConvertAll(KeyComponents[1].Split(';'), C => {
 							var SubComponents = C.Split('.');
 							return new KeyValuePair<int, InputButton>(int.Parse(SubComponents[0]), (InputButton)Enum.Parse(typeof(InputButton), SubComponents[1]));
@@ -267,7 +274,7 @@ namespace CogwheelSlimDX {
 							this.KeyMapping.Add(MappedKey, KeyTargets);
 						}
 					} catch { }
-						
+
 				}
 			}
 		}
@@ -280,9 +287,9 @@ namespace CogwheelSlimDX {
 			foreach (var Mapping in this.KeyMapping) {
 				OutputLines.Add(
 					string.Format(
-						"{0}=>{1}", 
+						"{0}=>{1}",
 						Mapping.Key,
-						string.Join(";", Array.ConvertAll(Mapping.Value, C=>string.Format("{0}.{1}", C.Key,C.Value))))
+						string.Join(";", Array.ConvertAll(Mapping.Value, C => string.Format("{0}.{1}", C.Key, C.Value))))
 				);
 			}
 			File.WriteAllLines(this.SettingsPath, OutputLines.ToArray());
@@ -291,25 +298,27 @@ namespace CogwheelSlimDX {
 		public bool GetButtonState(int controllerIndex, InputButton button) {
 			if (controllerIndex < 0 || controllerIndex > 1) return false;
 			bool Result = false;
-			return this.CurrentKeyStates[controllerIndex].TryGetValue(button, out Result) ? Result : false;
+			return this.CurrentStates[controllerIndex].TryGetValue(button, out Result) ? Result : false;
 		}
 
 		public void ReleaseAll() {
-			this.CurrentKeyStates = new Dictionary<InputButton, bool>[2];
+			this.CurrentStates = new Dictionary<InputButton, bool>[2];
 			for (int Player = 0; Player < 2; ++Player) {
-				this.CurrentKeyStates[Player] = new Dictionary<InputButton, bool>();
+				this.CurrentStates[Player] = new Dictionary<InputButton, bool>();
 				foreach (InputButton Button in Enum.GetValues(typeof(InputButton))) {
-					this.CurrentKeyStates[Player].Add(Button, false);
+					this.CurrentStates[Player].Add(Button, false);
 				}
 			}
 		}
 
+
+
 		public void SetTrigger(int controllerIndex, InputButton button, object trigger) {
-			if (trigger is Keys) {
-				Keys Trigger = (Keys)trigger;
-				
+			if (trigger is T) {
+				T Trigger = (T)trigger;
+
 				// Remove any existing matching trigger.
-				var NewMapping = new Dictionary<Keys, KeyValuePair<int, InputButton>[]>();
+				var NewMapping = new Dictionary<T, KeyValuePair<int, InputButton>[]>();
 				foreach (var Mapping in this.KeyMapping) {
 					var CleanedMapping = new List<KeyValuePair<int, InputButton>>();
 					foreach (var ExistingMapping in Mapping.Value) {
@@ -317,13 +326,13 @@ namespace CogwheelSlimDX {
 							CleanedMapping.Add(ExistingMapping);
 						}
 					}
-					if (CleanedMapping.Count > 0) NewMapping.Add(Mapping.Key, CleanedMapping.ToArray());					
+					if (CleanedMapping.Count > 0) NewMapping.Add(Mapping.Key, CleanedMapping.ToArray());
 				}
 				this.KeyMapping = NewMapping;
 
 
 				// If it's a key of any worth, add it.
-				if (Trigger != Keys.None) {
+				if (Convert.ToInt32(Trigger) != 0) {
 					var AddedTrigger = new List<KeyValuePair<int, InputButton>>();
 					if (this.KeyMapping.ContainsKey(Trigger)) {
 						AddedTrigger.AddRange(this.KeyMapping[Trigger]);
@@ -343,10 +352,23 @@ namespace CogwheelSlimDX {
 					if (TargetButtons.Key == controllerIndex && TargetButtons.Value == button) return MappedKey.Key;
 				}
 			}
-			return Keys.None;
+			return default(T);
 		}
 
-		#endregion
+		public TriggeredInputSource() {
+			this.KeyMapping = new Dictionary<T, KeyValuePair<int, InputButton>[]>(32);
+			this.ReleaseAll();
+		}
+
+
+	}
+
+	#region Keyboard
+
+	/// <summary>
+	/// Retrieves input from a keyboard.
+	/// </summary>
+	public class KeyboardInputSource : TriggeredInputSource<Keys> {
 
 		#region Public Methods
 
@@ -363,9 +385,13 @@ namespace CogwheelSlimDX {
 			KeyValuePair<int, InputButton>[] MappedButtons;
 			if (this.KeyMapping.TryGetValue(key.KeyCode, out MappedButtons)) {
 				foreach (var MappedButton in MappedButtons) {
-					this.CurrentKeyStates[MappedButton.Key][MappedButton.Value] = state;
+					this.CurrentStates[MappedButton.Key][MappedButton.Value] = state;
 				}
 			}
+		}
+
+		public override string DefaultSettingsFile {
+			get { return Properties.Resources.Config_DefaultKeyMapping; }
 		}
 
 		#endregion
@@ -375,24 +401,204 @@ namespace CogwheelSlimDX {
 		/// <summary>
 		/// Gets the full path to the settings file.
 		/// </summary>
-		private string SettingsPath {
-			get {
-				string DirectoryPath = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Application.CompanyName), "Cogwheel");
-				if (!Directory.Exists(DirectoryPath)) Directory.CreateDirectory(DirectoryPath);
-				return Path.Combine(DirectoryPath, "Keyboard.config");
+		public override string SettingsFilename {
+			get { return "Keyboard.config"; }
+		}
+
+		#endregion
+
+	}
+	
+	#endregion
+
+	#region Joystick
+
+	public class JoystickInputSource : TriggeredInputSource<JoystickInputSource.InputTrigger> {
+
+		#region Types
+
+		/// <summary>
+		/// Defines a trigger for a joystick event.
+		/// </summary>
+		public enum InputTrigger {
+			/// <summary>No trigger is selected.</summary>
+			None,
+			/// <summary>Button 1.</summary>
+			Button1,
+			/// <summary>Button 2.</summary>
+			Button2,
+			/// <summary>Button 3.</summary>
+			Button3,
+			/// <summary>Button 4.</summary>
+			Button4,
+			/// <summary>Button 5.</summary>
+			Button5,
+			/// <summary>Button 6.</summary>
+			Button6,
+			/// <summary>Button 7.</summary>
+			Button7,
+			/// <summary>Button 8.</summary>
+			Button8,
+			/// <summary>Button 9.</summary>
+			Button9,
+			/// <summary>Button 10.</summary>
+			Button10,
+			/// <summary>Button 11.</summary>
+			Button11,
+			/// <summary>Button 12.</summary>
+			Button12,
+			/// <summary>Button 13.</summary>
+			Button13,
+			/// <summary>Button 14.</summary>
+			Button14,
+			/// <summary>Button 15.</summary>
+			Button15,
+			/// <summary>Button 16.</summary>
+			Button16,
+			/// <summary>Button 17.</summary>
+			Button17,
+			/// <summary>Button 18.</summary>
+			Button18,
+			/// <summary>Button 19.</summary>
+			Button19,
+			/// <summary>Button 20.</summary>
+			Button20,
+			/// <summary>Button 21.</summary>
+			Button21,
+			/// <summary>Button 22.</summary>
+			Button22,
+			/// <summary>Button 23.</summary>
+			Button23,
+			/// <summary>Button 24.</summary>
+			Button24,
+			/// <summary>Button 25.</summary>
+			Button25,
+			/// <summary>Button 26.</summary>
+			Button26,
+			/// <summary>Button 27.</summary>
+			Button27,
+			/// <summary>Button 28.</summary>
+			Button28,
+			/// <summary>Button 29.</summary>
+			Button29,
+			/// <summary>Button 30.</summary>
+			Button30,
+			/// <summary>Button 31.</summary>
+			Button31,
+			/// <summary>Button 32.</summary>
+			Button32,
+			/// <summary>The value of the X axis is decreased past the threshold.</summary>
+			XAxisDecrease,
+			/// <summary>The value of the X axis is increased past the threshold.</summary>
+			XAxisIncrease,
+			/// <summary>The value of the Y axis is decreased past the threshold.</summary>
+			YAxisDecrease,
+			/// <summary>The value of the Y axis is increased past the threshold.</summary>
+			YAxisIncrease,
+			/// <summary>The value of the Z axis is decreased past the threshold.</summary>
+			ZAxisDecrease,
+			/// <summary>The value of the Z axis is increased past the threshold.</summary>
+			ZAxisIncrease,
+			/// <summary>The value of the R axis is decreased past the threshold.</summary>
+			RudderDecrease,
+			/// <summary>The value of the R axis is increased past the threshold.</summary>
+			RudderIncrease,
+			/// <summary>The value of the U axis is decreased past the threshold.</summary>
+			UAxisDecrease,
+			/// <summary>The value of the U axis is increased past the threshold.</summary>
+			UAxisIncrease,
+			/// <summary>The value of the V axis is decreased past the threshold.</summary>
+			VAxisDecrease,
+			/// <summary>The value of the V axis is increased past the threshold.</summary>
+			VAxisIncrease,
+		}
+
+		#endregion
+
+		#region Private Fields
+
+		/// <summary>
+		/// The current joystick state.
+		/// </summary>
+		private JoystickState State = new JoystickState();
+
+		#endregion
+
+		#region Public Properties
+
+		/// <summary>
+		/// Gets the <see cref="Joystick"/> that this input source retrieves input from.
+		/// </summary>
+		public Joystick Joystick { get; private set; }
+
+		#endregion
+
+		#region Public Methods
+
+		public KeyValuePair<InputTrigger, bool>[] GetTriggeredEvents() {
+
+			
+
+			var Events = new List<KeyValuePair<InputTrigger, bool>>(8);
+
+			var NewState = this.Joystick.GetState();
+			if (NewState != null && this.State != null) {
+
+				// Buttons:
+				for (int i = 0; i < 32; ++i) {
+					if (((int)this.State.Buttons & (1 << i)) != ((int)NewState.Buttons & (1 << i))) {
+						Events.Add(new KeyValuePair<InputTrigger, bool>((InputTrigger)(i + 1), ((int)NewState.Buttons & (1 << i)) != 0));
+					}
+				}
+
+				// Axes:
+				if (this.Joystick.HasXAxis) AddAxisEvent(Events, this.State.XAxis, NewState.XAxis, InputTrigger.XAxisIncrease, InputTrigger.XAxisDecrease);
+				if (this.Joystick.HasYAxis) AddAxisEvent(Events, this.State.YAxis, NewState.YAxis, InputTrigger.YAxisIncrease, InputTrigger.YAxisDecrease);
+				if (this.Joystick.HasZAxis) AddAxisEvent(Events, this.State.ZAxis, NewState.ZAxis, InputTrigger.ZAxisIncrease, InputTrigger.ZAxisDecrease);
+				if (this.Joystick.HasUAxis) AddAxisEvent(Events, this.State.UAxis, NewState.UAxis, InputTrigger.UAxisIncrease, InputTrigger.UAxisDecrease);
+				if (this.Joystick.HasVAxis) AddAxisEvent(Events, this.State.VAxis, NewState.VAxis, InputTrigger.VAxisIncrease, InputTrigger.VAxisDecrease);
+				if (this.Joystick.HasRudder) AddAxisEvent(Events, this.State.Rudder, NewState.Rudder, InputTrigger.RudderIncrease, InputTrigger.RudderDecrease);
+
+				this.State = NewState;
+			}
+
+			return Events.ToArray();
+		}
+
+		private void AddAxisEvent(List<KeyValuePair<InputTrigger, bool>> triggers, float oldAxisValue, float newAxisValue, InputTrigger increased, InputTrigger decreased) {
+			float Threshold = 0.3f;
+			if (oldAxisValue < +Threshold && newAxisValue > +Threshold) triggers.Add(new KeyValuePair<InputTrigger, bool>(increased, true));
+			if (newAxisValue < +Threshold && oldAxisValue > +Threshold) triggers.Add(new KeyValuePair<InputTrigger, bool>(increased, false));
+			if (oldAxisValue > -Threshold && newAxisValue < -Threshold) triggers.Add(new KeyValuePair<InputTrigger, bool>(decreased, true));
+			if (newAxisValue > -Threshold && oldAxisValue < -Threshold) triggers.Add(new KeyValuePair<InputTrigger, bool>(decreased, false));
+		}
+
+		public override void Poll() {
+			foreach (var Event in this.GetTriggeredEvents()) {
+				KeyValuePair<int, InputButton>[] MapTargets;
+				if (this.KeyMapping.TryGetValue(Event.Key, out MapTargets)) {
+					foreach (var Target in MapTargets) {
+						this.CurrentStates[Target.Key][Target.Value] = Event.Value;
+					}
+				}
 			}
 		}
 
 		#endregion
 
-		public KeyboardInputSource() {
-			this.KeyMapping = new Dictionary<Keys, KeyValuePair<int, InputButton>[]>(32);
-			this.ReleaseAll();
-			
+		#region Constructor
+
+		public JoystickInputSource(Joystick joystick) {
+			this.Joystick = joystick;
 		}
 
+		#endregion
+
+		public override string SettingsFilename {
+			get { return string.Format("Joystick.{0:X4}.{1:X4}.config", this.Joystick.VendorId, this.Joystick.ProductId); }
+		}
 	}
-	
+
 	#endregion
 
 }
