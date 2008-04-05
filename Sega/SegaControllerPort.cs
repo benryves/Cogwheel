@@ -64,7 +64,7 @@ namespace BeeDevelopment.Sega8Bit {
 			public bool InputState { get; set; }
 
 			/// <summary>
-			/// Gets or sets the state of the pin as an input.
+			/// Gets or sets the state of the pin as an output.
 			/// </summary>
 			public bool OutputState { get; set; }
 
