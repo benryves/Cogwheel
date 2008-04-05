@@ -574,12 +574,31 @@ namespace CogwheelSlimDX {
 		}
 
 		public override void Poll() {
-			foreach (var Event in this.GetTriggeredEvents()) {
-				KeyValuePair<int, InputButton>[] MapTargets;
-				if (this.KeyMapping.TryGetValue(Event.Key, out MapTargets)) {
-					foreach (var Target in MapTargets) {
-						this.CurrentStates[Target.Key][Target.Value] = Event.Value;
+			var State = this.Joystick.GetState();
+			if (State == null) return;
+			foreach (var MappedButton in this.KeyMapping) {
+				bool Triggered = false;
+				if (MappedButton.Key >= InputTrigger.Button1 && MappedButton.Key <= InputTrigger.Button32) {
+					Triggered = ((int)State.Buttons & (1 << (((int)MappedButton.Key) - 1))) != 0;
+				} else {
+					float Threshold = 0.3f;
+					switch (MappedButton.Key) {
+						case InputTrigger.XAxisIncrease: Triggered = this.Joystick.HasXAxis && State.XAxis > +Threshold; break;
+						case InputTrigger.XAxisDecrease: Triggered = this.Joystick.HasXAxis && State.XAxis < -Threshold; break;
+						case InputTrigger.YAxisIncrease: Triggered = this.Joystick.HasYAxis && State.YAxis > +Threshold; break;
+						case InputTrigger.YAxisDecrease: Triggered = this.Joystick.HasYAxis && State.YAxis < -Threshold; break;
+						case InputTrigger.ZAxisIncrease: Triggered = this.Joystick.HasZAxis && State.ZAxis > +Threshold; break;
+						case InputTrigger.ZAxisDecrease: Triggered = this.Joystick.HasZAxis && State.ZAxis < -Threshold; break;
+						case InputTrigger.UAxisIncrease: Triggered = this.Joystick.HasUAxis && State.UAxis > +Threshold; break;
+						case InputTrigger.UAxisDecrease: Triggered = this.Joystick.HasUAxis && State.UAxis < -Threshold; break;
+						case InputTrigger.VAxisIncrease: Triggered = this.Joystick.HasVAxis && State.VAxis > +Threshold; break;
+						case InputTrigger.VAxisDecrease: Triggered = this.Joystick.HasVAxis && State.VAxis < -Threshold; break;
+						case InputTrigger.RudderIncrease: Triggered = this.Joystick.HasRudder && State.Rudder > +Threshold; break;
+						case InputTrigger.RudderDecrease: Triggered = this.Joystick.HasRudder && State.Rudder < -Threshold; break;
 					}
+				}
+				foreach (var TargetButton in MappedButton.Value) {
+					this.CurrentStates[TargetButton.Key][TargetButton.Value] = Triggered;
 				}
 			}
 		}
