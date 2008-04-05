@@ -113,8 +113,8 @@ namespace CogwheelSlimDX {
 				var Events = JoystickEventSource.GetTriggeredEvents();
 				if (JoystickPollCount > 2) {
 					foreach (var Event in Events) {
-						foreach (var PossibleButtonMatch in this.KeyButtons) {
-							if (Event.Value) {
+						if (Event.Value) {
+							foreach (var PossibleButtonMatch in this.KeyButtons) {
 								if (PossibleButtonMatch.Checked) {
 									PossibleButtonMatch.JoystickTrigger = Event.Key;
 									PossibleButtonMatch.Checked = false;

@@ -61,13 +61,41 @@ namespace CogwheelSlimDX.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ; 
+        ///   Looks up a localized string similar to ; General buttons:
+        ///Space=&gt;0.Start;0.Pause
+        ///Back=&gt;0.Reset
+        ///
+        ///; Player 1 joypad:
         ///Up=&gt;0.Up
         ///Down=&gt;0.Down
         ///Left=&gt;0.Left
         ///Right=&gt;0.Right
         ///ControlKey=&gt;0.Trigger1
-        ///Menu=&gt;0.Trigger2.
+        ///Menu=&gt;0.Trigger2
+        ///
+        ///; Player 2 joypad:
+        ///Home=&gt;1.Up
+        ///End=&gt;1.Down
+        ///Delete=&gt;1.Left
+        ///PageDown=&gt;1.Right
+        ///Insert=&gt;1.Trigger1
+        ///PageUp=&gt;1.Trigger2
+        ///
+        ///; Player 1 number pad:
+        ///D0=&gt;0.Number0
+        ///D1=&gt;0.Number1
+        ///D2=&gt;0.Number2
+        ///D3=&gt;0.Number3
+        ///D4=&gt;0.Number4
+        ///D5=&gt;0.Number5
+        ///D6=&gt;0.Number6
+        ///D7=&gt;0.Number7
+        ///D8=&gt;0.Number8
+        ///D9=&gt;0.Number9
+        ///OemMinus=&gt;0.Star
+        ///Oemplus=&gt;0.Hash
+        ///
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Config_DefaultKeyMapping {
             get {
@@ -161,6 +189,34 @@ namespace CogwheelSlimDX.Properties {
         internal static string Html_About {
             get {
                 return ResourceManager.GetString("Html_About", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_ArrowDown {
+            get {
+                object obj = ResourceManager.GetObject("Icon_ArrowDown", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_ArrowLeft {
+            get {
+                object obj = ResourceManager.GetObject("Icon_ArrowLeft", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_ArrowRight {
+            get {
+                object obj = ResourceManager.GetObject("Icon_ArrowRight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_ArrowUp {
+            get {
+                object obj = ResourceManager.GetObject("Icon_ArrowUp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

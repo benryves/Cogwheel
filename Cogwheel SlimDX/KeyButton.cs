@@ -180,17 +180,49 @@ namespace CogwheelSlimDX {
 
 
 		private void UpdateText() {
+			this.Image = null;
 			switch (this.Mode) { 
 				case Modes.Keyboard:
 					base.Text = GetKeyName(this.KeyboardTrigger);
 					break;
 				case Modes.Joystick:
-					base.Text = this.JoystickTrigger.ToString();
+					base.Text = "";
+					switch (this.JoystickTrigger) {
+						case JoystickInputSource.InputTrigger.XAxisDecrease:
+							this.Image = Properties.Resources.Icon_ArrowLeft;
+							break;
+						case JoystickInputSource.InputTrigger.XAxisIncrease:
+							this.Image = Properties.Resources.Icon_ArrowRight;
+							break;
+						case JoystickInputSource.InputTrigger.YAxisDecrease:
+							this.Image = Properties.Resources.Icon_ArrowUp;
+							break;
+						case JoystickInputSource.InputTrigger.YAxisIncrease:
+							this.Image = Properties.Resources.Icon_ArrowDown;
+							break;
+						case JoystickInputSource.InputTrigger.ZAxisDecrease:
+						case JoystickInputSource.InputTrigger.ZAxisIncrease:
+						case JoystickInputSource.InputTrigger.UAxisDecrease:
+						case JoystickInputSource.InputTrigger.UAxisIncrease:
+						case JoystickInputSource.InputTrigger.VAxisDecrease:
+						case JoystickInputSource.InputTrigger.VAxisIncrease:
+							base.Text = this.JoystickTrigger.ToString()[0] + "-Axis " + this.JoystickTrigger.ToString().Substring(5);
+							break;
+						case JoystickInputSource.InputTrigger.RudderDecrease:
+						case JoystickInputSource.InputTrigger.RudderIncrease:
+							base.Text = this.JoystickTrigger.ToString().Replace("Rudder", "Rudder ");
+							break;
+						default:
+							base.Text = this.JoystickTrigger.ToString().Replace("Button", "");
+							break;
+					}
+					
 					break;
 				default:
 					base.Text = "";
 					break;
 			}
+			this.ForeColor = Color.FromKnownColor(this.Text != "None" ? KnownColor.ControlText : KnownColor.GrayText);
 			
 
 		}

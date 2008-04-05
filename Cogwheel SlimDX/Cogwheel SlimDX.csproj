@@ -218,6 +218,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cog.ico" />
+    <None Include="Resources\arrow_down.png" />
+    <None Include="Resources\arrow_left.png" />
+    <None Include="Resources\arrow_right.png" />
+    <None Include="Resources\arrow_up.png" />
     <Content Include="Resources\Config_DefaultKeyMapping.txt" />
     <None Include="Resources\monitor.png" />
     <None Include="Resources\sound_low.png" />
