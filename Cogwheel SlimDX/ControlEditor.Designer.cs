@@ -100,7 +100,9 @@
 			this.ControllerEditing = new System.Windows.Forms.ComboBox();
 			this.TabIcons = new System.Windows.Forms.ImageList(this.components);
 			this.PanelOKCancel = new System.Windows.Forms.Panel();
+			this.ButtonButtonsTable = new System.Windows.Forms.TableLayoutPanel();
 			this.ButtonOK = new System.Windows.Forms.Button();
+			this.ShowJoystickControlPanel = new System.Windows.Forms.Button();
 			this.JoystickEventPoller = new System.Windows.Forms.Timer(this.components);
 			this.InputTabs.SuspendLayout();
 			this.KeyboardTab.SuspendLayout();
@@ -115,6 +117,7 @@
 			this.ColecoVisionGroup.SuspendLayout();
 			this.ColecoVisionTable.SuspendLayout();
 			this.PanelOKCancel.SuspendLayout();
+			this.ButtonButtonsTable.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// InputTabs
@@ -285,6 +288,7 @@
 			this.Player1TL.AutoCheck = false;
 			this.Player1TL.ControllerIndex = 0;
 			this.Player1TL.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.Player1TL.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.Player1TL.InputButton = CogwheelSlimDX.InputButton.Trigger1;
 			this.Player1TL.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player1TL.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -303,6 +307,7 @@
 			this.Player1TR.AutoCheck = false;
 			this.Player1TR.ControllerIndex = 0;
 			this.Player1TR.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.Player1TR.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.Player1TR.InputButton = CogwheelSlimDX.InputButton.Trigger2;
 			this.Player1TR.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player1TR.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -321,6 +326,7 @@
 			this.Player1Up.AutoCheck = false;
 			this.Player1Up.ControllerIndex = 0;
 			this.Player1Up.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.Player1Up.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.Player1Up.InputButton = CogwheelSlimDX.InputButton.Up;
 			this.Player1Up.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player1Up.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -339,6 +345,7 @@
 			this.Player1Down.AutoCheck = false;
 			this.Player1Down.ControllerIndex = 0;
 			this.Player1Down.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.Player1Down.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.Player1Down.InputButton = CogwheelSlimDX.InputButton.Down;
 			this.Player1Down.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player1Down.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -357,6 +364,7 @@
 			this.Player1Left.AutoCheck = false;
 			this.Player1Left.ControllerIndex = 0;
 			this.Player1Left.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.Player1Left.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.Player1Left.InputButton = CogwheelSlimDX.InputButton.Left;
 			this.Player1Left.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player1Left.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -375,6 +383,7 @@
 			this.Player1Right.AutoCheck = false;
 			this.Player1Right.ControllerIndex = 0;
 			this.Player1Right.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.Player1Right.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.Player1Right.InputButton = CogwheelSlimDX.InputButton.Right;
 			this.Player1Right.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player1Right.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -393,6 +402,7 @@
 			this.Player2TL.AutoCheck = false;
 			this.Player2TL.ControllerIndex = 1;
 			this.Player2TL.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.Player2TL.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.Player2TL.InputButton = CogwheelSlimDX.InputButton.Trigger1;
 			this.Player2TL.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player2TL.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -411,6 +421,7 @@
 			this.Player2TR.AutoCheck = false;
 			this.Player2TR.ControllerIndex = 1;
 			this.Player2TR.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.Player2TR.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.Player2TR.InputButton = CogwheelSlimDX.InputButton.Trigger2;
 			this.Player2TR.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player2TR.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -429,6 +440,7 @@
 			this.Player2Up.AutoCheck = false;
 			this.Player2Up.ControllerIndex = 1;
 			this.Player2Up.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.Player2Up.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.Player2Up.InputButton = CogwheelSlimDX.InputButton.Up;
 			this.Player2Up.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player2Up.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -447,6 +459,7 @@
 			this.Player2Down.AutoCheck = false;
 			this.Player2Down.ControllerIndex = 1;
 			this.Player2Down.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.Player2Down.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.Player2Down.InputButton = CogwheelSlimDX.InputButton.Down;
 			this.Player2Down.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player2Down.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -465,6 +478,7 @@
 			this.Player2Left.AutoCheck = false;
 			this.Player2Left.ControllerIndex = 1;
 			this.Player2Left.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.Player2Left.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.Player2Left.InputButton = CogwheelSlimDX.InputButton.Left;
 			this.Player2Left.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player2Left.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -483,6 +497,7 @@
 			this.Player2Right.AutoCheck = false;
 			this.Player2Right.ControllerIndex = 1;
 			this.Player2Right.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.Player2Right.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.Player2Right.InputButton = CogwheelSlimDX.InputButton.Right;
 			this.Player2Right.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.Player2Right.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -563,6 +578,7 @@
 			this.ConsolePause.AutoCheck = false;
 			this.ConsolePause.ControllerIndex = 0;
 			this.ConsolePause.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ConsolePause.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.ConsolePause.InputButton = CogwheelSlimDX.InputButton.Pause;
 			this.ConsolePause.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.ConsolePause.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -581,6 +597,7 @@
 			this.ConsoleReset.AutoCheck = false;
 			this.ConsoleReset.ControllerIndex = 0;
 			this.ConsoleReset.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ConsoleReset.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.ConsoleReset.InputButton = CogwheelSlimDX.InputButton.Reset;
 			this.ConsoleReset.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.ConsoleReset.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -599,6 +616,7 @@
 			this.ConsoleStart.AutoCheck = false;
 			this.ConsoleStart.ControllerIndex = 0;
 			this.ConsoleStart.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ConsoleStart.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.ConsoleStart.InputButton = CogwheelSlimDX.InputButton.Start;
 			this.ConsoleStart.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.ConsoleStart.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -709,6 +727,7 @@
 			this.keyButton23.AutoCheck = false;
 			this.keyButton23.ControllerIndex = 0;
 			this.keyButton23.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton23.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton23.InputButton = CogwheelSlimDX.InputButton.Hash;
 			this.keyButton23.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton23.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -727,6 +746,7 @@
 			this.keyButton24.AutoCheck = false;
 			this.keyButton24.ControllerIndex = 1;
 			this.keyButton24.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton24.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton24.InputButton = CogwheelSlimDX.InputButton.Hash;
 			this.keyButton24.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton24.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -805,6 +825,7 @@
 			this.keyButton1.AutoCheck = false;
 			this.keyButton1.ControllerIndex = 0;
 			this.keyButton1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton1.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton1.InputButton = CogwheelSlimDX.InputButton.Number1;
 			this.keyButton1.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton1.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -823,6 +844,7 @@
 			this.keyButton2.AutoCheck = false;
 			this.keyButton2.ControllerIndex = 0;
 			this.keyButton2.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton2.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton2.InputButton = CogwheelSlimDX.InputButton.Number2;
 			this.keyButton2.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton2.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -841,6 +863,7 @@
 			this.keyButton3.AutoCheck = false;
 			this.keyButton3.ControllerIndex = 0;
 			this.keyButton3.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton3.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton3.InputButton = CogwheelSlimDX.InputButton.Number3;
 			this.keyButton3.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton3.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -859,6 +882,7 @@
 			this.keyButton4.AutoCheck = false;
 			this.keyButton4.ControllerIndex = 0;
 			this.keyButton4.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton4.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton4.InputButton = CogwheelSlimDX.InputButton.Number4;
 			this.keyButton4.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton4.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -877,6 +901,7 @@
 			this.keyButton5.AutoCheck = false;
 			this.keyButton5.ControllerIndex = 0;
 			this.keyButton5.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton5.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton5.InputButton = CogwheelSlimDX.InputButton.Number5;
 			this.keyButton5.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton5.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -895,6 +920,7 @@
 			this.keyButton6.AutoCheck = false;
 			this.keyButton6.ControllerIndex = 0;
 			this.keyButton6.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton6.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton6.InputButton = CogwheelSlimDX.InputButton.Number6;
 			this.keyButton6.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton6.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -913,6 +939,7 @@
 			this.keyButton7.AutoCheck = false;
 			this.keyButton7.ControllerIndex = 1;
 			this.keyButton7.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton7.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton7.InputButton = CogwheelSlimDX.InputButton.Number1;
 			this.keyButton7.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton7.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -931,6 +958,7 @@
 			this.keyButton8.AutoCheck = false;
 			this.keyButton8.ControllerIndex = 1;
 			this.keyButton8.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton8.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton8.InputButton = CogwheelSlimDX.InputButton.Number2;
 			this.keyButton8.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton8.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -949,6 +977,7 @@
 			this.keyButton9.AutoCheck = false;
 			this.keyButton9.ControllerIndex = 1;
 			this.keyButton9.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton9.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton9.InputButton = CogwheelSlimDX.InputButton.Number3;
 			this.keyButton9.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton9.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -967,6 +996,7 @@
 			this.keyButton10.AutoCheck = false;
 			this.keyButton10.ControllerIndex = 1;
 			this.keyButton10.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton10.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton10.InputButton = CogwheelSlimDX.InputButton.Number4;
 			this.keyButton10.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton10.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -985,6 +1015,7 @@
 			this.keyButton11.AutoCheck = false;
 			this.keyButton11.ControllerIndex = 1;
 			this.keyButton11.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton11.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton11.InputButton = CogwheelSlimDX.InputButton.Number5;
 			this.keyButton11.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton11.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -1003,6 +1034,7 @@
 			this.keyButton12.AutoCheck = false;
 			this.keyButton12.ControllerIndex = 1;
 			this.keyButton12.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton12.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton12.InputButton = CogwheelSlimDX.InputButton.Number6;
 			this.keyButton12.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton12.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -1031,6 +1063,7 @@
 			this.keyButton13.AutoCheck = false;
 			this.keyButton13.ControllerIndex = 0;
 			this.keyButton13.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton13.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton13.InputButton = CogwheelSlimDX.InputButton.Number7;
 			this.keyButton13.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton13.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -1049,6 +1082,7 @@
 			this.keyButton14.AutoCheck = false;
 			this.keyButton14.ControllerIndex = 1;
 			this.keyButton14.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton14.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton14.InputButton = CogwheelSlimDX.InputButton.Number7;
 			this.keyButton14.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton14.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -1077,6 +1111,7 @@
 			this.keyButton15.AutoCheck = false;
 			this.keyButton15.ControllerIndex = 0;
 			this.keyButton15.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton15.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton15.InputButton = CogwheelSlimDX.InputButton.Number8;
 			this.keyButton15.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton15.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -1095,6 +1130,7 @@
 			this.keyButton16.AutoCheck = false;
 			this.keyButton16.ControllerIndex = 1;
 			this.keyButton16.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton16.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton16.InputButton = CogwheelSlimDX.InputButton.Number8;
 			this.keyButton16.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton16.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -1123,6 +1159,7 @@
 			this.keyButton17.AutoCheck = false;
 			this.keyButton17.ControllerIndex = 0;
 			this.keyButton17.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton17.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton17.InputButton = CogwheelSlimDX.InputButton.Number9;
 			this.keyButton17.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton17.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -1141,6 +1178,7 @@
 			this.keyButton18.AutoCheck = false;
 			this.keyButton18.ControllerIndex = 1;
 			this.keyButton18.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton18.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton18.InputButton = CogwheelSlimDX.InputButton.Number9;
 			this.keyButton18.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton18.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -1169,6 +1207,7 @@
 			this.keyButton19.AutoCheck = false;
 			this.keyButton19.ControllerIndex = 0;
 			this.keyButton19.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton19.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton19.InputButton = CogwheelSlimDX.InputButton.Number0;
 			this.keyButton19.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton19.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -1187,6 +1226,7 @@
 			this.keyButton20.AutoCheck = false;
 			this.keyButton20.ControllerIndex = 1;
 			this.keyButton20.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton20.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton20.InputButton = CogwheelSlimDX.InputButton.Number0;
 			this.keyButton20.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton20.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -1215,6 +1255,7 @@
 			this.keyButton21.AutoCheck = false;
 			this.keyButton21.ControllerIndex = 0;
 			this.keyButton21.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton21.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton21.InputButton = CogwheelSlimDX.InputButton.Star;
 			this.keyButton21.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton21.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -1233,6 +1274,7 @@
 			this.keyButton22.AutoCheck = false;
 			this.keyButton22.ControllerIndex = 1;
 			this.keyButton22.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton22.ForeColor = System.Drawing.SystemColors.GrayText;
 			this.keyButton22.InputButton = CogwheelSlimDX.InputButton.Star;
 			this.keyButton22.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
 			this.keyButton22.KeyboardTrigger = System.Windows.Forms.Keys.None;
@@ -1264,7 +1306,7 @@
 			// 
 			// PanelOKCancel
 			// 
-			this.PanelOKCancel.Controls.Add(this.ButtonOK);
+			this.PanelOKCancel.Controls.Add(this.ButtonButtonsTable);
 			this.PanelOKCancel.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.PanelOKCancel.Location = new System.Drawing.Point(3, 396);
 			this.PanelOKCancel.Name = "PanelOKCancel";
@@ -1272,16 +1314,46 @@
 			this.PanelOKCancel.Size = new System.Drawing.Size(363, 29);
 			this.PanelOKCancel.TabIndex = 1;
 			// 
+			// ButtonButtonsTable
+			// 
+			this.ButtonButtonsTable.ColumnCount = 2;
+			this.ButtonButtonsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.ButtonButtonsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.ButtonButtonsTable.Controls.Add(this.ButtonOK, 1, 0);
+			this.ButtonButtonsTable.Controls.Add(this.ShowJoystickControlPanel, 0, 0);
+			this.ButtonButtonsTable.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ButtonButtonsTable.Location = new System.Drawing.Point(0, 3);
+			this.ButtonButtonsTable.Margin = new System.Windows.Forms.Padding(0);
+			this.ButtonButtonsTable.Name = "ButtonButtonsTable";
+			this.ButtonButtonsTable.RowCount = 1;
+			this.ButtonButtonsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.ButtonButtonsTable.Size = new System.Drawing.Size(363, 26);
+			this.ButtonButtonsTable.TabIndex = 1;
+			// 
 			// ButtonOK
 			// 
 			this.ButtonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.ButtonOK.Dock = System.Windows.Forms.DockStyle.Right;
-			this.ButtonOK.Location = new System.Drawing.Point(288, 3);
+			this.ButtonOK.Location = new System.Drawing.Point(288, 0);
+			this.ButtonOK.Margin = new System.Windows.Forms.Padding(0);
 			this.ButtonOK.Name = "ButtonOK";
 			this.ButtonOK.Size = new System.Drawing.Size(75, 26);
 			this.ButtonOK.TabIndex = 0;
 			this.ButtonOK.Text = "OK";
 			this.ButtonOK.UseVisualStyleBackColor = true;
+			// 
+			// ShowJoystickControlPanel
+			// 
+			this.ShowJoystickControlPanel.Dock = System.Windows.Forms.DockStyle.Left;
+			this.ShowJoystickControlPanel.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Joystick;
+			this.ShowJoystickControlPanel.Location = new System.Drawing.Point(0, 0);
+			this.ShowJoystickControlPanel.Margin = new System.Windows.Forms.Padding(0);
+			this.ShowJoystickControlPanel.Name = "ShowJoystickControlPanel";
+			this.ShowJoystickControlPanel.Size = new System.Drawing.Size(26, 26);
+			this.ShowJoystickControlPanel.TabIndex = 1;
+			this.ShowJoystickControlPanel.UseVisualStyleBackColor = true;
+			this.ShowJoystickControlPanel.Visible = false;
+			this.ShowJoystickControlPanel.Click += new System.EventHandler(this.ShowJoystickControlPanel_Click);
 			// 
 			// JoystickEventPoller
 			// 
@@ -1321,6 +1393,7 @@
 			this.ColecoVisionTable.ResumeLayout(false);
 			this.ColecoVisionTable.PerformLayout();
 			this.PanelOKCancel.ResumeLayout(false);
+			this.ButtonButtonsTable.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -1404,5 +1477,7 @@
 		private System.Windows.Forms.Panel EditorPanel;
 		private System.Windows.Forms.Panel ButtonPanel;
 		private System.Windows.Forms.Timer JoystickEventPoller;
+		private System.Windows.Forms.TableLayoutPanel ButtonButtonsTable;
+		private System.Windows.Forms.Button ShowJoystickControlPanel;
 	}
 }

@@ -33,6 +33,7 @@ namespace CogwheelSlimDX {
 				if (Source is KeyboardInputSource) {
 					this.KeyboardTab.Tag = Source;
 				} else if (Source is JoystickInputSource) {
+					this.ShowJoystickControlPanel.Visible = true;
 					var JoystickSource = (JoystickInputSource)Source;
 					this.InputTabs.TabPages.Add(new TabPage() {
 						Text = JoystickSource.Joystick.Name,
@@ -126,6 +127,12 @@ namespace CogwheelSlimDX {
 				}
 				++JoystickPollCount;
 			}
+		}
+
+		private void ShowJoystickControlPanel_Click(object sender, EventArgs e) {
+			try {
+				System.Diagnostics.Process.Start("joy.cpl");
+			} catch { }
 		}
 
 	}
