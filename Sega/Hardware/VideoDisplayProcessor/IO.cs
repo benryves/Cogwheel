@@ -195,7 +195,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// Latches the value of the horizontal counter.
 		/// </summary>
 		public void LatchHorizontalCounter() {
-			int ExecutedCycles = (this.Emulator.TotalExecutedCycles) - this.CpuCyclesAtStartOfScanline;
+			int ExecutedCycles = this.Emulator.TotalExecutedCycles - this.CpuCyclesAtStartOfScanline;
 			int PixelsDrawn = (ExecutedCycles * 342) / this.CpuCyclesPerScanline;
 			this.HorizontalCounter = (byte)((PixelsDrawn) / 2);
 		}
