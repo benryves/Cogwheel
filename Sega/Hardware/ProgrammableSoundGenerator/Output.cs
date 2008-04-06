@@ -35,7 +35,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			lock (this.Emulator) {
 				lock (this.QueuedWrites) {
 					
-					int TotalCyclesExecuted = this.Emulator.TotalExecutedCycles;
+					int TotalCyclesExecuted = this.Emulator.ExpectedExecutedCycles;
 					int ElapsedCycles = TotalCyclesExecuted - this.LastCpuClocks;
 
 					for (int i = 0; i < buffer.Length; i += 2) {

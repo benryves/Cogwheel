@@ -120,7 +120,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <remarks>The writes are committed by the <see cref="CreateSamples"/> method.</remarks>
 		public void WriteStereoDistributionQueued(byte value) {
 			this.QueuedWrites.Enqueue(new QueuedWrite(this) {
-				Time = this.Emulator.TotalExecutedCycles,
+				Time = this.Emulator.ExpectedExecutedCycles,
 				Value = value,
 				Destination = WriteDestination.StereoDistribution,
 			});
