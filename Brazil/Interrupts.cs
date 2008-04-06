@@ -58,25 +58,8 @@ namespace BeeDevelopment.Brazil {
 			this.Halted = false;
 		}
 
-		private void DisableInterrupts() {
-			this.IFF1 = false;
-			this.IFF2 = false;
-			InstructionsUntilEI = 0;
-		}
-
-		/// <summary>
-		/// Gets or sets the number of instructions to execute before interrupts are re-enabled.
-		/// </summary>
-		public int InstructionsUntilEI { get; set; }
-
-		private void EnableInterrupts() {
-			InstructionsUntilEI = 2;
-		}
-
 		private void Halt() {
 			this.Halted = true;			
 		}
-
-	
 	}
 }

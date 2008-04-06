@@ -33,53 +33,8 @@ namespace BeeDevelopment.Brazil {
 
 			while (this.PendingCycles > 0) {
 
-				if (this.InstructionsUntilEI > 0) {
-					if (--InstructionsUntilEI == 0) {
-						this.IFF1 = true;
-						this.IFF2 = true;
-					}
-				}			
+				bool Interruptable = true;
 
-				// NMI
-				if (this.NonMaskableInterruptPending) {
-
-					this.TakeCycles(11);
-					this.Halted = false;
-					this.NonMaskableInterruptPending = false;
-
-					this.IFF2 = this.IFF1;
-					this.IFF1 = false;
-
-					WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
-					RegPC.Value16 = 0x66;
-				}
-
-				// IRQ
-				if (this.IFF1 && this.Interrupt) { // Are interrupts enabled?
-				
-					this.Halted = false;
-
-					this.IFF1 = false;
-					this.IFF2 = false;
-
-					switch (interruptMode) {
-						case 0:
-							this.TakeCycles(11);
-							break;
-						case 1:
-							this.TakeCycles(13);
-							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
-							RegPC.Value16 = 0x38;
-							break;
-						case 2:
-							this.TakeCycles(19);
-							TUS = (ushort)(RegI * 256 + 0);
-							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
-							RegPC.Low8 = ReadMemory(TUS++); RegPC.High8 = ReadMemory(TUS);
-							break;
-					}
-				}
-				
 				if (this.Halted) {
 					++RegR;
 					this.TakeCycles(4);
@@ -5496,6 +5451,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x57: // LD A, I
 											this.TakeCycles(9);
 											RegAF.High8 = RegI;
+											RegFlagP = this.IFF2;
 											break;
 										case 0x58: // IN E, C
 											this.TakeCycles(12);
@@ -5543,6 +5499,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x5F: // LD A, R
 											this.TakeCycles(9);
 											RegAF.High8 = (byte)(RegR & 0x7F);
+											RegFlagP = this.IFF2;
 											break;
 										case 0x60: // IN H, C
 											this.TakeCycles(12);
@@ -6276,7 +6233,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xF3: // DI
 									this.TakeCycles(4);
-									this.DisableInterrupts();
+									this.IFF1 = this.IFF2 = false;
 									break;
 								case 0xF4: // CALL P, nn
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
@@ -6322,7 +6279,8 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xFB: // EI
 									this.TakeCycles(4);
-									this.EnableInterrupts();
+									this.IFF1 = this.IFF2 = true;
+									Interruptable = false;
 									break;
 								case 0xFC: // CALL M, nn
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
@@ -6778,6 +6736,7 @@ namespace BeeDevelopment.Brazil {
 								case 0x57: // LD A, I
 									this.TakeCycles(9);
 									RegAF.High8 = RegI;
+									RegFlagP = this.IFF2;
 									break;
 								case 0x58: // IN E, C
 									this.TakeCycles(12);
@@ -6825,6 +6784,7 @@ namespace BeeDevelopment.Brazil {
 								case 0x5F: // LD A, R
 									this.TakeCycles(9);
 									RegAF.High8 = (byte)(RegR & 0x7F);
+									RegFlagP = this.IFF2;
 									break;
 								case 0x60: // IN H, C
 									this.TakeCycles(12);
@@ -7558,7 +7518,7 @@ namespace BeeDevelopment.Brazil {
 							break;
 						case 0xF3: // DI
 							this.TakeCycles(4);
-							this.DisableInterrupts();
+							this.IFF1 = this.IFF2 = false;
 							break;
 						case 0xF4: // CALL P, nn
 							TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
@@ -7604,7 +7564,8 @@ namespace BeeDevelopment.Brazil {
 							break;
 						case 0xFB: // EI
 							this.TakeCycles(4);
-							this.EnableInterrupts();
+							this.IFF1 = this.IFF2 = true;
+							Interruptable = false;
 							break;
 						case 0xFC: // CALL M, nn
 							TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
@@ -10468,6 +10429,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x57: // LD A, I
 											this.TakeCycles(9);
 											RegAF.High8 = RegI;
+											RegFlagP = this.IFF2;
 											break;
 										case 0x58: // IN E, C
 											this.TakeCycles(12);
@@ -10515,6 +10477,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x5F: // LD A, R
 											this.TakeCycles(9);
 											RegAF.High8 = (byte)(RegR & 0x7F);
+											RegFlagP = this.IFF2;
 											break;
 										case 0x60: // IN H, C
 											this.TakeCycles(12);
@@ -11248,7 +11211,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xF3: // DI
 									this.TakeCycles(4);
-									this.DisableInterrupts();
+									this.IFF1 = this.IFF2 = false;
 									break;
 								case 0xF4: // CALL P, nn
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
@@ -11294,7 +11257,8 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xFB: // EI
 									this.TakeCycles(4);
-									this.EnableInterrupts();
+									this.IFF1 = this.IFF2 = true;
+									Interruptable = false;
 									break;
 								case 0xFC: // CALL M, nn
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
@@ -11333,6 +11297,45 @@ namespace BeeDevelopment.Brazil {
 					}
 
 				}
+
+				// Process interrupt requests.
+				if (this.NonMaskableInterruptPending) {
+
+					this.TakeCycles(11);
+					this.Halted = false;
+					this.NonMaskableInterruptPending = false;
+
+					this.IFF2 = this.IFF1;
+					this.IFF1 = false;
+
+					WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
+					RegPC.Value16 = 0x66;
+				
+				} else if (this.IFF1 && this.Interrupt && Interruptable) {
+				
+					this.Halted = false;
+
+					this.IFF1 = this.IFF2 = false;
+
+					switch (interruptMode) {
+						case 0:
+							this.TakeCycles(11);
+							break;
+						case 1:
+							this.TakeCycles(13);
+							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
+							RegPC.Value16 = 0x38;
+							break;
+						case 2:
+							this.TakeCycles(19);
+							TUS = (ushort)(RegI * 256 + 0);
+							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
+							RegPC.Low8 = ReadMemory(TUS++); RegPC.High8 = ReadMemory(TUS);
+							break;
+					}
+				}
+
+				
 			}
 		}
 		
