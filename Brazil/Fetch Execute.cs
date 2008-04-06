@@ -33,19 +33,30 @@ namespace BeeDevelopment.Brazil {
 
 			while (this.PendingCycles > 0) {
 
-				// Handle interrupts
-
 				if (this.InstructionsUntilEI > 0) {
 					if (--InstructionsUntilEI == 0) {
 						this.IFF1 = true;
 						this.IFF2 = true;
 					}
+				}			
+
+				// NMI
+				if (this.NonMaskableInterruptPending) {
+
+					this.TakeCycles(11);
+					this.Halted = false;
+					this.NonMaskableInterruptPending = false;
+
+					this.IFF2 = this.IFF1;
+					this.IFF1 = false;
+
+					WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
+					RegPC.Value16 = 0x66;
 				}
 
+				// IRQ
 				if (this.IFF1 && this.Interrupt) { // Are interrupts enabled?
-
-					// IRQ
-
+				
 					this.Halted = false;
 
 					this.IFF1 = false;
@@ -67,21 +78,9 @@ namespace BeeDevelopment.Brazil {
 							RegPC.Low8 = ReadMemory(TUS++); RegPC.High8 = ReadMemory(TUS);
 							break;
 					}
-					
-				} else if (this.NonMaskableInterruptPending) {
-
-					// NMI
-
-					this.TakeCycles(11);
-					this.Halted = false;
-					this.NonMaskableInterruptPending = false;
-
-					this.IFF2 = this.IFF1;
-					this.IFF1 = false;
-
-					WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
-					RegPC.Value16 = 0x66;
-				} else if (this.Halted) {
+				}
+				
+				if (this.Halted) {
 					++RegR;
 					this.TakeCycles(4);
 				} else {
