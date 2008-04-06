@@ -134,6 +134,9 @@
 			this.SupportsLineInterrupts = Mark3OrLater;
 			this.InterruptPin = model == HardwareModel.ColecoVision ? InterruptPins.NonMaskable : InterruptPins.Maskable;
 
+			// Timing:
+			this.CpuCyclesPerScanline = 228;
+
 		}
 
 	}

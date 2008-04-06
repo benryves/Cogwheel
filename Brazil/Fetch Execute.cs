@@ -3,16 +3,19 @@ namespace BeeDevelopment.Brazil {
 	public partial class Z80A {
 	
 		/// <summary>
-		/// Gets or sets the total number of clock cycles executed.
+		/// Gets or sets the total number of clock cycles actually executed.
 		/// </summary>
-		public int TotalExecutedCycles {
-			get { return this.ThisCycles; }
-			set { this.ThisCycles = value; this.NextCycles = value; }
-		}
+		public int TotalExecutedCycles { get; set; }
+
+		/// <summary>
+		/// Gets or sets the number of clock cycles that have been requested to be executed.
+		/// </summary>		
+		public int ExpectedExecutedCycles { get; set; }
 		
-		private int ThisCycles = 0;
-		private int NextCycles =  0;
-		private int RunningCycles;
+		/// <summary>
+		/// Gets or sets the number of clock cycles left to run.
+		/// </summary>
+		public int PendingCycles { get; set; }
 		
 		/// <summary>
 		/// Runs the CPU for a particular number of clock cycles.
@@ -20,7 +23,9 @@ namespace BeeDevelopment.Brazil {
 		/// <param name="cycles">The number of cycles to run the CPU emulator for. Specify -1 to run for a single instruction.</param>
 		public void FetchExecute(int cycles) {
 			//*/
-			if (cycles == -1) RunningCycles = 1; else RunningCycles += cycles;
+			
+			this.ExpectedExecutedCycles += cycles;
+			this.PendingCycles += cycles;
 			
 			int ClockCycles = 4;
 			
@@ -28,7 +33,7 @@ namespace BeeDevelopment.Brazil {
 			
 			byte TB; byte TBH; byte TBL; byte TB1; byte TB2; sbyte TSB; ushort TUS; int TI1; int TI2; int TIR;
 
-			while (RunningCycles > 0) {
+			while (this.PendingCycles > 0) {
 
 				#region Interrupts
 
@@ -11422,11 +11427,8 @@ namespace BeeDevelopment.Brazil {
 					
 				}
 				
-				if (cycles == -1) break;
-				RunningCycles -= ClockCycles;
-				
-				this.ThisCycles = this.NextCycles;
-				this.NextCycles += ClockCycles;
+				this.PendingCycles -= ClockCycles;
+				this.TotalExecutedCycles += ClockCycles;
 				
 			}			
 		}

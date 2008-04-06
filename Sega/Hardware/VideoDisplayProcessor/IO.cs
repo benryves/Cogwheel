@@ -67,6 +67,16 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		public byte ReadBuffer { get { return this.readBuffer; } set { this.readBuffer = value; } }
 		private byte readBuffer;
 
+		/// <summary>
+		/// Gets the current vertical counter position.
+		/// </summary>
+		public byte VerticalCounter { get; private set; }
+
+		/// <summary>
+		/// Gets the current horizontal counter position.
+		/// </summary>
+		public byte HorizontalCounter { get; private set; }
+
 		#endregion
 
 		#region Methods
@@ -181,6 +191,14 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			return b;
 		}
 
+		/// <summary>
+		/// Latches the value of the horizontal counter.
+		/// </summary>
+		public void LatchHorizontalCounter() {
+			int ExecutedCycles = (this.Emulator.TotalExecutedCycles) - this.CpuCyclesAtStartOfScanline;
+			int PixelsDrawn = (ExecutedCycles * 342) / this.CpuCyclesPerScanline;
+			this.HorizontalCounter = (byte)((PixelsDrawn) / 2);
+		}
 
 		#endregion
 

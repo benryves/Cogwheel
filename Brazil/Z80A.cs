@@ -22,7 +22,8 @@ namespace BeeDevelopment.Brazil {
 		public virtual void Reset() {
 			this.ResetRegisters();
 			this.ResetInterrupts();
-			this.RunningCycles = 0;
+			this.PendingCycles = 0;
+			this.ExpectedExecutedCycles = 0;
 			this.TotalExecutedCycles = 0;
 		}
 	}

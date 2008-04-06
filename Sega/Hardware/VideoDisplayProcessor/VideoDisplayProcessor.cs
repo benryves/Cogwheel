@@ -127,7 +127,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// </summary>
 		public VideoDisplayProcessor(Emulator emulator) {
 			this.Emulator = emulator;
-			this.SetupVCounters(); // Not fun.
+			this.SetupTimingCounters(); // Not fun.
 			this.SetCapabilitiesByModel(HardwareModel.MasterSystem2);
 			this.Reset();
 		}

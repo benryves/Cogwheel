@@ -89,8 +89,8 @@ namespace BeeDevelopment.Sega8Bit {
 							return 0xFF;
 						case 0x40: // VDP vertical retrace counter.
 							return this.Video.VerticalCounter;
-						case 0x41: // TODO: H counter.
-							return this.Video.VerticalCounter;
+						case 0x41: // VDP horizontal counter.
+							return this.Video.HorizontalCounter;
 						case 0x80: // VDP Data.
 							return this.Video.ReadData();
 						case 0x81: // VDP Control.
@@ -166,8 +166,12 @@ namespace BeeDevelopment.Sega8Bit {
 								break;
 
 							case 0x01: // I/O port (controller ports) control.
+								bool OldTh = this.SegaPorts[0].TH.State || this.SegaPorts[1].TH.State;
 								this.SegaPorts[0].WriteState(value >> 0);
 								this.SegaPorts[1].WriteState(value >> 2);
+								if (!OldTh && (this.SegaPorts[0].TH.State || this.SegaPorts[1].TH.State)) {
+									this.Video.LatchHorizontalCounter();
+								}
 								break;
 
 							case 0x40: // PSG.

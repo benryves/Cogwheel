@@ -80,12 +80,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		public TimingProfiles TimingProfile { get; private set; }
 
 		/// <summary>
-		/// Gets the current vertical counter position.
-		/// </summary>
-		public byte VerticalCounter { get; private set; }
-
-
-		/// <summary>
 		/// Gets or sets the sprite overflow flag.
 		/// </summary>
 		/// <remarks>This flag is set automatically when more than the supported number of sprites are displayed on a scanline.</remarks>
@@ -123,6 +117,16 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the number of CPU cycles that are executed per scanline.
+		/// </summary>
+		public int CpuCyclesPerScanline { get; set; }
+
+		/// <summary>
+		/// Gets or sets the total number of CPU cycles that had been executed at the start of the current scanline.
+		/// </summary>
+		public int CpuCyclesAtStartOfScanline { get; set; }
+
 		#endregion
 
 		#region Display Timing
@@ -133,11 +137,16 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		private byte[,] ReturnedVCounters;
 
 		/// <summary>
-		/// Preloads the ReturnedVCounters table with counter position data.
+		/// Maps a [pixel index] -> value returned by the HCount port.
 		/// </summary>
-		private void SetupVCounters() {
+		private byte[] ReturnedHCounters;
 
-			ReturnedVCounters = new byte[6, 313];
+		/// <summary>
+		/// Preloads the ReturnedVCounters/ReturnedHCounters tables with counter position data.
+		/// </summary>
+		private void SetupTimingCounters() {
+
+			this.ReturnedVCounters = new byte[6, 313];
 
 			for (int i = 0; i < 6; ++i) {
 				int VCountReturn = 0;
@@ -151,6 +160,24 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 						case TimingProfiles.Pal224: if (VCountReturn == 0x103) VCountReturn = 0x1CA; break;
 						case TimingProfiles.Pal240: if (VCountReturn == 0x10B) VCountReturn = 0x1D2; break;
 					}
+				}
+			}
+
+			this.ReturnedHCounters = new byte[342];
+			byte CounterValue = 0;
+			bool CounterRepeated = false;
+			bool BlockRepeated = false;
+			for (int i = 0; i < ReturnedHCounters.Length; ++i) {
+				ReturnedHCounters[i] = CounterValue;
+				if (((CounterValue + 1) % 3) == 0 && !CounterRepeated) {
+					CounterRepeated = true;
+				} else {
+					CounterRepeated = false;
+					++CounterValue;
+				}
+				if (CounterValue == 0xF0 && !BlockRepeated) {
+					BlockRepeated = true;
+					CounterValue = 0x94;
 				}
 			}
 		}
@@ -400,6 +427,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// </summary>
 		/// <returns>True if the <see cref="VideoDisplayProcessor"/> has just completed rendering the active display.</returns>
 		public bool RasteriseLine() {
+
+			this.CpuCyclesAtStartOfScanline = this.Emulator.ExpectedExecutedCycles;
 
 			// Start by updating the vertical counter.
 			this.VerticalCounter = this.ReturnedVCounters[(int)this.TimingProfile, this.ScanlinesDrawn];

@@ -93,15 +93,15 @@ namespace BeeDevelopment.Sega8Bit {
 			this.ResetAll();
 		}
 
-
 		/// <summary>
 		/// Runs the emulator for a single scanline.
 		/// </summary>
 		/// <returns>True if the last line of the active display has been rendered.</returns>
 		public bool RunScanline() {
-			this.FetchExecute(228);
+			this.FetchExecute(this.Video.CpuCyclesPerScanline);
 			return this.Video.RasteriseLine();
 		}
+
 
 		/// <summary>
 		/// Runs the emulator for a compete frame.
