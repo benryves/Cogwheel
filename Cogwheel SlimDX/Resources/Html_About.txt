@@ -18,12 +18,12 @@ table { border-collapse: collapse; width: 100%; }
 <table>
 	<tr>
 		<th>Type</th>
-		<th>Document</th>
+		<th>Resource</th>
 		<th>Author</th>
 	</tr>
 	<tr>
-		<th rowspan="3">General</th>
-		<td><a href="http://www.smspower.org/dev/docs/wiki/">SMS Power! dev wiki</a></td>
+		<th rowspan="4">General</th>
+		<td><a href="http://www.smspower.org/dev/docs/wiki/">SMS Power! Development Wiki</a></td>
 		<td></td>
 	</tr>
 	<tr>
@@ -35,13 +35,21 @@ table { border-collapse: collapse; width: 100%; }
 		<td>Richard Talbot-Watkins</td>
 	</tr>
 	<tr>
-		<th rowspan="2">Video</th>
+		<td><a href="http://www.smspower.org/forums/">SMS Power! Forums</a></td>
+		<td><a href="http://www.smspower.org/forums/memberlist.php?mode=posts&order=DESC">SMS Power! Regulars</a></td>
+	</tr>
+	<tr>
+		<th rowspan="3">Video</th>
 		<td><a href="http://www.smspower.org/dev/docs/msvdp-20021112.txt">SMS VDP Documentation</a></td>
 		<td><a href="http://cgfm2.emuviews.com/">Charles MacDonald</a></td>
 	</tr>
 	<tr>
 		<td><a href="http://www.smspower.org/dev/docs/TMS9918.pdf">TMS9918A Data Sheet</a></td>
 		<td><a href="http://www.ti.com/">Texas Instruments</a></td>
+	</tr>
+	<tr>
+		<td><a href="http://www.ndsretro.com/download/SMSVDTST.zip">SMS VDP Tester</a></td>
+		<td><a href="http://www.ndsretro.com/">FluBBa</a></td>
 	</tr>
 	<tr>
 		<th>Sound</th>
