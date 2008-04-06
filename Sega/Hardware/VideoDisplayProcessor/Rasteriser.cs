@@ -296,11 +296,9 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// </summary>
 		private void EndFrame() {
 
-			if (this.lastCompleteFrame == null || this.CroppedFrameWidth != this.LastCompleteFrameWidth || this.CroppedFrameHeight != this.LastCompleteFrameHeight) {
-				this.LastCompleteFrameWidth = this.CroppedFrameWidth;
-				this.LastCompleteFrameHeight = this.CroppedFrameHeight;
-				this.lastCompleteFrame = new int[this.CroppedFrameWidth * this.CroppedFrameHeight];
-			}
+			this.LastCompleteFrameWidth = this.CroppedFrameWidth;
+			this.LastCompleteFrameHeight = this.CroppedFrameHeight;
+			this.lastCompleteFrame = new int[this.CroppedFrameWidth * this.CroppedFrameHeight];
 
 			switch (this.ResizingMode) {
 				case ResizingModes.Normal:
