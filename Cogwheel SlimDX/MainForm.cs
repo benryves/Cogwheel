@@ -30,6 +30,13 @@ namespace CogwheelSlimDX {
 		private RomIdentifier Identifier;
 		protected bool Paused = false;
 
+		// Last frames (L/R):
+		private int[] LastLeftFrameData = null; private int LastLeftFrameWidth, LastLeftFrameHeight;
+		private int[] LastRightFrameData = null; private int LastRightFrameWidth, LastRightFrameHeight;
+
+		Emulator.GlassesShutter LastEye;
+		int FramesSinceEyeWasUpdated = 5;
+
 		#endregion
 
 		#region Properties
@@ -165,7 +172,39 @@ namespace CogwheelSlimDX {
 
 		private void RepaintVideo() {
 			var BackdropColour = Color.FromArgb(Emulator.Video.LastBackdropColour);
-			this.Dumper.Render(this.Emulator.Video.LastCompleteFrame, this.Emulator.Video.LastCompleteFrameWidth, this.Emulator.Video.LastCompleteFrameHeight, BackdropColour);
+
+			if (this.Emulator.OpenGlassesShutter != this.LastEye) {
+				this.LastEye = this.Emulator.OpenGlassesShutter;
+				this.FramesSinceEyeWasUpdated = 0;
+			} else {
+				++this.FramesSinceEyeWasUpdated;
+				if (this.FramesSinceEyeWasUpdated > 100) this.FramesSinceEyeWasUpdated = 100;
+			}
+
+			if (this.FramesSinceEyeWasUpdated < 3) {
+
+				if (this.Emulator.OpenGlassesShutter == Emulator.GlassesShutter.Left) {
+					this.LastLeftFrameData = this.Emulator.Video.LastCompleteFrame;
+					this.LastLeftFrameWidth = this.Emulator.Video.LastCompleteFrameWidth;
+					this.LastLeftFrameHeight = this.Emulator.Video.LastCompleteFrameHeight;
+				} else {
+					this.LastRightFrameData = this.Emulator.Video.LastCompleteFrame;
+					this.LastRightFrameWidth = this.Emulator.Video.LastCompleteFrameWidth;
+					this.LastRightFrameHeight = this.Emulator.Video.LastCompleteFrameHeight;
+				}
+
+				BackdropColour = Color.Black;
+
+				this.Dumper.Render(
+					FrameBlender.Blend(FrameBlender.BlendMode.Anaglyph, this.LastLeftFrameData, this.LastLeftFrameWidth, this.LastLeftFrameHeight, this.LastRightFrameData, this.LastRightFrameWidth, this.LastRightFrameHeight),
+					this.LastLeftFrameWidth, this.LastLeftFrameHeight,
+					BackdropColour
+				);
+
+			} else {
+				this.Dumper.Render(this.Emulator.Video.LastCompleteFrame, this.Emulator.Video.LastCompleteFrameWidth, this.Emulator.Video.LastCompleteFrameHeight, BackdropColour);
+			}
+
 			this.RenderPanel.BackColor = BackdropColour;
 
 		}
