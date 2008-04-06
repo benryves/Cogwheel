@@ -26,6 +26,25 @@ namespace BeeDevelopment.Sega8Bit {
 
 		#endregion
 
+		#region Memory-Mapped Devices
+
+		/// <summary>
+		/// Defines the shutters on the 3D glasses.
+		/// </summary>
+		public enum GlassesShutter {
+			/// <summary>Represents the right shutter on the 3D glasses.</summary>
+			Right,
+			/// <summary>Represents the left shutter on the 3D glasses.</summary>
+			Left,
+		}
+
+		/// <summary>
+		/// Gets or sets the open shutter on the Sega 3D glasses.
+		/// </summary>
+		public GlassesShutter OpenGlassesShutter { get; set; }
+
+		#endregion
+
 		/// <summary>
 		/// Gets a <see cref="MemoryCheatCollection"/> of cheats.
 		/// </summary>
@@ -49,6 +68,8 @@ namespace BeeDevelopment.Sega8Bit {
 				default: // Sega (default) memory map.
 					// Writes to RAM.
 					if (address >= 0xC000) this.WorkRam.Write(address, value);
+					// Writes to 3D glasses.
+					if (address >= 0xFFF8 && address <= 0xFFFB) this.OpenGlassesShutter = (GlassesShutter)(value & 1);
 					// Writes to all other devices.
 					this.CartridgeSlot.Write(address, value);
 					this.CardSlot.Write(address, value);

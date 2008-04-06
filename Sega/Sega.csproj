@@ -79,6 +79,7 @@
     <Compile Include="Mappers\Standard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SegaControllerPort.cs" />
+    <Compile Include="Utility\FrameBlender.cs" />
     <Compile Include="Utility\Patch.cs" />
     <Compile Include="Utility\RomData.cs" />
     <Compile Include="Utility\RomIdentifier.cs" />

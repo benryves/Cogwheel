@@ -928,22 +928,22 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 		#region Pixel Blending
 
-		private int BlendHalfRgb(int a, int b) {
+		internal static int BlendHalfRgb(int a, int b) {
 			return unchecked((int)0xFF000000) | ((((a & 0x0000FF) + (b & 0x0000FF)) / 2) & 0x0000FF) | ((((a & 0x00FF00) + (b & 0x00FF00)) / 2) & 0x00FF00) | ((((a & 0xFF0000) + (b & 0xFF0000)) / 2) & 0xFF0000);
 		}
 
-		private int BlendQuarterRgb(int a, int b) {
+		internal static int BlendQuarterRgb(int a, int b) {
 			return unchecked((int)0xFF000000) | ((((a & 0x0000FF) + (b & 0x0000FF) * 3) / 4) & 0x0000FF) | ((((a & 0x00FF00) + (b & 0x00FF00) * 3) / 4) & 0x00FF00) | ((((a & 0xFF0000) + (b & 0xFF0000) * 3) / 4) & 0xFF0000);
 		}
 
-		private int BlendEighthRgb(int a, int b) {
+		internal static int BlendEighthRgb(int a, int b) {
 			return unchecked((int)0xFF000000) | ((((a & 0x0000FF) + (b & 0x0000FF) * 7) / 8) & 0x0000FF) | ((((a & 0x00FF00) + (b & 0x00FF00) * 7) / 8) & 0x00FF00) | ((((a & 0xFF0000) + (b & 0xFF0000) * 7) / 8) & 0xFF0000);
 		}
 
-		private int BlendThirdRgb(int a, int b) {
+		internal static int BlendThirdRgb(int a, int b) {
 			return unchecked((int)0xFF000000) | ((((a & 0x0000FF) + (b & 0x0000FF) * 2) / 3) & 0x0000FF) | ((((a & 0x00FF00) + (b & 0x00FF00) * 2) / 3) & 0x00FF00) | ((((a & 0xFF0000) + (b & 0xFF0000) * 2) / 3) & 0xFF0000);
 		}
-		private int BlendThirdRgb(int a, int b, int c) {
+		internal static int BlendThirdRgb(int a, int b, int c) {
 			return unchecked((int)0xFF000000) |
 				   ((((a & 0x0000FF) + (b & 0x0000FF) + (c & 0x0000FF)) / 3) & 0x0000FF)
 				 | ((((a & 0x00FF00) + (b & 0x00FF00) + (c & 0x00FF00)) / 3) & 0x00FF00)
