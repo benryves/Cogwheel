@@ -287,6 +287,9 @@ namespace CogwheelSlimDX {
 			}
 		}
 
+		private void RenderPanel_DoubleClick(object sender, EventArgs e) {
+			this.ToggleFullScreenMenu.PerformClick();
+		}
 
 		#endregion
 

@@ -75,6 +75,7 @@
 			this.RenderPanel.Name = "RenderPanel";
 			this.RenderPanel.Size = new System.Drawing.Size(325, 262);
 			this.RenderPanel.TabIndex = 0;
+			this.RenderPanel.DoubleClick += new System.EventHandler(this.RenderPanel_DoubleClick);
 			this.RenderPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RenderPanel_MouseMove);
 			// 
 			// Menus
