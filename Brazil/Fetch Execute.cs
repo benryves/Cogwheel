@@ -186,10 +186,11 @@ namespace BeeDevelopment.Brazil {
 							break;
 						case 0x20: // JR NZ, d
 							TSB = (sbyte)ReadMemory(RegPC.Value16++);
-							this.TakeCycles(7);
 							if (!RegFlagZ) {
-								this.TakeCycles(5);
+								this.TakeCycles(12);
 								RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+							} else {
+								this.TakeCycles(7);
 							}
 							break;
 						case 0x21: // LD HL, nn
@@ -224,10 +225,11 @@ namespace BeeDevelopment.Brazil {
 							break;
 						case 0x28: // JR Z, d
 							TSB = (sbyte)ReadMemory(RegPC.Value16++);
-							this.TakeCycles(7);
 							if (RegFlagZ) {
-								this.TakeCycles(5);
+								this.TakeCycles(12);
 								RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+							} else {
+								this.TakeCycles(7);
 							}
 							break;
 						case 0x29: // ADD HL, HL
@@ -266,10 +268,11 @@ namespace BeeDevelopment.Brazil {
 							break;
 						case 0x30: // JR NC, d
 							TSB = (sbyte)ReadMemory(RegPC.Value16++);
-							this.TakeCycles(7);
 							if (!RegFlagC) {
-								this.TakeCycles(5);
+								this.TakeCycles(12);
 								RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+							} else {
+								this.TakeCycles(7);
 							}
 							break;
 						case 0x31: // LD SP, nn
@@ -302,10 +305,11 @@ namespace BeeDevelopment.Brazil {
 							break;
 						case 0x38: // JR C, d
 							TSB = (sbyte)ReadMemory(RegPC.Value16++);
-							this.TakeCycles(7);
 							if (RegFlagC) {
-								this.TakeCycles(5);
+								this.TakeCycles(12);
 								RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+							} else {
+								this.TakeCycles(7);
 							}
 							break;
 						case 0x39: // ADD HL, SP
@@ -2578,10 +2582,11 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x20: // JR NZ, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
-									this.TakeCycles(7);
 									if (!RegFlagZ) {
-										this.TakeCycles(5);
+										this.TakeCycles(12);
 										RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+									} else {
+										this.TakeCycles(7);
 									}
 									break;
 								case 0x21: // LD IX, nn
@@ -2616,10 +2621,11 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x28: // JR Z, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
-									this.TakeCycles(7);
 									if (RegFlagZ) {
-										this.TakeCycles(5);
+										this.TakeCycles(12);
 										RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+									} else {
+										this.TakeCycles(7);
 									}
 									break;
 								case 0x29: // ADD IX, IX
@@ -2658,10 +2664,11 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x30: // JR NC, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
-									this.TakeCycles(7);
 									if (!RegFlagC) {
-										this.TakeCycles(5);
+										this.TakeCycles(12);
 										RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+									} else {
+										this.TakeCycles(7);
 									}
 									break;
 								case 0x31: // LD SP, nn
@@ -2697,10 +2704,11 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x38: // JR C, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
-									this.TakeCycles(7);
 									if (RegFlagC) {
-										this.TakeCycles(5);
+										this.TakeCycles(12);
 										RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+									} else {
+										this.TakeCycles(7);
 									}
 									break;
 								case 0x39: // ADD IX, SP
@@ -5888,19 +5896,19 @@ namespace BeeDevelopment.Brazil {
 											this.TakeCycles(4);
 											break;
 										case 0xB0: // LDIR
-											this.TakeCycles(16);
 											WriteMemory(RegDE.Value16++, ReadMemory(RegHL.Value16++));
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
 											RegFlagN = false;
 											if (RegBC.Value16 != 0) {
-												this.TakeCycles(5);
+												this.TakeCycles(21);
 												RegPC.Value16 -= 2;
+											} else {
+												this.TakeCycles(16);
 											}
 											break;
 										case 0xB1: // CPIR
-											this.TakeCycles(16);
 											TB1 = ReadMemory(RegHL.Value16++); TB2 = (byte)(RegAF.High8 - TB1);
 											RegFlagN = true;
 											RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
@@ -5909,30 +5917,34 @@ namespace BeeDevelopment.Brazil {
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											if (RegBC.Value16 != 0 && !RegFlagZ) {
-												this.TakeCycles(5);
+												this.TakeCycles(21);
 												RegPC.Value16 -= 2;
+											} else {
+												this.TakeCycles(16);
 											}
 											break;
 										case 0xB2: // INIR
-											this.TakeCycles(16);
 											WriteMemory(RegHL.Value16++, ReadHardware(RegBC.Value16));
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
-												this.TakeCycles(5);
+												this.TakeCycles(21);
 												RegPC.Value16 -= 2;
+											} else {
+												this.TakeCycles(16);
 											}
 											break;
 										case 0xB3: // OTIR
-											this.TakeCycles(16);
 											WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16++));
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
-												this.TakeCycles(5);
+												this.TakeCycles(21);
 												RegPC.Value16 -= 2;
+											} else {
+												this.TakeCycles(16);
 											}
 											break;
 										case 0xB4: // NOP
@@ -5948,19 +5960,19 @@ namespace BeeDevelopment.Brazil {
 											this.TakeCycles(4);
 											break;
 										case 0xB8: // LDDR
-											this.TakeCycles(16);
 											WriteMemory(RegDE.Value16--, ReadMemory(RegHL.Value16--));
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
 											RegFlagN = false;
 											if (RegBC.Value16 != 0) {
-												this.TakeCycles(5);
+												this.TakeCycles(21);
 												RegPC.Value16 -= 2;
+											} else {
+												this.TakeCycles(16);
 											}
 											break;
 										case 0xB9: // CPDR
-											this.TakeCycles(16);
 											TB1 = ReadMemory(RegHL.Value16--); TB2 = (byte)(RegAF.High8 - TB1);
 											RegFlagN = true;
 											RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
@@ -5969,30 +5981,34 @@ namespace BeeDevelopment.Brazil {
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											if (RegBC.Value16 != 0 && !RegFlagZ) {
-												this.TakeCycles(5);
+												this.TakeCycles(21);
 												RegPC.Value16 -= 2;
+											} else {
+												this.TakeCycles(16);
 											}
 											break;
 										case 0xBA: // INDR
-											this.TakeCycles(16);
 											WriteMemory(RegHL.Value16--, ReadHardware(RegBC.Value16));
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
-												this.TakeCycles(5);
+												this.TakeCycles(21);
 												RegPC.Value16 -= 2;
+											} else {
+												this.TakeCycles(16);
 											}
 											break;
 										case 0xBB: // OTDR
-											this.TakeCycles(16);
 											WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16--));
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
-												this.TakeCycles(5);
+												this.TakeCycles(21);
 												RegPC.Value16 -= 2;
+											} else {
+												this.TakeCycles(16);
 											}
 											break;
 										case 0xBC: // NOP
@@ -7173,19 +7189,19 @@ namespace BeeDevelopment.Brazil {
 									this.TakeCycles(4);
 									break;
 								case 0xB0: // LDIR
-									this.TakeCycles(16);
 									WriteMemory(RegDE.Value16++, ReadMemory(RegHL.Value16++));
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									RegFlagH = false;
 									RegFlagN = false;
 									if (RegBC.Value16 != 0) {
-										this.TakeCycles(5);
+										this.TakeCycles(21);
 										RegPC.Value16 -= 2;
+									} else {
+										this.TakeCycles(16);
 									}
 									break;
 								case 0xB1: // CPIR
-									this.TakeCycles(16);
 									TB1 = ReadMemory(RegHL.Value16++); TB2 = (byte)(RegAF.High8 - TB1);
 									RegFlagN = true;
 									RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
@@ -7194,30 +7210,34 @@ namespace BeeDevelopment.Brazil {
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									if (RegBC.Value16 != 0 && !RegFlagZ) {
-										this.TakeCycles(5);
+										this.TakeCycles(21);
 										RegPC.Value16 -= 2;
+									} else {
+										this.TakeCycles(16);
 									}
 									break;
 								case 0xB2: // INIR
-									this.TakeCycles(16);
 									WriteMemory(RegHL.Value16++, ReadHardware(RegBC.Value16));
 									--RegBC.High8;
 									RegFlagZ = RegBC.High8 == 0;
 									RegFlagN = true;
 									if (RegBC.High8 != 0) {
-										this.TakeCycles(5);
+										this.TakeCycles(21);
 										RegPC.Value16 -= 2;
+									} else {
+										this.TakeCycles(16);
 									}
 									break;
 								case 0xB3: // OTIR
-									this.TakeCycles(16);
 									WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16++));
 									--RegBC.High8;
 									RegFlagZ = RegBC.High8 == 0;
 									RegFlagN = true;
 									if (RegBC.High8 != 0) {
-										this.TakeCycles(5);
+										this.TakeCycles(21);
 										RegPC.Value16 -= 2;
+									} else {
+										this.TakeCycles(16);
 									}
 									break;
 								case 0xB4: // NOP
@@ -7233,19 +7253,19 @@ namespace BeeDevelopment.Brazil {
 									this.TakeCycles(4);
 									break;
 								case 0xB8: // LDDR
-									this.TakeCycles(16);
 									WriteMemory(RegDE.Value16--, ReadMemory(RegHL.Value16--));
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									RegFlagH = false;
 									RegFlagN = false;
 									if (RegBC.Value16 != 0) {
-										this.TakeCycles(5);
+										this.TakeCycles(21);
 										RegPC.Value16 -= 2;
+									} else {
+										this.TakeCycles(16);
 									}
 									break;
 								case 0xB9: // CPDR
-									this.TakeCycles(16);
 									TB1 = ReadMemory(RegHL.Value16--); TB2 = (byte)(RegAF.High8 - TB1);
 									RegFlagN = true;
 									RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
@@ -7254,30 +7274,34 @@ namespace BeeDevelopment.Brazil {
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									if (RegBC.Value16 != 0 && !RegFlagZ) {
-										this.TakeCycles(5);
+										this.TakeCycles(21);
 										RegPC.Value16 -= 2;
+									} else {
+										this.TakeCycles(16);
 									}
 									break;
 								case 0xBA: // INDR
-									this.TakeCycles(16);
 									WriteMemory(RegHL.Value16--, ReadHardware(RegBC.Value16));
 									--RegBC.High8;
 									RegFlagZ = RegBC.High8 == 0;
 									RegFlagN = true;
 									if (RegBC.High8 != 0) {
-										this.TakeCycles(5);
+										this.TakeCycles(21);
 										RegPC.Value16 -= 2;
+									} else {
+										this.TakeCycles(16);
 									}
 									break;
 								case 0xBB: // OTDR
-									this.TakeCycles(16);
 									WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16--));
 									--RegBC.High8;
 									RegFlagZ = RegBC.High8 == 0;
 									RegFlagN = true;
 									if (RegBC.High8 != 0) {
-										this.TakeCycles(5);
+										this.TakeCycles(21);
 										RegPC.Value16 -= 2;
+									} else {
+										this.TakeCycles(16);
 									}
 									break;
 								case 0xBC: // NOP
@@ -7723,10 +7747,11 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x20: // JR NZ, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
-									this.TakeCycles(7);
 									if (!RegFlagZ) {
-										this.TakeCycles(5);
+										this.TakeCycles(12);
 										RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+									} else {
+										this.TakeCycles(7);
 									}
 									break;
 								case 0x21: // LD IY, nn
@@ -7761,10 +7786,11 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x28: // JR Z, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
-									this.TakeCycles(7);
 									if (RegFlagZ) {
-										this.TakeCycles(5);
+										this.TakeCycles(12);
 										RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+									} else {
+										this.TakeCycles(7);
 									}
 									break;
 								case 0x29: // ADD IY, IY
@@ -7803,10 +7829,11 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x30: // JR NC, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
-									this.TakeCycles(7);
 									if (!RegFlagC) {
-										this.TakeCycles(5);
+										this.TakeCycles(12);
 										RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+									} else {
+										this.TakeCycles(7);
 									}
 									break;
 								case 0x31: // LD SP, nn
@@ -7842,10 +7869,11 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x38: // JR C, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
-									this.TakeCycles(7);
 									if (RegFlagC) {
-										this.TakeCycles(5);
+										this.TakeCycles(12);
 										RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+									} else {
+										this.TakeCycles(7);
 									}
 									break;
 								case 0x39: // ADD IY, SP
@@ -10865,19 +10893,19 @@ namespace BeeDevelopment.Brazil {
 											this.TakeCycles(4);
 											break;
 										case 0xB0: // LDIR
-											this.TakeCycles(16);
 											WriteMemory(RegDE.Value16++, ReadMemory(RegHL.Value16++));
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
 											RegFlagN = false;
 											if (RegBC.Value16 != 0) {
-												this.TakeCycles(5);
+												this.TakeCycles(21);
 												RegPC.Value16 -= 2;
+											} else {
+												this.TakeCycles(16);
 											}
 											break;
 										case 0xB1: // CPIR
-											this.TakeCycles(16);
 											TB1 = ReadMemory(RegHL.Value16++); TB2 = (byte)(RegAF.High8 - TB1);
 											RegFlagN = true;
 											RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
@@ -10886,30 +10914,34 @@ namespace BeeDevelopment.Brazil {
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											if (RegBC.Value16 != 0 && !RegFlagZ) {
-												this.TakeCycles(5);
+												this.TakeCycles(21);
 												RegPC.Value16 -= 2;
+											} else {
+												this.TakeCycles(16);
 											}
 											break;
 										case 0xB2: // INIR
-											this.TakeCycles(16);
 											WriteMemory(RegHL.Value16++, ReadHardware(RegBC.Value16));
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
-												this.TakeCycles(5);
+												this.TakeCycles(21);
 												RegPC.Value16 -= 2;
+											} else {
+												this.TakeCycles(16);
 											}
 											break;
 										case 0xB3: // OTIR
-											this.TakeCycles(16);
 											WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16++));
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
-												this.TakeCycles(5);
+												this.TakeCycles(21);
 												RegPC.Value16 -= 2;
+											} else {
+												this.TakeCycles(16);
 											}
 											break;
 										case 0xB4: // NOP
@@ -10925,19 +10957,19 @@ namespace BeeDevelopment.Brazil {
 											this.TakeCycles(4);
 											break;
 										case 0xB8: // LDDR
-											this.TakeCycles(16);
 											WriteMemory(RegDE.Value16--, ReadMemory(RegHL.Value16--));
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
 											RegFlagN = false;
 											if (RegBC.Value16 != 0) {
-												this.TakeCycles(5);
+												this.TakeCycles(21);
 												RegPC.Value16 -= 2;
+											} else {
+												this.TakeCycles(16);
 											}
 											break;
 										case 0xB9: // CPDR
-											this.TakeCycles(16);
 											TB1 = ReadMemory(RegHL.Value16--); TB2 = (byte)(RegAF.High8 - TB1);
 											RegFlagN = true;
 											RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
@@ -10946,30 +10978,34 @@ namespace BeeDevelopment.Brazil {
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											if (RegBC.Value16 != 0 && !RegFlagZ) {
-												this.TakeCycles(5);
+												this.TakeCycles(21);
 												RegPC.Value16 -= 2;
+											} else {
+												this.TakeCycles(16);
 											}
 											break;
 										case 0xBA: // INDR
-											this.TakeCycles(16);
 											WriteMemory(RegHL.Value16--, ReadHardware(RegBC.Value16));
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
-												this.TakeCycles(5);
+												this.TakeCycles(21);
 												RegPC.Value16 -= 2;
+											} else {
+												this.TakeCycles(16);
 											}
 											break;
 										case 0xBB: // OTDR
-											this.TakeCycles(16);
 											WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16--));
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
-												this.TakeCycles(5);
+												this.TakeCycles(21);
 												RegPC.Value16 -= 2;
+											} else {
+												this.TakeCycles(16);
 											}
 											break;
 										case 0xBC: // NOP
@@ -11298,8 +11334,9 @@ namespace BeeDevelopment.Brazil {
 				// Process interrupt requests.
 				if (this.NonMaskableInterruptPending) {
 
-					this.TakeCycles(11);
 					this.Halted = false;
+
+					this.TakeCycles(11);
 					this.NonMaskableInterruptPending = false;
 
 					this.IFF2 = this.IFF1;
@@ -11316,7 +11353,7 @@ namespace BeeDevelopment.Brazil {
 
 					switch (interruptMode) {
 						case 0:
-							this.TakeCycles(11);
+							this.TakeCycles(13);
 							break;
 						case 1:
 							this.TakeCycles(13);
@@ -11335,7 +11372,7 @@ namespace BeeDevelopment.Brazil {
 				
 			}
 		}
-		
+
 		private void TakeCycles(int cycles) {
 			this.TotalExecutedCycles += cycles;
 			this.PendingCycles -= cycles;
