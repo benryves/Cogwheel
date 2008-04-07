@@ -2336,7 +2336,6 @@ namespace BeeDevelopment.Brazil {
 							break;
 						case 0xCD: // CALL nn
 							this.TakeCycles(17);
-							this.TakeCycles(17);
 							TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = TUS;
@@ -4922,7 +4921,6 @@ namespace BeeDevelopment.Brazil {
 									}
 									break;
 								case 0xCD: // CALL nn
-									this.TakeCycles(17);
 									this.TakeCycles(17);
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
@@ -9900,7 +9898,6 @@ namespace BeeDevelopment.Brazil {
 									}
 									break;
 								case 0xCD: // CALL nn
-									this.TakeCycles(17);
 									this.TakeCycles(17);
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
