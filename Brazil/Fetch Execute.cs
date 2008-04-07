@@ -197,7 +197,7 @@ namespace BeeDevelopment.Brazil {
 							RegHL.Value16 = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 							break;
 						case 0x22: // LD (nn), HL
-							this.TakeCycles(20);
+							this.TakeCycles(16);
 							TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 							WriteMemory(TUS++, RegHL.Low8);
 							WriteMemory(TUS, RegHL.High8);
@@ -240,7 +240,7 @@ namespace BeeDevelopment.Brazil {
 							RegHL.Value16 = TUS;
 							break;
 						case 0x2A: // LD HL, (nn)
-							this.TakeCycles(20);
+							this.TakeCycles(16);
 							TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 							RegHL.Low8 = ReadMemory(TUS++); RegHL.High8 = ReadMemory(TUS);
 							break;
@@ -5528,7 +5528,7 @@ namespace BeeDevelopment.Brazil {
 											RegHL.Value16 = TUS;
 											break;
 										case 0x63: // LD (nn), HL
-											this.TakeCycles(20);
+											this.TakeCycles(16);
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											WriteMemory(TUS++, RegHL.Low8);
 											WriteMemory(TUS, RegHL.High8);
@@ -5584,7 +5584,7 @@ namespace BeeDevelopment.Brazil {
 											RegHL.Value16 = TUS;
 											break;
 										case 0x6B: // LD HL, (nn)
-											this.TakeCycles(20);
+											this.TakeCycles(16);
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											RegHL.Low8 = ReadMemory(TUS++); RegHL.High8 = ReadMemory(TUS);
 											break;
@@ -6813,7 +6813,7 @@ namespace BeeDevelopment.Brazil {
 									RegHL.Value16 = TUS;
 									break;
 								case 0x63: // LD (nn), HL
-									this.TakeCycles(20);
+									this.TakeCycles(16);
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									WriteMemory(TUS++, RegHL.Low8);
 									WriteMemory(TUS, RegHL.High8);
@@ -6869,7 +6869,7 @@ namespace BeeDevelopment.Brazil {
 									RegHL.Value16 = TUS;
 									break;
 								case 0x6B: // LD HL, (nn)
-									this.TakeCycles(20);
+									this.TakeCycles(16);
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									RegHL.Low8 = ReadMemory(TUS++); RegHL.High8 = ReadMemory(TUS);
 									break;
@@ -10506,7 +10506,7 @@ namespace BeeDevelopment.Brazil {
 											RegHL.Value16 = TUS;
 											break;
 										case 0x63: // LD (nn), HL
-											this.TakeCycles(20);
+											this.TakeCycles(16);
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											WriteMemory(TUS++, RegHL.Low8);
 											WriteMemory(TUS, RegHL.High8);
@@ -10562,7 +10562,7 @@ namespace BeeDevelopment.Brazil {
 											RegHL.Value16 = TUS;
 											break;
 										case 0x6B: // LD HL, (nn)
-											this.TakeCycles(20);
+											this.TakeCycles(16);
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											RegHL.Low8 = ReadMemory(TUS++); RegHL.High8 = ReadMemory(TUS);
 											break;
