@@ -177,8 +177,10 @@ namespace CogwheelSlimDX {
 				this.LastEye = this.Emulator.OpenGlassesShutter;
 				this.FramesSinceEyeWasUpdated = 0;
 			} else {
-				++this.FramesSinceEyeWasUpdated;
-				if (this.FramesSinceEyeWasUpdated > 100) this.FramesSinceEyeWasUpdated = 100;
+				if (!this.Paused) {
+					++this.FramesSinceEyeWasUpdated;
+					if (this.FramesSinceEyeWasUpdated > 100) this.FramesSinceEyeWasUpdated = 100;
+				}
 			}
 
 			if (this.FramesSinceEyeWasUpdated < 3) {
