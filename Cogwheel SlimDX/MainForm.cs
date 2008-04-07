@@ -917,5 +917,21 @@ namespace CogwheelSlimDX {
 
 		#endregion
 
+		#region Debug
+
+		private void DebugVideoMenu_DropDownOpening(object sender, EventArgs e) {
+			this.BackgroundEnabledMenu.Checked = this.Emulator.Video.BackgroundLayerEnabled;
+			this.SpritesEnabledMenu.Checked = this.Emulator.Video.SpriteLayerEnabled;
+		}
+
+		private void BackgroundEnabledMenu_Click(object sender, EventArgs e) {
+			this.Emulator.Video.BackgroundLayerEnabled ^= true;
+		}
+
+		private void SpritesEnabledMenu_Click(object sender, EventArgs e) {
+			this.Emulator.Video.SpriteLayerEnabled ^= true;
+		}
+
+		#endregion
 	}
 }

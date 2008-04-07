@@ -63,6 +63,10 @@
 			this.OpenStateDialog = new System.Windows.Forms.OpenFileDialog();
 			this.SaveStateDialog = new System.Windows.Forms.SaveFileDialog();
 			this.CursorHider = new System.Windows.Forms.Timer(this.components);
+			this.DebugMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.DebugVideoMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.BackgroundEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.SpritesEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -83,6 +87,7 @@
 			this.Menus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FileMenu,
             this.ViewMenu,
+            this.DebugMenu,
             this.ToolsMenu,
             this.HelpMenu});
 			this.Menus.Location = new System.Drawing.Point(0, 0);
@@ -365,6 +370,38 @@
 			this.CursorHider.Interval = 1000;
 			this.CursorHider.Tick += new System.EventHandler(this.CursorHider_Tick);
 			// 
+			// DebugMenu
+			// 
+			this.DebugMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.DebugVideoMenu});
+			this.DebugMenu.Name = "DebugMenu";
+			this.DebugMenu.Size = new System.Drawing.Size(54, 20);
+			this.DebugMenu.Text = "&Debug";
+			// 
+			// DebugVideoMenu
+			// 
+			this.DebugVideoMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.BackgroundEnabledMenu,
+            this.SpritesEnabledMenu});
+			this.DebugVideoMenu.Name = "DebugVideoMenu";
+			this.DebugVideoMenu.Size = new System.Drawing.Size(152, 22);
+			this.DebugVideoMenu.Text = "&Video";
+			this.DebugVideoMenu.DropDownOpening += new System.EventHandler(this.DebugVideoMenu_DropDownOpening);
+			// 
+			// BackgroundEnabledMenu
+			// 
+			this.BackgroundEnabledMenu.Name = "BackgroundEnabledMenu";
+			this.BackgroundEnabledMenu.Size = new System.Drawing.Size(214, 22);
+			this.BackgroundEnabledMenu.Text = "&Background Layer Enabled";
+			this.BackgroundEnabledMenu.Click += new System.EventHandler(this.BackgroundEnabledMenu_Click);
+			// 
+			// SpritesEnabledMenu
+			// 
+			this.SpritesEnabledMenu.Name = "SpritesEnabledMenu";
+			this.SpritesEnabledMenu.Size = new System.Drawing.Size(214, 22);
+			this.SpritesEnabledMenu.Text = "&Sprite Layer Enabled";
+			this.SpritesEnabledMenu.Click += new System.EventHandler(this.SpritesEnabledMenu_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -429,6 +466,10 @@
 		private System.Windows.Forms.ToolStripMenuItem MaintainAspectRatioMenu;
 		private System.Windows.Forms.ToolStripMenuItem ToggleFullScreenMenu;
 		private System.Windows.Forms.Timer CursorHider;
+		private System.Windows.Forms.ToolStripMenuItem DebugMenu;
+		private System.Windows.Forms.ToolStripMenuItem DebugVideoMenu;
+		private System.Windows.Forms.ToolStripMenuItem BackgroundEnabledMenu;
+		private System.Windows.Forms.ToolStripMenuItem SpritesEnabledMenu;
 	}
 }
 
