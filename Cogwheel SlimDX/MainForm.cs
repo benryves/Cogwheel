@@ -142,6 +142,7 @@ namespace CogwheelSlimDX {
 
 		int SystemRefreshRate = PixelDumper.GetCurrentRefreshRate();
 		int RefreshStepper = 0;
+		bool IsLiveFrame = false;
 
 		void Application_Idle(object sender, EventArgs e) {
 
@@ -154,6 +155,7 @@ namespace CogwheelSlimDX {
 						while (RefreshStepper <= 0) {
 							RefreshStepper += SystemRefreshRate;
 							this.Emulator.RunFrame();
+							this.IsLiveFrame = true;
 							short[] Buffer = new short[735 * 2];
 							this.Emulator.Sound.CreateSamples(Buffer);
 							this.GeneratedSoundSamples.Enqueue(Buffer);
@@ -177,9 +179,10 @@ namespace CogwheelSlimDX {
 				this.LastEye = this.Emulator.OpenGlassesShutter;
 				this.FramesSinceEyeWasUpdated = 0;
 			} else {
-				if (!this.Paused) {
+				if (this.IsLiveFrame) {
 					++this.FramesSinceEyeWasUpdated;
 					if (this.FramesSinceEyeWasUpdated > 100) this.FramesSinceEyeWasUpdated = 100;
+					this.IsLiveFrame = false;
 				}
 			}
 
