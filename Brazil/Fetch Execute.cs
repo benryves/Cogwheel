@@ -285,11 +285,11 @@ namespace BeeDevelopment.Brazil {
 							++RegSP.Value16;
 							break;
 						case 0x34: // INC (HL)
-							this.TakeCycles(7);
+							this.TakeCycles(11);
 							TB = ReadMemory(RegHL.Value16); RegAF.Low8 = (byte)(TableInc[++TB] | (RegAF.Low8 & 1)); WriteMemory(RegHL.Value16, TB);
 							break;
 						case 0x35: // DEC (HL)
-							this.TakeCycles(7);
+							this.TakeCycles(11);
 							TB = ReadMemory(RegHL.Value16); RegAF.Low8 = (byte)(TableDec[--TB] | (RegAF.Low8 & 1)); WriteMemory(RegHL.Value16, TB);
 							break;
 						case 0x36: // LD (HL), n
