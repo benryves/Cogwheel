@@ -61,7 +61,7 @@ namespace BeeDevelopment.Sega8Bit {
 					}
 					break;
 
-				default: // Sega (default) I/O map.
+				default: // Master System (default) I/O map.
 					
 					if (this.HasGameGearPorts && this.RespondsToGameGearPorts) {
 						switch (port & 0xFF) {
@@ -140,7 +140,7 @@ namespace BeeDevelopment.Sega8Bit {
 					}
 					break;
 				
-				default: // Sega (default) I/O map.
+				default: // Master System (default) I/O map.
 					
 					if (this.HasGameGearPorts && (port & 0xFF) < 7) {
 						if (this.RespondsToGameGearPorts) {

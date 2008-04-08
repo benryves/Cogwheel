@@ -40,7 +40,7 @@ namespace BeeDevelopment.Sega8Bit {
 				case HardwareModel.MasterSystem2:
 				case HardwareModel.GameGear:
 				case HardwareModel.GameGearMasterSystem:
-					return HardwareFamily.Sega;
+					return HardwareFamily.MasterSystem;
 				case HardwareModel.ColecoVision:
 					return HardwareFamily.ColecoVision;
 				default:
