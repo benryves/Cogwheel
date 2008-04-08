@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BeeDevelopment.Sega8Bit {
+﻿
+namespace BeeDevelopment.Sega8Bit.Hardware {
 	/// <summary>
 	/// Defines the direction of a hardware pin.
 	/// </summary>

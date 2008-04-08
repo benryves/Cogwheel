@@ -51,6 +51,9 @@
     <Compile Include="Country.cs" />
     <Compile Include="Hardware\Controllers\ColecoVisionControllerPort.cs" />
     <Compile Include="Hardware\Controllers\SegaControllerPort.cs" />
+    <Compile Include="Hardware\PinDirection.cs" />
+    <Compile Include="Hardware\ProgrammablePeripheralInterface\IO.cs" />
+    <Compile Include="Hardware\ProgrammablePeripheralInterface\ProgrammablePeripheralInterface.cs" />
     <Compile Include="Hardware\ProgrammableSoundGenerator\StereoDistribution.cs" />
     <Compile Include="Hardware\ProgrammableSoundGenerator\Output.cs" />
     <Compile Include="Hardware\ProgrammableSoundGenerator\IO.cs" />
@@ -65,7 +68,6 @@
     <Compile Include="Region.cs" />
     <Compile Include="Emulator.Controllers.cs" />
     <Compile Include="Mappers\Codemasters.cs" />
-    <Compile Include="PinDirection.cs" />
     <Compile Include="Emulator.cs" />
     <Compile Include="Emulator.IO.cs" />
     <Compile Include="Emulator.Memory.cs" />
