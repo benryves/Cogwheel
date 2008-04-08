@@ -173,7 +173,7 @@ namespace CogwheelSlimDX {
 		#region Video Output / Window State
 
 		private void RepaintVideo() {
-			var BackdropColour = Color.FromArgb(Emulator.Video.LastBackdropColour);
+			var BackdropColour = Color.FromArgb(unchecked((int)0xFF000000 | Emulator.Video.LastBackdropColour));
 
 			if (this.Emulator.OpenGlassesShutter != this.LastEye) {
 				this.LastEye = this.Emulator.OpenGlassesShutter;

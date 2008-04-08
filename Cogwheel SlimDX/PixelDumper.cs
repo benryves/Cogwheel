@@ -217,11 +217,13 @@ namespace CogwheelSlimDX {
 					
 					{
 
-						var OutputStream = this.VideoOutput.LockRectangle(0, new Rectangle(0, 0, width, height), LockFlags.Discard);
-						int PitchOverflow = OutputStream.Pitch - width * 4;
-						for (int y = 0; y < height; ++y) {
-							OutputStream.Data.WriteRange(data, y * width, width);
-							OutputStream.Data.Seek(PitchOverflow, SeekOrigin.Current);
+						if (data != null) {
+							var OutputStream = this.VideoOutput.LockRectangle(0, new Rectangle(0, 0, width, height), LockFlags.Discard);
+							int PitchOverflow = OutputStream.Pitch - width * 4;
+							for (int y = 0; y < height; ++y) {
+								OutputStream.Data.WriteRange(data, y * width, width);
+								OutputStream.Data.Seek(PitchOverflow, SeekOrigin.Current);
+							}
 						}
 
 
