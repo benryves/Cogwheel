@@ -80,6 +80,7 @@ namespace BeeDevelopment.Sega8Bit {
 			this.Video = new VideoDisplayProcessor(this);
 			this.Sound = new ProgrammableSoundGenerator(this);
 			this.Cheats = new MemoryCheatCollection();
+			this.MainPPI = new ProgrammablePeripheralInterface();
 
 			#region Memory
 

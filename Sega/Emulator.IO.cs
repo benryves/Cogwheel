@@ -30,6 +30,12 @@ namespace BeeDevelopment.Sega8Bit {
 		/// </summary>
 		public bool RespondsToGameGearPorts { get; set; }
 
+		/// <summary>
+		/// Gets the <see cref="ProgrammablePeripheralInterface"/> used by the emulator.
+		/// </summary>
+		[StateNotSaved()]
+		public ProgrammablePeripheralInterface MainPPI { get; internal set; }
+
 		#endregion
 
 		/// <summary>
