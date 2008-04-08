@@ -5896,19 +5896,19 @@ namespace BeeDevelopment.Brazil {
 											this.TakeCycles(4);
 											break;
 										case 0xB0: // LDIR
+											this.TakeCycles(16);
 											WriteMemory(RegDE.Value16++, ReadMemory(RegHL.Value16++));
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
 											RegFlagN = false;
 											if (RegBC.Value16 != 0) {
-												this.TakeCycles(21);
+												this.TakeCycles(5);
 												RegPC.Value16 -= 2;
-											} else {
-												this.TakeCycles(16);
 											}
 											break;
 										case 0xB1: // CPIR
+											this.TakeCycles(16);
 											TB1 = ReadMemory(RegHL.Value16++); TB2 = (byte)(RegAF.High8 - TB1);
 											RegFlagN = true;
 											RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
@@ -5917,34 +5917,30 @@ namespace BeeDevelopment.Brazil {
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											if (RegBC.Value16 != 0 && !RegFlagZ) {
-												this.TakeCycles(21);
+												this.TakeCycles(5);
 												RegPC.Value16 -= 2;
-											} else {
-												this.TakeCycles(16);
 											}
 											break;
 										case 0xB2: // INIR
+											this.TakeCycles(16);
 											WriteMemory(RegHL.Value16++, ReadHardware(RegBC.Value16));
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
-												this.TakeCycles(21);
+												this.TakeCycles(5);
 												RegPC.Value16 -= 2;
-											} else {
-												this.TakeCycles(16);
 											}
 											break;
 										case 0xB3: // OTIR
+											this.TakeCycles(16);
 											WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16++));
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
-												this.TakeCycles(21);
+												this.TakeCycles(5);
 												RegPC.Value16 -= 2;
-											} else {
-												this.TakeCycles(16);
 											}
 											break;
 										case 0xB4: // NOP
@@ -5960,19 +5956,19 @@ namespace BeeDevelopment.Brazil {
 											this.TakeCycles(4);
 											break;
 										case 0xB8: // LDDR
+											this.TakeCycles(16);
 											WriteMemory(RegDE.Value16--, ReadMemory(RegHL.Value16--));
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
 											RegFlagN = false;
 											if (RegBC.Value16 != 0) {
-												this.TakeCycles(21);
+												this.TakeCycles(5);
 												RegPC.Value16 -= 2;
-											} else {
-												this.TakeCycles(16);
 											}
 											break;
 										case 0xB9: // CPDR
+											this.TakeCycles(16);
 											TB1 = ReadMemory(RegHL.Value16--); TB2 = (byte)(RegAF.High8 - TB1);
 											RegFlagN = true;
 											RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
@@ -5981,34 +5977,30 @@ namespace BeeDevelopment.Brazil {
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											if (RegBC.Value16 != 0 && !RegFlagZ) {
-												this.TakeCycles(21);
+												this.TakeCycles(5);
 												RegPC.Value16 -= 2;
-											} else {
-												this.TakeCycles(16);
 											}
 											break;
 										case 0xBA: // INDR
+											this.TakeCycles(16);
 											WriteMemory(RegHL.Value16--, ReadHardware(RegBC.Value16));
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
-												this.TakeCycles(21);
+												this.TakeCycles(5);
 												RegPC.Value16 -= 2;
-											} else {
-												this.TakeCycles(16);
 											}
 											break;
 										case 0xBB: // OTDR
+											this.TakeCycles(16);
 											WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16--));
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
-												this.TakeCycles(21);
+												this.TakeCycles(5);
 												RegPC.Value16 -= 2;
-											} else {
-												this.TakeCycles(16);
 											}
 											break;
 										case 0xBC: // NOP
@@ -7189,19 +7181,19 @@ namespace BeeDevelopment.Brazil {
 									this.TakeCycles(4);
 									break;
 								case 0xB0: // LDIR
+									this.TakeCycles(16);
 									WriteMemory(RegDE.Value16++, ReadMemory(RegHL.Value16++));
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									RegFlagH = false;
 									RegFlagN = false;
 									if (RegBC.Value16 != 0) {
-										this.TakeCycles(21);
+										this.TakeCycles(5);
 										RegPC.Value16 -= 2;
-									} else {
-										this.TakeCycles(16);
 									}
 									break;
 								case 0xB1: // CPIR
+									this.TakeCycles(16);
 									TB1 = ReadMemory(RegHL.Value16++); TB2 = (byte)(RegAF.High8 - TB1);
 									RegFlagN = true;
 									RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
@@ -7210,34 +7202,30 @@ namespace BeeDevelopment.Brazil {
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									if (RegBC.Value16 != 0 && !RegFlagZ) {
-										this.TakeCycles(21);
+										this.TakeCycles(5);
 										RegPC.Value16 -= 2;
-									} else {
-										this.TakeCycles(16);
 									}
 									break;
 								case 0xB2: // INIR
+									this.TakeCycles(16);
 									WriteMemory(RegHL.Value16++, ReadHardware(RegBC.Value16));
 									--RegBC.High8;
 									RegFlagZ = RegBC.High8 == 0;
 									RegFlagN = true;
 									if (RegBC.High8 != 0) {
-										this.TakeCycles(21);
+										this.TakeCycles(5);
 										RegPC.Value16 -= 2;
-									} else {
-										this.TakeCycles(16);
 									}
 									break;
 								case 0xB3: // OTIR
+									this.TakeCycles(16);
 									WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16++));
 									--RegBC.High8;
 									RegFlagZ = RegBC.High8 == 0;
 									RegFlagN = true;
 									if (RegBC.High8 != 0) {
-										this.TakeCycles(21);
+										this.TakeCycles(5);
 										RegPC.Value16 -= 2;
-									} else {
-										this.TakeCycles(16);
 									}
 									break;
 								case 0xB4: // NOP
@@ -7253,19 +7241,19 @@ namespace BeeDevelopment.Brazil {
 									this.TakeCycles(4);
 									break;
 								case 0xB8: // LDDR
+									this.TakeCycles(16);
 									WriteMemory(RegDE.Value16--, ReadMemory(RegHL.Value16--));
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									RegFlagH = false;
 									RegFlagN = false;
 									if (RegBC.Value16 != 0) {
-										this.TakeCycles(21);
+										this.TakeCycles(5);
 										RegPC.Value16 -= 2;
-									} else {
-										this.TakeCycles(16);
 									}
 									break;
 								case 0xB9: // CPDR
+									this.TakeCycles(16);
 									TB1 = ReadMemory(RegHL.Value16--); TB2 = (byte)(RegAF.High8 - TB1);
 									RegFlagN = true;
 									RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
@@ -7274,34 +7262,30 @@ namespace BeeDevelopment.Brazil {
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									if (RegBC.Value16 != 0 && !RegFlagZ) {
-										this.TakeCycles(21);
+										this.TakeCycles(5);
 										RegPC.Value16 -= 2;
-									} else {
-										this.TakeCycles(16);
 									}
 									break;
 								case 0xBA: // INDR
+									this.TakeCycles(16);
 									WriteMemory(RegHL.Value16--, ReadHardware(RegBC.Value16));
 									--RegBC.High8;
 									RegFlagZ = RegBC.High8 == 0;
 									RegFlagN = true;
 									if (RegBC.High8 != 0) {
-										this.TakeCycles(21);
+										this.TakeCycles(5);
 										RegPC.Value16 -= 2;
-									} else {
-										this.TakeCycles(16);
 									}
 									break;
 								case 0xBB: // OTDR
+									this.TakeCycles(16);
 									WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16--));
 									--RegBC.High8;
 									RegFlagZ = RegBC.High8 == 0;
 									RegFlagN = true;
 									if (RegBC.High8 != 0) {
-										this.TakeCycles(21);
+										this.TakeCycles(5);
 										RegPC.Value16 -= 2;
-									} else {
-										this.TakeCycles(16);
 									}
 									break;
 								case 0xBC: // NOP
@@ -10893,19 +10877,19 @@ namespace BeeDevelopment.Brazil {
 											this.TakeCycles(4);
 											break;
 										case 0xB0: // LDIR
+											this.TakeCycles(16);
 											WriteMemory(RegDE.Value16++, ReadMemory(RegHL.Value16++));
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
 											RegFlagN = false;
 											if (RegBC.Value16 != 0) {
-												this.TakeCycles(21);
+												this.TakeCycles(5);
 												RegPC.Value16 -= 2;
-											} else {
-												this.TakeCycles(16);
 											}
 											break;
 										case 0xB1: // CPIR
+											this.TakeCycles(16);
 											TB1 = ReadMemory(RegHL.Value16++); TB2 = (byte)(RegAF.High8 - TB1);
 											RegFlagN = true;
 											RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
@@ -10914,34 +10898,30 @@ namespace BeeDevelopment.Brazil {
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											if (RegBC.Value16 != 0 && !RegFlagZ) {
-												this.TakeCycles(21);
+												this.TakeCycles(5);
 												RegPC.Value16 -= 2;
-											} else {
-												this.TakeCycles(16);
 											}
 											break;
 										case 0xB2: // INIR
+											this.TakeCycles(16);
 											WriteMemory(RegHL.Value16++, ReadHardware(RegBC.Value16));
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
-												this.TakeCycles(21);
+												this.TakeCycles(5);
 												RegPC.Value16 -= 2;
-											} else {
-												this.TakeCycles(16);
 											}
 											break;
 										case 0xB3: // OTIR
+											this.TakeCycles(16);
 											WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16++));
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
-												this.TakeCycles(21);
+												this.TakeCycles(5);
 												RegPC.Value16 -= 2;
-											} else {
-												this.TakeCycles(16);
 											}
 											break;
 										case 0xB4: // NOP
@@ -10957,19 +10937,19 @@ namespace BeeDevelopment.Brazil {
 											this.TakeCycles(4);
 											break;
 										case 0xB8: // LDDR
+											this.TakeCycles(16);
 											WriteMemory(RegDE.Value16--, ReadMemory(RegHL.Value16--));
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
 											RegFlagN = false;
 											if (RegBC.Value16 != 0) {
-												this.TakeCycles(21);
+												this.TakeCycles(5);
 												RegPC.Value16 -= 2;
-											} else {
-												this.TakeCycles(16);
 											}
 											break;
 										case 0xB9: // CPDR
+											this.TakeCycles(16);
 											TB1 = ReadMemory(RegHL.Value16--); TB2 = (byte)(RegAF.High8 - TB1);
 											RegFlagN = true;
 											RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
@@ -10978,34 +10958,30 @@ namespace BeeDevelopment.Brazil {
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											if (RegBC.Value16 != 0 && !RegFlagZ) {
-												this.TakeCycles(21);
+												this.TakeCycles(5);
 												RegPC.Value16 -= 2;
-											} else {
-												this.TakeCycles(16);
 											}
 											break;
 										case 0xBA: // INDR
+											this.TakeCycles(16);
 											WriteMemory(RegHL.Value16--, ReadHardware(RegBC.Value16));
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
-												this.TakeCycles(21);
+												this.TakeCycles(5);
 												RegPC.Value16 -= 2;
-											} else {
-												this.TakeCycles(16);
 											}
 											break;
 										case 0xBB: // OTDR
+											this.TakeCycles(16);
 											WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16--));
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
-												this.TakeCycles(21);
+												this.TakeCycles(5);
 												RegPC.Value16 -= 2;
-											} else {
-												this.TakeCycles(16);
 											}
 											break;
 										case 0xBC: // NOP
