@@ -197,7 +197,10 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		public void LatchHorizontalCounter() {
 			int ExecutedCycles = this.Emulator.TotalExecutedCycles - this.CpuCyclesAtStartOfScanline;
 			int PixelsDrawn = (ExecutedCycles * 342) / this.CpuCyclesPerScanline;
-			this.HorizontalCounter = (byte)((PixelsDrawn) / 2);
+			this.HorizontalCounter = (byte)((PixelsDrawn - 8) / 2);
+			if (this.HorizontalCounter > 0x93) {
+				this.HorizontalCounter += 0xE9 - 0x94;
+			}
 		}
 
 		#endregion
