@@ -1,12 +1,11 @@
 ﻿using System;
-using BeeDevelopment.Zip;
+using System.IO;
+using System.Runtime.Serialization;
 using System.Text;
 using BeeDevelopment.Brazil;
-using System.IO;
-using System.Reflection;
-using BeeDevelopment.Sega8Bit.Hardware;
+using BeeDevelopment.Sega8Bit.Hardware.Controllers;
 using BeeDevelopment.Sega8Bit.Mappers;
-using System.Runtime.Serialization;
+using BeeDevelopment.Zip;
 
 namespace BeeDevelopment.Sega8Bit.Utility {
 	public static class SaveState {

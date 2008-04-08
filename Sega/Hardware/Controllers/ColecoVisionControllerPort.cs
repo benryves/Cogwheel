@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BeeDevelopment.Sega8Bit {
+﻿
+namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 	public class ColecoVisionControllerPort {
 
 		/// <summary>Gets or sets whether the joystick is pointed up.</summary>

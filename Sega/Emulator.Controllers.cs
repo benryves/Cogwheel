@@ -2,6 +2,7 @@
  * This source file relates to controller port I/O.
  */
 using BeeDevelopment.Brazil;
+using BeeDevelopment.Sega8Bit.Hardware.Controllers;
 namespace BeeDevelopment.Sega8Bit {
 	public partial class Emulator {
 
