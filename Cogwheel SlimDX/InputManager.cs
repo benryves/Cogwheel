@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 using BeeDevelopment.Sega8Bit;
+using BeeDevelopment.Sega8Bit.Hardware.Controllers;
 using CogwheelSlimDX.JoystickInput;
-using System.IO;
-using System;
-using System.Configuration;
-using System.Xml.Serialization;
 
 namespace CogwheelSlimDX {
 
@@ -62,7 +61,131 @@ namespace CogwheelSlimDX {
 		/// <summary>The Star (*) button.</summary>
 		Star,
 		/// <summary>The Hash (#) button.</summary>
-		Hash,		
+		Hash,
+		/// <summary>The 0 key on the SC-3000 keyboard.</summary>
+		KeyboardD0,
+		/// <summary>The 1 key on the SC-3000 keyboard.</summary>
+		KeyboardD1,
+		/// <summary>The 2 key on the SC-3000 keyboard.</summary>
+		KeyboardD2,
+		/// <summary>The 3 key on the SC-3000 keyboard.</summary>
+		KeyboardD3,
+		/// <summary>The 4 key on the SC-3000 keyboard.</summary>
+		KeyboardD4,
+		/// <summary>The 5 key on the SC-3000 keyboard.</summary>
+		KeyboardD5,
+		/// <summary>The 6 key on the SC-3000 keyboard.</summary>
+		KeyboardD6,
+		/// <summary>The 7 key on the SC-3000 keyboard.</summary>
+		KeyboardD7,
+		/// <summary>The 8 key on the SC-3000 keyboard.</summary>
+		KeyboardD8,
+		/// <summary>The 9 key on the SC-3000 keyboard.</summary>
+		KeyboardD9,
+		/// <summary>The A key on the SC-3000 keyboard.</summary>
+		KeyboardA,
+		/// <summary>The B key on the SC-3000 keyboard.</summary>
+		KeyboardB,
+		/// <summary>The C key on the SC-3000 keyboard.</summary>
+		KeyboardC,
+		/// <summary>The D key on the SC-3000 keyboard.</summary>
+		KeyboardD,
+		/// <summary>The E key on the SC-3000 keyboard.</summary>
+		KeyboardE,
+		/// <summary>The F key on the SC-3000 keyboard.</summary>
+		KeyboardF,
+		/// <summary>The G key on the SC-3000 keyboard.</summary>
+		KeyboardG,
+		/// <summary>The H key on the SC-3000 keyboard.</summary>
+		KeyboardH,
+		/// <summary>The I key on the SC-3000 keyboard.</summary>
+		KeyboardI,
+		/// <summary>The J key on the SC-3000 keyboard.</summary>
+		KeyboardJ,
+		/// <summary>The K key on the SC-3000 keyboard.</summary>
+		KeyboardK,
+		/// <summary>The L key on the SC-3000 keyboard.</summary>
+		KeyboardL,
+		/// <summary>The M key on the SC-3000 keyboard.</summary>
+		KeyboardM,
+		/// <summary>The N key on the SC-3000 keyboard.</summary>
+		KeyboardN,
+		/// <summary>The O key on the SC-3000 keyboard.</summary>
+		KeyboardO,
+		/// <summary>The P key on the SC-3000 keyboard.</summary>
+		KeyboardP,
+		/// <summary>The Q key on the SC-3000 keyboard.</summary>
+		KeyboardQ,
+		/// <summary>The R key on the SC-3000 keyboard.</summary>
+		KeyboardR,
+		/// <summary>The S key on the SC-3000 keyboard.</summary>
+		KeyboardS,
+		/// <summary>The T key on the SC-3000 keyboard.</summary>
+		KeyboardT,
+		/// <summary>The U key on the SC-3000 keyboard.</summary>
+		KeyboardU,
+		/// <summary>The V key on the SC-3000 keyboard.</summary>
+		KeyboardV,
+		/// <summary>The W key on the SC-3000 keyboard.</summary>
+		KeyboardW,
+		/// <summary>The X key on the SC-3000 keyboard.</summary>
+		KeyboardX,
+		/// <summary>The Y key on the SC-3000 keyboard.</summary>
+		KeyboardY,
+		/// <summary>The Z key on the SC-3000 keyboard.</summary>
+		KeyboardZ,
+		/// <summary>The Eng Dier's key on the SC-3000 keyboard.</summary>
+		KeyboardEngDiers,
+		/// <summary>The Space key on the SC-3000 keyboard.</summary>
+		KeyboardSpace,
+		/// <summary>The Home/Clr key on the SC-3000 keyboard.</summary>
+		KeyboardHomeClr,
+		/// <summary>The Ins/Del key on the SC-3000 keyboard.</summary>
+		KeyboardInsDel,
+		/// <summary>The Comma key on the SC-3000 keyboard.</summary>
+		KeyboardComma,
+		/// <summary>The FullStop key on the SC-3000 keyboard.</summary>
+		KeyboardFullStop,
+		/// <summary>The Slash key on the SC-3000 keyboard.</summary>
+		KeyboardSlash,
+		/// <summary>The Pi key on the SC-3000 keyboard.</summary>
+		KeyboardPi,
+		/// <summary>The up cursor key on the SC-3000 keyboard.</summary>
+		KeyboardUp,
+		/// <summary>The down cursor key on the SC-3000 keyboard.</summary>
+		KeyboardDown,
+		/// <summary>The left cursor key on the SC-3000 keyboard.</summary>
+		KeyboardLeft,
+		/// <summary>The right cursor key on the SC-3000 keyboard.</summary>
+		KeyboardRight,
+		/// <summary>The semicolon key on the SC-3000 keyboard.</summary>
+		KeyboardSemicolon,
+		/// <summary>The colon key on the SC-3000 keyboard.</summary>
+		KeyboardColon,
+		/// <summary>The right bracket key on the SC-3000 keyboard.</summary>
+		KeyboardRightBracket,
+		/// <summary>The return key on the SC-3000 keyboard.</summary>
+		KeyboardReturn,
+		/// <summary>The at (@) key on the SC-3000 keyboard.</summary>
+		KeyboardAtSign,
+		/// <summary>The left bracket key on the SC-3000 keyboard.</summary>
+		KeyboardLeftBracket,
+		/// <summary>The - key on the SC-3000 keyboard.</summary>
+		KeyboardMinus,
+		/// <summary>The caret (^) key on the SC-3000 keyboard.</summary>
+		KeyboardCaret,
+		/// <summary>The Yen key on the SC-3000 keyboard.</summary>
+		KeyboardYen,
+		/// <summary>The break key on the SC-3000 keyboard.</summary>
+		KeyboardBreak,
+		/// <summary>The graph key on the SC-3000 keyboard.</summary>
+		KeyboardGraph,
+		/// <summary>The control key on the SC-3000 keyboard.</summary>
+		KeyboardCtrl,
+		/// <summary>The func key on the SC-3000 keyboard.</summary>
+		KeyboardFunc,
+		/// <summary>The shift key on the SC-3000 keyboard.</summary>
+		KeyboardShift,
 	}
 
 	#endregion
@@ -197,6 +320,11 @@ namespace CogwheelSlimDX {
 
 			// SC-3000 keyboard.
 			if (emulator.Family == HardwareFamily.SC3000) {
+
+				foreach (SC3000Keyboard.Keys Key in Enum.GetValues(typeof(SC3000Keyboard.Keys))) {
+					emulator.Keyboard.SetKeyState(Key, this.GetButtonState(0, KeyboardToInputButton(Key)));	
+				}
+
 				emulator.Keyboard.UpdateState();
 			}
 
@@ -213,6 +341,78 @@ namespace CogwheelSlimDX {
 
 		public object GetTrigger(int controllerIndex, InputButton button) { return null; }
 
+		public static InputButton KeyboardToInputButton(SC3000Keyboard.Keys button) {
+			switch (button) {
+
+				case SC3000Keyboard.Keys.A: return InputButton.KeyboardA;
+				case SC3000Keyboard.Keys.B: return InputButton.KeyboardB;
+				case SC3000Keyboard.Keys.C: return InputButton.KeyboardC;
+				case SC3000Keyboard.Keys.D: return InputButton.KeyboardD;
+				case SC3000Keyboard.Keys.E: return InputButton.KeyboardE;
+				case SC3000Keyboard.Keys.F: return InputButton.KeyboardF;
+				case SC3000Keyboard.Keys.G: return InputButton.KeyboardG;
+				case SC3000Keyboard.Keys.H: return InputButton.KeyboardH;
+				case SC3000Keyboard.Keys.I: return InputButton.KeyboardI;
+				case SC3000Keyboard.Keys.J: return InputButton.KeyboardJ;
+				case SC3000Keyboard.Keys.K: return InputButton.KeyboardK;
+				case SC3000Keyboard.Keys.L: return InputButton.KeyboardL;
+				case SC3000Keyboard.Keys.M: return InputButton.KeyboardM;
+				case SC3000Keyboard.Keys.N: return InputButton.KeyboardN;
+				case SC3000Keyboard.Keys.O: return InputButton.KeyboardO;
+				case SC3000Keyboard.Keys.P: return InputButton.KeyboardP;
+				case SC3000Keyboard.Keys.Q: return InputButton.KeyboardQ;
+				case SC3000Keyboard.Keys.R: return InputButton.KeyboardR;
+				case SC3000Keyboard.Keys.S: return InputButton.KeyboardS;
+				case SC3000Keyboard.Keys.T: return InputButton.KeyboardT;
+				case SC3000Keyboard.Keys.U: return InputButton.KeyboardU;
+				case SC3000Keyboard.Keys.V: return InputButton.KeyboardV;
+				case SC3000Keyboard.Keys.W: return InputButton.KeyboardW;
+				case SC3000Keyboard.Keys.X: return InputButton.KeyboardX;
+				case SC3000Keyboard.Keys.Y: return InputButton.KeyboardY;
+				case SC3000Keyboard.Keys.Z: return InputButton.KeyboardZ;
+
+				case SC3000Keyboard.Keys.D0: return InputButton.KeyboardD0;
+				case SC3000Keyboard.Keys.D1: return InputButton.KeyboardD1;
+				case SC3000Keyboard.Keys.D2: return InputButton.KeyboardD2;
+				case SC3000Keyboard.Keys.D3: return InputButton.KeyboardD3;
+				case SC3000Keyboard.Keys.D4: return InputButton.KeyboardD4;
+				case SC3000Keyboard.Keys.D5: return InputButton.KeyboardD5;
+				case SC3000Keyboard.Keys.D6: return InputButton.KeyboardD6;
+				case SC3000Keyboard.Keys.D7: return InputButton.KeyboardD7;
+				case SC3000Keyboard.Keys.D8: return InputButton.KeyboardD8;
+				case SC3000Keyboard.Keys.D9: return InputButton.KeyboardD9;
+
+				case SC3000Keyboard.Keys.Up: return InputButton.KeyboardUp;
+				case SC3000Keyboard.Keys.Down: return InputButton.KeyboardDown;
+				case SC3000Keyboard.Keys.Left: return InputButton.KeyboardLeft;
+				case SC3000Keyboard.Keys.Right: return InputButton.KeyboardRight;
+				
+				case SC3000Keyboard.Keys.AtSign: return InputButton.KeyboardAtSign;
+				case SC3000Keyboard.Keys.Break: return InputButton.KeyboardBreak;
+				case SC3000Keyboard.Keys.Caret: return InputButton.KeyboardCaret;
+				case SC3000Keyboard.Keys.Colon: return InputButton.KeyboardColon;
+				case SC3000Keyboard.Keys.Comma: return InputButton.KeyboardComma;
+				case SC3000Keyboard.Keys.Ctrl: return InputButton.KeyboardCtrl;
+				case SC3000Keyboard.Keys.EngDiers: return InputButton.KeyboardEngDiers;
+				case SC3000Keyboard.Keys.FullStop: return InputButton.KeyboardFullStop;
+				case SC3000Keyboard.Keys.Func: return InputButton.KeyboardFunc;
+				case SC3000Keyboard.Keys.Graph: return InputButton.KeyboardGraph;
+				case SC3000Keyboard.Keys.HomeClr: return InputButton.KeyboardHomeClr;
+				case SC3000Keyboard.Keys.InsDel: return InputButton.KeyboardInsDel;
+				case SC3000Keyboard.Keys.LeftBracket: return InputButton.KeyboardLeftBracket;
+				case SC3000Keyboard.Keys.Minus: return InputButton.KeyboardMinus;
+				case SC3000Keyboard.Keys.Pi: return InputButton.KeyboardPi;
+				case SC3000Keyboard.Keys.Return: return InputButton.KeyboardReturn;
+				case SC3000Keyboard.Keys.RightBracket: return InputButton.KeyboardRightBracket;
+				case SC3000Keyboard.Keys.SemiColon: return InputButton.KeyboardSemicolon;
+				case SC3000Keyboard.Keys.Shift: return InputButton.KeyboardShift;
+				case SC3000Keyboard.Keys.Slash: return InputButton.KeyboardSlash;
+				case SC3000Keyboard.Keys.Space: return InputButton.KeyboardSpace;
+				case SC3000Keyboard.Keys.Yen: return InputButton.KeyboardYen;
+
+				default: return InputButton.None;
+			}
+		}
 	}
 
 	#endregion
@@ -282,6 +482,66 @@ namespace CogwheelSlimDX {
 
 				}
 			}
+
+			if (this is KeyboardInputSource) {
+				this.SetTrigger(0, InputButton.KeyboardA, Keys.A);
+				this.SetTrigger(0, InputButton.KeyboardB, Keys.B);
+				this.SetTrigger(0, InputButton.KeyboardC, Keys.C);
+				this.SetTrigger(0, InputButton.KeyboardD, Keys.D);
+				this.SetTrigger(0, InputButton.KeyboardE, Keys.E);
+				this.SetTrigger(0, InputButton.KeyboardF, Keys.F);
+				this.SetTrigger(0, InputButton.KeyboardG, Keys.G);
+				this.SetTrigger(0, InputButton.KeyboardH, Keys.H);
+				this.SetTrigger(0, InputButton.KeyboardI, Keys.I);
+				this.SetTrigger(0, InputButton.KeyboardJ, Keys.J);
+				this.SetTrigger(0, InputButton.KeyboardK, Keys.K);
+				this.SetTrigger(0, InputButton.KeyboardL, Keys.L);
+				this.SetTrigger(0, InputButton.KeyboardM, Keys.M);
+				this.SetTrigger(0, InputButton.KeyboardN, Keys.N);
+				this.SetTrigger(0, InputButton.KeyboardO, Keys.O);
+				this.SetTrigger(0, InputButton.KeyboardP, Keys.P);
+				this.SetTrigger(0, InputButton.KeyboardQ, Keys.Q);
+				this.SetTrigger(0, InputButton.KeyboardR, Keys.R);
+				this.SetTrigger(0, InputButton.KeyboardS, Keys.S);
+				this.SetTrigger(0, InputButton.KeyboardT, Keys.T);
+				this.SetTrigger(0, InputButton.KeyboardU, Keys.U);
+				this.SetTrigger(0, InputButton.KeyboardV, Keys.V);
+				this.SetTrigger(0, InputButton.KeyboardW, Keys.W);
+				this.SetTrigger(0, InputButton.KeyboardX, Keys.X);
+				this.SetTrigger(0, InputButton.KeyboardY, Keys.Y);
+				this.SetTrigger(0, InputButton.KeyboardZ, Keys.Z);
+
+				this.SetTrigger(0, InputButton.KeyboardD0, Keys.D0);
+				this.SetTrigger(0, InputButton.KeyboardD1, Keys.D1);
+				this.SetTrigger(0, InputButton.KeyboardD2, Keys.D2);
+				this.SetTrigger(0, InputButton.KeyboardD3, Keys.D3);
+				this.SetTrigger(0, InputButton.KeyboardD4, Keys.D4);
+				this.SetTrigger(0, InputButton.KeyboardD5, Keys.D5);
+				this.SetTrigger(0, InputButton.KeyboardD6, Keys.D6);
+				this.SetTrigger(0, InputButton.KeyboardD7, Keys.D7);
+				this.SetTrigger(0, InputButton.KeyboardD8, Keys.D8);
+				this.SetTrigger(0, InputButton.KeyboardD9, Keys.D9);
+
+				this.SetTrigger(0, InputButton.Up, Keys.Up);
+				this.SetTrigger(0, InputButton.Down, Keys.Down);
+				this.SetTrigger(0, InputButton.Left, Keys.Left);
+				this.SetTrigger(0, InputButton.Right, Keys.Right);
+
+				this.SetTrigger(0, InputButton.KeyboardBreak, Keys.Pause);
+				this.SetTrigger(0, InputButton.KeyboardComma, Keys.Oemcomma);
+				this.SetTrigger(0, InputButton.KeyboardCtrl, Keys.ControlKey);
+				this.SetTrigger(0, InputButton.KeyboardFullStop, Keys.OemPeriod);
+				this.SetTrigger(0, InputButton.KeyboardHomeClr, Keys.Home);
+				this.SetTrigger(0, InputButton.KeyboardInsDel, Keys.Back);
+				this.SetTrigger(0, InputButton.KeyboardLeftBracket, Keys.OemOpenBrackets);
+				this.SetTrigger(0, InputButton.KeyboardMinus, Keys.OemMinus);
+				this.SetTrigger(0, InputButton.KeyboardReturn, Keys.Enter);
+				this.SetTrigger(0, InputButton.KeyboardRightBracket, Keys.OemCloseBrackets);
+				this.SetTrigger(0, InputButton.KeyboardShift, Keys.ShiftKey);
+				this.SetTrigger(0, InputButton.KeyboardSlash, Keys.OemBackslash);
+				this.SetTrigger(0, InputButton.KeyboardSpace, Keys.Space);
+			}
+
 		}
 
 		/// <summary>
@@ -624,5 +884,7 @@ namespace CogwheelSlimDX {
 	}
 
 	#endregion
+
+	
 
 }
