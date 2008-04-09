@@ -59,6 +59,8 @@ namespace CogwheelSlimDX {
 			foreach (var Item in this.JoypadTable.Controls) if (Item is KeyButton) KeyButtons.Add((KeyButton)Item);
 			foreach (var Item in this.ConsoleTable.Controls) if (Item is KeyButton) KeyButtons.Add((KeyButton)Item);
 			foreach (var Item in this.ColecoVisionTable.Controls) if (Item is KeyButton) KeyButtons.Add((KeyButton)Item);
+			foreach (var Item in this.KeyboardGeneralTable.Controls) if (Item is KeyButton) KeyButtons.Add((KeyButton)Item);
+			foreach (var Item in this.KeyboardSymbolsTable.Controls) if (Item is KeyButton) KeyButtons.Add((KeyButton)Item);
 
 			// Now, iterate over each and attach a settings-changed event handler.
 			foreach (var Button in this.KeyButtons) {
@@ -77,6 +79,7 @@ namespace CogwheelSlimDX {
 
 			this.ControllerEditing.Items.Add(new ComboBoxItem(){ Name = "Standard Controls", Tag = this.StandardConfigurationPanel });
 			this.ControllerEditing.Items.Add(new ComboBoxItem() { Name = "ColecoVision Number Pads", Tag = this.ColecoVisionConfigurationPanel });
+			this.ControllerEditing.Items.Add(new ComboBoxItem() { Name = "SC-3000 Keyboard", Tag = this.KeyboardConfigurationPanel });
 
 			this.ControllerEditing.SelectedItem = this.ControllerEditing.Items[0];
 

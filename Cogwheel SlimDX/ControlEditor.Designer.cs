@@ -29,6 +29,29 @@
 			this.KeyboardTab = new System.Windows.Forms.TabPage();
 			this.EditorPanel = new System.Windows.Forms.Panel();
 			this.ButtonPanel = new System.Windows.Forms.Panel();
+			this.KeyboardConfigurationPanel = new System.Windows.Forms.Panel();
+			this.GeneralGroup = new System.Windows.Forms.GroupBox();
+			this.KeyboardGeneralTable = new System.Windows.Forms.TableLayoutPanel();
+			this.label1 = new System.Windows.Forms.Label();
+			this.label2 = new System.Windows.Forms.Label();
+			this.label3 = new System.Windows.Forms.Label();
+			this.label5 = new System.Windows.Forms.Label();
+			this.label4 = new System.Windows.Forms.Label();
+			this.label18 = new System.Windows.Forms.Label();
+			this.label19 = new System.Windows.Forms.Label();
+			this.label20 = new System.Windows.Forms.Label();
+			this.SymbolsGroup = new System.Windows.Forms.GroupBox();
+			this.KeyboardSymbolsTable = new System.Windows.Forms.TableLayoutPanel();
+			this.label7 = new System.Windows.Forms.Label();
+			this.label8 = new System.Windows.Forms.Label();
+			this.label12 = new System.Windows.Forms.Label();
+			this.label13 = new System.Windows.Forms.Label();
+			this.label14 = new System.Windows.Forms.Label();
+			this.label15 = new System.Windows.Forms.Label();
+			this.label6 = new System.Windows.Forms.Label();
+			this.label10 = new System.Windows.Forms.Label();
+			this.label11 = new System.Windows.Forms.Label();
+			this.label9 = new System.Windows.Forms.Label();
 			this.StandardConfigurationPanel = new System.Windows.Forms.Panel();
 			this.JoypadGroup = new System.Windows.Forms.GroupBox();
 			this.JoypadTable = new System.Windows.Forms.TableLayoutPanel();
@@ -38,6 +61,52 @@
 			this.LabelDown = new System.Windows.Forms.Label();
 			this.LabelLeft = new System.Windows.Forms.Label();
 			this.LabelRight = new System.Windows.Forms.Label();
+			this.ConsoleGroup = new System.Windows.Forms.GroupBox();
+			this.ConsoleTable = new System.Windows.Forms.TableLayoutPanel();
+			this.LabelPause = new System.Windows.Forms.Label();
+			this.LabelReset = new System.Windows.Forms.Label();
+			this.LabelStart = new System.Windows.Forms.Label();
+			this.ColecoVisionConfigurationPanel = new System.Windows.Forms.Panel();
+			this.ColecoVisionGroup = new System.Windows.Forms.GroupBox();
+			this.ColecoVisionTable = new System.Windows.Forms.TableLayoutPanel();
+			this.LabelHash = new System.Windows.Forms.Label();
+			this.LabelNum1 = new System.Windows.Forms.Label();
+			this.LabelNum2 = new System.Windows.Forms.Label();
+			this.LabelNum3 = new System.Windows.Forms.Label();
+			this.LabelNum4 = new System.Windows.Forms.Label();
+			this.LabelNum5 = new System.Windows.Forms.Label();
+			this.LabelNum6 = new System.Windows.Forms.Label();
+			this.LabelNum7 = new System.Windows.Forms.Label();
+			this.LabelNum8 = new System.Windows.Forms.Label();
+			this.LabelNum9 = new System.Windows.Forms.Label();
+			this.LabelNum0 = new System.Windows.Forms.Label();
+			this.LabelStar = new System.Windows.Forms.Label();
+			this.ControllerEditing = new System.Windows.Forms.ComboBox();
+			this.TabIcons = new System.Windows.Forms.ImageList(this.components);
+			this.PanelOKCancel = new System.Windows.Forms.Panel();
+			this.ButtonButtonsTable = new System.Windows.Forms.TableLayoutPanel();
+			this.ButtonOK = new System.Windows.Forms.Button();
+			this.ShowJoystickControlPanel = new System.Windows.Forms.Button();
+			this.JoystickEventPoller = new System.Windows.Forms.Timer(this.components);
+			this.label16 = new System.Windows.Forms.Label();
+			this.keyButton37 = new CogwheelSlimDX.KeyButton();
+			this.keyButton38 = new CogwheelSlimDX.KeyButton();
+			this.keyButton39 = new CogwheelSlimDX.KeyButton();
+			this.keyButton33 = new CogwheelSlimDX.KeyButton();
+			this.keyButton34 = new CogwheelSlimDX.KeyButton();
+			this.keyButton35 = new CogwheelSlimDX.KeyButton();
+			this.keyButton36 = new CogwheelSlimDX.KeyButton();
+			this.keyButton30 = new CogwheelSlimDX.KeyButton();
+			this.keyButton31 = new CogwheelSlimDX.KeyButton();
+			this.keyButton32 = new CogwheelSlimDX.KeyButton();
+			this.keyButton25 = new CogwheelSlimDX.KeyButton();
+			this.keyButton28 = new CogwheelSlimDX.KeyButton();
+			this.keyButton27 = new CogwheelSlimDX.KeyButton();
+			this.keyButton29 = new CogwheelSlimDX.KeyButton();
+			this.keyButton26 = new CogwheelSlimDX.KeyButton();
+			this.keyButton42 = new CogwheelSlimDX.KeyButton();
+			this.keyButton43 = new CogwheelSlimDX.KeyButton();
+			this.keyButton44 = new CogwheelSlimDX.KeyButton();
 			this.Player1TL = new CogwheelSlimDX.KeyButton();
 			this.Player1TR = new CogwheelSlimDX.KeyButton();
 			this.Player1Up = new CogwheelSlimDX.KeyButton();
@@ -50,26 +119,11 @@
 			this.Player2Down = new CogwheelSlimDX.KeyButton();
 			this.Player2Left = new CogwheelSlimDX.KeyButton();
 			this.Player2Right = new CogwheelSlimDX.KeyButton();
-			this.ConsoleGroup = new System.Windows.Forms.GroupBox();
-			this.ConsoleTable = new System.Windows.Forms.TableLayoutPanel();
-			this.LabelPause = new System.Windows.Forms.Label();
-			this.LabelReset = new System.Windows.Forms.Label();
-			this.LabelStart = new System.Windows.Forms.Label();
 			this.ConsolePause = new CogwheelSlimDX.KeyButton();
 			this.ConsoleReset = new CogwheelSlimDX.KeyButton();
 			this.ConsoleStart = new CogwheelSlimDX.KeyButton();
-			this.ColecoVisionConfigurationPanel = new System.Windows.Forms.Panel();
-			this.ColecoVisionGroup = new System.Windows.Forms.GroupBox();
-			this.ColecoVisionTable = new System.Windows.Forms.TableLayoutPanel();
-			this.LabelHash = new System.Windows.Forms.Label();
 			this.keyButton23 = new CogwheelSlimDX.KeyButton();
 			this.keyButton24 = new CogwheelSlimDX.KeyButton();
-			this.LabelNum1 = new System.Windows.Forms.Label();
-			this.LabelNum2 = new System.Windows.Forms.Label();
-			this.LabelNum3 = new System.Windows.Forms.Label();
-			this.LabelNum4 = new System.Windows.Forms.Label();
-			this.LabelNum5 = new System.Windows.Forms.Label();
-			this.LabelNum6 = new System.Windows.Forms.Label();
 			this.keyButton1 = new CogwheelSlimDX.KeyButton();
 			this.keyButton2 = new CogwheelSlimDX.KeyButton();
 			this.keyButton3 = new CogwheelSlimDX.KeyButton();
@@ -82,32 +136,25 @@
 			this.keyButton10 = new CogwheelSlimDX.KeyButton();
 			this.keyButton11 = new CogwheelSlimDX.KeyButton();
 			this.keyButton12 = new CogwheelSlimDX.KeyButton();
-			this.LabelNum7 = new System.Windows.Forms.Label();
 			this.keyButton13 = new CogwheelSlimDX.KeyButton();
 			this.keyButton14 = new CogwheelSlimDX.KeyButton();
-			this.LabelNum8 = new System.Windows.Forms.Label();
 			this.keyButton15 = new CogwheelSlimDX.KeyButton();
 			this.keyButton16 = new CogwheelSlimDX.KeyButton();
-			this.LabelNum9 = new System.Windows.Forms.Label();
 			this.keyButton17 = new CogwheelSlimDX.KeyButton();
 			this.keyButton18 = new CogwheelSlimDX.KeyButton();
-			this.LabelNum0 = new System.Windows.Forms.Label();
 			this.keyButton19 = new CogwheelSlimDX.KeyButton();
 			this.keyButton20 = new CogwheelSlimDX.KeyButton();
-			this.LabelStar = new System.Windows.Forms.Label();
 			this.keyButton21 = new CogwheelSlimDX.KeyButton();
 			this.keyButton22 = new CogwheelSlimDX.KeyButton();
-			this.ControllerEditing = new System.Windows.Forms.ComboBox();
-			this.TabIcons = new System.Windows.Forms.ImageList(this.components);
-			this.PanelOKCancel = new System.Windows.Forms.Panel();
-			this.ButtonButtonsTable = new System.Windows.Forms.TableLayoutPanel();
-			this.ButtonOK = new System.Windows.Forms.Button();
-			this.ShowJoystickControlPanel = new System.Windows.Forms.Button();
-			this.JoystickEventPoller = new System.Windows.Forms.Timer(this.components);
 			this.InputTabs.SuspendLayout();
 			this.KeyboardTab.SuspendLayout();
 			this.EditorPanel.SuspendLayout();
 			this.ButtonPanel.SuspendLayout();
+			this.KeyboardConfigurationPanel.SuspendLayout();
+			this.GeneralGroup.SuspendLayout();
+			this.KeyboardGeneralTable.SuspendLayout();
+			this.SymbolsGroup.SuspendLayout();
+			this.KeyboardSymbolsTable.SuspendLayout();
 			this.StandardConfigurationPanel.SuspendLayout();
 			this.JoypadGroup.SuspendLayout();
 			this.JoypadTable.SuspendLayout();
@@ -155,6 +202,7 @@
 			// 
 			// ButtonPanel
 			// 
+			this.ButtonPanel.Controls.Add(this.KeyboardConfigurationPanel);
 			this.ButtonPanel.Controls.Add(this.StandardConfigurationPanel);
 			this.ButtonPanel.Controls.Add(this.ColecoVisionConfigurationPanel);
 			this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -163,6 +211,294 @@
 			this.ButtonPanel.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
 			this.ButtonPanel.Size = new System.Drawing.Size(349, 339);
 			this.ButtonPanel.TabIndex = 1;
+			// 
+			// KeyboardConfigurationPanel
+			// 
+			this.KeyboardConfigurationPanel.Controls.Add(this.SymbolsGroup);
+			this.KeyboardConfigurationPanel.Controls.Add(this.label16);
+			this.KeyboardConfigurationPanel.Controls.Add(this.GeneralGroup);
+			this.KeyboardConfigurationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.KeyboardConfigurationPanel.Location = new System.Drawing.Point(0, 5);
+			this.KeyboardConfigurationPanel.Name = "KeyboardConfigurationPanel";
+			this.KeyboardConfigurationPanel.Size = new System.Drawing.Size(349, 334);
+			this.KeyboardConfigurationPanel.TabIndex = 6;
+			// 
+			// GeneralGroup
+			// 
+			this.GeneralGroup.Controls.Add(this.KeyboardGeneralTable);
+			this.GeneralGroup.Dock = System.Windows.Forms.DockStyle.Top;
+			this.GeneralGroup.Location = new System.Drawing.Point(0, 0);
+			this.GeneralGroup.Name = "GeneralGroup";
+			this.GeneralGroup.Size = new System.Drawing.Size(349, 131);
+			this.GeneralGroup.TabIndex = 1;
+			this.GeneralGroup.TabStop = false;
+			this.GeneralGroup.Text = "General";
+			// 
+			// KeyboardGeneralTable
+			// 
+			this.KeyboardGeneralTable.ColumnCount = 4;
+			this.KeyboardGeneralTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+			this.KeyboardGeneralTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+			this.KeyboardGeneralTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+			this.KeyboardGeneralTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+			this.KeyboardGeneralTable.Controls.Add(this.label1, 0, 0);
+			this.KeyboardGeneralTable.Controls.Add(this.keyButton25, 1, 0);
+			this.KeyboardGeneralTable.Controls.Add(this.label2, 0, 1);
+			this.KeyboardGeneralTable.Controls.Add(this.label3, 0, 2);
+			this.KeyboardGeneralTable.Controls.Add(this.label5, 2, 1);
+			this.KeyboardGeneralTable.Controls.Add(this.label4, 2, 0);
+			this.KeyboardGeneralTable.Controls.Add(this.keyButton28, 3, 0);
+			this.KeyboardGeneralTable.Controls.Add(this.keyButton27, 1, 2);
+			this.KeyboardGeneralTable.Controls.Add(this.keyButton29, 3, 1);
+			this.KeyboardGeneralTable.Controls.Add(this.keyButton26, 1, 1);
+			this.KeyboardGeneralTable.Controls.Add(this.label18, 2, 2);
+			this.KeyboardGeneralTable.Controls.Add(this.label19, 2, 3);
+			this.KeyboardGeneralTable.Controls.Add(this.keyButton42, 3, 2);
+			this.KeyboardGeneralTable.Controls.Add(this.keyButton43, 3, 3);
+			this.KeyboardGeneralTable.Controls.Add(this.label20, 0, 3);
+			this.KeyboardGeneralTable.Controls.Add(this.keyButton44, 1, 3);
+			this.KeyboardGeneralTable.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.KeyboardGeneralTable.Location = new System.Drawing.Point(3, 16);
+			this.KeyboardGeneralTable.Name = "KeyboardGeneralTable";
+			this.KeyboardGeneralTable.RowCount = 5;
+			this.KeyboardGeneralTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+			this.KeyboardGeneralTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+			this.KeyboardGeneralTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+			this.KeyboardGeneralTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+			this.KeyboardGeneralTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.KeyboardGeneralTable.Size = new System.Drawing.Size(343, 112);
+			this.KeyboardGeneralTable.TabIndex = 0;
+			// 
+			// label1
+			// 
+			this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(18, 7);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(31, 13);
+			this.label1.TabIndex = 0;
+			this.label1.Text = "Func";
+			// 
+			// label2
+			// 
+			this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(23, 35);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(22, 13);
+			this.label2.TabIndex = 1;
+			this.label2.Text = "Ctrl";
+			// 
+			// label3
+			// 
+			this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label3.AutoSize = true;
+			this.label3.Location = new System.Drawing.Point(20, 63);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(28, 13);
+			this.label3.TabIndex = 2;
+			this.label3.Text = "Shift";
+			// 
+			// label5
+			// 
+			this.label5.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label5.AutoSize = true;
+			this.label5.Location = new System.Drawing.Point(175, 35);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(57, 13);
+			this.label5.TabIndex = 4;
+			this.label5.Text = "Eng/Dier\'s";
+			// 
+			// label4
+			// 
+			this.label4.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label4.AutoSize = true;
+			this.label4.Location = new System.Drawing.Point(186, 7);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(36, 13);
+			this.label4.TabIndex = 3;
+			this.label4.Text = "Graph";
+			// 
+			// label18
+			// 
+			this.label18.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label18.AutoSize = true;
+			this.label18.Location = new System.Drawing.Point(178, 63);
+			this.label18.Name = "label18";
+			this.label18.Size = new System.Drawing.Size(52, 13);
+			this.label18.TabIndex = 3;
+			this.label18.Text = "Home/Clr";
+			// 
+			// label19
+			// 
+			this.label19.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label19.AutoSize = true;
+			this.label19.Location = new System.Drawing.Point(183, 91);
+			this.label19.Name = "label19";
+			this.label19.Size = new System.Drawing.Size(42, 13);
+			this.label19.TabIndex = 3;
+			this.label19.Text = "Ins/Del";
+			// 
+			// label20
+			// 
+			this.label20.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label20.AutoSize = true;
+			this.label20.Location = new System.Drawing.Point(16, 91);
+			this.label20.Name = "label20";
+			this.label20.Size = new System.Drawing.Size(35, 13);
+			this.label20.TabIndex = 3;
+			this.label20.Text = "Break";
+			// 
+			// SymbolsGroup
+			// 
+			this.SymbolsGroup.Controls.Add(this.KeyboardSymbolsTable);
+			this.SymbolsGroup.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.SymbolsGroup.Location = new System.Drawing.Point(0, 131);
+			this.SymbolsGroup.Name = "SymbolsGroup";
+			this.SymbolsGroup.Size = new System.Drawing.Size(349, 164);
+			this.SymbolsGroup.TabIndex = 2;
+			this.SymbolsGroup.TabStop = false;
+			this.SymbolsGroup.Text = "Symbols";
+			// 
+			// KeyboardSymbolsTable
+			// 
+			this.KeyboardSymbolsTable.ColumnCount = 4;
+			this.KeyboardSymbolsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+			this.KeyboardSymbolsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+			this.KeyboardSymbolsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+			this.KeyboardSymbolsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+			this.KeyboardSymbolsTable.Controls.Add(this.label7, 0, 0);
+			this.KeyboardSymbolsTable.Controls.Add(this.label8, 0, 1);
+			this.KeyboardSymbolsTable.Controls.Add(this.keyButton37, 1, 0);
+			this.KeyboardSymbolsTable.Controls.Add(this.keyButton38, 1, 1);
+			this.KeyboardSymbolsTable.Controls.Add(this.keyButton39, 1, 2);
+			this.KeyboardSymbolsTable.Controls.Add(this.keyButton33, 3, 0);
+			this.KeyboardSymbolsTable.Controls.Add(this.keyButton34, 3, 1);
+			this.KeyboardSymbolsTable.Controls.Add(this.keyButton35, 3, 2);
+			this.KeyboardSymbolsTable.Controls.Add(this.keyButton36, 3, 3);
+			this.KeyboardSymbolsTable.Controls.Add(this.label12, 2, 0);
+			this.KeyboardSymbolsTable.Controls.Add(this.label13, 2, 1);
+			this.KeyboardSymbolsTable.Controls.Add(this.label14, 2, 2);
+			this.KeyboardSymbolsTable.Controls.Add(this.label15, 2, 3);
+			this.KeyboardSymbolsTable.Controls.Add(this.keyButton30, 3, 4);
+			this.KeyboardSymbolsTable.Controls.Add(this.label6, 0, 2);
+			this.KeyboardSymbolsTable.Controls.Add(this.label10, 0, 3);
+			this.KeyboardSymbolsTable.Controls.Add(this.label11, 0, 4);
+			this.KeyboardSymbolsTable.Controls.Add(this.keyButton31, 1, 3);
+			this.KeyboardSymbolsTable.Controls.Add(this.keyButton32, 1, 4);
+			this.KeyboardSymbolsTable.Controls.Add(this.label9, 2, 4);
+			this.KeyboardSymbolsTable.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.KeyboardSymbolsTable.Location = new System.Drawing.Point(3, 16);
+			this.KeyboardSymbolsTable.Name = "KeyboardSymbolsTable";
+			this.KeyboardSymbolsTable.RowCount = 6;
+			this.KeyboardSymbolsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+			this.KeyboardSymbolsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+			this.KeyboardSymbolsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+			this.KeyboardSymbolsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+			this.KeyboardSymbolsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+			this.KeyboardSymbolsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.KeyboardSymbolsTable.Size = new System.Drawing.Size(343, 145);
+			this.KeyboardSymbolsTable.TabIndex = 0;
+			// 
+			// label7
+			// 
+			this.label7.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(29, 7);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(10, 13);
+			this.label7.TabIndex = 23;
+			this.label7.Text = "-";
+			// 
+			// label8
+			// 
+			this.label8.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label8.AutoSize = true;
+			this.label8.Location = new System.Drawing.Point(27, 35);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(13, 13);
+			this.label8.TabIndex = 21;
+			this.label8.Text = "^";
+			// 
+			// label12
+			// 
+			this.label12.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label12.AutoSize = true;
+			this.label12.Location = new System.Drawing.Point(199, 7);
+			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(10, 13);
+			this.label12.TabIndex = 22;
+			this.label12.Text = ";";
+			// 
+			// label13
+			// 
+			this.label13.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label13.AutoSize = true;
+			this.label13.Location = new System.Drawing.Point(199, 35);
+			this.label13.Name = "label13";
+			this.label13.Size = new System.Drawing.Size(10, 13);
+			this.label13.TabIndex = 22;
+			this.label13.Text = ":";
+			// 
+			// label14
+			// 
+			this.label14.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label14.AutoSize = true;
+			this.label14.Location = new System.Drawing.Point(198, 63);
+			this.label14.Name = "label14";
+			this.label14.Size = new System.Drawing.Size(12, 13);
+			this.label14.TabIndex = 22;
+			this.label14.Text = "/";
+			// 
+			// label15
+			// 
+			this.label15.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label15.AutoSize = true;
+			this.label15.Location = new System.Drawing.Point(197, 91);
+			this.label15.Name = "label15";
+			this.label15.Size = new System.Drawing.Size(13, 13);
+			this.label15.TabIndex = 22;
+			this.label15.Text = "π";
+			// 
+			// label6
+			// 
+			this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(25, 63);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(18, 13);
+			this.label6.TabIndex = 22;
+			this.label6.Text = "@";
+			// 
+			// label10
+			// 
+			this.label10.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label10.AutoSize = true;
+			this.label10.Location = new System.Drawing.Point(29, 91);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(10, 13);
+			this.label10.TabIndex = 22;
+			this.label10.Text = "[";
+			// 
+			// label11
+			// 
+			this.label11.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label11.AutoSize = true;
+			this.label11.Location = new System.Drawing.Point(29, 119);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(10, 13);
+			this.label11.TabIndex = 22;
+			this.label11.Text = "]";
+			// 
+			// label9
+			// 
+			this.label9.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label9.AutoSize = true;
+			this.label9.Location = new System.Drawing.Point(197, 119);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(13, 13);
+			this.label9.TabIndex = 22;
+			this.label9.Text = "¥";
 			// 
 			// StandardConfigurationPanel
 			// 
@@ -281,6 +617,695 @@
 			this.LabelRight.Size = new System.Drawing.Size(32, 13);
 			this.LabelRight.TabIndex = 5;
 			this.LabelRight.Text = "Right";
+			// 
+			// ConsoleGroup
+			// 
+			this.ConsoleGroup.Controls.Add(this.ConsoleTable);
+			this.ConsoleGroup.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.ConsoleGroup.Location = new System.Drawing.Point(0, 219);
+			this.ConsoleGroup.Name = "ConsoleGroup";
+			this.ConsoleGroup.Size = new System.Drawing.Size(349, 115);
+			this.ConsoleGroup.TabIndex = 2;
+			this.ConsoleGroup.TabStop = false;
+			this.ConsoleGroup.Text = "Console";
+			// 
+			// ConsoleTable
+			// 
+			this.ConsoleTable.ColumnCount = 2;
+			this.ConsoleTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+			this.ConsoleTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 66.66667F));
+			this.ConsoleTable.Controls.Add(this.LabelPause, 0, 0);
+			this.ConsoleTable.Controls.Add(this.LabelReset, 0, 1);
+			this.ConsoleTable.Controls.Add(this.LabelStart, 0, 2);
+			this.ConsoleTable.Controls.Add(this.ConsolePause, 1, 0);
+			this.ConsoleTable.Controls.Add(this.ConsoleReset, 1, 1);
+			this.ConsoleTable.Controls.Add(this.ConsoleStart, 1, 2);
+			this.ConsoleTable.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ConsoleTable.Location = new System.Drawing.Point(3, 16);
+			this.ConsoleTable.Name = "ConsoleTable";
+			this.ConsoleTable.RowCount = 3;
+			this.ConsoleTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+			this.ConsoleTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+			this.ConsoleTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+			this.ConsoleTable.Size = new System.Drawing.Size(343, 96);
+			this.ConsoleTable.TabIndex = 0;
+			// 
+			// LabelPause
+			// 
+			this.LabelPause.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.LabelPause.AutoSize = true;
+			this.LabelPause.Location = new System.Drawing.Point(38, 9);
+			this.LabelPause.Name = "LabelPause";
+			this.LabelPause.Size = new System.Drawing.Size(37, 13);
+			this.LabelPause.TabIndex = 23;
+			this.LabelPause.Text = "Pause";
+			// 
+			// LabelReset
+			// 
+			this.LabelReset.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.LabelReset.AutoSize = true;
+			this.LabelReset.Location = new System.Drawing.Point(39, 41);
+			this.LabelReset.Name = "LabelReset";
+			this.LabelReset.Size = new System.Drawing.Size(35, 13);
+			this.LabelReset.TabIndex = 21;
+			this.LabelReset.Text = "Reset";
+			// 
+			// LabelStart
+			// 
+			this.LabelStart.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.LabelStart.AutoSize = true;
+			this.LabelStart.Location = new System.Drawing.Point(42, 73);
+			this.LabelStart.Name = "LabelStart";
+			this.LabelStart.Size = new System.Drawing.Size(29, 13);
+			this.LabelStart.TabIndex = 22;
+			this.LabelStart.Text = "Start";
+			// 
+			// ColecoVisionConfigurationPanel
+			// 
+			this.ColecoVisionConfigurationPanel.Controls.Add(this.ColecoVisionGroup);
+			this.ColecoVisionConfigurationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ColecoVisionConfigurationPanel.Location = new System.Drawing.Point(0, 5);
+			this.ColecoVisionConfigurationPanel.Name = "ColecoVisionConfigurationPanel";
+			this.ColecoVisionConfigurationPanel.Size = new System.Drawing.Size(349, 334);
+			this.ColecoVisionConfigurationPanel.TabIndex = 5;
+			// 
+			// ColecoVisionGroup
+			// 
+			this.ColecoVisionGroup.Controls.Add(this.ColecoVisionTable);
+			this.ColecoVisionGroup.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ColecoVisionGroup.Location = new System.Drawing.Point(0, 0);
+			this.ColecoVisionGroup.Name = "ColecoVisionGroup";
+			this.ColecoVisionGroup.Size = new System.Drawing.Size(349, 334);
+			this.ColecoVisionGroup.TabIndex = 1;
+			this.ColecoVisionGroup.TabStop = false;
+			this.ColecoVisionGroup.Text = "Number Pad";
+			// 
+			// ColecoVisionTable
+			// 
+			this.ColecoVisionTable.ColumnCount = 3;
+			this.ColecoVisionTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+			this.ColecoVisionTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
+			this.ColecoVisionTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
+			this.ColecoVisionTable.Controls.Add(this.LabelHash, 0, 11);
+			this.ColecoVisionTable.Controls.Add(this.keyButton23, 0, 11);
+			this.ColecoVisionTable.Controls.Add(this.keyButton24, 0, 11);
+			this.ColecoVisionTable.Controls.Add(this.LabelNum1, 0, 0);
+			this.ColecoVisionTable.Controls.Add(this.LabelNum2, 0, 1);
+			this.ColecoVisionTable.Controls.Add(this.LabelNum3, 0, 2);
+			this.ColecoVisionTable.Controls.Add(this.LabelNum4, 0, 3);
+			this.ColecoVisionTable.Controls.Add(this.LabelNum5, 0, 4);
+			this.ColecoVisionTable.Controls.Add(this.LabelNum6, 0, 5);
+			this.ColecoVisionTable.Controls.Add(this.keyButton1, 1, 0);
+			this.ColecoVisionTable.Controls.Add(this.keyButton2, 1, 1);
+			this.ColecoVisionTable.Controls.Add(this.keyButton3, 1, 2);
+			this.ColecoVisionTable.Controls.Add(this.keyButton4, 1, 3);
+			this.ColecoVisionTable.Controls.Add(this.keyButton5, 1, 4);
+			this.ColecoVisionTable.Controls.Add(this.keyButton6, 1, 5);
+			this.ColecoVisionTable.Controls.Add(this.keyButton7, 2, 0);
+			this.ColecoVisionTable.Controls.Add(this.keyButton8, 2, 1);
+			this.ColecoVisionTable.Controls.Add(this.keyButton9, 2, 2);
+			this.ColecoVisionTable.Controls.Add(this.keyButton10, 2, 3);
+			this.ColecoVisionTable.Controls.Add(this.keyButton11, 2, 4);
+			this.ColecoVisionTable.Controls.Add(this.keyButton12, 2, 5);
+			this.ColecoVisionTable.Controls.Add(this.LabelNum7, 0, 6);
+			this.ColecoVisionTable.Controls.Add(this.keyButton13, 1, 6);
+			this.ColecoVisionTable.Controls.Add(this.keyButton14, 2, 6);
+			this.ColecoVisionTable.Controls.Add(this.LabelNum8, 0, 7);
+			this.ColecoVisionTable.Controls.Add(this.keyButton15, 1, 7);
+			this.ColecoVisionTable.Controls.Add(this.keyButton16, 2, 7);
+			this.ColecoVisionTable.Controls.Add(this.LabelNum9, 0, 8);
+			this.ColecoVisionTable.Controls.Add(this.keyButton17, 1, 8);
+			this.ColecoVisionTable.Controls.Add(this.keyButton18, 2, 8);
+			this.ColecoVisionTable.Controls.Add(this.LabelNum0, 0, 9);
+			this.ColecoVisionTable.Controls.Add(this.keyButton19, 1, 9);
+			this.ColecoVisionTable.Controls.Add(this.keyButton20, 2, 9);
+			this.ColecoVisionTable.Controls.Add(this.LabelStar, 0, 10);
+			this.ColecoVisionTable.Controls.Add(this.keyButton21, 1, 10);
+			this.ColecoVisionTable.Controls.Add(this.keyButton22, 2, 10);
+			this.ColecoVisionTable.Dock = System.Windows.Forms.DockStyle.Top;
+			this.ColecoVisionTable.Location = new System.Drawing.Point(3, 16);
+			this.ColecoVisionTable.Name = "ColecoVisionTable";
+			this.ColecoVisionTable.RowCount = 13;
+			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.ColecoVisionTable.Size = new System.Drawing.Size(343, 319);
+			this.ColecoVisionTable.TabIndex = 0;
+			// 
+			// LabelHash
+			// 
+			this.LabelHash.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.LabelHash.AutoSize = true;
+			this.LabelHash.Location = new System.Drawing.Point(50, 292);
+			this.LabelHash.Name = "LabelHash";
+			this.LabelHash.Size = new System.Drawing.Size(14, 13);
+			this.LabelHash.TabIndex = 36;
+			this.LabelHash.Text = "#";
+			// 
+			// LabelNum1
+			// 
+			this.LabelNum1.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.LabelNum1.AutoSize = true;
+			this.LabelNum1.Location = new System.Drawing.Point(50, 6);
+			this.LabelNum1.Name = "LabelNum1";
+			this.LabelNum1.Size = new System.Drawing.Size(13, 13);
+			this.LabelNum1.TabIndex = 0;
+			this.LabelNum1.Text = "1";
+			// 
+			// LabelNum2
+			// 
+			this.LabelNum2.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.LabelNum2.AutoSize = true;
+			this.LabelNum2.Location = new System.Drawing.Point(50, 32);
+			this.LabelNum2.Name = "LabelNum2";
+			this.LabelNum2.Size = new System.Drawing.Size(13, 13);
+			this.LabelNum2.TabIndex = 1;
+			this.LabelNum2.Text = "2";
+			// 
+			// LabelNum3
+			// 
+			this.LabelNum3.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.LabelNum3.AutoSize = true;
+			this.LabelNum3.Location = new System.Drawing.Point(50, 58);
+			this.LabelNum3.Name = "LabelNum3";
+			this.LabelNum3.Size = new System.Drawing.Size(13, 13);
+			this.LabelNum3.TabIndex = 2;
+			this.LabelNum3.Text = "3";
+			// 
+			// LabelNum4
+			// 
+			this.LabelNum4.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.LabelNum4.AutoSize = true;
+			this.LabelNum4.Location = new System.Drawing.Point(50, 84);
+			this.LabelNum4.Name = "LabelNum4";
+			this.LabelNum4.Size = new System.Drawing.Size(13, 13);
+			this.LabelNum4.TabIndex = 3;
+			this.LabelNum4.Text = "4";
+			// 
+			// LabelNum5
+			// 
+			this.LabelNum5.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.LabelNum5.AutoSize = true;
+			this.LabelNum5.Location = new System.Drawing.Point(50, 110);
+			this.LabelNum5.Name = "LabelNum5";
+			this.LabelNum5.Size = new System.Drawing.Size(13, 13);
+			this.LabelNum5.TabIndex = 4;
+			this.LabelNum5.Text = "5";
+			// 
+			// LabelNum6
+			// 
+			this.LabelNum6.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.LabelNum6.AutoSize = true;
+			this.LabelNum6.Location = new System.Drawing.Point(50, 136);
+			this.LabelNum6.Name = "LabelNum6";
+			this.LabelNum6.Size = new System.Drawing.Size(13, 13);
+			this.LabelNum6.TabIndex = 5;
+			this.LabelNum6.Text = "6";
+			// 
+			// LabelNum7
+			// 
+			this.LabelNum7.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.LabelNum7.AutoSize = true;
+			this.LabelNum7.Location = new System.Drawing.Point(50, 162);
+			this.LabelNum7.Name = "LabelNum7";
+			this.LabelNum7.Size = new System.Drawing.Size(13, 13);
+			this.LabelNum7.TabIndex = 21;
+			this.LabelNum7.Text = "7";
+			// 
+			// LabelNum8
+			// 
+			this.LabelNum8.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.LabelNum8.AutoSize = true;
+			this.LabelNum8.Location = new System.Drawing.Point(50, 188);
+			this.LabelNum8.Name = "LabelNum8";
+			this.LabelNum8.Size = new System.Drawing.Size(13, 13);
+			this.LabelNum8.TabIndex = 24;
+			this.LabelNum8.Text = "8";
+			// 
+			// LabelNum9
+			// 
+			this.LabelNum9.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.LabelNum9.AutoSize = true;
+			this.LabelNum9.Location = new System.Drawing.Point(50, 214);
+			this.LabelNum9.Name = "LabelNum9";
+			this.LabelNum9.Size = new System.Drawing.Size(13, 13);
+			this.LabelNum9.TabIndex = 27;
+			this.LabelNum9.Text = "9";
+			// 
+			// LabelNum0
+			// 
+			this.LabelNum0.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.LabelNum0.AutoSize = true;
+			this.LabelNum0.Location = new System.Drawing.Point(50, 240);
+			this.LabelNum0.Name = "LabelNum0";
+			this.LabelNum0.Size = new System.Drawing.Size(13, 13);
+			this.LabelNum0.TabIndex = 30;
+			this.LabelNum0.Text = "0";
+			// 
+			// LabelStar
+			// 
+			this.LabelStar.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.LabelStar.AutoSize = true;
+			this.LabelStar.Location = new System.Drawing.Point(51, 266);
+			this.LabelStar.Name = "LabelStar";
+			this.LabelStar.Size = new System.Drawing.Size(11, 13);
+			this.LabelStar.TabIndex = 33;
+			this.LabelStar.Text = "*";
+			// 
+			// ControllerEditing
+			// 
+			this.ControllerEditing.Dock = System.Windows.Forms.DockStyle.Top;
+			this.ControllerEditing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.ControllerEditing.FormattingEnabled = true;
+			this.ControllerEditing.Location = new System.Drawing.Point(3, 3);
+			this.ControllerEditing.Name = "ControllerEditing";
+			this.ControllerEditing.Size = new System.Drawing.Size(349, 21);
+			this.ControllerEditing.TabIndex = 4;
+			this.ControllerEditing.SelectedIndexChanged += new System.EventHandler(this.ControllerEditing_SelectedIndexChanged);
+			// 
+			// TabIcons
+			// 
+			this.TabIcons.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+			this.TabIcons.ImageSize = new System.Drawing.Size(16, 16);
+			this.TabIcons.TransparentColor = System.Drawing.Color.Transparent;
+			// 
+			// PanelOKCancel
+			// 
+			this.PanelOKCancel.Controls.Add(this.ButtonButtonsTable);
+			this.PanelOKCancel.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.PanelOKCancel.Location = new System.Drawing.Point(3, 396);
+			this.PanelOKCancel.Name = "PanelOKCancel";
+			this.PanelOKCancel.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+			this.PanelOKCancel.Size = new System.Drawing.Size(363, 29);
+			this.PanelOKCancel.TabIndex = 1;
+			// 
+			// ButtonButtonsTable
+			// 
+			this.ButtonButtonsTable.ColumnCount = 2;
+			this.ButtonButtonsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.ButtonButtonsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.ButtonButtonsTable.Controls.Add(this.ButtonOK, 1, 0);
+			this.ButtonButtonsTable.Controls.Add(this.ShowJoystickControlPanel, 0, 0);
+			this.ButtonButtonsTable.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ButtonButtonsTable.Location = new System.Drawing.Point(0, 3);
+			this.ButtonButtonsTable.Margin = new System.Windows.Forms.Padding(0);
+			this.ButtonButtonsTable.Name = "ButtonButtonsTable";
+			this.ButtonButtonsTable.RowCount = 1;
+			this.ButtonButtonsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.ButtonButtonsTable.Size = new System.Drawing.Size(363, 26);
+			this.ButtonButtonsTable.TabIndex = 1;
+			// 
+			// ButtonOK
+			// 
+			this.ButtonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.ButtonOK.Dock = System.Windows.Forms.DockStyle.Right;
+			this.ButtonOK.Location = new System.Drawing.Point(288, 0);
+			this.ButtonOK.Margin = new System.Windows.Forms.Padding(0);
+			this.ButtonOK.Name = "ButtonOK";
+			this.ButtonOK.Size = new System.Drawing.Size(75, 26);
+			this.ButtonOK.TabIndex = 0;
+			this.ButtonOK.Text = "OK";
+			this.ButtonOK.UseVisualStyleBackColor = true;
+			// 
+			// ShowJoystickControlPanel
+			// 
+			this.ShowJoystickControlPanel.Dock = System.Windows.Forms.DockStyle.Left;
+			this.ShowJoystickControlPanel.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Joystick;
+			this.ShowJoystickControlPanel.Location = new System.Drawing.Point(0, 0);
+			this.ShowJoystickControlPanel.Margin = new System.Windows.Forms.Padding(0);
+			this.ShowJoystickControlPanel.Name = "ShowJoystickControlPanel";
+			this.ShowJoystickControlPanel.Size = new System.Drawing.Size(26, 26);
+			this.ShowJoystickControlPanel.TabIndex = 1;
+			this.ShowJoystickControlPanel.UseVisualStyleBackColor = true;
+			this.ShowJoystickControlPanel.Visible = false;
+			this.ShowJoystickControlPanel.Click += new System.EventHandler(this.ShowJoystickControlPanel_Click);
+			// 
+			// JoystickEventPoller
+			// 
+			this.JoystickEventPoller.Tick += new System.EventHandler(this.JoystickEventPoller_Tick);
+			// 
+			// label16
+			// 
+			this.label16.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.label16.Location = new System.Drawing.Point(0, 295);
+			this.label16.Name = "label16";
+			this.label16.Size = new System.Drawing.Size(349, 39);
+			this.label16.TabIndex = 1;
+			this.label16.Text = "The A-Z, 0-9, space bar, comma, period, cursor keys and carriage return are mappe" +
+				"d to their direct equivalents on your PC keyboard.";
+			this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// keyButton37
+			// 
+			this.keyButton37.Appearance = System.Windows.Forms.Appearance.Button;
+			this.keyButton37.AutoCheck = false;
+			this.keyButton37.ControllerIndex = 0;
+			this.keyButton37.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton37.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.keyButton37.InputButton = CogwheelSlimDX.InputButton.KeyboardMinus;
+			this.keyButton37.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton37.KeyboardTrigger = System.Windows.Forms.Keys.None;
+			this.keyButton37.Location = new System.Drawing.Point(71, 3);
+			this.keyButton37.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton37.Name = "keyButton37";
+			this.keyButton37.Size = new System.Drawing.Size(96, 22);
+			this.keyButton37.TabIndex = 18;
+			this.keyButton37.Text = "None";
+			this.keyButton37.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton37.UseVisualStyleBackColor = true;
+			// 
+			// keyButton38
+			// 
+			this.keyButton38.Appearance = System.Windows.Forms.Appearance.Button;
+			this.keyButton38.AutoCheck = false;
+			this.keyButton38.ControllerIndex = 0;
+			this.keyButton38.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton38.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.keyButton38.InputButton = CogwheelSlimDX.InputButton.KeyboardCaret;
+			this.keyButton38.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton38.KeyboardTrigger = System.Windows.Forms.Keys.None;
+			this.keyButton38.Location = new System.Drawing.Point(71, 31);
+			this.keyButton38.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton38.Name = "keyButton38";
+			this.keyButton38.Size = new System.Drawing.Size(96, 22);
+			this.keyButton38.TabIndex = 20;
+			this.keyButton38.Text = "None";
+			this.keyButton38.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton38.UseVisualStyleBackColor = true;
+			// 
+			// keyButton39
+			// 
+			this.keyButton39.Appearance = System.Windows.Forms.Appearance.Button;
+			this.keyButton39.AutoCheck = false;
+			this.keyButton39.ControllerIndex = 0;
+			this.keyButton39.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton39.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.keyButton39.InputButton = CogwheelSlimDX.InputButton.KeyboardAtSign;
+			this.keyButton39.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton39.KeyboardTrigger = System.Windows.Forms.Keys.None;
+			this.keyButton39.Location = new System.Drawing.Point(71, 59);
+			this.keyButton39.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton39.Name = "keyButton39";
+			this.keyButton39.Size = new System.Drawing.Size(96, 22);
+			this.keyButton39.TabIndex = 19;
+			this.keyButton39.Text = "None";
+			this.keyButton39.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton39.UseVisualStyleBackColor = true;
+			// 
+			// keyButton33
+			// 
+			this.keyButton33.Appearance = System.Windows.Forms.Appearance.Button;
+			this.keyButton33.AutoCheck = false;
+			this.keyButton33.ControllerIndex = 0;
+			this.keyButton33.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton33.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.keyButton33.InputButton = CogwheelSlimDX.InputButton.KeyboardSemicolon;
+			this.keyButton33.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton33.KeyboardTrigger = System.Windows.Forms.Keys.None;
+			this.keyButton33.Location = new System.Drawing.Point(241, 3);
+			this.keyButton33.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton33.Name = "keyButton33";
+			this.keyButton33.Size = new System.Drawing.Size(99, 22);
+			this.keyButton33.TabIndex = 27;
+			this.keyButton33.Text = "None";
+			this.keyButton33.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton33.UseVisualStyleBackColor = true;
+			// 
+			// keyButton34
+			// 
+			this.keyButton34.Appearance = System.Windows.Forms.Appearance.Button;
+			this.keyButton34.AutoCheck = false;
+			this.keyButton34.ControllerIndex = 0;
+			this.keyButton34.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton34.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.keyButton34.InputButton = CogwheelSlimDX.InputButton.KeyboardColon;
+			this.keyButton34.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton34.KeyboardTrigger = System.Windows.Forms.Keys.None;
+			this.keyButton34.Location = new System.Drawing.Point(241, 31);
+			this.keyButton34.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton34.Name = "keyButton34";
+			this.keyButton34.Size = new System.Drawing.Size(99, 22);
+			this.keyButton34.TabIndex = 28;
+			this.keyButton34.Text = "None";
+			this.keyButton34.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton34.UseVisualStyleBackColor = true;
+			// 
+			// keyButton35
+			// 
+			this.keyButton35.Appearance = System.Windows.Forms.Appearance.Button;
+			this.keyButton35.AutoCheck = false;
+			this.keyButton35.ControllerIndex = 0;
+			this.keyButton35.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton35.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.keyButton35.InputButton = CogwheelSlimDX.InputButton.KeyboardSlash;
+			this.keyButton35.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton35.KeyboardTrigger = System.Windows.Forms.Keys.None;
+			this.keyButton35.Location = new System.Drawing.Point(241, 59);
+			this.keyButton35.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton35.Name = "keyButton35";
+			this.keyButton35.Size = new System.Drawing.Size(99, 22);
+			this.keyButton35.TabIndex = 29;
+			this.keyButton35.Text = "None";
+			this.keyButton35.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton35.UseVisualStyleBackColor = true;
+			// 
+			// keyButton36
+			// 
+			this.keyButton36.Appearance = System.Windows.Forms.Appearance.Button;
+			this.keyButton36.AutoCheck = false;
+			this.keyButton36.ControllerIndex = 0;
+			this.keyButton36.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton36.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.keyButton36.InputButton = CogwheelSlimDX.InputButton.KeyboardPi;
+			this.keyButton36.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton36.KeyboardTrigger = System.Windows.Forms.Keys.None;
+			this.keyButton36.Location = new System.Drawing.Point(241, 87);
+			this.keyButton36.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton36.Name = "keyButton36";
+			this.keyButton36.Size = new System.Drawing.Size(99, 22);
+			this.keyButton36.TabIndex = 30;
+			this.keyButton36.Text = "None";
+			this.keyButton36.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton36.UseVisualStyleBackColor = true;
+			// 
+			// keyButton30
+			// 
+			this.keyButton30.Appearance = System.Windows.Forms.Appearance.Button;
+			this.keyButton30.AutoCheck = false;
+			this.keyButton30.ControllerIndex = 0;
+			this.keyButton30.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton30.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.keyButton30.InputButton = CogwheelSlimDX.InputButton.KeyboardYen;
+			this.keyButton30.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton30.KeyboardTrigger = System.Windows.Forms.Keys.None;
+			this.keyButton30.Location = new System.Drawing.Point(241, 115);
+			this.keyButton30.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton30.Name = "keyButton30";
+			this.keyButton30.Size = new System.Drawing.Size(99, 22);
+			this.keyButton30.TabIndex = 24;
+			this.keyButton30.Text = "None";
+			this.keyButton30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton30.UseVisualStyleBackColor = true;
+			// 
+			// keyButton31
+			// 
+			this.keyButton31.Appearance = System.Windows.Forms.Appearance.Button;
+			this.keyButton31.AutoCheck = false;
+			this.keyButton31.ControllerIndex = 0;
+			this.keyButton31.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton31.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.keyButton31.InputButton = CogwheelSlimDX.InputButton.KeyboardOpenBrackets;
+			this.keyButton31.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton31.KeyboardTrigger = System.Windows.Forms.Keys.None;
+			this.keyButton31.Location = new System.Drawing.Point(71, 87);
+			this.keyButton31.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton31.Name = "keyButton31";
+			this.keyButton31.Size = new System.Drawing.Size(96, 22);
+			this.keyButton31.TabIndex = 25;
+			this.keyButton31.Text = "None";
+			this.keyButton31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton31.UseVisualStyleBackColor = true;
+			// 
+			// keyButton32
+			// 
+			this.keyButton32.Appearance = System.Windows.Forms.Appearance.Button;
+			this.keyButton32.AutoCheck = false;
+			this.keyButton32.ControllerIndex = 0;
+			this.keyButton32.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton32.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.keyButton32.InputButton = CogwheelSlimDX.InputButton.KeyboardCloseBrackets;
+			this.keyButton32.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton32.KeyboardTrigger = System.Windows.Forms.Keys.None;
+			this.keyButton32.Location = new System.Drawing.Point(71, 115);
+			this.keyButton32.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton32.Name = "keyButton32";
+			this.keyButton32.Size = new System.Drawing.Size(96, 22);
+			this.keyButton32.TabIndex = 26;
+			this.keyButton32.Text = "None";
+			this.keyButton32.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton32.UseVisualStyleBackColor = true;
+			// 
+			// keyButton25
+			// 
+			this.keyButton25.Appearance = System.Windows.Forms.Appearance.Button;
+			this.keyButton25.AutoCheck = false;
+			this.keyButton25.ControllerIndex = 0;
+			this.keyButton25.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton25.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.keyButton25.InputButton = CogwheelSlimDX.InputButton.KeyboardFunc;
+			this.keyButton25.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton25.KeyboardTrigger = System.Windows.Forms.Keys.None;
+			this.keyButton25.Location = new System.Drawing.Point(71, 3);
+			this.keyButton25.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton25.Name = "keyButton25";
+			this.keyButton25.Size = new System.Drawing.Size(96, 22);
+			this.keyButton25.TabIndex = 6;
+			this.keyButton25.Text = "None";
+			this.keyButton25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton25.UseVisualStyleBackColor = true;
+			// 
+			// keyButton28
+			// 
+			this.keyButton28.Appearance = System.Windows.Forms.Appearance.Button;
+			this.keyButton28.AutoCheck = false;
+			this.keyButton28.ControllerIndex = 0;
+			this.keyButton28.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton28.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.keyButton28.InputButton = CogwheelSlimDX.InputButton.KeyboardGraph;
+			this.keyButton28.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton28.KeyboardTrigger = System.Windows.Forms.Keys.None;
+			this.keyButton28.Location = new System.Drawing.Point(241, 3);
+			this.keyButton28.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton28.Name = "keyButton28";
+			this.keyButton28.Size = new System.Drawing.Size(99, 22);
+			this.keyButton28.TabIndex = 9;
+			this.keyButton28.Text = "None";
+			this.keyButton28.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton28.UseVisualStyleBackColor = true;
+			// 
+			// keyButton27
+			// 
+			this.keyButton27.Appearance = System.Windows.Forms.Appearance.Button;
+			this.keyButton27.AutoCheck = false;
+			this.keyButton27.ControllerIndex = 0;
+			this.keyButton27.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton27.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.keyButton27.InputButton = CogwheelSlimDX.InputButton.KeyboardShift;
+			this.keyButton27.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton27.KeyboardTrigger = System.Windows.Forms.Keys.None;
+			this.keyButton27.Location = new System.Drawing.Point(71, 59);
+			this.keyButton27.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton27.Name = "keyButton27";
+			this.keyButton27.Size = new System.Drawing.Size(96, 22);
+			this.keyButton27.TabIndex = 8;
+			this.keyButton27.Text = "None";
+			this.keyButton27.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton27.UseVisualStyleBackColor = true;
+			// 
+			// keyButton29
+			// 
+			this.keyButton29.Appearance = System.Windows.Forms.Appearance.Button;
+			this.keyButton29.AutoCheck = false;
+			this.keyButton29.ControllerIndex = 0;
+			this.keyButton29.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton29.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.keyButton29.InputButton = CogwheelSlimDX.InputButton.KeyboardEngDiers;
+			this.keyButton29.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton29.KeyboardTrigger = System.Windows.Forms.Keys.None;
+			this.keyButton29.Location = new System.Drawing.Point(241, 31);
+			this.keyButton29.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton29.Name = "keyButton29";
+			this.keyButton29.Size = new System.Drawing.Size(99, 22);
+			this.keyButton29.TabIndex = 10;
+			this.keyButton29.Text = "None";
+			this.keyButton29.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton29.UseVisualStyleBackColor = true;
+			// 
+			// keyButton26
+			// 
+			this.keyButton26.Appearance = System.Windows.Forms.Appearance.Button;
+			this.keyButton26.AutoCheck = false;
+			this.keyButton26.ControllerIndex = 0;
+			this.keyButton26.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton26.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.keyButton26.InputButton = CogwheelSlimDX.InputButton.KeyboardControl;
+			this.keyButton26.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton26.KeyboardTrigger = System.Windows.Forms.Keys.None;
+			this.keyButton26.Location = new System.Drawing.Point(71, 31);
+			this.keyButton26.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton26.Name = "keyButton26";
+			this.keyButton26.Size = new System.Drawing.Size(96, 22);
+			this.keyButton26.TabIndex = 7;
+			this.keyButton26.Text = "None";
+			this.keyButton26.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton26.UseVisualStyleBackColor = true;
+			// 
+			// keyButton42
+			// 
+			this.keyButton42.Appearance = System.Windows.Forms.Appearance.Button;
+			this.keyButton42.AutoCheck = false;
+			this.keyButton42.ControllerIndex = 0;
+			this.keyButton42.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton42.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.keyButton42.InputButton = CogwheelSlimDX.InputButton.KeyboardHomeClr;
+			this.keyButton42.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton42.KeyboardTrigger = System.Windows.Forms.Keys.None;
+			this.keyButton42.Location = new System.Drawing.Point(241, 59);
+			this.keyButton42.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton42.Name = "keyButton42";
+			this.keyButton42.Size = new System.Drawing.Size(99, 22);
+			this.keyButton42.TabIndex = 10;
+			this.keyButton42.Text = "None";
+			this.keyButton42.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton42.UseVisualStyleBackColor = true;
+			// 
+			// keyButton43
+			// 
+			this.keyButton43.Appearance = System.Windows.Forms.Appearance.Button;
+			this.keyButton43.AutoCheck = false;
+			this.keyButton43.ControllerIndex = 0;
+			this.keyButton43.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton43.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.keyButton43.InputButton = CogwheelSlimDX.InputButton.KeyboardInsDel;
+			this.keyButton43.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton43.KeyboardTrigger = System.Windows.Forms.Keys.None;
+			this.keyButton43.Location = new System.Drawing.Point(241, 87);
+			this.keyButton43.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton43.Name = "keyButton43";
+			this.keyButton43.Size = new System.Drawing.Size(99, 22);
+			this.keyButton43.TabIndex = 10;
+			this.keyButton43.Text = "None";
+			this.keyButton43.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton43.UseVisualStyleBackColor = true;
+			// 
+			// keyButton44
+			// 
+			this.keyButton44.Appearance = System.Windows.Forms.Appearance.Button;
+			this.keyButton44.AutoCheck = false;
+			this.keyButton44.ControllerIndex = 0;
+			this.keyButton44.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.keyButton44.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.keyButton44.InputButton = CogwheelSlimDX.InputButton.KeyboardBreak;
+			this.keyButton44.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton44.KeyboardTrigger = System.Windows.Forms.Keys.None;
+			this.keyButton44.Location = new System.Drawing.Point(71, 87);
+			this.keyButton44.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton44.Name = "keyButton44";
+			this.keyButton44.Size = new System.Drawing.Size(96, 22);
+			this.keyButton44.TabIndex = 10;
+			this.keyButton44.Text = "None";
+			this.keyButton44.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton44.UseVisualStyleBackColor = true;
 			// 
 			// Player1TL
 			// 
@@ -510,68 +1535,6 @@
 			this.Player2Right.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.Player2Right.UseVisualStyleBackColor = true;
 			// 
-			// ConsoleGroup
-			// 
-			this.ConsoleGroup.Controls.Add(this.ConsoleTable);
-			this.ConsoleGroup.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.ConsoleGroup.Location = new System.Drawing.Point(0, 219);
-			this.ConsoleGroup.Name = "ConsoleGroup";
-			this.ConsoleGroup.Size = new System.Drawing.Size(349, 115);
-			this.ConsoleGroup.TabIndex = 2;
-			this.ConsoleGroup.TabStop = false;
-			this.ConsoleGroup.Text = "Console";
-			// 
-			// ConsoleTable
-			// 
-			this.ConsoleTable.ColumnCount = 2;
-			this.ConsoleTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-			this.ConsoleTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 66.66667F));
-			this.ConsoleTable.Controls.Add(this.LabelPause, 0, 0);
-			this.ConsoleTable.Controls.Add(this.LabelReset, 0, 1);
-			this.ConsoleTable.Controls.Add(this.LabelStart, 0, 2);
-			this.ConsoleTable.Controls.Add(this.ConsolePause, 1, 0);
-			this.ConsoleTable.Controls.Add(this.ConsoleReset, 1, 1);
-			this.ConsoleTable.Controls.Add(this.ConsoleStart, 1, 2);
-			this.ConsoleTable.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ConsoleTable.Location = new System.Drawing.Point(3, 16);
-			this.ConsoleTable.Name = "ConsoleTable";
-			this.ConsoleTable.RowCount = 3;
-			this.ConsoleTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-			this.ConsoleTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-			this.ConsoleTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-			this.ConsoleTable.Size = new System.Drawing.Size(343, 96);
-			this.ConsoleTable.TabIndex = 0;
-			// 
-			// LabelPause
-			// 
-			this.LabelPause.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.LabelPause.AutoSize = true;
-			this.LabelPause.Location = new System.Drawing.Point(38, 9);
-			this.LabelPause.Name = "LabelPause";
-			this.LabelPause.Size = new System.Drawing.Size(37, 13);
-			this.LabelPause.TabIndex = 23;
-			this.LabelPause.Text = "Pause";
-			// 
-			// LabelReset
-			// 
-			this.LabelReset.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.LabelReset.AutoSize = true;
-			this.LabelReset.Location = new System.Drawing.Point(39, 41);
-			this.LabelReset.Name = "LabelReset";
-			this.LabelReset.Size = new System.Drawing.Size(35, 13);
-			this.LabelReset.TabIndex = 21;
-			this.LabelReset.Text = "Reset";
-			// 
-			// LabelStart
-			// 
-			this.LabelStart.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.LabelStart.AutoSize = true;
-			this.LabelStart.Location = new System.Drawing.Point(42, 73);
-			this.LabelStart.Name = "LabelStart";
-			this.LabelStart.Size = new System.Drawing.Size(29, 13);
-			this.LabelStart.TabIndex = 22;
-			this.LabelStart.Text = "Start";
-			// 
 			// ConsolePause
 			// 
 			this.ConsolePause.Appearance = System.Windows.Forms.Appearance.Button;
@@ -629,98 +1592,6 @@
 			this.ConsoleStart.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.ConsoleStart.UseVisualStyleBackColor = true;
 			// 
-			// ColecoVisionConfigurationPanel
-			// 
-			this.ColecoVisionConfigurationPanel.Controls.Add(this.ColecoVisionGroup);
-			this.ColecoVisionConfigurationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ColecoVisionConfigurationPanel.Location = new System.Drawing.Point(0, 5);
-			this.ColecoVisionConfigurationPanel.Name = "ColecoVisionConfigurationPanel";
-			this.ColecoVisionConfigurationPanel.Size = new System.Drawing.Size(349, 334);
-			this.ColecoVisionConfigurationPanel.TabIndex = 5;
-			// 
-			// ColecoVisionGroup
-			// 
-			this.ColecoVisionGroup.Controls.Add(this.ColecoVisionTable);
-			this.ColecoVisionGroup.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ColecoVisionGroup.Location = new System.Drawing.Point(0, 0);
-			this.ColecoVisionGroup.Name = "ColecoVisionGroup";
-			this.ColecoVisionGroup.Size = new System.Drawing.Size(349, 334);
-			this.ColecoVisionGroup.TabIndex = 1;
-			this.ColecoVisionGroup.TabStop = false;
-			this.ColecoVisionGroup.Text = "Number Pad";
-			// 
-			// ColecoVisionTable
-			// 
-			this.ColecoVisionTable.ColumnCount = 3;
-			this.ColecoVisionTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-			this.ColecoVisionTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
-			this.ColecoVisionTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
-			this.ColecoVisionTable.Controls.Add(this.LabelHash, 0, 11);
-			this.ColecoVisionTable.Controls.Add(this.keyButton23, 0, 11);
-			this.ColecoVisionTable.Controls.Add(this.keyButton24, 0, 11);
-			this.ColecoVisionTable.Controls.Add(this.LabelNum1, 0, 0);
-			this.ColecoVisionTable.Controls.Add(this.LabelNum2, 0, 1);
-			this.ColecoVisionTable.Controls.Add(this.LabelNum3, 0, 2);
-			this.ColecoVisionTable.Controls.Add(this.LabelNum4, 0, 3);
-			this.ColecoVisionTable.Controls.Add(this.LabelNum5, 0, 4);
-			this.ColecoVisionTable.Controls.Add(this.LabelNum6, 0, 5);
-			this.ColecoVisionTable.Controls.Add(this.keyButton1, 1, 0);
-			this.ColecoVisionTable.Controls.Add(this.keyButton2, 1, 1);
-			this.ColecoVisionTable.Controls.Add(this.keyButton3, 1, 2);
-			this.ColecoVisionTable.Controls.Add(this.keyButton4, 1, 3);
-			this.ColecoVisionTable.Controls.Add(this.keyButton5, 1, 4);
-			this.ColecoVisionTable.Controls.Add(this.keyButton6, 1, 5);
-			this.ColecoVisionTable.Controls.Add(this.keyButton7, 2, 0);
-			this.ColecoVisionTable.Controls.Add(this.keyButton8, 2, 1);
-			this.ColecoVisionTable.Controls.Add(this.keyButton9, 2, 2);
-			this.ColecoVisionTable.Controls.Add(this.keyButton10, 2, 3);
-			this.ColecoVisionTable.Controls.Add(this.keyButton11, 2, 4);
-			this.ColecoVisionTable.Controls.Add(this.keyButton12, 2, 5);
-			this.ColecoVisionTable.Controls.Add(this.LabelNum7, 0, 6);
-			this.ColecoVisionTable.Controls.Add(this.keyButton13, 1, 6);
-			this.ColecoVisionTable.Controls.Add(this.keyButton14, 2, 6);
-			this.ColecoVisionTable.Controls.Add(this.LabelNum8, 0, 7);
-			this.ColecoVisionTable.Controls.Add(this.keyButton15, 1, 7);
-			this.ColecoVisionTable.Controls.Add(this.keyButton16, 2, 7);
-			this.ColecoVisionTable.Controls.Add(this.LabelNum9, 0, 8);
-			this.ColecoVisionTable.Controls.Add(this.keyButton17, 1, 8);
-			this.ColecoVisionTable.Controls.Add(this.keyButton18, 2, 8);
-			this.ColecoVisionTable.Controls.Add(this.LabelNum0, 0, 9);
-			this.ColecoVisionTable.Controls.Add(this.keyButton19, 1, 9);
-			this.ColecoVisionTable.Controls.Add(this.keyButton20, 2, 9);
-			this.ColecoVisionTable.Controls.Add(this.LabelStar, 0, 10);
-			this.ColecoVisionTable.Controls.Add(this.keyButton21, 1, 10);
-			this.ColecoVisionTable.Controls.Add(this.keyButton22, 2, 10);
-			this.ColecoVisionTable.Dock = System.Windows.Forms.DockStyle.Top;
-			this.ColecoVisionTable.Location = new System.Drawing.Point(3, 16);
-			this.ColecoVisionTable.Name = "ColecoVisionTable";
-			this.ColecoVisionTable.RowCount = 13;
-			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-			this.ColecoVisionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.ColecoVisionTable.Size = new System.Drawing.Size(343, 319);
-			this.ColecoVisionTable.TabIndex = 0;
-			// 
-			// LabelHash
-			// 
-			this.LabelHash.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.LabelHash.AutoSize = true;
-			this.LabelHash.Location = new System.Drawing.Point(50, 292);
-			this.LabelHash.Name = "LabelHash";
-			this.LabelHash.Size = new System.Drawing.Size(14, 13);
-			this.LabelHash.TabIndex = 36;
-			this.LabelHash.Text = "#";
-			// 
 			// keyButton23
 			// 
 			this.keyButton23.Appearance = System.Windows.Forms.Appearance.Button;
@@ -758,66 +1629,6 @@
 			this.keyButton24.Text = "None";
 			this.keyButton24.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton24.UseVisualStyleBackColor = true;
-			// 
-			// LabelNum1
-			// 
-			this.LabelNum1.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.LabelNum1.AutoSize = true;
-			this.LabelNum1.Location = new System.Drawing.Point(50, 6);
-			this.LabelNum1.Name = "LabelNum1";
-			this.LabelNum1.Size = new System.Drawing.Size(13, 13);
-			this.LabelNum1.TabIndex = 0;
-			this.LabelNum1.Text = "1";
-			// 
-			// LabelNum2
-			// 
-			this.LabelNum2.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.LabelNum2.AutoSize = true;
-			this.LabelNum2.Location = new System.Drawing.Point(50, 32);
-			this.LabelNum2.Name = "LabelNum2";
-			this.LabelNum2.Size = new System.Drawing.Size(13, 13);
-			this.LabelNum2.TabIndex = 1;
-			this.LabelNum2.Text = "2";
-			// 
-			// LabelNum3
-			// 
-			this.LabelNum3.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.LabelNum3.AutoSize = true;
-			this.LabelNum3.Location = new System.Drawing.Point(50, 58);
-			this.LabelNum3.Name = "LabelNum3";
-			this.LabelNum3.Size = new System.Drawing.Size(13, 13);
-			this.LabelNum3.TabIndex = 2;
-			this.LabelNum3.Text = "3";
-			// 
-			// LabelNum4
-			// 
-			this.LabelNum4.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.LabelNum4.AutoSize = true;
-			this.LabelNum4.Location = new System.Drawing.Point(50, 84);
-			this.LabelNum4.Name = "LabelNum4";
-			this.LabelNum4.Size = new System.Drawing.Size(13, 13);
-			this.LabelNum4.TabIndex = 3;
-			this.LabelNum4.Text = "4";
-			// 
-			// LabelNum5
-			// 
-			this.LabelNum5.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.LabelNum5.AutoSize = true;
-			this.LabelNum5.Location = new System.Drawing.Point(50, 110);
-			this.LabelNum5.Name = "LabelNum5";
-			this.LabelNum5.Size = new System.Drawing.Size(13, 13);
-			this.LabelNum5.TabIndex = 4;
-			this.LabelNum5.Text = "5";
-			// 
-			// LabelNum6
-			// 
-			this.LabelNum6.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.LabelNum6.AutoSize = true;
-			this.LabelNum6.Location = new System.Drawing.Point(50, 136);
-			this.LabelNum6.Name = "LabelNum6";
-			this.LabelNum6.Size = new System.Drawing.Size(13, 13);
-			this.LabelNum6.TabIndex = 5;
-			this.LabelNum6.Text = "6";
 			// 
 			// keyButton1
 			// 
@@ -1047,16 +1858,6 @@
 			this.keyButton12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton12.UseVisualStyleBackColor = true;
 			// 
-			// LabelNum7
-			// 
-			this.LabelNum7.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.LabelNum7.AutoSize = true;
-			this.LabelNum7.Location = new System.Drawing.Point(50, 162);
-			this.LabelNum7.Name = "LabelNum7";
-			this.LabelNum7.Size = new System.Drawing.Size(13, 13);
-			this.LabelNum7.TabIndex = 21;
-			this.LabelNum7.Text = "7";
-			// 
 			// keyButton13
 			// 
 			this.keyButton13.Appearance = System.Windows.Forms.Appearance.Button;
@@ -1094,16 +1895,6 @@
 			this.keyButton14.Text = "None";
 			this.keyButton14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton14.UseVisualStyleBackColor = true;
-			// 
-			// LabelNum8
-			// 
-			this.LabelNum8.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.LabelNum8.AutoSize = true;
-			this.LabelNum8.Location = new System.Drawing.Point(50, 188);
-			this.LabelNum8.Name = "LabelNum8";
-			this.LabelNum8.Size = new System.Drawing.Size(13, 13);
-			this.LabelNum8.TabIndex = 24;
-			this.LabelNum8.Text = "8";
 			// 
 			// keyButton15
 			// 
@@ -1143,16 +1934,6 @@
 			this.keyButton16.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton16.UseVisualStyleBackColor = true;
 			// 
-			// LabelNum9
-			// 
-			this.LabelNum9.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.LabelNum9.AutoSize = true;
-			this.LabelNum9.Location = new System.Drawing.Point(50, 214);
-			this.LabelNum9.Name = "LabelNum9";
-			this.LabelNum9.Size = new System.Drawing.Size(13, 13);
-			this.LabelNum9.TabIndex = 27;
-			this.LabelNum9.Text = "9";
-			// 
 			// keyButton17
 			// 
 			this.keyButton17.Appearance = System.Windows.Forms.Appearance.Button;
@@ -1190,16 +1971,6 @@
 			this.keyButton18.Text = "None";
 			this.keyButton18.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton18.UseVisualStyleBackColor = true;
-			// 
-			// LabelNum0
-			// 
-			this.LabelNum0.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.LabelNum0.AutoSize = true;
-			this.LabelNum0.Location = new System.Drawing.Point(50, 240);
-			this.LabelNum0.Name = "LabelNum0";
-			this.LabelNum0.Size = new System.Drawing.Size(13, 13);
-			this.LabelNum0.TabIndex = 30;
-			this.LabelNum0.Text = "0";
 			// 
 			// keyButton19
 			// 
@@ -1239,16 +2010,6 @@
 			this.keyButton20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton20.UseVisualStyleBackColor = true;
 			// 
-			// LabelStar
-			// 
-			this.LabelStar.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.LabelStar.AutoSize = true;
-			this.LabelStar.Location = new System.Drawing.Point(51, 266);
-			this.LabelStar.Name = "LabelStar";
-			this.LabelStar.Size = new System.Drawing.Size(11, 13);
-			this.LabelStar.TabIndex = 33;
-			this.LabelStar.Text = "*";
-			// 
 			// keyButton21
 			// 
 			this.keyButton21.Appearance = System.Windows.Forms.Appearance.Button;
@@ -1287,78 +2048,6 @@
 			this.keyButton22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton22.UseVisualStyleBackColor = true;
 			// 
-			// ControllerEditing
-			// 
-			this.ControllerEditing.Dock = System.Windows.Forms.DockStyle.Top;
-			this.ControllerEditing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.ControllerEditing.FormattingEnabled = true;
-			this.ControllerEditing.Location = new System.Drawing.Point(3, 3);
-			this.ControllerEditing.Name = "ControllerEditing";
-			this.ControllerEditing.Size = new System.Drawing.Size(349, 21);
-			this.ControllerEditing.TabIndex = 4;
-			this.ControllerEditing.SelectedIndexChanged += new System.EventHandler(this.ControllerEditing_SelectedIndexChanged);
-			// 
-			// TabIcons
-			// 
-			this.TabIcons.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-			this.TabIcons.ImageSize = new System.Drawing.Size(16, 16);
-			this.TabIcons.TransparentColor = System.Drawing.Color.Transparent;
-			// 
-			// PanelOKCancel
-			// 
-			this.PanelOKCancel.Controls.Add(this.ButtonButtonsTable);
-			this.PanelOKCancel.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.PanelOKCancel.Location = new System.Drawing.Point(3, 396);
-			this.PanelOKCancel.Name = "PanelOKCancel";
-			this.PanelOKCancel.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-			this.PanelOKCancel.Size = new System.Drawing.Size(363, 29);
-			this.PanelOKCancel.TabIndex = 1;
-			// 
-			// ButtonButtonsTable
-			// 
-			this.ButtonButtonsTable.ColumnCount = 2;
-			this.ButtonButtonsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.ButtonButtonsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.ButtonButtonsTable.Controls.Add(this.ButtonOK, 1, 0);
-			this.ButtonButtonsTable.Controls.Add(this.ShowJoystickControlPanel, 0, 0);
-			this.ButtonButtonsTable.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ButtonButtonsTable.Location = new System.Drawing.Point(0, 3);
-			this.ButtonButtonsTable.Margin = new System.Windows.Forms.Padding(0);
-			this.ButtonButtonsTable.Name = "ButtonButtonsTable";
-			this.ButtonButtonsTable.RowCount = 1;
-			this.ButtonButtonsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.ButtonButtonsTable.Size = new System.Drawing.Size(363, 26);
-			this.ButtonButtonsTable.TabIndex = 1;
-			// 
-			// ButtonOK
-			// 
-			this.ButtonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.ButtonOK.Dock = System.Windows.Forms.DockStyle.Right;
-			this.ButtonOK.Location = new System.Drawing.Point(288, 0);
-			this.ButtonOK.Margin = new System.Windows.Forms.Padding(0);
-			this.ButtonOK.Name = "ButtonOK";
-			this.ButtonOK.Size = new System.Drawing.Size(75, 26);
-			this.ButtonOK.TabIndex = 0;
-			this.ButtonOK.Text = "OK";
-			this.ButtonOK.UseVisualStyleBackColor = true;
-			// 
-			// ShowJoystickControlPanel
-			// 
-			this.ShowJoystickControlPanel.Dock = System.Windows.Forms.DockStyle.Left;
-			this.ShowJoystickControlPanel.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Joystick;
-			this.ShowJoystickControlPanel.Location = new System.Drawing.Point(0, 0);
-			this.ShowJoystickControlPanel.Margin = new System.Windows.Forms.Padding(0);
-			this.ShowJoystickControlPanel.Name = "ShowJoystickControlPanel";
-			this.ShowJoystickControlPanel.Size = new System.Drawing.Size(26, 26);
-			this.ShowJoystickControlPanel.TabIndex = 1;
-			this.ShowJoystickControlPanel.UseVisualStyleBackColor = true;
-			this.ShowJoystickControlPanel.Visible = false;
-			this.ShowJoystickControlPanel.Click += new System.EventHandler(this.ShowJoystickControlPanel_Click);
-			// 
-			// JoystickEventPoller
-			// 
-			this.JoystickEventPoller.Tick += new System.EventHandler(this.JoystickEventPoller_Tick);
-			// 
 			// ControlEditor
 			// 
 			this.AcceptButton = this.ButtonOK;
@@ -1381,6 +2070,13 @@
 			this.KeyboardTab.ResumeLayout(false);
 			this.EditorPanel.ResumeLayout(false);
 			this.ButtonPanel.ResumeLayout(false);
+			this.KeyboardConfigurationPanel.ResumeLayout(false);
+			this.GeneralGroup.ResumeLayout(false);
+			this.KeyboardGeneralTable.ResumeLayout(false);
+			this.KeyboardGeneralTable.PerformLayout();
+			this.SymbolsGroup.ResumeLayout(false);
+			this.KeyboardSymbolsTable.ResumeLayout(false);
+			this.KeyboardSymbolsTable.PerformLayout();
 			this.StandardConfigurationPanel.ResumeLayout(false);
 			this.JoypadGroup.ResumeLayout(false);
 			this.JoypadTable.ResumeLayout(false);
@@ -1479,5 +2175,47 @@
 		private System.Windows.Forms.Timer JoystickEventPoller;
 		private System.Windows.Forms.TableLayoutPanel ButtonButtonsTable;
 		private System.Windows.Forms.Button ShowJoystickControlPanel;
+		private System.Windows.Forms.Panel KeyboardConfigurationPanel;
+		private System.Windows.Forms.GroupBox GeneralGroup;
+		private System.Windows.Forms.TableLayoutPanel KeyboardGeneralTable;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.Label label5;
+		private KeyButton keyButton25;
+		private KeyButton keyButton26;
+		private KeyButton keyButton27;
+		private KeyButton keyButton28;
+		private KeyButton keyButton29;
+		private System.Windows.Forms.GroupBox SymbolsGroup;
+		private System.Windows.Forms.TableLayoutPanel KeyboardSymbolsTable;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.Label label9;
+		private KeyButton keyButton37;
+		private KeyButton keyButton38;
+		private KeyButton keyButton39;
+		private KeyButton keyButton30;
+		private KeyButton keyButton31;
+		private KeyButton keyButton32;
+		private KeyButton keyButton33;
+		private KeyButton keyButton34;
+		private KeyButton keyButton35;
+		private KeyButton keyButton36;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.Label label12;
+		private System.Windows.Forms.Label label13;
+		private System.Windows.Forms.Label label14;
+		private System.Windows.Forms.Label label15;
+		private System.Windows.Forms.Label label18;
+		private System.Windows.Forms.Label label19;
+		private KeyButton keyButton42;
+		private KeyButton keyButton43;
+		private System.Windows.Forms.Label label20;
+		private KeyButton keyButton44;
+		private System.Windows.Forms.Label label16;
 	}
 }
