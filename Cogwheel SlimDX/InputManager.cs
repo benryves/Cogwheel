@@ -195,6 +195,11 @@ namespace CogwheelSlimDX {
 			if (emulator.HasResetButton) emulator.ResetButton = this.GetButtonState(0, InputButton.Reset);
 			if (emulator.HasStartButton) emulator.StartButton = this.GetButtonState(0, InputButton.Start);
 
+			// SC-3000 keyboard.
+			if (emulator.Family == HardwareFamily.SC3000) {
+				emulator.Keyboard.UpdateState();
+			}
+
 		}
 
 		public void Poll() { foreach (var Source in this.Sources) Source.Poll(); }

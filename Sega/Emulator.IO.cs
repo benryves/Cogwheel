@@ -67,6 +67,30 @@ namespace BeeDevelopment.Sega8Bit {
 					}
 					break;
 
+				case HardwareFamily.SC3000:
+
+
+					switch (port & 0x61) {
+						case 0x00:
+						case 0x20:
+							return this.Video.ReadData();
+						case 0x01:
+						case 0x21:
+							return this.Video.ReadControl();
+						case 0x40:
+							return this.MainPPI.PortAInput;
+						case 0x41:
+							return this.MainPPI.PortBInput;
+						case 0x80:
+							//TODO: "Instruction referenced by R".
+							break;
+					}
+
+
+
+					break;
+
+
 				default: // Master System (default) I/O map.
 					
 					if (this.HasGameGearPorts && this.RespondsToGameGearPorts) {
@@ -144,6 +168,33 @@ namespace BeeDevelopment.Sega8Bit {
 							this.Sound.WriteQueued(value);
 							break;
 					}
+					break;
+
+				case HardwareFamily.SC3000:
+
+					if ((port & 0x20) == 0) {
+						switch (port & 0x3) {
+							case 0: this.MainPPI.PortAOutput = value; break;
+							case 1: this.MainPPI.PortBOutput = value; break;
+							case 2: this.MainPPI.PortCOutput = value; break;
+							case 3: this.MainPPI.WriteControl(value); break;
+						}
+						this.Keyboard.UpdateState();
+					}
+
+					if ((port & 0x40) == 0) {
+						if ((port & 0x01) == 0) {
+							this.Video.WriteData(value);
+						} else {
+							this.Video.WriteControl(value);
+						}
+					}
+
+					if ((port & 0x80) == 0) {
+						this.Sound.WriteQueued(value);
+					}
+
+
 					break;
 				
 				default: // Master System (default) I/O map.

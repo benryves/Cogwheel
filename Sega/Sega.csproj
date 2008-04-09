@@ -50,6 +50,7 @@
     </Compile>
     <Compile Include="Country.cs" />
     <Compile Include="Hardware\Controllers\ColecoVisionControllerPort.cs" />
+    <Compile Include="Hardware\Controllers\SC3000Keyboard.cs" />
     <Compile Include="Hardware\Controllers\SegaControllerPort.cs" />
     <Compile Include="Hardware\PinDirection.cs" />
     <Compile Include="Hardware\ProgrammablePeripheralInterface\IO.cs" />

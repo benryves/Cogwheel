@@ -19,6 +19,12 @@ namespace BeeDevelopment.Sega8Bit {
 		public ColecoVisionControllerPort[] ColecoVisionPorts { get; private set; }
 
 		/// <summary>
+		/// Gets the <see cref="SC3000Keyboard"/> connected to the console.
+		/// </summary>
+		[StateNotSaved()]
+		public SC3000Keyboard Keyboard { get; private set; }
+
+		/// <summary>
 		/// Resets the controller ports to their default state.
 		/// </summary>
 		public void ResetPorts() {
@@ -30,6 +36,7 @@ namespace BeeDevelopment.Sega8Bit {
 				new ColecoVisionControllerPort(),
 				new ColecoVisionControllerPort()
 			};
+			this.Keyboard = new SC3000Keyboard(this);
 			this.ReadingColecoVisionJoysticks = false;
 			this.ResetButton = false;
 		}

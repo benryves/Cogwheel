@@ -33,6 +33,7 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <returns>The <see cref="HardwareFamily"/> that the <paramref="model"/> is a member of.</returns>
 		public static HardwareFamily GetFamilyFromModel(HardwareModel model) {
 			switch (model) {
+				case HardwareModel.SG1000:
 				case HardwareModel.MasterSystem:
 				case HardwareModel.MasterSystem2:
 				case HardwareModel.GameGear:
@@ -40,10 +41,9 @@ namespace BeeDevelopment.Sega8Bit {
 					return HardwareFamily.MasterSystem;
 				case HardwareModel.ColecoVision:
 					return HardwareFamily.ColecoVision;
-				case HardwareModel.SG1000:
 				case HardwareModel.SC3000:
 				case HardwareModel.SF7000:
-					return HardwareFamily.SG1000;
+					return HardwareFamily.SC3000;
 				default:
 					return HardwareFamily.Default;
 			}

@@ -33,8 +33,8 @@ namespace BeeDevelopment.Sega8Bit {
 	public enum HardwareFamily { 
 		/// <summary>A non-specific hardware family.</summary>
 		Default,
-		/// <summary>Sega SG-1000 and compatible consoles.</summary>
-		SG1000,
+		/// <summary>Sega SC-3000 and compatible consoles.</summary>
+		SC3000,
 		/// <summary>Sega Master System and compatible consoles.</summary>
 		MasterSystem,
 		/// <summary>The Coleco Industries ColecoVision.</summary>
