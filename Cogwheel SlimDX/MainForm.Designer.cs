@@ -67,6 +67,9 @@
 			this.OpenStateDialog = new System.Windows.Forms.OpenFileDialog();
 			this.SaveStateDialog = new System.Windows.Forms.SaveFileDialog();
 			this.CursorHider = new System.Windows.Forms.Timer(this.components);
+			this.ControllerProfileMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.ControllerProfileDefaultMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.ControllerProfileSC3000Menu = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -257,7 +260,7 @@
             this.GameGenieEditMenu});
 			this.GameGenieMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(138, 22);
+			this.GameGenieMenu.Size = new System.Drawing.Size(152, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
 			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
 			// 
@@ -279,6 +282,7 @@
 			// OptionsMenu
 			// 
 			this.OptionsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ControllerProfileMenu,
             this.CustomiseControlsMenu,
             this.OptionsSep0,
             this.EnableSoundMenu,
@@ -287,7 +291,7 @@
             this.MaintainAspectRatioMenu});
 			this.OptionsMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Wrench;
 			this.OptionsMenu.Name = "OptionsMenu";
-			this.OptionsMenu.Size = new System.Drawing.Size(138, 22);
+			this.OptionsMenu.Size = new System.Drawing.Size(152, 22);
 			this.OptionsMenu.Text = "&Options";
 			this.OptionsMenu.DropDownOpening += new System.EventHandler(this.OptionsMenu_DropDownOpening);
 			// 
@@ -402,6 +406,31 @@
 			this.CursorHider.Interval = 1000;
 			this.CursorHider.Tick += new System.EventHandler(this.CursorHider_Tick);
 			// 
+			// ControllerProfileMenu
+			// 
+			this.ControllerProfileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ControllerProfileDefaultMenu,
+            this.ControllerProfileSC3000Menu});
+			this.ControllerProfileMenu.Name = "ControllerProfileMenu";
+			this.ControllerProfileMenu.Size = new System.Drawing.Size(247, 22);
+			this.ControllerProfileMenu.Text = "Controller &Profile";
+			this.ControllerProfileMenu.DropDownOpening += new System.EventHandler(this.ControllerProfileMenu_DropDownOpening);
+			// 
+			// ControllerProfileDefaultMenu
+			// 
+			this.ControllerProfileDefaultMenu.Name = "ControllerProfileDefaultMenu";
+			this.ControllerProfileDefaultMenu.Size = new System.Drawing.Size(170, 22);
+			this.ControllerProfileDefaultMenu.Text = "&Default";
+			this.ControllerProfileDefaultMenu.Click += new System.EventHandler(this.SetControllerProfile_Click);
+			// 
+			// ControllerProfileSC3000Menu
+			// 
+			this.ControllerProfileSC3000Menu.Name = "ControllerProfileSC3000Menu";
+			this.ControllerProfileSC3000Menu.Size = new System.Drawing.Size(170, 22);
+			this.ControllerProfileSC3000Menu.Tag = "SC3000Keyboard";
+			this.ControllerProfileSC3000Menu.Text = "&SC-3000 Keyboard";
+			this.ControllerProfileSC3000Menu.Click += new System.EventHandler(this.SetControllerProfile_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -470,6 +499,9 @@
 		private System.Windows.Forms.ToolStripMenuItem DebugVideoMenu;
 		private System.Windows.Forms.ToolStripMenuItem BackgroundEnabledMenu;
 		private System.Windows.Forms.ToolStripMenuItem SpritesEnabledMenu;
+		private System.Windows.Forms.ToolStripMenuItem ControllerProfileMenu;
+		private System.Windows.Forms.ToolStripMenuItem ControllerProfileDefaultMenu;
+		private System.Windows.Forms.ToolStripMenuItem ControllerProfileSC3000Menu;
 	}
 }
 

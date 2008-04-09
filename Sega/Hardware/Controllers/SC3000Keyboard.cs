@@ -96,8 +96,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 			Semicolon,
 			/// <summary>The colon (:) key.</summary>
 			Colon,
-			/// <summary>The right bracket key.</summary>
-			RightBracket,
+			/// <summary>The close bracket key.</summary>
+			CloseBrackets,
 			/// <summary>The carriage return key.</summary>
 			CarriageReturn,
 			/// <summary>The up arrow key.</summary>
@@ -111,7 +111,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 			/// <summary>The at sign (@) key.</summary>
 			AtSign,
 			/// <summary>The left bracket key.</summary>
-			LeftBracket,
+			OpenBrackets,
 			/// <summary>The 8 key.</summary>
 			D8 = 8 * 8,
 			/// <summary>The 9 key.</summary>

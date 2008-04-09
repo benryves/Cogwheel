@@ -103,6 +103,47 @@ namespace CogwheelSlimDX.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to ; Alpha keys:
+        ///A=&gt;0.KeyboardA
+        ///B=&gt;0.KeyboardB
+        ///C=&gt;0.KeyboardC
+        ///D=&gt;0.KeyboardD
+        ///E=&gt;0.KeyboardE
+        ///F=&gt;0.KeyboardF
+        ///G=&gt;0.KeyboardG
+        ///H=&gt;0.KeyboardH
+        ///I=&gt;0.KeyboardI
+        ///J=&gt;0.KeyboardJ
+        ///K=&gt;0.KeyboardK
+        ///L=&gt;0.KeyboardL
+        ///M=&gt;0.KeyboardM
+        ///N=&gt;0.KeyboardN
+        ///O=&gt;0.KeyboardO
+        ///P=&gt;0.KeyboardP
+        ///Q=&gt;0.KeyboardQ
+        ///R=&gt;0.KeyboardR
+        ///S=&gt;0.KeyboardS
+        ///T=&gt;0.KeyboardT
+        ///U=&gt;0.KeyboardU
+        ///V=&gt;0.KeyboardV
+        ///W=&gt;0.KeyboardW
+        ///X=&gt;0.KeyboardX
+        ///Y=&gt;0.KeyboardY
+        ///Z=&gt;0.KeyboardZ
+        ///
+        ///; Number keys:
+        ///D0=&gt;0.KeyboardD0
+        ///D1=&gt;0.KeyboardD1
+        ///D2=&gt;0.KeyboardD2
+        ///D3=&gt;0.Key [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Config_SC3000KeyMapping {
+            get {
+                return ResourceManager.GetString("Config_SC3000KeyMapping", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap Flag_BR {
             get {
                 object obj = ResourceManager.GetObject("Flag_BR", resourceCulture);

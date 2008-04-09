@@ -145,7 +145,7 @@ namespace CogwheelSlimDX {
 		/// <summary>The Comma key on the SC-3000 keyboard.</summary>
 		KeyboardComma,
 		/// <summary>The FullStop key on the SC-3000 keyboard.</summary>
-		KeyboardFullStop,
+		KeyboardPeriod,
 		/// <summary>The Slash key on the SC-3000 keyboard.</summary>
 		KeyboardSlash,
 		/// <summary>The Pi key on the SC-3000 keyboard.</summary>
@@ -163,13 +163,13 @@ namespace CogwheelSlimDX {
 		/// <summary>The colon key on the SC-3000 keyboard.</summary>
 		KeyboardColon,
 		/// <summary>The right bracket key on the SC-3000 keyboard.</summary>
-		KeyboardRightBracket,
+		KeyboardCloseBrackets,
 		/// <summary>The return key on the SC-3000 keyboard.</summary>
-		KeyboardReturn,
+		KeyboardCarriageReturn,
 		/// <summary>The at (@) key on the SC-3000 keyboard.</summary>
 		KeyboardAtSign,
 		/// <summary>The left bracket key on the SC-3000 keyboard.</summary>
-		KeyboardLeftBracket,
+		KeyboardOpenBrackets,
 		/// <summary>The - key on the SC-3000 keyboard.</summary>
 		KeyboardMinus,
 		/// <summary>The caret (^) key on the SC-3000 keyboard.</summary>
@@ -181,7 +181,7 @@ namespace CogwheelSlimDX {
 		/// <summary>The graph key on the SC-3000 keyboard.</summary>
 		KeyboardGraph,
 		/// <summary>The control key on the SC-3000 keyboard.</summary>
-		KeyboardCtrl,
+		KeyboardControl,
 		/// <summary>The func key on the SC-3000 keyboard.</summary>
 		KeyboardFunc,
 		/// <summary>The shift key on the SC-3000 keyboard.</summary>
@@ -245,10 +245,13 @@ namespace CogwheelSlimDX {
 		/// </summary>
 		public List<IInputSource> Sources { get; private set; }
 
+		public string ProfileDirectory { get; private set; }
+
 		/// <summary>
 		/// Creates an instance of <see cref="InputManager"/>.
 		/// </summary>
-		public InputManager() {
+		public InputManager(string profileDirectory) {
+			this.ProfileDirectory = profileDirectory;
 			this.Sources = new List<IInputSource>();
 		}
 
@@ -392,18 +395,18 @@ namespace CogwheelSlimDX {
 				case SC3000Keyboard.Keys.Caret: return InputButton.KeyboardCaret;
 				case SC3000Keyboard.Keys.Colon: return InputButton.KeyboardColon;
 				case SC3000Keyboard.Keys.Comma: return InputButton.KeyboardComma;
-				case SC3000Keyboard.Keys.Control: return InputButton.KeyboardCtrl;
+				case SC3000Keyboard.Keys.Control: return InputButton.KeyboardControl;
 				case SC3000Keyboard.Keys.EngDiers: return InputButton.KeyboardEngDiers;
-				case SC3000Keyboard.Keys.Period: return InputButton.KeyboardFullStop;
+				case SC3000Keyboard.Keys.Period: return InputButton.KeyboardPeriod;
 				case SC3000Keyboard.Keys.Func: return InputButton.KeyboardFunc;
 				case SC3000Keyboard.Keys.Graph: return InputButton.KeyboardGraph;
 				case SC3000Keyboard.Keys.HomeClr: return InputButton.KeyboardHomeClr;
 				case SC3000Keyboard.Keys.InsDel: return InputButton.KeyboardInsDel;
-				case SC3000Keyboard.Keys.LeftBracket: return InputButton.KeyboardLeftBracket;
+				case SC3000Keyboard.Keys.OpenBrackets: return InputButton.KeyboardOpenBrackets;
 				case SC3000Keyboard.Keys.Minus: return InputButton.KeyboardMinus;
 				case SC3000Keyboard.Keys.Pi: return InputButton.KeyboardPi;
-				case SC3000Keyboard.Keys.CarriageReturn: return InputButton.KeyboardReturn;
-				case SC3000Keyboard.Keys.RightBracket: return InputButton.KeyboardRightBracket;
+				case SC3000Keyboard.Keys.CarriageReturn: return InputButton.KeyboardCarriageReturn;
+				case SC3000Keyboard.Keys.CloseBrackets: return InputButton.KeyboardCloseBrackets;
 				case SC3000Keyboard.Keys.Semicolon: return InputButton.KeyboardSemicolon;
 				case SC3000Keyboard.Keys.Shift: return InputButton.KeyboardShift;
 				case SC3000Keyboard.Keys.Slash: return InputButton.KeyboardSlash;
@@ -426,18 +429,19 @@ namespace CogwheelSlimDX {
 
 		public abstract string SettingsFilename { get; }
 
+		public InputManager Manager { get; private set; }
+
 		private string SettingsPath {
-			get{
+			get {
 				string DirectoryPath = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Application.CompanyName), "Cogwheel");
+				if (!string.IsNullOrEmpty(this.Manager.ProfileDirectory)) DirectoryPath = Path.Combine(DirectoryPath, this.Manager.ProfileDirectory);
 				if (!Directory.Exists(DirectoryPath)) Directory.CreateDirectory(DirectoryPath);
 				return Path.Combine(DirectoryPath, this.SettingsFilename);
 			}
 		}
 
 		public virtual string DefaultSettingsFile {
-			get {
-				return null;
-			}
+			get { return null; }
 		}
 
 		/// <summary>
@@ -557,7 +561,8 @@ namespace CogwheelSlimDX {
 			return default(T);
 		}
 
-		public TriggeredInputSource() {
+		public TriggeredInputSource(InputManager manager) {
+			this.Manager = manager;
 			this.KeyMapping = new Dictionary<T, KeyValuePair<int, InputButton>[]>(32);
 			this.ReleaseAll();
 		}
@@ -593,7 +598,11 @@ namespace CogwheelSlimDX {
 		}
 
 		public override string DefaultSettingsFile {
-			get { return Properties.Resources.Config_DefaultKeyMapping; }
+			get {
+				return !string.IsNullOrEmpty(this.Manager.ProfileDirectory) && Path.GetFileName(this.Manager.ProfileDirectory).Contains("3000")
+					? Properties.Resources.Config_SC3000KeyMapping
+					: Properties.Resources.Config_DefaultKeyMapping;
+			}
 		}
 
 		#endregion
@@ -608,6 +617,10 @@ namespace CogwheelSlimDX {
 		}
 
 		#endregion
+
+		public KeyboardInputSource(InputManager manager)
+			: base(manager) {
+		}
 
 	}
 	
@@ -809,7 +822,8 @@ namespace CogwheelSlimDX {
 
 		#region Constructor
 
-		public JoystickInputSource(Joystick joystick) {
+		public JoystickInputSource(InputManager manager, Joystick joystick)
+			: base(manager) {
 			this.Joystick = joystick;
 		}
 

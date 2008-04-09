@@ -223,6 +223,7 @@
     <None Include="Resources\arrow_right.png" />
     <None Include="Resources\arrow_up.png" />
     <Content Include="Resources\Config_DefaultKeyMapping.txt" />
+    <None Include="Resources\Config_SC3000KeyMapping.txt" />
     <None Include="Resources\monitor.png" />
     <None Include="Resources\sound_low.png" />
     <None Include="Resources\sound.png" />

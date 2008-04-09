@@ -64,11 +64,7 @@ namespace CogwheelSlimDX {
 			InitializeComponent();
 
 			// Set up input devices:
-			this.Input = new InputManager();
-			this.KeyboardInput = new KeyboardInputSource();
-			this.Input.Sources.Add(this.KeyboardInput);
-			this.Input.Sources.AddRange(Array.ConvertAll(new JoystickInput.JoystickCollection().Joysticks, J => new JoystickInputSource(J)));
-			this.Input.ReloadSettings();
+			this.ReinitialiseInput(null);
 
 			// Create a pixel dumper.
 			this.Dumper = new PixelDumper(this.RenderPanel);
@@ -388,7 +384,15 @@ namespace CogwheelSlimDX {
 
 		#endregion
 
-		#region Keyboard Input
+		#region Input
+
+		private void ReinitialiseInput(string profileDirectory) {
+			this.Input = new InputManager(profileDirectory);
+			this.KeyboardInput = new KeyboardInputSource(Input);
+			this.Input.Sources.Add(this.KeyboardInput);
+			this.Input.Sources.AddRange(Array.ConvertAll(new JoystickInput.JoystickCollection().Joysticks, J => new JoystickInputSource(Input, J)));
+			this.Input.ReloadSettings();
+		}
 
 		protected override void OnKeyDown(KeyEventArgs e) {
 			this.KeyboardInput.KeyChange(e, true);
@@ -933,5 +937,15 @@ namespace CogwheelSlimDX {
 		}
 
 		#endregion
+
+		private void SetControllerProfile_Click(object sender, EventArgs e) {
+			this.ReinitialiseInput((string)((ToolStripMenuItem)sender).Tag);
+		}
+
+		private void ControllerProfileMenu_DropDownOpening(object sender, EventArgs e) {
+			foreach (ToolStripMenuItem SubItem in this.ControllerProfileMenu.DropDownItems) {
+				SubItem.Checked = (this.Input.ProfileDirectory == (string)SubItem.Tag);
+			}
+		}
 	}
 }

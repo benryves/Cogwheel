@@ -1,0 +1,76 @@
+; Alpha keys:
+A=>0.KeyboardA
+B=>0.KeyboardB
+C=>0.KeyboardC
+D=>0.KeyboardD
+E=>0.KeyboardE
+F=>0.KeyboardF
+G=>0.KeyboardG
+H=>0.KeyboardH
+I=>0.KeyboardI
+J=>0.KeyboardJ
+K=>0.KeyboardK
+L=>0.KeyboardL
+M=>0.KeyboardM
+N=>0.KeyboardN
+O=>0.KeyboardO
+P=>0.KeyboardP
+Q=>0.KeyboardQ
+R=>0.KeyboardR
+S=>0.KeyboardS
+T=>0.KeyboardT
+U=>0.KeyboardU
+V=>0.KeyboardV
+W=>0.KeyboardW
+X=>0.KeyboardX
+Y=>0.KeyboardY
+Z=>0.KeyboardZ
+
+; Number keys:
+D0=>0.KeyboardD0
+D1=>0.KeyboardD1
+D2=>0.KeyboardD2
+D3=>0.KeyboardD3
+D4=>0.KeyboardD4
+D5=>0.KeyboardD5
+D6=>0.KeyboardD6
+D7=>0.KeyboardD7
+D8=>0.KeyboardD8
+D9=>0.KeyboardD9
+
+; Cursor keys:
+Up=>0.KeyboardUp
+Down=>0.KeyboardDown
+Left=>0.KeyboardLeft
+Right=>0.KeyboardRight
+
+; General symbols:
+Space=>0.KeyboardSpace
+Oemcomma=>0.KeyboardComma
+OemPeriod=>0.KeyboardPeriod
+OemQuestion=>0.KeyboardSlash
+OemPipe=>0.KeyboardPi
+OemSemicolon=>0.KeyboardSemicolon
+Oemtilde=>0.KeyboardColon
+OemQuotes=>0.KeyboardCloseBrackets
+OemOpenBrackets=>0.KeyboardAtSign
+OemCloseBrackets=>0.KeyboardOpenBrackets
+OemMinus=>0.KeyboardMinus
+Oemplus=>0.KeyboardCaret
+Oem8=>0.KeyboardYen
+
+; General function keys:
+Enter=>0.KeyboardCarriageReturn
+Back=>0.KeyboardInsDel
+Delete=>0.KeyboardInsDel
+Insert=>0.KeyboardInsDel
+Home=>0.KeyboardHomeClr
+Pause=>0.KeyboardBreak
+Apps=>0.KeyboardEngDiers
+F12=>0.Pause
+
+; Modifiers:
+Tab=>0.KeyboardFunc
+ControlKey=>0.KeyboardControl
+ShiftKey=>0.KeyboardShift
+Menu=>0.KeyboardGraph
