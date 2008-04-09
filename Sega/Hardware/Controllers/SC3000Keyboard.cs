@@ -10,18 +10,130 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 		/// Defines a key on the <see cref="SC3000Keyboard"/>.
 		/// </summary>
 		public enum Keys {
-			D1 = 8 * 0, D2, D3, D4, D5, D6, D7,
-			Q = 8 * 1, W, E, R, T, Y, U,
-			A = 8 * 2, S, D, F, G, H, J,
-			Z = 8 * 3, X, C, V, B, N, M,
-			EngDiers = 8 * 4, Space, HomeClr, InsDel,
-			Comma = 8 * 5, FullStop, Slash, Pi, Down, Left, Right,
-			K = 8 * 6, L, SemiColon, Colon, RightBracket, Return, Up,
-			I = 8 * 7, O, P, AtSign, LeftBracket,
-			D8 = 8 * 8, D9, D0, Minus, Caret, Yen, Break,
+			/// <summary>The 1 key.</summary>
+			D1 = 8 * 0,
+			/// <summary>The 2 key.</summary>
+			D2,
+			/// <summary>The 3 key.</summary>
+			D3,
+			/// <summary>The 4 key.</summary>
+			D4,
+			/// <summary>The 5 key.</summary>
+			D5,
+			/// <summary>The 6 key.</summary>
+			D6,
+			/// <summary>The 7 key.</summary>
+			D7,
+			/// <summary>The Q key.</summary>
+			Q = 8 * 1,
+			/// <summary>The W key.</summary>
+			W,
+			/// <summary>The E key.</summary>
+			E,
+			/// <summary>The R key.</summary>
+			R,
+			/// <summary>The T key.</summary>
+			T,
+			/// <summary>The Y key.</summary>
+			Y,
+			/// <summary>The U key.</summary>
+			U,
+			/// <summary>The A key.</summary>
+			A = 8 * 2,
+			/// <summary>The S key.</summary>
+			S,
+			/// <summary>The D key.</summary>
+			D,
+			/// <summary>The F key.</summary>
+			F,
+			/// <summary>The G key.</summary>
+			G,
+			/// <summary>The H key.</summary>
+			H,
+			/// <summary>The J key.</summary>
+			J,
+			/// <summary>The Z key.</summary>
+			Z = 8 * 3,
+			/// <summary>The X key.</summary>
+			X,
+			/// <summary>The C key.</summary>
+			C,
+			/// <summary>The V key.</summary>
+			V,
+			/// <summary>The B key.</summary>
+			B,
+			/// <summary>The N key.</summary>
+			N,
+			/// <summary>The M key.</summary>
+			M,
+			/// <summary>The Eng Dier's key.</summary>
+			EngDiers = 8 * 4,
+			/// <summary>The space bar key.</summary>
+			Space,
+			/// <summary>The Home/Clr key.</summary>
+			HomeClr,
+			/// <summary>The Ins/Del key.</summary>
+			InsDel,
+			/// <summary>The comma (,) key.</summary>
+			Comma = 8 * 5,
+			/// <summary>The period (.) key.</summary>
+			Period,
+			/// <summary>The slash (/) key.</summary>
+			Slash,
+			/// <summary>The Pi (π) key.</summary>
+			Pi,
+			/// <summary>The down arrow key.</summary>
+			Down,
+			/// <summary>The left arrow key.</summary>
+			Left,
+			/// <summary>The right arrow key.</summary>
+			Right,
+			/// <summary>The K key.</summary>
+			K = 8 * 6,
+			/// <summary>The L key.</summary>
+			L,
+			/// <summary>The semicolon (;) key.</summary>
+			Semicolon,
+			/// <summary>The colon (:) key.</summary>
+			Colon,
+			/// <summary>The right bracket key.</summary>
+			RightBracket,
+			/// <summary>The carriage return key.</summary>
+			CarriageReturn,
+			/// <summary>The up arrow key.</summary>
+			Up,
+			/// <summary>The I key.</summary>
+			I = 8 * 7,
+			/// <summary>The O key.</summary>
+			O,
+			/// <summary>The P key.</summary>
+			P,
+			/// <summary>The at sign (@) key.</summary>
+			AtSign,
+			/// <summary>The left bracket key.</summary>
+			LeftBracket,
+			/// <summary>The 8 key.</summary>
+			D8 = 8 * 8,
+			/// <summary>The 9 key.</summary>
+			D9,
+			/// <summary>The 0 key.</summary>
+			D0,
+			/// <summary>The minus (-) key.</summary>
+			Minus,
+			/// <summary>The caret (^) key.</summary>
+			Caret,
+			/// <summary>The Yen (¥) key.</summary>
+			Yen,
+			/// <summary>The Break key.</summary>
+			Break,
+			/// <summary>The Graph key.</summary>
 			Graph = 8 * 9 + 6,
-			Ctrl = 8 * 10 + 6,
-			Func = 8 * 11 + 5, Shift
+			/// <summary>The Control key.</summary>
+			Control = 8 * 10 + 6,
+			/// <summary>The Func key.</summary>
+			Func = 8 * 11 + 5,
+			/// <summary>The Shift key.</summary>
+			Shift,
 		}
 
 		private bool[,] KeyStatus = new bool[12, 8];

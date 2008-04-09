@@ -392,9 +392,9 @@ namespace CogwheelSlimDX {
 				case SC3000Keyboard.Keys.Caret: return InputButton.KeyboardCaret;
 				case SC3000Keyboard.Keys.Colon: return InputButton.KeyboardColon;
 				case SC3000Keyboard.Keys.Comma: return InputButton.KeyboardComma;
-				case SC3000Keyboard.Keys.Ctrl: return InputButton.KeyboardCtrl;
+				case SC3000Keyboard.Keys.Control: return InputButton.KeyboardCtrl;
 				case SC3000Keyboard.Keys.EngDiers: return InputButton.KeyboardEngDiers;
-				case SC3000Keyboard.Keys.FullStop: return InputButton.KeyboardFullStop;
+				case SC3000Keyboard.Keys.Period: return InputButton.KeyboardFullStop;
 				case SC3000Keyboard.Keys.Func: return InputButton.KeyboardFunc;
 				case SC3000Keyboard.Keys.Graph: return InputButton.KeyboardGraph;
 				case SC3000Keyboard.Keys.HomeClr: return InputButton.KeyboardHomeClr;
@@ -402,9 +402,9 @@ namespace CogwheelSlimDX {
 				case SC3000Keyboard.Keys.LeftBracket: return InputButton.KeyboardLeftBracket;
 				case SC3000Keyboard.Keys.Minus: return InputButton.KeyboardMinus;
 				case SC3000Keyboard.Keys.Pi: return InputButton.KeyboardPi;
-				case SC3000Keyboard.Keys.Return: return InputButton.KeyboardReturn;
+				case SC3000Keyboard.Keys.CarriageReturn: return InputButton.KeyboardReturn;
 				case SC3000Keyboard.Keys.RightBracket: return InputButton.KeyboardRightBracket;
-				case SC3000Keyboard.Keys.SemiColon: return InputButton.KeyboardSemicolon;
+				case SC3000Keyboard.Keys.Semicolon: return InputButton.KeyboardSemicolon;
 				case SC3000Keyboard.Keys.Shift: return InputButton.KeyboardShift;
 				case SC3000Keyboard.Keys.Slash: return InputButton.KeyboardSlash;
 				case SC3000Keyboard.Keys.Space: return InputButton.KeyboardSpace;
@@ -445,103 +445,40 @@ namespace CogwheelSlimDX {
 		/// </summary>
 		public void ReloadSettings() {
 			this.KeyMapping.Clear();
-
-			// Check if the default mapping exists. If not, dump in settings from the project resources.
-			if (!File.Exists(this.SettingsPath) && !string.IsNullOrEmpty(this.DefaultSettingsFile)) {
-				try {
-					File.WriteAllText(this.SettingsPath, this.DefaultSettingsFile);
-				} catch { }
-			}
-
+			if (this.DefaultSettingsFile != null) this.LoadSettingsFromLines(DefaultSettingsFile.Split('\n'));
 			if (File.Exists(this.SettingsPath)) {
-				foreach (var ConfigLine in File.ReadAllLines(this.SettingsPath)) {
+				this.LoadSettingsFromLines(File.ReadAllLines(this.SettingsPath));
+			}
+		}
 
-					// Skip comments.
-					if (ConfigLine.TrimStart().StartsWith(";")) continue;
+		private void LoadSettingsFromLines(string[] lines) {
+			foreach (var ConfigLine in lines) {
 
-					// Split into two halves -- Key=>Mapping
-					var KeyComponents = ConfigLine.Split(new[] { "=>" }, StringSplitOptions.RemoveEmptyEntries);
+				// Skip comments.
+				if (ConfigLine.TrimStart().StartsWith(";")) continue;
 
-					// Check that it's a valid pair, otherwise skip.
-					if (KeyComponents.Length != 2) continue;
+				// Split into two halves -- Key=>Mapping
+				var KeyComponents = ConfigLine.Split(new[] { "=>" }, StringSplitOptions.RemoveEmptyEntries);
 
-					// Quick-and-dirty conversion.
-					try {
-						T MappedKey = (T)Enum.Parse(typeof(T), KeyComponents[0]);
-						var KeyTargets = Array.ConvertAll(KeyComponents[1].Split(';'), C => {
-							var SubComponents = C.Split('.');
-							return new KeyValuePair<int, InputButton>(int.Parse(SubComponents[0]), (InputButton)Enum.Parse(typeof(InputButton), SubComponents[1]));
-						});
-						if (KeyTargets != null && KeyTargets.Length != 0) {
-							if (this.KeyMapping.ContainsKey(MappedKey)) {
-								this.KeyMapping.Remove(MappedKey);
-							}
-							this.KeyMapping.Add(MappedKey, KeyTargets);
+				// Check that it's a valid pair, otherwise skip.
+				if (KeyComponents.Length != 2) continue;
+
+				// Quick-and-dirty conversion.
+				try {
+					T MappedKey = (T)Enum.Parse(typeof(T), KeyComponents[0]);
+					var KeyTargets = Array.ConvertAll(KeyComponents[1].Split(';'), C => {
+						var SubComponents = C.Split('.');
+						return new KeyValuePair<int, InputButton>(int.Parse(SubComponents[0]), (InputButton)Enum.Parse(typeof(InputButton), SubComponents[1]));
+					});
+					if (KeyTargets != null && KeyTargets.Length != 0) {
+						if (this.KeyMapping.ContainsKey(MappedKey)) {
+							this.KeyMapping.Remove(MappedKey);
 						}
-					} catch { }
+						this.KeyMapping.Add(MappedKey, KeyTargets);
+					}
+				} catch { }
 
-				}
 			}
-
-			if (this is KeyboardInputSource) {
-				this.SetTrigger(0, InputButton.KeyboardA, Keys.A);
-				this.SetTrigger(0, InputButton.KeyboardB, Keys.B);
-				this.SetTrigger(0, InputButton.KeyboardC, Keys.C);
-				this.SetTrigger(0, InputButton.KeyboardD, Keys.D);
-				this.SetTrigger(0, InputButton.KeyboardE, Keys.E);
-				this.SetTrigger(0, InputButton.KeyboardF, Keys.F);
-				this.SetTrigger(0, InputButton.KeyboardG, Keys.G);
-				this.SetTrigger(0, InputButton.KeyboardH, Keys.H);
-				this.SetTrigger(0, InputButton.KeyboardI, Keys.I);
-				this.SetTrigger(0, InputButton.KeyboardJ, Keys.J);
-				this.SetTrigger(0, InputButton.KeyboardK, Keys.K);
-				this.SetTrigger(0, InputButton.KeyboardL, Keys.L);
-				this.SetTrigger(0, InputButton.KeyboardM, Keys.M);
-				this.SetTrigger(0, InputButton.KeyboardN, Keys.N);
-				this.SetTrigger(0, InputButton.KeyboardO, Keys.O);
-				this.SetTrigger(0, InputButton.KeyboardP, Keys.P);
-				this.SetTrigger(0, InputButton.KeyboardQ, Keys.Q);
-				this.SetTrigger(0, InputButton.KeyboardR, Keys.R);
-				this.SetTrigger(0, InputButton.KeyboardS, Keys.S);
-				this.SetTrigger(0, InputButton.KeyboardT, Keys.T);
-				this.SetTrigger(0, InputButton.KeyboardU, Keys.U);
-				this.SetTrigger(0, InputButton.KeyboardV, Keys.V);
-				this.SetTrigger(0, InputButton.KeyboardW, Keys.W);
-				this.SetTrigger(0, InputButton.KeyboardX, Keys.X);
-				this.SetTrigger(0, InputButton.KeyboardY, Keys.Y);
-				this.SetTrigger(0, InputButton.KeyboardZ, Keys.Z);
-
-				this.SetTrigger(0, InputButton.KeyboardD0, Keys.D0);
-				this.SetTrigger(0, InputButton.KeyboardD1, Keys.D1);
-				this.SetTrigger(0, InputButton.KeyboardD2, Keys.D2);
-				this.SetTrigger(0, InputButton.KeyboardD3, Keys.D3);
-				this.SetTrigger(0, InputButton.KeyboardD4, Keys.D4);
-				this.SetTrigger(0, InputButton.KeyboardD5, Keys.D5);
-				this.SetTrigger(0, InputButton.KeyboardD6, Keys.D6);
-				this.SetTrigger(0, InputButton.KeyboardD7, Keys.D7);
-				this.SetTrigger(0, InputButton.KeyboardD8, Keys.D8);
-				this.SetTrigger(0, InputButton.KeyboardD9, Keys.D9);
-
-				this.SetTrigger(0, InputButton.Up, Keys.Up);
-				this.SetTrigger(0, InputButton.Down, Keys.Down);
-				this.SetTrigger(0, InputButton.Left, Keys.Left);
-				this.SetTrigger(0, InputButton.Right, Keys.Right);
-
-				this.SetTrigger(0, InputButton.KeyboardBreak, Keys.Pause);
-				this.SetTrigger(0, InputButton.KeyboardComma, Keys.Oemcomma);
-				this.SetTrigger(0, InputButton.KeyboardCtrl, Keys.ControlKey);
-				this.SetTrigger(0, InputButton.KeyboardFullStop, Keys.OemPeriod);
-				this.SetTrigger(0, InputButton.KeyboardHomeClr, Keys.Home);
-				this.SetTrigger(0, InputButton.KeyboardInsDel, Keys.Back);
-				this.SetTrigger(0, InputButton.KeyboardLeftBracket, Keys.OemOpenBrackets);
-				this.SetTrigger(0, InputButton.KeyboardMinus, Keys.OemMinus);
-				this.SetTrigger(0, InputButton.KeyboardReturn, Keys.Enter);
-				this.SetTrigger(0, InputButton.KeyboardRightBracket, Keys.OemCloseBrackets);
-				this.SetTrigger(0, InputButton.KeyboardShift, Keys.ShiftKey);
-				this.SetTrigger(0, InputButton.KeyboardSlash, Keys.OemBackslash);
-				this.SetTrigger(0, InputButton.KeyboardSpace, Keys.Space);
-			}
-
 		}
 
 		/// <summary>
