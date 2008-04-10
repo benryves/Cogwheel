@@ -2,7 +2,7 @@
 ; Ben Ryves / Bee Development 2008.
 [Setup]
 AppName=Cogwheel
-AppVerName=Cogwheel Beta 4
+AppVerName=Cogwheel Beta 5
 AppPublisher=Bee Development
 AppPublisherURL=http://www.bee-dev.com/?go=cogwheel
 AppSupportURL=http://www.bee-dev.com/?go=cogwheel
