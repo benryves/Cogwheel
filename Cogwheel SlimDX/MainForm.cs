@@ -101,6 +101,9 @@ namespace CogwheelSlimDX {
 			Application.Idle += new EventHandler(Application_Idle);
 			this.Disposed += new EventHandler(MainForm_Disposed);
 
+			// Reset quick-load state index:
+			this.QuickSaveSlot = 0;
+
 			// Parse command-line arguments.
 			if (arguments.Length == 1 && File.Exists(arguments[0])) {
 				try {
@@ -794,6 +797,66 @@ namespace CogwheelSlimDX {
 
 		#region State Saving
 
+		/// <summary>Gets or sets the current quick-save slot.</summary>
+		private int QuickSaveSlot { get; set; }
+
+		private string GetQuickSaveFilename(int slot) {
+			var BaseSavePath = Path.Combine(Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Application.CompanyName), "Cogwheel"), "QuickSaves");
+			var RomDirectory = "Default";
+			if (this.Emulator.CartridgeSlot.Memory != null) {
+				RomDirectory = string.Format("Cartridge.{0:X8}", this.Emulator.CartridgeSlot.Memory.Crc32);
+			} else if (this.Emulator.CardSlot.Memory != null) {
+				RomDirectory = string.Format("Card.{0:X8}", this.Emulator.CardSlot.Memory.Crc32);
+			} else if (this.Emulator.Bios.Memory != null) {
+				RomDirectory = string.Format("Bios.{0:X8}", this.Emulator.Bios.Memory.Crc32);
+			}
+			return Path.Combine(Path.Combine(BaseSavePath, RomDirectory), string.Format("{0}.cogstate", slot));
+		}
+
+		private void QuickStateSlotMenu_DropDownOpening(object sender, EventArgs e) {
+			this.QuickStateSlotMenu.DropDownItems.Clear();
+			for (int i = 0; i < 10; ++i) {
+				this.QuickStateSlotMenu.DropDownItems.Add(new ToolStripMenuItem() {
+					Text = string.Format("Slot &{0}", i),
+					Checked = i == this.QuickSaveSlot,
+					Tag = i,
+					ForeColor = Color.FromKnownColor(File.Exists(this.GetQuickSaveFilename(i)) ? KnownColor.ControlText : KnownColor.GrayText),
+				});
+				this.QuickStateSlotMenu.DropDownItems[this.QuickStateSlotMenu.DropDownItems.Count - 1].Click += (SlotSender, SlotEvent) => this.QuickSaveSlot = (int)(((ToolStripMenuItem)SlotSender).Tag);
+			}
+		}
+
+		private void QuickSaveState() {
+			string Filename = this.GetQuickSaveFilename(this.QuickSaveSlot);
+			try {
+				if (!Directory.Exists(Path.GetDirectoryName(Filename))) Directory.CreateDirectory(Path.GetDirectoryName(Filename));
+				this.SaveState(Filename);
+			} catch (Exception ex) {
+				MessageBox.Show(this, "Could not save state: " + ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		private void QuickLoadState() {
+			if (!File.Exists(this.GetQuickSaveFilename(this.QuickSaveSlot))) {
+				System.Media.SystemSounds.Beep.Play();
+				return;
+			}
+			try {
+				this.LoadState(this.GetQuickSaveFilename(this.QuickSaveSlot));
+			} catch (Exception ex) {
+				MessageBox.Show(this, "Could not save state: " + ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+
+		private void QuickLoadStateMenu_Click(object sender, EventArgs e) {
+			this.QuickLoadState();
+		}
+
+		private void QuickSaveStateMenu_Click(object sender, EventArgs e) {
+			this.QuickSaveState();
+		}
+
 		private void SaveStateMenu_Click(object sender, EventArgs e) {
 
 			if (!string.IsNullOrEmpty(Properties.Settings.Default.StoredPathState) && Directory.Exists(Properties.Settings.Default.StoredPathState)) {
@@ -947,5 +1010,6 @@ namespace CogwheelSlimDX {
 				SubItem.Checked = (this.Input.ProfileDirectory == (string)SubItem.Tag);
 			}
 		}
+
 	}
 }
