@@ -36,6 +36,12 @@ namespace BeeDevelopment.Sega8Bit {
 		[StateNotSaved()]
 		public ProgrammablePeripheralInterface MainPPI { get; internal set; }
 
+		/// <summary>
+		/// Gets the <see cref="DebugConsole"/> used by the emulator.
+		/// </summary>
+		[StateNotSaved()]
+		public DebugConsole DebugConsole { get; private set; }
+
 		#endregion
 
 		/// <summary>
@@ -168,6 +174,10 @@ namespace BeeDevelopment.Sega8Bit {
 							this.Sound.WriteQueued(value);
 							break;
 					}
+
+					if ((port & 0xFF) == 0xFC) this.DebugConsole.WriteControl(value);
+					if ((port & 0xFF) == 0xFD) this.DebugConsole.WriteData(value);
+
 					break;
 
 				case HardwareFamily.SC3000:
@@ -194,6 +204,9 @@ namespace BeeDevelopment.Sega8Bit {
 						this.Sound.WriteQueued(value);
 					}
 
+
+					if ((port & 0xFF) == 0xFC) this.DebugConsole.WriteControl(value);
+					if ((port & 0xFF) == 0xFD) this.DebugConsole.WriteData(value);
 
 					break;
 				
@@ -244,6 +257,11 @@ namespace BeeDevelopment.Sega8Bit {
 								this.Video.WriteControl(value);
 								break;
 						}
+
+
+						if ((port & 0xFF) == 0xFC) this.DebugConsole.WriteControl(value);
+						if ((port & 0xFF) == 0xFD) this.DebugConsole.WriteData(value);
+
 					}
 
 					break;

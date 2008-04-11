@@ -26,7 +26,7 @@ namespace CogwheelSlimDX {
 		private PixelDumper Dumper;
 
 		// Emulator stuff.
-		private Emulator Emulator;
+		internal Emulator Emulator;
 		private RomIdentifier Identifier;
 		protected bool Paused = false;
 
@@ -730,6 +730,9 @@ namespace CogwheelSlimDX {
 		#region Focus
 
 		protected override void OnLostFocus(EventArgs e) {
+			foreach (Form F in Application.OpenForms) {
+				if (F is DebugConsole && F.Focused) return;
+			}
 			this.Paused = true;
 			this.Input.ReleaseAll();
 			this.ShowCursor();
@@ -999,6 +1002,11 @@ namespace CogwheelSlimDX {
 			this.Emulator.Video.SpriteLayerEnabled ^= true;
 		}
 
+
+		private void SdscDebugConsoleMenu_Click(object sender, EventArgs e) {
+			new DebugConsole().Show(this);
+		}
+
 		#endregion
 
 		private void SetControllerProfile_Click(object sender, EventArgs e) {
@@ -1010,6 +1018,7 @@ namespace CogwheelSlimDX {
 				SubItem.Checked = (this.Input.ProfileDirectory == (string)SubItem.Tag);
 			}
 		}
+
 
 	}
 }

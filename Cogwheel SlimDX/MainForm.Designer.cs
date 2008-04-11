@@ -33,6 +33,11 @@
 			this.FileSep0 = new System.Windows.Forms.ToolStripSeparator();
 			this.LoadStateMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.SaveStateMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.FileSep3 = new System.Windows.Forms.ToolStripSeparator();
+			this.QuickLoadStateMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.QuickSaveStateMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.QuickStateSlotMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.dummyToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.FileSep1 = new System.Windows.Forms.ToolStripSeparator();
 			this.RecentRomsMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.dummyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,6 +50,7 @@
 			this.DebugVideoMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.BackgroundEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.SpritesEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.SdscDebugConsoleMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ToolsMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.GameGenieMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.GameGenieEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,11 +76,6 @@
 			this.OpenStateDialog = new System.Windows.Forms.OpenFileDialog();
 			this.SaveStateDialog = new System.Windows.Forms.SaveFileDialog();
 			this.CursorHider = new System.Windows.Forms.Timer(this.components);
-			this.QuickLoadStateMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.QuickSaveStateMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.FileSep3 = new System.Windows.Forms.ToolStripSeparator();
-			this.QuickStateSlotMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.dummyToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -161,6 +162,42 @@
 			this.SaveStateMenu.Text = "&Save State As...";
 			this.SaveStateMenu.Click += new System.EventHandler(this.SaveStateMenu_Click);
 			// 
+			// FileSep3
+			// 
+			this.FileSep3.Name = "FileSep3";
+			this.FileSep3.Size = new System.Drawing.Size(213, 6);
+			// 
+			// QuickLoadStateMenu
+			// 
+			this.QuickLoadStateMenu.Name = "QuickLoadStateMenu";
+			this.QuickLoadStateMenu.ShortcutKeys = System.Windows.Forms.Keys.F8;
+			this.QuickLoadStateMenu.Size = new System.Drawing.Size(216, 22);
+			this.QuickLoadStateMenu.Text = "Quick Load State";
+			this.QuickLoadStateMenu.Click += new System.EventHandler(this.QuickLoadStateMenu_Click);
+			// 
+			// QuickSaveStateMenu
+			// 
+			this.QuickSaveStateMenu.Name = "QuickSaveStateMenu";
+			this.QuickSaveStateMenu.ShortcutKeys = System.Windows.Forms.Keys.F5;
+			this.QuickSaveStateMenu.Size = new System.Drawing.Size(216, 22);
+			this.QuickSaveStateMenu.Text = "Quick Save State";
+			this.QuickSaveStateMenu.Click += new System.EventHandler(this.QuickSaveStateMenu_Click);
+			// 
+			// QuickStateSlotMenu
+			// 
+			this.QuickStateSlotMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dummyToolStripMenuItem1});
+			this.QuickStateSlotMenu.Name = "QuickStateSlotMenu";
+			this.QuickStateSlotMenu.Size = new System.Drawing.Size(216, 22);
+			this.QuickStateSlotMenu.Text = "Quick Save Slot";
+			this.QuickStateSlotMenu.DropDownOpening += new System.EventHandler(this.QuickStateSlotMenu_DropDownOpening);
+			// 
+			// dummyToolStripMenuItem1
+			// 
+			this.dummyToolStripMenuItem1.Name = "dummyToolStripMenuItem1";
+			this.dummyToolStripMenuItem1.Size = new System.Drawing.Size(117, 22);
+			this.dummyToolStripMenuItem1.Text = "&Dummy";
+			// 
 			// FileSep1
 			// 
 			this.FileSep1.Name = "FileSep1";
@@ -224,7 +261,8 @@
 			// DebugMenu
 			// 
 			this.DebugMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.DebugVideoMenu});
+            this.DebugVideoMenu,
+            this.SdscDebugConsoleMenu});
 			this.DebugMenu.Name = "DebugMenu";
 			this.DebugMenu.Size = new System.Drawing.Size(54, 20);
 			this.DebugMenu.Text = "&Debug";
@@ -235,7 +273,7 @@
             this.BackgroundEnabledMenu,
             this.SpritesEnabledMenu});
 			this.DebugVideoMenu.Name = "DebugVideoMenu";
-			this.DebugVideoMenu.Size = new System.Drawing.Size(104, 22);
+			this.DebugVideoMenu.Size = new System.Drawing.Size(152, 22);
 			this.DebugVideoMenu.Text = "&Video";
 			this.DebugVideoMenu.DropDownOpening += new System.EventHandler(this.DebugVideoMenu_DropDownOpening);
 			// 
@@ -252,6 +290,14 @@
 			this.SpritesEnabledMenu.Size = new System.Drawing.Size(214, 22);
 			this.SpritesEnabledMenu.Text = "&Sprite Layer Enabled";
 			this.SpritesEnabledMenu.Click += new System.EventHandler(this.SpritesEnabledMenu_Click);
+			// 
+			// SdscDebugConsoleMenu
+			// 
+			this.SdscDebugConsoleMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Terminal;
+			this.SdscDebugConsoleMenu.Name = "SdscDebugConsoleMenu";
+			this.SdscDebugConsoleMenu.Size = new System.Drawing.Size(152, 22);
+			this.SdscDebugConsoleMenu.Text = "&SDSC Console";
+			this.SdscDebugConsoleMenu.Click += new System.EventHandler(this.SdscDebugConsoleMenu_Click);
 			// 
 			// ToolsMenu
 			// 
@@ -440,42 +486,6 @@
 			this.CursorHider.Interval = 1000;
 			this.CursorHider.Tick += new System.EventHandler(this.CursorHider_Tick);
 			// 
-			// QuickLoadStateMenu
-			// 
-			this.QuickLoadStateMenu.Name = "QuickLoadStateMenu";
-			this.QuickLoadStateMenu.ShortcutKeys = System.Windows.Forms.Keys.F8;
-			this.QuickLoadStateMenu.Size = new System.Drawing.Size(216, 22);
-			this.QuickLoadStateMenu.Text = "Quick Load State";
-			this.QuickLoadStateMenu.Click += new System.EventHandler(this.QuickLoadStateMenu_Click);
-			// 
-			// QuickSaveStateMenu
-			// 
-			this.QuickSaveStateMenu.Name = "QuickSaveStateMenu";
-			this.QuickSaveStateMenu.ShortcutKeys = System.Windows.Forms.Keys.F5;
-			this.QuickSaveStateMenu.Size = new System.Drawing.Size(216, 22);
-			this.QuickSaveStateMenu.Text = "Quick Save State";
-			this.QuickSaveStateMenu.Click += new System.EventHandler(this.QuickSaveStateMenu_Click);
-			// 
-			// FileSep3
-			// 
-			this.FileSep3.Name = "FileSep3";
-			this.FileSep3.Size = new System.Drawing.Size(213, 6);
-			// 
-			// QuickStateSlotMenu
-			// 
-			this.QuickStateSlotMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.dummyToolStripMenuItem1});
-			this.QuickStateSlotMenu.Name = "QuickStateSlotMenu";
-			this.QuickStateSlotMenu.Size = new System.Drawing.Size(216, 22);
-			this.QuickStateSlotMenu.Text = "Quick Save Slot";
-			this.QuickStateSlotMenu.DropDownOpening += new System.EventHandler(this.QuickStateSlotMenu_DropDownOpening);
-			// 
-			// dummyToolStripMenuItem1
-			// 
-			this.dummyToolStripMenuItem1.Name = "dummyToolStripMenuItem1";
-			this.dummyToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-			this.dummyToolStripMenuItem1.Text = "&Dummy";
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -552,6 +562,7 @@
 		private System.Windows.Forms.ToolStripMenuItem QuickSaveStateMenu;
 		private System.Windows.Forms.ToolStripMenuItem QuickStateSlotMenu;
 		private System.Windows.Forms.ToolStripMenuItem dummyToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem SdscDebugConsoleMenu;
 	}
 }
 

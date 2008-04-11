@@ -67,6 +67,8 @@ namespace BeeDevelopment.Sega8Bit {
 			this.ResetPorts();
 			this.Video.Reset();
 			this.Sound.Reset();
+			this.MainPPI.Reset();
+			this.DebugConsole.Reset();
 		}
 
 		#endregion
@@ -81,7 +83,7 @@ namespace BeeDevelopment.Sega8Bit {
 			this.Sound = new ProgrammableSoundGenerator(this);
 			this.Cheats = new MemoryCheatCollection();
 			this.MainPPI = new ProgrammablePeripheralInterface();
-
+			this.DebugConsole = new DebugConsole(this);
 			#region Memory
 
 			this.CartridgeSlot = new MemoryDevice();
