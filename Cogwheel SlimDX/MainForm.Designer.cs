@@ -46,15 +46,17 @@
 			this.ViewMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.CopyScreenshotMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ToggleFullScreenMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.DebugMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.DebugVideoMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.BackgroundEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.SpritesEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.SdscDebugConsoleMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.ToolsMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.EmulationMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.EmulationVideoMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.EmulationVideoNtscMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.EmulationVideoPalMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.EmulationVideoSep0 = new System.Windows.Forms.ToolStripSeparator();
+			this.EmulationVideoBackgroundEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.EmulationVideoSpritesEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.GameGenieMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.GameGenieEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.GameGenieEditMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.SdscDebugConsoleMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.OptionsMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ControllerProfileMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ControllerProfileDefaultMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -96,8 +98,8 @@
 			this.Menus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FileMenu,
             this.ViewMenu,
-            this.DebugMenu,
-            this.ToolsMenu,
+            this.EmulationMenu,
+            this.OptionsMenu,
             this.HelpMenu});
 			this.Menus.Location = new System.Drawing.Point(0, 0);
 			this.Menus.Name = "Menus";
@@ -258,55 +260,62 @@
 			this.ToggleFullScreenMenu.Text = "Toggle &Full Screen";
 			this.ToggleFullScreenMenu.Click += new System.EventHandler(this.ToggleFullScreenMenu_Click);
 			// 
-			// DebugMenu
+			// EmulationMenu
 			// 
-			this.DebugMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.DebugVideoMenu,
-            this.SdscDebugConsoleMenu});
-			this.DebugMenu.Name = "DebugMenu";
-			this.DebugMenu.Size = new System.Drawing.Size(54, 20);
-			this.DebugMenu.Text = "&Debug";
-			// 
-			// DebugVideoMenu
-			// 
-			this.DebugVideoMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.BackgroundEnabledMenu,
-            this.SpritesEnabledMenu});
-			this.DebugVideoMenu.Name = "DebugVideoMenu";
-			this.DebugVideoMenu.Size = new System.Drawing.Size(152, 22);
-			this.DebugVideoMenu.Text = "&Video";
-			this.DebugVideoMenu.DropDownOpening += new System.EventHandler(this.DebugVideoMenu_DropDownOpening);
-			// 
-			// BackgroundEnabledMenu
-			// 
-			this.BackgroundEnabledMenu.Name = "BackgroundEnabledMenu";
-			this.BackgroundEnabledMenu.Size = new System.Drawing.Size(214, 22);
-			this.BackgroundEnabledMenu.Text = "&Background Layer Enabled";
-			this.BackgroundEnabledMenu.Click += new System.EventHandler(this.BackgroundEnabledMenu_Click);
-			// 
-			// SpritesEnabledMenu
-			// 
-			this.SpritesEnabledMenu.Name = "SpritesEnabledMenu";
-			this.SpritesEnabledMenu.Size = new System.Drawing.Size(214, 22);
-			this.SpritesEnabledMenu.Text = "&Sprite Layer Enabled";
-			this.SpritesEnabledMenu.Click += new System.EventHandler(this.SpritesEnabledMenu_Click);
-			// 
-			// SdscDebugConsoleMenu
-			// 
-			this.SdscDebugConsoleMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Terminal;
-			this.SdscDebugConsoleMenu.Name = "SdscDebugConsoleMenu";
-			this.SdscDebugConsoleMenu.Size = new System.Drawing.Size(152, 22);
-			this.SdscDebugConsoleMenu.Text = "&SDSC Console";
-			this.SdscDebugConsoleMenu.Click += new System.EventHandler(this.SdscDebugConsoleMenu_Click);
-			// 
-			// ToolsMenu
-			// 
-			this.ToolsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.EmulationMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.EmulationVideoMenu,
             this.GameGenieMenu,
-            this.OptionsMenu});
-			this.ToolsMenu.Name = "ToolsMenu";
-			this.ToolsMenu.Size = new System.Drawing.Size(48, 20);
-			this.ToolsMenu.Text = "&Tools";
+            this.SdscDebugConsoleMenu});
+			this.EmulationMenu.Name = "EmulationMenu";
+			this.EmulationMenu.Size = new System.Drawing.Size(73, 20);
+			this.EmulationMenu.Text = "&Emulation";
+			// 
+			// EmulationVideoMenu
+			// 
+			this.EmulationVideoMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.EmulationVideoNtscMenu,
+            this.EmulationVideoPalMenu,
+            this.EmulationVideoSep0,
+            this.EmulationVideoBackgroundEnabledMenu,
+            this.EmulationVideoSpritesEnabledMenu});
+			this.EmulationVideoMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Television;
+			this.EmulationVideoMenu.Name = "EmulationVideoMenu";
+			this.EmulationVideoMenu.Size = new System.Drawing.Size(148, 22);
+			this.EmulationVideoMenu.Text = "&Video";
+			this.EmulationVideoMenu.DropDownOpening += new System.EventHandler(this.DebugVideoMenu_DropDownOpening);
+			// 
+			// EmulationVideoNtscMenu
+			// 
+			this.EmulationVideoNtscMenu.Name = "EmulationVideoNtscMenu";
+			this.EmulationVideoNtscMenu.Size = new System.Drawing.Size(214, 22);
+			this.EmulationVideoNtscMenu.Text = "&NTSC (60Hz)";
+			this.EmulationVideoNtscMenu.Click += new System.EventHandler(this.EmulationVideoNtscMenu_Click);
+			// 
+			// EmulationVideoPalMenu
+			// 
+			this.EmulationVideoPalMenu.Name = "EmulationVideoPalMenu";
+			this.EmulationVideoPalMenu.Size = new System.Drawing.Size(214, 22);
+			this.EmulationVideoPalMenu.Text = "&PAL (50Hz)";
+			this.EmulationVideoPalMenu.Click += new System.EventHandler(this.EmulationVideoPalMenu_Click);
+			// 
+			// EmulationVideoSep0
+			// 
+			this.EmulationVideoSep0.Name = "EmulationVideoSep0";
+			this.EmulationVideoSep0.Size = new System.Drawing.Size(211, 6);
+			// 
+			// EmulationVideoBackgroundEnabledMenu
+			// 
+			this.EmulationVideoBackgroundEnabledMenu.Name = "EmulationVideoBackgroundEnabledMenu";
+			this.EmulationVideoBackgroundEnabledMenu.Size = new System.Drawing.Size(214, 22);
+			this.EmulationVideoBackgroundEnabledMenu.Text = "&Background Layer Enabled";
+			this.EmulationVideoBackgroundEnabledMenu.Click += new System.EventHandler(this.BackgroundEnabledMenu_Click);
+			// 
+			// EmulationVideoSpritesEnabledMenu
+			// 
+			this.EmulationVideoSpritesEnabledMenu.Name = "EmulationVideoSpritesEnabledMenu";
+			this.EmulationVideoSpritesEnabledMenu.Size = new System.Drawing.Size(214, 22);
+			this.EmulationVideoSpritesEnabledMenu.Text = "&Sprite Layer Enabled";
+			this.EmulationVideoSpritesEnabledMenu.Click += new System.EventHandler(this.SpritesEnabledMenu_Click);
 			// 
 			// GameGenieMenu
 			// 
@@ -315,7 +324,7 @@
             this.GameGenieEditMenu});
 			this.GameGenieMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(138, 22);
+			this.GameGenieMenu.Size = new System.Drawing.Size(148, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
 			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
 			// 
@@ -334,6 +343,14 @@
 			this.GameGenieEditMenu.Text = "Edit Codes...";
 			this.GameGenieEditMenu.Click += new System.EventHandler(this.GameGenieEditMenu_Click);
 			// 
+			// SdscDebugConsoleMenu
+			// 
+			this.SdscDebugConsoleMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Terminal;
+			this.SdscDebugConsoleMenu.Name = "SdscDebugConsoleMenu";
+			this.SdscDebugConsoleMenu.Size = new System.Drawing.Size(148, 22);
+			this.SdscDebugConsoleMenu.Text = "&SDSC Console";
+			this.SdscDebugConsoleMenu.Click += new System.EventHandler(this.SdscDebugConsoleMenu_Click);
+			// 
 			// OptionsMenu
 			// 
 			this.OptionsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -344,9 +361,8 @@
             this.SimulateGameGearLcdMenu,
             this.LinearInterpolationMenu,
             this.MaintainAspectRatioMenu});
-			this.OptionsMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Wrench;
 			this.OptionsMenu.Name = "OptionsMenu";
-			this.OptionsMenu.Size = new System.Drawing.Size(138, 22);
+			this.OptionsMenu.Size = new System.Drawing.Size(61, 20);
 			this.OptionsMenu.Text = "&Options";
 			this.OptionsMenu.DropDownOpening += new System.EventHandler(this.OptionsMenu_DropDownOpening);
 			// 
@@ -523,10 +539,6 @@
 		private System.Windows.Forms.StatusStrip Status;
 		private System.Windows.Forms.ToolStripStatusLabel MessageStatus;
 		private System.Windows.Forms.Timer MessageTicker;
-		private System.Windows.Forms.ToolStripMenuItem ToolsMenu;
-		private System.Windows.Forms.ToolStripMenuItem GameGenieMenu;
-		private System.Windows.Forms.ToolStripMenuItem GameGenieEnabledMenu;
-		private System.Windows.Forms.ToolStripMenuItem GameGenieEditMenu;
 		private System.Windows.Forms.ToolStripMenuItem AdvancedLoadMenu;
 		private System.Windows.Forms.ToolStripSeparator FileSep0;
 		private System.Windows.Forms.ToolStripMenuItem HelpMenu;
@@ -550,10 +562,10 @@
 		private System.Windows.Forms.ToolStripMenuItem MaintainAspectRatioMenu;
 		private System.Windows.Forms.ToolStripMenuItem ToggleFullScreenMenu;
 		private System.Windows.Forms.Timer CursorHider;
-		private System.Windows.Forms.ToolStripMenuItem DebugMenu;
-		private System.Windows.Forms.ToolStripMenuItem DebugVideoMenu;
-		private System.Windows.Forms.ToolStripMenuItem BackgroundEnabledMenu;
-		private System.Windows.Forms.ToolStripMenuItem SpritesEnabledMenu;
+		private System.Windows.Forms.ToolStripMenuItem EmulationMenu;
+		private System.Windows.Forms.ToolStripMenuItem EmulationVideoMenu;
+		private System.Windows.Forms.ToolStripMenuItem EmulationVideoBackgroundEnabledMenu;
+		private System.Windows.Forms.ToolStripMenuItem EmulationVideoSpritesEnabledMenu;
 		private System.Windows.Forms.ToolStripMenuItem ControllerProfileMenu;
 		private System.Windows.Forms.ToolStripMenuItem ControllerProfileDefaultMenu;
 		private System.Windows.Forms.ToolStripMenuItem ControllerProfileSC3000Menu;
@@ -563,6 +575,12 @@
 		private System.Windows.Forms.ToolStripMenuItem QuickStateSlotMenu;
 		private System.Windows.Forms.ToolStripMenuItem dummyToolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem SdscDebugConsoleMenu;
+		private System.Windows.Forms.ToolStripMenuItem EmulationVideoNtscMenu;
+		private System.Windows.Forms.ToolStripMenuItem EmulationVideoPalMenu;
+		private System.Windows.Forms.ToolStripSeparator EmulationVideoSep0;
+		private System.Windows.Forms.ToolStripMenuItem GameGenieMenu;
+		private System.Windows.Forms.ToolStripMenuItem GameGenieEnabledMenu;
+		private System.Windows.Forms.ToolStripMenuItem GameGenieEditMenu;
 	}
 }
 

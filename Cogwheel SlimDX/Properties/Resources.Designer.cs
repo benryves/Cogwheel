@@ -268,6 +268,13 @@ namespace CogwheelSlimDX.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Icon_Bullet_Black {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Bullet_Black", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Icon_Camera {
             get {
                 object obj = ResourceManager.GetObject("Icon_Camera", resourceCulture);
@@ -390,6 +397,13 @@ namespace CogwheelSlimDX.Properties {
         internal static System.Drawing.Bitmap Icon_SoundNone {
             get {
                 object obj = ResourceManager.GetObject("Icon_SoundNone", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Icon_Television {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Television", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -233,7 +233,9 @@
     <None Include="Resources\arrow_right.png" />
     <None Include="Resources\arrow_up.png" />
     <None Include="Resources\application_xp_terminal.png" />
+    <None Include="Resources\bullet_black.png" />
     <Content Include="Resources\Config_DefaultKeyMapping.txt" />
+    <None Include="Resources\television.png" />
     <None Include="Resources\Font.gif" />
     <None Include="Resources\Config_SC3000KeyMapping.txt" />
     <None Include="Resources\monitor.png" />

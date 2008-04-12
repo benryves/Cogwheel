@@ -987,11 +987,13 @@ namespace CogwheelSlimDX {
 
 		#endregion
 
-		#region Debug
+		#region Emulation
 
 		private void DebugVideoMenu_DropDownOpening(object sender, EventArgs e) {
-			this.BackgroundEnabledMenu.Checked = this.Emulator.Video.BackgroundLayerEnabled;
-			this.SpritesEnabledMenu.Checked = this.Emulator.Video.SpriteLayerEnabled;
+			this.EmulationVideoBackgroundEnabledMenu.Checked = this.Emulator.Video.BackgroundLayerEnabled;
+			this.EmulationVideoSpritesEnabledMenu.Checked = this.Emulator.Video.SpriteLayerEnabled;
+			this.EmulationVideoNtscMenu.Image = this.Emulator.Video.System == BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Ntsc ? Properties.Resources.Icon_Bullet_Black : null;
+			this.EmulationVideoPalMenu.Image = this.Emulator.Video.System == BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Pal ? Properties.Resources.Icon_Bullet_Black : null;
 		}
 
 		private void BackgroundEnabledMenu_Click(object sender, EventArgs e) {
@@ -1013,6 +1015,14 @@ namespace CogwheelSlimDX {
 			new DebugConsole().Show(this);
 		}
 
+		private void EmulationVideoNtscMenu_Click(object sender, EventArgs e) {
+			this.Emulator.Video.System = BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Ntsc;
+		}
+
+		private void EmulationVideoPalMenu_Click(object sender, EventArgs e) {
+			this.Emulator.Video.System = BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Pal;
+		}
+
 		#endregion
 
 		private void SetControllerProfile_Click(object sender, EventArgs e) {
@@ -1021,7 +1031,7 @@ namespace CogwheelSlimDX {
 
 		private void ControllerProfileMenu_DropDownOpening(object sender, EventArgs e) {
 			foreach (ToolStripMenuItem SubItem in this.ControllerProfileMenu.DropDownItems) {
-				SubItem.Checked = (this.Input.ProfileDirectory == (string)SubItem.Tag);
+				SubItem.Image = (this.Input.ProfileDirectory == (string)SubItem.Tag) ? Properties.Resources.Icon_Bullet_Black : null;
 			}
 		}
 
