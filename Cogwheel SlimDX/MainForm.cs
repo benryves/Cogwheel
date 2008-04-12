@@ -1004,6 +1004,12 @@ namespace CogwheelSlimDX {
 
 
 		private void SdscDebugConsoleMenu_Click(object sender, EventArgs e) {
+			foreach (Form F in Application.OpenForms) {
+				if (F is DebugConsole) {
+					F.BringToFront();
+					return;
+				}
+			}
 			new DebugConsole().Show(this);
 		}
 
