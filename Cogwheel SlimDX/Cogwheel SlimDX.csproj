@@ -235,6 +235,7 @@
     <None Include="Resources\application_xp_terminal.png" />
     <None Include="Resources\bullet_black.png" />
     <Content Include="Resources\Config_DefaultKeyMapping.txt" />
+    <None Include="Resources\disk.png" />
     <None Include="Resources\television.png" />
     <None Include="Resources\Font.gif" />
     <None Include="Resources\Config_SC3000KeyMapping.txt" />

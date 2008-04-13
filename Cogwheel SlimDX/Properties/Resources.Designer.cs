@@ -303,6 +303,13 @@ namespace CogwheelSlimDX.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Icon_Disk {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Disk", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Icon_Error {
             get {
                 object obj = ResourceManager.GetObject("Icon_Error", resourceCulture);

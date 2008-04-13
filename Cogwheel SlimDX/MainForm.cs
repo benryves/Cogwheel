@@ -686,7 +686,7 @@ namespace CogwheelSlimDX {
 				} else {
 					var Message = this.Messages.Dequeue();
 					this.MessageStatus.Image = Message.Key;
-					this.MessageStatus.Text = Message.Value;
+					this.MessageStatus.Text = Message.Value.Replace("&", "&&");
 				}
 			}
 		}
@@ -834,6 +834,7 @@ namespace CogwheelSlimDX {
 			try {
 				if (!Directory.Exists(Path.GetDirectoryName(Filename))) Directory.CreateDirectory(Path.GetDirectoryName(Filename));
 				this.SaveState(Filename);
+				this.AddMessage(Properties.Resources.Icon_Disk, string.Format("Saved state to slot {0}", this.QuickSaveSlot));
 			} catch (Exception ex) {
 				MessageBox.Show(this, "Could not save state: " + ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
@@ -846,6 +847,7 @@ namespace CogwheelSlimDX {
 			}
 			try {
 				this.LoadState(this.GetQuickSaveFilename(this.QuickSaveSlot));
+				this.AddMessage(Properties.Resources.Icon_TimeGo, string.Format("Loaded state from slot {0}", this.QuickSaveSlot));
 			} catch (Exception ex) {
 				MessageBox.Show(this, "Could not save state: " + ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
