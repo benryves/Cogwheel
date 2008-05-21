@@ -5457,6 +5457,10 @@ namespace BeeDevelopment.Brazil {
 										case 0x57: // LD A, I
 											this.TakeCycles(9);
 											RegAF.High8 = RegI;
+											RegFlagS = RegI > 127;
+											RegFlagZ = RegI == 0;
+											RegFlagH = false;
+											RegFlagN = false;
 											RegFlagP = this.IFF2;
 											break;
 										case 0x58: // IN E, C
@@ -5505,6 +5509,10 @@ namespace BeeDevelopment.Brazil {
 										case 0x5F: // LD A, R
 											this.TakeCycles(9);
 											RegAF.High8 = (byte)(RegR & 0x7F);
+											RegFlagS = (byte)(RegR & 0x7F) > 127;
+											RegFlagZ = (byte)(RegR & 0x7F) == 0;
+											RegFlagH = false;
+											RegFlagN = false;
 											RegFlagP = this.IFF2;
 											break;
 										case 0x60: // IN H, C
@@ -6742,6 +6750,10 @@ namespace BeeDevelopment.Brazil {
 								case 0x57: // LD A, I
 									this.TakeCycles(9);
 									RegAF.High8 = RegI;
+									RegFlagS = RegI > 127;
+									RegFlagZ = RegI == 0;
+									RegFlagH = false;
+									RegFlagN = false;
 									RegFlagP = this.IFF2;
 									break;
 								case 0x58: // IN E, C
@@ -6790,6 +6802,10 @@ namespace BeeDevelopment.Brazil {
 								case 0x5F: // LD A, R
 									this.TakeCycles(9);
 									RegAF.High8 = (byte)(RegR & 0x7F);
+									RegFlagS = (byte)(RegR & 0x7F) > 127;
+									RegFlagZ = (byte)(RegR & 0x7F) == 0;
+									RegFlagH = false;
+									RegFlagN = false;
 									RegFlagP = this.IFF2;
 									break;
 								case 0x60: // IN H, C
@@ -10438,6 +10454,10 @@ namespace BeeDevelopment.Brazil {
 										case 0x57: // LD A, I
 											this.TakeCycles(9);
 											RegAF.High8 = RegI;
+											RegFlagS = RegI > 127;
+											RegFlagZ = RegI == 0;
+											RegFlagH = false;
+											RegFlagN = false;
 											RegFlagP = this.IFF2;
 											break;
 										case 0x58: // IN E, C
@@ -10486,6 +10506,10 @@ namespace BeeDevelopment.Brazil {
 										case 0x5F: // LD A, R
 											this.TakeCycles(9);
 											RegAF.High8 = (byte)(RegR & 0x7F);
+											RegFlagS = (byte)(RegR & 0x7F) > 127;
+											RegFlagZ = (byte)(RegR & 0x7F) == 0;
+											RegFlagH = false;
+											RegFlagN = false;
 											RegFlagP = this.IFF2;
 											break;
 										case 0x60: // IN H, C
