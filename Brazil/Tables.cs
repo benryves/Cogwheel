@@ -136,6 +136,8 @@ namespace BeeDevelopment.Brazil {
 									H = ((op1 & 0xF) - (op2 & 0xF) - (ac & 0xF)) < 0x0;
 									break;
 								case 4:
+									H = true;
+									break;
 								case 5:
 								case 6:
 									H = false;
