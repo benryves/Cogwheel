@@ -144,6 +144,10 @@ namespace BeeDevelopment.Brazil {
 									break;
 							}
 
+							// Undocumented
+							byte UndocumentedFlags = (byte)(result_b & 0x28);
+							if (i == 7) UndocumentedFlags = (byte)(op2 & 0x28);
+
 							S = result_b > 127;
 							Z = result_b == 0;
 
@@ -152,7 +156,7 @@ namespace BeeDevelopment.Brazil {
 							TableALU[i, op1, op2, c] = (ushort)(
 								result_b * 256 +
 								((C ? 0x01 : 0) + (N ? 0x02 : 0) + (P ? 0x04 : 0) + (H ? 0x10 : 0) + (Z ? 0x40 : 0) + (S ? 0x80 : 0)) +
-								(result_si & 0x28));
+								(UndocumentedFlags));
 
 						}
 					}
@@ -240,7 +244,7 @@ namespace BeeDevelopment.Brazil {
 							
 						}
 
-						TableRotShift[all, y, af] = newAf;
+						TableRotShift[all, y, af] = (ushort)((newAf & ~0x28) | ((newAf >> 8) & 0x28));
 					}
 				}
 			}
@@ -259,7 +263,7 @@ namespace BeeDevelopment.Brazil {
 				byte b = (byte)(af >> 8);
 				byte a = (byte)-b;
 				raf |= (ushort)(a * 256);
-				raf |= FlagByte(b != 0x00, true, b == 0x80, UndocumentedX(b), TableHalfCarry[a, b], UndocumentedY(b), a == 0, a > 127);
+				raf |= FlagByte(b != 0x00, true, b == 0x80, UndocumentedX(a), TableHalfCarry[a, b], UndocumentedY(a), a == 0, a > 127);
 				TableNeg[af] = raf;
 			}
 		}
@@ -283,7 +287,7 @@ namespace BeeDevelopment.Brazil {
 					if (IsC(af) || a > 0x99) tmp += 0x60;
 				}
 
-				TableDaa[af] = (ushort)((tmp * 256) + FlagByte(IsC(af) || a > 0x99, IsN(af), TableParity[tmp], UndocumentedX(a), ((a ^ tmp) & 0x10) != 0, UndocumentedY(a), tmp == 0, tmp > 127));
+				TableDaa[af] = (ushort)((tmp * 256) + FlagByte(IsC(af) || a > 0x99, IsN(af), TableParity[tmp], UndocumentedX(tmp), ((a ^ tmp) & 0x10) != 0, UndocumentedY(tmp), tmp == 0, tmp > 127));
 			}
 		}
 		#endregion

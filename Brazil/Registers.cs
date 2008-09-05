@@ -50,7 +50,7 @@ namespace BeeDevelopment.Brazil {
 			set { RegAF.Low8 = (byte)((RegAF.Low8 & ~0x04) | (value ? 0x04 : 0x00)); }
 		}
 
-		private bool RegFlagX {
+		private bool RegFlag3 {
 			get { return (RegAF.Low8 & 0x08) != 0; }
 			set { RegAF.Low8 = (byte)((RegAF.Low8 & ~0x08) | (value ? 0x08 : 0x00)); }
 		}
@@ -60,7 +60,7 @@ namespace BeeDevelopment.Brazil {
 			set { RegAF.Low8 = (byte)((RegAF.Low8 & ~0x10) | (value ? 0x10 : 0x00)); }
 		}
 
-		private bool RegFlagY {
+		private bool RegFlag5 {
 			get { return (RegAF.Low8 & 0x20) != 0; }
 			set { RegAF.Low8 = (byte)((RegAF.Low8 & ~0x20) | (value ? 0x20 : 0x00)); }
 		}

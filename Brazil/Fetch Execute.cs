@@ -84,6 +84,8 @@ namespace BeeDevelopment.Brazil {
 							RegFlagN = false;
 							RegFlagC = ((ushort)TI1 + (ushort)TI2) > 0xFFFF;
 							RegHL.Value16 = TUS;
+							RegFlag3 = (TUS & 0x0800) != 0;
+							RegFlag5 = (TUS & 0x2000) != 0;
 							break;
 						case 0x0A: // LD A, (BC)
 							this.TakeCycles(7);
@@ -159,6 +161,8 @@ namespace BeeDevelopment.Brazil {
 							RegFlagN = false;
 							RegFlagC = ((ushort)TI1 + (ushort)TI2) > 0xFFFF;
 							RegHL.Value16 = TUS;
+							RegFlag3 = (TUS & 0x0800) != 0;
+							RegFlag5 = (TUS & 0x2000) != 0;
 							break;
 						case 0x1A: // LD A, (DE)
 							this.TakeCycles(7);
@@ -240,6 +244,8 @@ namespace BeeDevelopment.Brazil {
 							RegFlagN = false;
 							RegFlagC = ((ushort)TI1 + (ushort)TI2) > 0xFFFF;
 							RegHL.Value16 = TUS;
+							RegFlag3 = (TUS & 0x0800) != 0;
+							RegFlag5 = (TUS & 0x2000) != 0;
 							break;
 						case 0x2A: // LD HL, (nn)
 							this.TakeCycles(16);
@@ -264,7 +270,7 @@ namespace BeeDevelopment.Brazil {
 							break;
 						case 0x2F: // CPL
 							this.TakeCycles(4);
-							RegAF.High8 ^= 0xFF; RegFlagH = true; RegFlagN = true;
+							RegAF.High8 ^= 0xFF; RegFlagH = true; RegFlagN = true; RegFlag3 = (RegAF.High8 & 0x08) != 0; RegFlag5 = (RegAF.High8 & 0x20) != 0;
 							break;
 						case 0x30: // JR NC, d
 							TSB = (sbyte)ReadMemory(RegPC.Value16++);
@@ -301,7 +307,7 @@ namespace BeeDevelopment.Brazil {
 							break;
 						case 0x37: // SCF
 							this.TakeCycles(4);
-							RegFlagH = false; RegFlagN = false; RegFlagC = true;
+							RegFlagH = false; RegFlagN = false; RegFlagC = true; RegFlag3 = (RegAF.High8 & 0x08) != 0; RegFlag5 = (RegAF.High8 & 0x20) != 0;
 							break;
 						case 0x38: // JR C, d
 							TSB = (sbyte)ReadMemory(RegPC.Value16++);
@@ -320,6 +326,8 @@ namespace BeeDevelopment.Brazil {
 							RegFlagN = false;
 							RegFlagC = ((ushort)TI1 + (ushort)TI2) > 0xFFFF;
 							RegHL.Value16 = TUS;
+							RegFlag3 = (TUS & 0x0800) != 0;
+							RegFlag5 = (TUS & 0x2000) != 0;
 							break;
 						case 0x3A: // LD A, (nn)
 							this.TakeCycles(13);
@@ -343,7 +351,7 @@ namespace BeeDevelopment.Brazil {
 							break;
 						case 0x3F: // CCF
 							this.TakeCycles(4);
-							RegFlagH = RegFlagC; RegFlagN = false; RegFlagC ^= true;
+							RegFlagH = RegFlagC; RegFlagN = false; RegFlagC ^= true; RegFlag3 = (RegAF.High8 & 0x08) != 0; RegFlag5 = (RegAF.High8 & 0x20) != 0;
 							break;
 						case 0x40: // LD B, B
 							this.TakeCycles(4);
@@ -2480,6 +2488,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagN = false;
 									RegFlagC = ((ushort)TI1 + (ushort)TI2) > 0xFFFF;
 									RegIX.Value16 = TUS;
+									RegFlag3 = (TUS & 0x0800) != 0;
+									RegFlag5 = (TUS & 0x2000) != 0;
 									break;
 								case 0x0A: // LD A, (BC)
 									this.TakeCycles(7);
@@ -2555,6 +2565,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagN = false;
 									RegFlagC = ((ushort)TI1 + (ushort)TI2) > 0xFFFF;
 									RegIX.Value16 = TUS;
+									RegFlag3 = (TUS & 0x0800) != 0;
+									RegFlag5 = (TUS & 0x2000) != 0;
 									break;
 								case 0x1A: // LD A, (DE)
 									this.TakeCycles(7);
@@ -2636,6 +2648,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagN = false;
 									RegFlagC = ((ushort)TI1 + (ushort)TI2) > 0xFFFF;
 									RegIX.Value16 = TUS;
+									RegFlag3 = (TUS & 0x0800) != 0;
+									RegFlag5 = (TUS & 0x2000) != 0;
 									break;
 								case 0x2A: // LD IX, (nn)
 									this.TakeCycles(20);
@@ -2660,7 +2674,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x2F: // CPL
 									this.TakeCycles(4);
-									RegAF.High8 ^= 0xFF; RegFlagH = true; RegFlagN = true;
+									RegAF.High8 ^= 0xFF; RegFlagH = true; RegFlagN = true; RegFlag3 = (RegAF.High8 & 0x08) != 0; RegFlag5 = (RegAF.High8 & 0x20) != 0;
 									break;
 								case 0x30: // JR NC, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
@@ -2700,7 +2714,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x37: // SCF
 									this.TakeCycles(4);
-									RegFlagH = false; RegFlagN = false; RegFlagC = true;
+									RegFlagH = false; RegFlagN = false; RegFlagC = true; RegFlag3 = (RegAF.High8 & 0x08) != 0; RegFlag5 = (RegAF.High8 & 0x20) != 0;
 									break;
 								case 0x38: // JR C, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
@@ -2719,6 +2733,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagN = false;
 									RegFlagC = ((ushort)TI1 + (ushort)TI2) > 0xFFFF;
 									RegIX.Value16 = TUS;
+									RegFlag3 = (TUS & 0x0800) != 0;
+									RegFlag5 = (TUS & 0x2000) != 0;
 									break;
 								case 0x3A: // LD A, (nn)
 									this.TakeCycles(13);
@@ -2742,7 +2758,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x3F: // CCF
 									this.TakeCycles(4);
-									RegFlagH = RegFlagC; RegFlagN = false; RegFlagC ^= true;
+									RegFlagH = RegFlagC; RegFlagN = false; RegFlagC ^= true; RegFlag3 = (RegAF.High8 & 0x08) != 0; RegFlag5 = (RegAF.High8 & 0x20) != 0;
 									break;
 								case 0x40: // LD B, B
 									this.TakeCycles(4);
@@ -5338,6 +5354,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
 											RegHL.Value16 = TUS;
+											RegFlag3 = (TUS & 0x0800) != 0;
+											RegFlag5 = (TUS & 0x2000) != 0;
 											break;
 										case 0x43: // LD (nn), BC
 											this.TakeCycles(20);
@@ -5387,6 +5405,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
 											RegHL.Value16 = TUS;
+											RegFlag3 = (TUS & 0x0800) != 0;
+											RegFlag5 = (TUS & 0x2000) != 0;
 											break;
 										case 0x4B: // LD BC, (nn)
 											this.TakeCycles(20);
@@ -5434,6 +5454,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
 											RegHL.Value16 = TUS;
+											RegFlag3 = (TUS & 0x0800) != 0;
+											RegFlag5 = (TUS & 0x2000) != 0;
 											break;
 										case 0x53: // LD (nn), DE
 											this.TakeCycles(20);
@@ -5488,6 +5510,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
 											RegHL.Value16 = TUS;
+											RegFlag3 = (TUS & 0x0800) != 0;
+											RegFlag5 = (TUS & 0x2000) != 0;
 											break;
 										case 0x5B: // LD DE, (nn)
 											this.TakeCycles(20);
@@ -5540,6 +5564,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
 											RegHL.Value16 = TUS;
+											RegFlag3 = (TUS & 0x0800) != 0;
+											RegFlag5 = (TUS & 0x2000) != 0;
 											break;
 										case 0x63: // LD (nn), HL
 											this.TakeCycles(16);
@@ -5570,6 +5596,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[RegAF.High8];
 											RegFlagN = false;
+											RegFlag3 = (RegAF.High8 & 0x08) != 0;
+											RegFlag5 = (RegAF.High8 & 0x20) != 0;
 											break;
 										case 0x68: // IN L, C
 											this.TakeCycles(12);
@@ -5596,6 +5624,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
 											RegHL.Value16 = TUS;
+											RegFlag3 = (TUS & 0x0800) != 0;
+											RegFlag5 = (TUS & 0x2000) != 0;
 											break;
 										case 0x6B: // LD HL, (nn)
 											this.TakeCycles(16);
@@ -5624,6 +5654,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[RegAF.High8];
 											RegFlagN = false;
+											RegFlag3 = (RegAF.High8 & 0x08) != 0;
+											RegFlag5 = (RegAF.High8 & 0x20) != 0;
 											break;
 										case 0x70: // IN 0, C
 											this.TakeCycles(12);
@@ -5650,6 +5682,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
 											RegHL.Value16 = TUS;
+											RegFlag3 = (TUS & 0x0800) != 0;
+											RegFlag5 = (TUS & 0x2000) != 0;
 											break;
 										case 0x73: // LD (nn), SP
 											this.TakeCycles(20);
@@ -5698,6 +5732,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
 											RegHL.Value16 = TUS;
+											RegFlag3 = (TUS & 0x0800) != 0;
+											RegFlag5 = (TUS & 0x2000) != 0;
 											break;
 										case 0x7B: // LD SP, (nn)
 											this.TakeCycles(20);
@@ -5817,7 +5853,8 @@ namespace BeeDevelopment.Brazil {
 											break;
 										case 0xA0: // LDI
 											this.TakeCycles(16);
-											WriteMemory(RegDE.Value16++, ReadMemory(RegHL.Value16++));
+											WriteMemory(RegDE.Value16++, TB1 = ReadMemory(RegHL.Value16++));
+											TB1 += RegAF.High8; RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
@@ -5830,6 +5867,7 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
 											RegFlagZ = TB2 == 0;
 											RegFlagS = TB2 > 127;
+											TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											break;
@@ -5861,7 +5899,8 @@ namespace BeeDevelopment.Brazil {
 											break;
 										case 0xA8: // LDD
 											this.TakeCycles(16);
-											WriteMemory(RegDE.Value16--, ReadMemory(RegHL.Value16--));
+											WriteMemory(RegDE.Value16--, TB1 = ReadMemory(RegHL.Value16--));
+											TB1 += RegAF.High8; RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
@@ -5874,6 +5913,7 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
 											RegFlagZ = TB2 == 0;
 											RegFlagS = TB2 > 127;
+											TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											break;
@@ -5905,7 +5945,8 @@ namespace BeeDevelopment.Brazil {
 											break;
 										case 0xB0: // LDIR
 											this.TakeCycles(16);
-											WriteMemory(RegDE.Value16++, ReadMemory(RegHL.Value16++));
+											WriteMemory(RegDE.Value16++, TB1 = ReadMemory(RegHL.Value16++));
+											TB1 += RegAF.High8; RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
@@ -5922,6 +5963,7 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
 											RegFlagZ = TB2 == 0;
 											RegFlagS = TB2 > 127;
+											TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											if (RegBC.Value16 != 0 && !RegFlagZ) {
@@ -5965,7 +6007,8 @@ namespace BeeDevelopment.Brazil {
 											break;
 										case 0xB8: // LDDR
 											this.TakeCycles(16);
-											WriteMemory(RegDE.Value16--, ReadMemory(RegHL.Value16--));
+											WriteMemory(RegDE.Value16--, TB1 = ReadMemory(RegHL.Value16--));
+											TB1 += RegAF.High8; RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
@@ -5982,6 +6025,7 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
 											RegFlagZ = TB2 == 0;
 											RegFlagS = TB2 > 127;
+											TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											if (RegBC.Value16 != 0 && !RegFlagZ) {
@@ -6631,6 +6675,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagS = TUS > 32767;
 									RegFlagZ = TUS == 0;
 									RegHL.Value16 = TUS;
+									RegFlag3 = (TUS & 0x0800) != 0;
+									RegFlag5 = (TUS & 0x2000) != 0;
 									break;
 								case 0x43: // LD (nn), BC
 									this.TakeCycles(20);
@@ -6680,6 +6726,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagS = TUS > 32767;
 									RegFlagZ = TUS == 0;
 									RegHL.Value16 = TUS;
+									RegFlag3 = (TUS & 0x0800) != 0;
+									RegFlag5 = (TUS & 0x2000) != 0;
 									break;
 								case 0x4B: // LD BC, (nn)
 									this.TakeCycles(20);
@@ -6727,6 +6775,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagS = TUS > 32767;
 									RegFlagZ = TUS == 0;
 									RegHL.Value16 = TUS;
+									RegFlag3 = (TUS & 0x0800) != 0;
+									RegFlag5 = (TUS & 0x2000) != 0;
 									break;
 								case 0x53: // LD (nn), DE
 									this.TakeCycles(20);
@@ -6781,6 +6831,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagS = TUS > 32767;
 									RegFlagZ = TUS == 0;
 									RegHL.Value16 = TUS;
+									RegFlag3 = (TUS & 0x0800) != 0;
+									RegFlag5 = (TUS & 0x2000) != 0;
 									break;
 								case 0x5B: // LD DE, (nn)
 									this.TakeCycles(20);
@@ -6833,6 +6885,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagS = TUS > 32767;
 									RegFlagZ = TUS == 0;
 									RegHL.Value16 = TUS;
+									RegFlag3 = (TUS & 0x0800) != 0;
+									RegFlag5 = (TUS & 0x2000) != 0;
 									break;
 								case 0x63: // LD (nn), HL
 									this.TakeCycles(16);
@@ -6863,6 +6917,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagH = false;
 									RegFlagP = TableParity[RegAF.High8];
 									RegFlagN = false;
+									RegFlag3 = (RegAF.High8 & 0x08) != 0;
+									RegFlag5 = (RegAF.High8 & 0x20) != 0;
 									break;
 								case 0x68: // IN L, C
 									this.TakeCycles(12);
@@ -6889,6 +6945,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagS = TUS > 32767;
 									RegFlagZ = TUS == 0;
 									RegHL.Value16 = TUS;
+									RegFlag3 = (TUS & 0x0800) != 0;
+									RegFlag5 = (TUS & 0x2000) != 0;
 									break;
 								case 0x6B: // LD HL, (nn)
 									this.TakeCycles(16);
@@ -6917,6 +6975,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagH = false;
 									RegFlagP = TableParity[RegAF.High8];
 									RegFlagN = false;
+									RegFlag3 = (RegAF.High8 & 0x08) != 0;
+									RegFlag5 = (RegAF.High8 & 0x20) != 0;
 									break;
 								case 0x70: // IN 0, C
 									this.TakeCycles(12);
@@ -6943,6 +7003,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagS = TUS > 32767;
 									RegFlagZ = TUS == 0;
 									RegHL.Value16 = TUS;
+									RegFlag3 = (TUS & 0x0800) != 0;
+									RegFlag5 = (TUS & 0x2000) != 0;
 									break;
 								case 0x73: // LD (nn), SP
 									this.TakeCycles(20);
@@ -6991,6 +7053,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagS = TUS > 32767;
 									RegFlagZ = TUS == 0;
 									RegHL.Value16 = TUS;
+									RegFlag3 = (TUS & 0x0800) != 0;
+									RegFlag5 = (TUS & 0x2000) != 0;
 									break;
 								case 0x7B: // LD SP, (nn)
 									this.TakeCycles(20);
@@ -7110,7 +7174,8 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xA0: // LDI
 									this.TakeCycles(16);
-									WriteMemory(RegDE.Value16++, ReadMemory(RegHL.Value16++));
+									WriteMemory(RegDE.Value16++, TB1 = ReadMemory(RegHL.Value16++));
+									TB1 += RegAF.High8; RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									RegFlagH = false;
@@ -7123,6 +7188,7 @@ namespace BeeDevelopment.Brazil {
 									RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
 									RegFlagZ = TB2 == 0;
 									RegFlagS = TB2 > 127;
+									TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									break;
@@ -7154,7 +7220,8 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xA8: // LDD
 									this.TakeCycles(16);
-									WriteMemory(RegDE.Value16--, ReadMemory(RegHL.Value16--));
+									WriteMemory(RegDE.Value16--, TB1 = ReadMemory(RegHL.Value16--));
+									TB1 += RegAF.High8; RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									RegFlagH = false;
@@ -7167,6 +7234,7 @@ namespace BeeDevelopment.Brazil {
 									RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
 									RegFlagZ = TB2 == 0;
 									RegFlagS = TB2 > 127;
+									TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									break;
@@ -7198,7 +7266,8 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xB0: // LDIR
 									this.TakeCycles(16);
-									WriteMemory(RegDE.Value16++, ReadMemory(RegHL.Value16++));
+									WriteMemory(RegDE.Value16++, TB1 = ReadMemory(RegHL.Value16++));
+									TB1 += RegAF.High8; RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									RegFlagH = false;
@@ -7215,6 +7284,7 @@ namespace BeeDevelopment.Brazil {
 									RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
 									RegFlagZ = TB2 == 0;
 									RegFlagS = TB2 > 127;
+									TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									if (RegBC.Value16 != 0 && !RegFlagZ) {
@@ -7258,7 +7328,8 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xB8: // LDDR
 									this.TakeCycles(16);
-									WriteMemory(RegDE.Value16--, ReadMemory(RegHL.Value16--));
+									WriteMemory(RegDE.Value16--, TB1 = ReadMemory(RegHL.Value16--));
+									TB1 += RegAF.High8; RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									RegFlagH = false;
@@ -7275,6 +7346,7 @@ namespace BeeDevelopment.Brazil {
 									RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
 									RegFlagZ = TB2 == 0;
 									RegFlagS = TB2 > 127;
+									TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									if (RegBC.Value16 != 0 && !RegFlagZ) {
@@ -7645,6 +7717,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagN = false;
 									RegFlagC = ((ushort)TI1 + (ushort)TI2) > 0xFFFF;
 									RegIY.Value16 = TUS;
+									RegFlag3 = (TUS & 0x0800) != 0;
+									RegFlag5 = (TUS & 0x2000) != 0;
 									break;
 								case 0x0A: // LD A, (BC)
 									this.TakeCycles(7);
@@ -7720,6 +7794,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagN = false;
 									RegFlagC = ((ushort)TI1 + (ushort)TI2) > 0xFFFF;
 									RegIY.Value16 = TUS;
+									RegFlag3 = (TUS & 0x0800) != 0;
+									RegFlag5 = (TUS & 0x2000) != 0;
 									break;
 								case 0x1A: // LD A, (DE)
 									this.TakeCycles(7);
@@ -7801,6 +7877,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagN = false;
 									RegFlagC = ((ushort)TI1 + (ushort)TI2) > 0xFFFF;
 									RegIY.Value16 = TUS;
+									RegFlag3 = (TUS & 0x0800) != 0;
+									RegFlag5 = (TUS & 0x2000) != 0;
 									break;
 								case 0x2A: // LD IY, (nn)
 									this.TakeCycles(20);
@@ -7825,7 +7903,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x2F: // CPL
 									this.TakeCycles(4);
-									RegAF.High8 ^= 0xFF; RegFlagH = true; RegFlagN = true;
+									RegAF.High8 ^= 0xFF; RegFlagH = true; RegFlagN = true; RegFlag3 = (RegAF.High8 & 0x08) != 0; RegFlag5 = (RegAF.High8 & 0x20) != 0;
 									break;
 								case 0x30: // JR NC, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
@@ -7865,7 +7943,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x37: // SCF
 									this.TakeCycles(4);
-									RegFlagH = false; RegFlagN = false; RegFlagC = true;
+									RegFlagH = false; RegFlagN = false; RegFlagC = true; RegFlag3 = (RegAF.High8 & 0x08) != 0; RegFlag5 = (RegAF.High8 & 0x20) != 0;
 									break;
 								case 0x38: // JR C, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
@@ -7884,6 +7962,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagN = false;
 									RegFlagC = ((ushort)TI1 + (ushort)TI2) > 0xFFFF;
 									RegIY.Value16 = TUS;
+									RegFlag3 = (TUS & 0x0800) != 0;
+									RegFlag5 = (TUS & 0x2000) != 0;
 									break;
 								case 0x3A: // LD A, (nn)
 									this.TakeCycles(13);
@@ -7907,7 +7987,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x3F: // CCF
 									this.TakeCycles(4);
-									RegFlagH = RegFlagC; RegFlagN = false; RegFlagC ^= true;
+									RegFlagH = RegFlagC; RegFlagN = false; RegFlagC ^= true; RegFlag3 = (RegAF.High8 & 0x08) != 0; RegFlag5 = (RegAF.High8 & 0x20) != 0;
 									break;
 								case 0x40: // LD B, B
 									this.TakeCycles(4);
@@ -10335,6 +10415,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
 											RegHL.Value16 = TUS;
+											RegFlag3 = (TUS & 0x0800) != 0;
+											RegFlag5 = (TUS & 0x2000) != 0;
 											break;
 										case 0x43: // LD (nn), BC
 											this.TakeCycles(20);
@@ -10384,6 +10466,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
 											RegHL.Value16 = TUS;
+											RegFlag3 = (TUS & 0x0800) != 0;
+											RegFlag5 = (TUS & 0x2000) != 0;
 											break;
 										case 0x4B: // LD BC, (nn)
 											this.TakeCycles(20);
@@ -10431,6 +10515,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
 											RegHL.Value16 = TUS;
+											RegFlag3 = (TUS & 0x0800) != 0;
+											RegFlag5 = (TUS & 0x2000) != 0;
 											break;
 										case 0x53: // LD (nn), DE
 											this.TakeCycles(20);
@@ -10485,6 +10571,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
 											RegHL.Value16 = TUS;
+											RegFlag3 = (TUS & 0x0800) != 0;
+											RegFlag5 = (TUS & 0x2000) != 0;
 											break;
 										case 0x5B: // LD DE, (nn)
 											this.TakeCycles(20);
@@ -10537,6 +10625,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
 											RegHL.Value16 = TUS;
+											RegFlag3 = (TUS & 0x0800) != 0;
+											RegFlag5 = (TUS & 0x2000) != 0;
 											break;
 										case 0x63: // LD (nn), HL
 											this.TakeCycles(16);
@@ -10567,6 +10657,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[RegAF.High8];
 											RegFlagN = false;
+											RegFlag3 = (RegAF.High8 & 0x08) != 0;
+											RegFlag5 = (RegAF.High8 & 0x20) != 0;
 											break;
 										case 0x68: // IN L, C
 											this.TakeCycles(12);
@@ -10593,6 +10685,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
 											RegHL.Value16 = TUS;
+											RegFlag3 = (TUS & 0x0800) != 0;
+											RegFlag5 = (TUS & 0x2000) != 0;
 											break;
 										case 0x6B: // LD HL, (nn)
 											this.TakeCycles(16);
@@ -10621,6 +10715,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[RegAF.High8];
 											RegFlagN = false;
+											RegFlag3 = (RegAF.High8 & 0x08) != 0;
+											RegFlag5 = (RegAF.High8 & 0x20) != 0;
 											break;
 										case 0x70: // IN 0, C
 											this.TakeCycles(12);
@@ -10647,6 +10743,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
 											RegHL.Value16 = TUS;
+											RegFlag3 = (TUS & 0x0800) != 0;
+											RegFlag5 = (TUS & 0x2000) != 0;
 											break;
 										case 0x73: // LD (nn), SP
 											this.TakeCycles(20);
@@ -10695,6 +10793,8 @@ namespace BeeDevelopment.Brazil {
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
 											RegHL.Value16 = TUS;
+											RegFlag3 = (TUS & 0x0800) != 0;
+											RegFlag5 = (TUS & 0x2000) != 0;
 											break;
 										case 0x7B: // LD SP, (nn)
 											this.TakeCycles(20);
@@ -10814,7 +10914,8 @@ namespace BeeDevelopment.Brazil {
 											break;
 										case 0xA0: // LDI
 											this.TakeCycles(16);
-											WriteMemory(RegDE.Value16++, ReadMemory(RegHL.Value16++));
+											WriteMemory(RegDE.Value16++, TB1 = ReadMemory(RegHL.Value16++));
+											TB1 += RegAF.High8; RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
@@ -10827,6 +10928,7 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
 											RegFlagZ = TB2 == 0;
 											RegFlagS = TB2 > 127;
+											TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											break;
@@ -10858,7 +10960,8 @@ namespace BeeDevelopment.Brazil {
 											break;
 										case 0xA8: // LDD
 											this.TakeCycles(16);
-											WriteMemory(RegDE.Value16--, ReadMemory(RegHL.Value16--));
+											WriteMemory(RegDE.Value16--, TB1 = ReadMemory(RegHL.Value16--));
+											TB1 += RegAF.High8; RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
@@ -10871,6 +10974,7 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
 											RegFlagZ = TB2 == 0;
 											RegFlagS = TB2 > 127;
+											TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											break;
@@ -10902,7 +11006,8 @@ namespace BeeDevelopment.Brazil {
 											break;
 										case 0xB0: // LDIR
 											this.TakeCycles(16);
-											WriteMemory(RegDE.Value16++, ReadMemory(RegHL.Value16++));
+											WriteMemory(RegDE.Value16++, TB1 = ReadMemory(RegHL.Value16++));
+											TB1 += RegAF.High8; RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
@@ -10919,6 +11024,7 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
 											RegFlagZ = TB2 == 0;
 											RegFlagS = TB2 > 127;
+											TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											if (RegBC.Value16 != 0 && !RegFlagZ) {
@@ -10962,7 +11068,8 @@ namespace BeeDevelopment.Brazil {
 											break;
 										case 0xB8: // LDDR
 											this.TakeCycles(16);
-											WriteMemory(RegDE.Value16--, ReadMemory(RegHL.Value16--));
+											WriteMemory(RegDE.Value16--, TB1 = ReadMemory(RegHL.Value16--));
+											TB1 += RegAF.High8; RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
@@ -10979,6 +11086,7 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = TableHalfBorrow[RegAF.High8, TB1];
 											RegFlagZ = TB2 == 0;
 											RegFlagS = TB2 > 127;
+											TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											if (RegBC.Value16 != 0 && !RegFlagZ) {
