@@ -5483,9 +5483,9 @@ namespace BeeDevelopment.Brazil {
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegBC.Value16; TIR = TI1 - TI2;
 											if (RegFlagC) { --TIR; ++TI2; }
 											TUS = (ushort)TIR;
-											RegFlagH = ((TI1 & 0xFFF) - (TI2 & 0xFFF)) < 0;
+											RegFlagH = ((RegHL.Value16 ^ RegBC.Value16 ^ TUS) & 0x1000) != 0;
 											RegFlagN = true;
-											RegFlagC = ((ushort)TI1 - (ushort)TI2) < 0;
+											RegFlagC = (((int)RegHL.Value16 - (int)RegBC.Value16 - (this.RegFlagC ? 1 : 0)) & 0x10000) != 0;
 											RegFlagP = TIR > 32767 || TIR < -32768;
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
@@ -5583,9 +5583,9 @@ namespace BeeDevelopment.Brazil {
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegDE.Value16; TIR = TI1 - TI2;
 											if (RegFlagC) { --TIR; ++TI2; }
 											TUS = (ushort)TIR;
-											RegFlagH = ((TI1 & 0xFFF) - (TI2 & 0xFFF)) < 0;
+											RegFlagH = ((RegHL.Value16 ^ RegDE.Value16 ^ TUS) & 0x1000) != 0;
 											RegFlagN = true;
-											RegFlagC = ((ushort)TI1 - (ushort)TI2) < 0;
+											RegFlagC = (((int)RegHL.Value16 - (int)RegDE.Value16 - (this.RegFlagC ? 1 : 0)) & 0x10000) != 0;
 											RegFlagP = TIR > 32767 || TIR < -32768;
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
@@ -5693,9 +5693,9 @@ namespace BeeDevelopment.Brazil {
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegHL.Value16; TIR = TI1 - TI2;
 											if (RegFlagC) { --TIR; ++TI2; }
 											TUS = (ushort)TIR;
-											RegFlagH = ((TI1 & 0xFFF) - (TI2 & 0xFFF)) < 0;
+											RegFlagH = ((RegHL.Value16 ^ RegHL.Value16 ^ TUS) & 0x1000) != 0;
 											RegFlagN = true;
-											RegFlagC = ((ushort)TI1 - (ushort)TI2) < 0;
+											RegFlagC = (((int)RegHL.Value16 - (int)RegHL.Value16 - (this.RegFlagC ? 1 : 0)) & 0x10000) != 0;
 											RegFlagP = TIR > 32767 || TIR < -32768;
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
@@ -5811,9 +5811,9 @@ namespace BeeDevelopment.Brazil {
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegSP.Value16; TIR = TI1 - TI2;
 											if (RegFlagC) { --TIR; ++TI2; }
 											TUS = (ushort)TIR;
-											RegFlagH = ((TI1 & 0xFFF) - (TI2 & 0xFFF)) < 0;
+											RegFlagH = ((RegHL.Value16 ^ RegSP.Value16 ^ TUS) & 0x1000) != 0;
 											RegFlagN = true;
-											RegFlagC = ((ushort)TI1 - (ushort)TI2) < 0;
+											RegFlagC = (((int)RegHL.Value16 - (int)RegSP.Value16 - (this.RegFlagC ? 1 : 0)) & 0x10000) != 0;
 											RegFlagP = TIR > 32767 || TIR < -32768;
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
@@ -6804,9 +6804,9 @@ namespace BeeDevelopment.Brazil {
 									TI1 = (short)RegHL.Value16; TI2 = (short)RegBC.Value16; TIR = TI1 - TI2;
 									if (RegFlagC) { --TIR; ++TI2; }
 									TUS = (ushort)TIR;
-									RegFlagH = ((TI1 & 0xFFF) - (TI2 & 0xFFF)) < 0;
+									RegFlagH = ((RegHL.Value16 ^ RegBC.Value16 ^ TUS) & 0x1000) != 0;
 									RegFlagN = true;
-									RegFlagC = ((ushort)TI1 - (ushort)TI2) < 0;
+									RegFlagC = (((int)RegHL.Value16 - (int)RegBC.Value16 - (this.RegFlagC ? 1 : 0)) & 0x10000) != 0;
 									RegFlagP = TIR > 32767 || TIR < -32768;
 									RegFlagS = TUS > 32767;
 									RegFlagZ = TUS == 0;
@@ -6904,9 +6904,9 @@ namespace BeeDevelopment.Brazil {
 									TI1 = (short)RegHL.Value16; TI2 = (short)RegDE.Value16; TIR = TI1 - TI2;
 									if (RegFlagC) { --TIR; ++TI2; }
 									TUS = (ushort)TIR;
-									RegFlagH = ((TI1 & 0xFFF) - (TI2 & 0xFFF)) < 0;
+									RegFlagH = ((RegHL.Value16 ^ RegDE.Value16 ^ TUS) & 0x1000) != 0;
 									RegFlagN = true;
-									RegFlagC = ((ushort)TI1 - (ushort)TI2) < 0;
+									RegFlagC = (((int)RegHL.Value16 - (int)RegDE.Value16 - (this.RegFlagC ? 1 : 0)) & 0x10000) != 0;
 									RegFlagP = TIR > 32767 || TIR < -32768;
 									RegFlagS = TUS > 32767;
 									RegFlagZ = TUS == 0;
@@ -7014,9 +7014,9 @@ namespace BeeDevelopment.Brazil {
 									TI1 = (short)RegHL.Value16; TI2 = (short)RegHL.Value16; TIR = TI1 - TI2;
 									if (RegFlagC) { --TIR; ++TI2; }
 									TUS = (ushort)TIR;
-									RegFlagH = ((TI1 & 0xFFF) - (TI2 & 0xFFF)) < 0;
+									RegFlagH = ((RegHL.Value16 ^ RegHL.Value16 ^ TUS) & 0x1000) != 0;
 									RegFlagN = true;
-									RegFlagC = ((ushort)TI1 - (ushort)TI2) < 0;
+									RegFlagC = (((int)RegHL.Value16 - (int)RegHL.Value16 - (this.RegFlagC ? 1 : 0)) & 0x10000) != 0;
 									RegFlagP = TIR > 32767 || TIR < -32768;
 									RegFlagS = TUS > 32767;
 									RegFlagZ = TUS == 0;
@@ -7132,9 +7132,9 @@ namespace BeeDevelopment.Brazil {
 									TI1 = (short)RegHL.Value16; TI2 = (short)RegSP.Value16; TIR = TI1 - TI2;
 									if (RegFlagC) { --TIR; ++TI2; }
 									TUS = (ushort)TIR;
-									RegFlagH = ((TI1 & 0xFFF) - (TI2 & 0xFFF)) < 0;
+									RegFlagH = ((RegHL.Value16 ^ RegSP.Value16 ^ TUS) & 0x1000) != 0;
 									RegFlagN = true;
-									RegFlagC = ((ushort)TI1 - (ushort)TI2) < 0;
+									RegFlagC = (((int)RegHL.Value16 - (int)RegSP.Value16 - (this.RegFlagC ? 1 : 0)) & 0x10000) != 0;
 									RegFlagP = TIR > 32767 || TIR < -32768;
 									RegFlagS = TUS > 32767;
 									RegFlagZ = TUS == 0;
@@ -10544,9 +10544,9 @@ namespace BeeDevelopment.Brazil {
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegBC.Value16; TIR = TI1 - TI2;
 											if (RegFlagC) { --TIR; ++TI2; }
 											TUS = (ushort)TIR;
-											RegFlagH = ((TI1 & 0xFFF) - (TI2 & 0xFFF)) < 0;
+											RegFlagH = ((RegHL.Value16 ^ RegBC.Value16 ^ TUS) & 0x1000) != 0;
 											RegFlagN = true;
-											RegFlagC = ((ushort)TI1 - (ushort)TI2) < 0;
+											RegFlagC = (((int)RegHL.Value16 - (int)RegBC.Value16 - (this.RegFlagC ? 1 : 0)) & 0x10000) != 0;
 											RegFlagP = TIR > 32767 || TIR < -32768;
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
@@ -10644,9 +10644,9 @@ namespace BeeDevelopment.Brazil {
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegDE.Value16; TIR = TI1 - TI2;
 											if (RegFlagC) { --TIR; ++TI2; }
 											TUS = (ushort)TIR;
-											RegFlagH = ((TI1 & 0xFFF) - (TI2 & 0xFFF)) < 0;
+											RegFlagH = ((RegHL.Value16 ^ RegDE.Value16 ^ TUS) & 0x1000) != 0;
 											RegFlagN = true;
-											RegFlagC = ((ushort)TI1 - (ushort)TI2) < 0;
+											RegFlagC = (((int)RegHL.Value16 - (int)RegDE.Value16 - (this.RegFlagC ? 1 : 0)) & 0x10000) != 0;
 											RegFlagP = TIR > 32767 || TIR < -32768;
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
@@ -10754,9 +10754,9 @@ namespace BeeDevelopment.Brazil {
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegHL.Value16; TIR = TI1 - TI2;
 											if (RegFlagC) { --TIR; ++TI2; }
 											TUS = (ushort)TIR;
-											RegFlagH = ((TI1 & 0xFFF) - (TI2 & 0xFFF)) < 0;
+											RegFlagH = ((RegHL.Value16 ^ RegHL.Value16 ^ TUS) & 0x1000) != 0;
 											RegFlagN = true;
-											RegFlagC = ((ushort)TI1 - (ushort)TI2) < 0;
+											RegFlagC = (((int)RegHL.Value16 - (int)RegHL.Value16 - (this.RegFlagC ? 1 : 0)) & 0x10000) != 0;
 											RegFlagP = TIR > 32767 || TIR < -32768;
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
@@ -10872,9 +10872,9 @@ namespace BeeDevelopment.Brazil {
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegSP.Value16; TIR = TI1 - TI2;
 											if (RegFlagC) { --TIR; ++TI2; }
 											TUS = (ushort)TIR;
-											RegFlagH = ((TI1 & 0xFFF) - (TI2 & 0xFFF)) < 0;
+											RegFlagH = ((RegHL.Value16 ^ RegSP.Value16 ^ TUS) & 0x1000) != 0;
 											RegFlagN = true;
-											RegFlagC = ((ushort)TI1 - (ushort)TI2) < 0;
+											RegFlagC = (((int)RegHL.Value16 - (int)RegSP.Value16 - (this.RegFlagC ? 1 : 0)) & 0x10000) != 0;
 											RegFlagP = TIR > 32767 || TIR < -32768;
 											RegFlagS = TUS > 32767;
 											RegFlagZ = TUS == 0;
