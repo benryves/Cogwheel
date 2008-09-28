@@ -28,12 +28,12 @@ namespace BeeDevelopment.Z80Tester {
 			this.Memory = new byte[0x10000];
 			
 			// Patch memory for OS routines.
-			this.Memory[0x05] = 0xD3;
-			this.Memory[0x06] = 0xCB;
-			this.Memory[0x07] = 0xC9;
+			this.Memory[0x05] = 0xD3; // OUT (n), A
+			this.Memory[0x06] = 0xCB; // 0xCB
+			this.Memory[0x07] = 0xC9; // RET
 
-			this.Memory[0x38] = 0xFB;
-			this.Memory[0x39] = 0xC9;
+			this.Memory[0x38] = 0xFB; // EI
+			this.Memory[0x39] = 0xC9; // RET
 
 			// Load tester into memory.
 			switch (strength) {
@@ -41,7 +41,7 @@ namespace BeeDevelopment.Z80Tester {
 					Array.Copy(Properties.Resources.ZexDoc, 0, this.Memory, 0x100, Properties.Resources.ZexDoc.Length);
 					break;
 				case Strength.All:
-					Array.Copy(Properties.Resources.ZexAll, 0, this.Memory, 0x100, Properties.Resources.ZexDoc.Length);
+					Array.Copy(Properties.Resources.ZexAll, 0, this.Memory, 0x100, Properties.Resources.ZexAll.Length);
 					break;
 			}
 
@@ -64,9 +64,6 @@ namespace BeeDevelopment.Z80Tester {
 						break;
 					case 9:
 						for (int i = this.RegisterDE; this.Memory[i] != '$'; ++i) Console.Write((char)this.Memory[i]);
-						break;
-					default:
-						Console.WriteLine();
 						break;
 				}
 			} else {
