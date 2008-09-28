@@ -11616,6 +11616,10 @@ namespace BeeDevelopment.Brazil {
 				
 			}
 		}
+
+		public void TakeCycles(int cycles) {
+			this.totalExecutedCycles += cycles; this.pendingCycles -= cycles;
+		}
 		
 	}
 }
