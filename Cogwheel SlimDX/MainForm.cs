@@ -76,7 +76,9 @@ namespace CogwheelSlimDX {
 			this.SoundMuted = !Properties.Settings.Default.OptionEnableSound;
 
 			// Load the emulator.
-			this.Emulator = new BeeDevelopment.Sega8Bit.Emulator();
+			this.Emulator = new BeeDevelopment.Sega8Bit.Emulator() {
+				FmSoundEnabled = Properties.Settings.Default.OptionEnableFMSound,
+			};
 
 			// Load the ROM data (if required).
 			string RomDataDir = Path.Combine(Application.StartupPath, "ROM Data");
@@ -157,6 +159,14 @@ namespace CogwheelSlimDX {
 							this.IsLiveFrame = true;
 							short[] Buffer = new short[735 * 2];
 							this.Emulator.Sound.CreateSamples(Buffer);
+							if (this.Emulator.FmSoundEnabled) {
+								for (int i = 0; i < Buffer.Length; i += 2) {
+									double d = this.Emulator.FmSound.Tick();
+									for (int j = 0; j < 2; ++j) {
+										Buffer[i + j] += (short)(d * 6000);
+									}
+								}
+							}
 							this.GeneratedSoundSamples.Enqueue(Buffer);
 							this.Input.Poll();
 							this.Input.UpdateEmulatorState(this.Emulator);
@@ -774,6 +784,7 @@ namespace CogwheelSlimDX {
 			this.MaintainAspectRatioMenu.Checked = Properties.Settings.Default.OptionMaintainAspectRatio;
 			if (this.EnableSoundMenu.Image != null) this.EnableSoundMenu.Image.Dispose();
 			this.EnableSoundMenu.Image = Properties.Settings.Default.OptionEnableSound ? Properties.Resources.Icon_Sound : Properties.Resources.Icon_SoundMute;
+			this.EnableFMSoundMenu.Checked = Properties.Settings.Default.OptionEnableFMSound;
 		}
 
 		private void SimulateGameGearLcdMenu_Click(object sender, EventArgs e) {
@@ -796,6 +807,15 @@ namespace CogwheelSlimDX {
 			Properties.Settings.Default.OptionMaintainAspectRatio ^= true;
 			this.Dumper.ScaleMode = Properties.Settings.Default.OptionMaintainAspectRatio ? PixelDumper.ScaleModes.ZoomInside : PixelDumper.ScaleModes.Stretch;
 		}
+
+		private void EnableFMSoundMenu_Click(object sender, EventArgs e) {
+			if ((this.Emulator.FmSoundEnabled = Properties.Settings.Default.OptionEnableFMSound ^= true) && !Properties.Settings.Default.SeenWarningFMSound) {
+				Properties.Settings.Default.SeenWarningFMSound = true;
+				MessageBox.Show(this, "YM2413 FM sound emulation is experimental and unusable for most games. Consider yourself warned!", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			}
+
+		}
+
 		#endregion
 
 		#region State Saving
@@ -1036,7 +1056,6 @@ namespace CogwheelSlimDX {
 				SubItem.Image = (this.Input.ProfileDirectory == (string)SubItem.Tag) ? Properties.Resources.Icon_Bullet_Black : null;
 			}
 		}
-
 
 	}
 }

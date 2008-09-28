@@ -178,5 +178,29 @@ namespace CogwheelSlimDX.Properties {
                 this["OptionMaintainAspectRatio"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool OptionEnableFMSound {
+            get {
+                return ((bool)(this["OptionEnableFMSound"]));
+            }
+            set {
+                this["OptionEnableFMSound"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SeenWarningFMSound {
+            get {
+                return ((bool)(this["SeenWarningFMSound"]));
+            }
+            set {
+                this["SeenWarningFMSound"] = value;
+            }
+        }
     }
 }

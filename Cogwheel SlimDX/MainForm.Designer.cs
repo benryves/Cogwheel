@@ -78,6 +78,8 @@
 			this.OpenStateDialog = new System.Windows.Forms.OpenFileDialog();
 			this.SaveStateDialog = new System.Windows.Forms.SaveFileDialog();
 			this.CursorHider = new System.Windows.Forms.Timer(this.components);
+			this.OptionsSep1 = new System.Windows.Forms.ToolStripSeparator();
+			this.EnableFMSoundMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -280,7 +282,7 @@
             this.EmulationVideoSpritesEnabledMenu});
 			this.EmulationVideoMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Television;
 			this.EmulationVideoMenu.Name = "EmulationVideoMenu";
-			this.EmulationVideoMenu.Size = new System.Drawing.Size(148, 22);
+			this.EmulationVideoMenu.Size = new System.Drawing.Size(152, 22);
 			this.EmulationVideoMenu.Text = "&Video";
 			this.EmulationVideoMenu.DropDownOpening += new System.EventHandler(this.DebugVideoMenu_DropDownOpening);
 			// 
@@ -324,7 +326,7 @@
             this.GameGenieEditMenu});
 			this.GameGenieMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(148, 22);
+			this.GameGenieMenu.Size = new System.Drawing.Size(152, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
 			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
 			// 
@@ -347,7 +349,7 @@
 			// 
 			this.SdscDebugConsoleMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Terminal;
 			this.SdscDebugConsoleMenu.Name = "SdscDebugConsoleMenu";
-			this.SdscDebugConsoleMenu.Size = new System.Drawing.Size(148, 22);
+			this.SdscDebugConsoleMenu.Size = new System.Drawing.Size(152, 22);
 			this.SdscDebugConsoleMenu.Text = "&SDSC Console";
 			this.SdscDebugConsoleMenu.Click += new System.EventHandler(this.SdscDebugConsoleMenu_Click);
 			// 
@@ -358,6 +360,8 @@
             this.CustomiseControlsMenu,
             this.OptionsSep0,
             this.EnableSoundMenu,
+            this.EnableFMSoundMenu,
+            this.OptionsSep1,
             this.SimulateGameGearLcdMenu,
             this.LinearInterpolationMenu,
             this.MaintainAspectRatioMenu});
@@ -502,6 +506,18 @@
 			this.CursorHider.Interval = 1000;
 			this.CursorHider.Tick += new System.EventHandler(this.CursorHider_Tick);
 			// 
+			// OptionsSep1
+			// 
+			this.OptionsSep1.Name = "OptionsSep1";
+			this.OptionsSep1.Size = new System.Drawing.Size(244, 6);
+			// 
+			// EnableFMSoundMenu
+			// 
+			this.EnableFMSoundMenu.Name = "EnableFMSoundMenu";
+			this.EnableFMSoundMenu.Size = new System.Drawing.Size(247, 22);
+			this.EnableFMSoundMenu.Text = "Enable &FM Sound (Experimental)";
+			this.EnableFMSoundMenu.Click += new System.EventHandler(this.EnableFMSoundMenu_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -581,6 +597,8 @@
 		private System.Windows.Forms.ToolStripMenuItem GameGenieMenu;
 		private System.Windows.Forms.ToolStripMenuItem GameGenieEnabledMenu;
 		private System.Windows.Forms.ToolStripMenuItem GameGenieEditMenu;
+		private System.Windows.Forms.ToolStripSeparator OptionsSep1;
+		private System.Windows.Forms.ToolStripMenuItem EnableFMSoundMenu;
 	}
 }
 

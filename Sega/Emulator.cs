@@ -69,6 +69,7 @@ namespace BeeDevelopment.Sega8Bit {
 			this.Sound.Reset();
 			this.MainPPI.Reset();
 			this.DebugConsole.Reset();
+			this.FmSound.Reset();
 		}
 
 		#endregion
@@ -84,6 +85,8 @@ namespace BeeDevelopment.Sega8Bit {
 			this.Cheats = new MemoryCheatCollection();
 			this.MainPPI = new ProgrammablePeripheralInterface();
 			this.DebugConsole = new DebugConsole(this);
+			this.FmSound = new YM2413() { ClockRate = 3579545 };
+			
 			#region Memory
 
 			this.CartridgeSlot = new MemoryDevice();

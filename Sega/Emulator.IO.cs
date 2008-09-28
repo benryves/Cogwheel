@@ -1,8 +1,8 @@
 ﻿/* 
  * This source file relates to hardware device I/O.
  */
-using BeeDevelopment.Sega8Bit.Hardware;
 using BeeDevelopment.Brazil;
+using BeeDevelopment.Sega8Bit.Hardware;
 namespace BeeDevelopment.Sega8Bit {
 	public partial class Emulator {
 
@@ -41,6 +41,17 @@ namespace BeeDevelopment.Sega8Bit {
 		/// </summary>
 		[StateNotSaved()]
 		public DebugConsole DebugConsole { get; private set; }
+
+		/// <summary>
+		/// Gets the <see cref="YM2413"/> connected to the system.
+		/// </summary>
+		[StateNotSaved()]
+		public YM2413 FmSound { get; private set; }
+
+		/// <summary>
+		/// Gets or sets whether FM sound is enabled/available.
+		/// </summary>
+		public bool FmSoundEnabled { get; set; }
 
 		#endregion
 
@@ -119,25 +130,37 @@ namespace BeeDevelopment.Sega8Bit {
 						}
 					}
 
+					byte Result = 0xFF;
+
 					switch (port & 0xC1) {
 						case 0x00:
 						case 0x01:
-							return 0xFF;
+							break;
 						case 0x40: // VDP vertical retrace counter.
-							return this.Video.VerticalCounter;
+							Result =  this.Video.VerticalCounter;
+							break;
 						case 0x41: // VDP horizontal counter.
-							return this.Video.HorizontalCounter;
+							Result = this.Video.HorizontalCounter;
+							break;
 						case 0x80: // VDP Data.
-							return this.Video.ReadData();
+							Result = this.Video.ReadData();
+							break;
 						case 0x81: // VDP Control.
-							return this.Video.ReadControl();
+							Result = this.Video.ReadControl();
+							break;
 						case 0xC0: // I/O port A.
-							return this.ReadSegaIOPortA();
+							Result = this.ReadSegaIOPortA();
+							break;
 						case 0xC1: // I/O port B.
-							return this.ReadSegaIOPortB();
+							Result = this.ReadSegaIOPortB();
+							break;
 					}
 
-					break;
+					if ((port & 0xFF) == 0xF2 && this.FmSoundEnabled) {
+						Result &= this.FmSound.DetectionValue;
+					}
+
+					return Result;
 			}
 
 
@@ -259,9 +282,23 @@ namespace BeeDevelopment.Sega8Bit {
 						}
 
 
-						if ((port & 0xFF) == 0xFC) this.DebugConsole.WriteControl(value);
-						if ((port & 0xFF) == 0xFD) this.DebugConsole.WriteData(value);
-
+						switch (port & 0xFF) {
+							case 0xF0:
+								if (this.FmSoundEnabled) this.FmSound.LatchRegister(value);
+								break;
+							case 0xF1:
+								if (this.FmSoundEnabled) this.FmSound.Write(value);
+								break;
+							case 0xF2:
+								if (this.FmSoundEnabled) this.FmSound.DetectionValue = value;
+								break;
+							case 0xFC:
+								this.DebugConsole.WriteControl(value);
+								break;
+							case 0xFD:
+								this.DebugConsole.WriteData(value);
+								break;
+						}
 					}
 
 					break;
