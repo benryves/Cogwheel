@@ -46,7 +46,7 @@ namespace BeeDevelopment.Sega8Bit {
 		/// Gets the <see cref="YM2413"/> connected to the system.
 		/// </summary>
 		[StateNotSaved()]
-		public YM2413 FmSound { get; private set; }
+		public Emu2413 FmSound { get; private set; }
 
 		/// <summary>
 		/// Gets or sets whether FM sound is enabled/available.

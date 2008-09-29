@@ -85,7 +85,7 @@ namespace BeeDevelopment.Sega8Bit {
 			this.Cheats = new MemoryCheatCollection();
 			this.MainPPI = new ProgrammablePeripheralInterface();
 			this.DebugConsole = new DebugConsole(this);
-			this.FmSound = new YM2413() { ClockRate = 3579545 };
+			this.FmSound = new Emu2413();
 			
 			#region Memory
 

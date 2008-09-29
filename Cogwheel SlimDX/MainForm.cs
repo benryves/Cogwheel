@@ -160,11 +160,10 @@ namespace CogwheelSlimDX {
 							short[] Buffer = new short[735 * 2];
 							this.Emulator.Sound.CreateSamples(Buffer);
 							if (this.Emulator.FmSoundEnabled) {
-								for (int i = 0; i < Buffer.Length; i += 2) {
-									double d = this.Emulator.FmSound.Tick();
-									for (int j = 0; j < 2; ++j) {
-										Buffer[i + j] += (short)(d * 6000);
-									}
+								var FmBuffer = new short[Buffer.Length];
+								this.Emulator.FmSound.GenerateSamples(FmBuffer);
+								for (int i = 0; i < FmBuffer.Length; ++i) {
+									Buffer[i] = (short)(Buffer[i] + FmBuffer[i] * 2);
 								}
 							}
 							this.GeneratedSoundSamples.Enqueue(Buffer);
