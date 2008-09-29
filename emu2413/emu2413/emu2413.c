@@ -1051,7 +1051,7 @@ OPLL_reset (OPLL * opll)
   opll->opllstep = (e_uint32) ((1 << 31) / (clk / 72));
   opll->oplltime = 0;
   for (i = 0; i < 14; i++)
-    opll->pan[i] = 2;
+    opll->pan[i] = 3;
   opll->sprev[0] = opll->sprev[1] = 0;
   opll->snext[0] = opll->snext[1] = 0;
 #endif
@@ -1849,3 +1849,16 @@ OPLL_calc_stereo (OPLL * opll, e_int32 out[2])
                        + (double) opll->sprev[1] * opll->oplltime) / opll->opllstep);
 }
 #endif /* EMU2413_COMPACTION */
+
+// Simple optimisation 
+void
+OPLL_generate_samples (OPLL * opll, e_uint32 samples, e_int16 * out)
+{
+	e_int32 stereo[2];
+	e_uint i;
+	for	(i = 0; i < samples; i += 2) {
+		OPLL_calc_stereo(opll, stereo);
+		out[i + 0] = stereo[0];
+		out[i + 1] = stereo[1];
+	}
+}

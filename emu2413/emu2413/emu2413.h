@@ -129,6 +129,7 @@ EMU2413_API void OPLL_writeReg(OPLL *, e_uint32 reg, e_uint32 val) ;
 /* Synthsize */
 EMU2413_API e_int16 OPLL_calc(OPLL *) ;
 EMU2413_API void OPLL_calc_stereo(OPLL *, e_int32 out[2]) ;
+EMU2413_API void OPLL_generate_samples(OPLL *, e_uint32, e_int16 *) ;
 
 /* Misc */
 EMU2413_API void OPLL_setPatch(OPLL *, const e_uint8 *dump) ;
