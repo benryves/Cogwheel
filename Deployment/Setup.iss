@@ -16,6 +16,7 @@ Compression=lzma
 SolidCompression=yes
 ChangesAssociations=yes
 ChangesEnvironment=yes
+PrivilegesRequired=admin
 
 [Files]
 ; Main executables:
@@ -24,6 +25,7 @@ Source: "..\Cogwheel SlimDX\bin\Release\Cogwheel Interface.exe.config"; DestDir:
 Source: "..\Cogwheel SlimDX\bin\Release\Sega.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
 Source: "..\Cogwheel SlimDX\bin\Release\Brazil.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
 Source: "..\Cogwheel SlimDX\bin\Release\SlimDX.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
+Source: "..\Cogwheel SlimDX\bin\Release\emu2413.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
 Source: "..\State Thumbnailer\bin\Release\CogStateThumbnailer.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
 
 ; ROM Data:
