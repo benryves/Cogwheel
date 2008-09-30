@@ -868,7 +868,7 @@ namespace CogwheelSlimDX {
 				this.LoadState(this.GetQuickSaveFilename(this.QuickSaveSlot));
 				this.AddMessage(Properties.Resources.Icon_TimeGo, string.Format("Loaded state from slot {0}", this.QuickSaveSlot));
 			} catch (Exception ex) {
-				MessageBox.Show(this, "Could not save state: " + ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(this, "Could not load state: " + ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
