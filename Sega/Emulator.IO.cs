@@ -284,10 +284,8 @@ namespace BeeDevelopment.Sega8Bit {
 
 						switch (port & 0xFF) {
 							case 0xF0:
-								if (this.FmSoundEnabled) this.FmSound.LatchRegister(value);
-								break;
 							case 0xF1:
-								if (this.FmSoundEnabled) this.FmSound.Write(value);
+								if (this.FmSoundEnabled) this.FmSound.WriteToAddress(port, value);
 								break;
 							case 0xF2:
 								if (this.FmSoundEnabled) this.FmSound.DetectionValue = value;

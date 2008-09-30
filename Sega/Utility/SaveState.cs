@@ -26,6 +26,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 				IniSerialiseObject(emulator, "", "Main.ini", zipFile);
 				IniSerialiseObject(emulator.Video, "Video", "Video.ini", zipFile);
 				IniSerialiseObject(emulator.Sound, "Sound", "PSG.ini", zipFile);
+				IniSerialiseObject(emulator.FmSound, @"Sound\OPLL", "YM2413.ini", zipFile);
 
 				for (int i = 0; i < 2; ++i) {
 					IniSerialiseObject(emulator.SegaPorts[i], Path.Combine(@"Controllers\Sega", i.ToString()), "Port.ini", zipFile);
@@ -53,7 +54,8 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			emulator = (Emulator)IniDeserialiseObject(null, "", "Main.ini", zipFile);
 			lock (emulator) {
 				IniDeserialiseObject(emulator.Video, "Video", "Video.ini", zipFile);
-				IniDeserialiseObject(emulator.Sound, "Sound", "Sound.ini", zipFile);
+				IniDeserialiseObject(emulator.Sound, "Sound", "PSG.ini", zipFile);
+				IniDeserialiseObject(emulator.FmSound, @"Sound\OPLL", "YM2413.ini", zipFile);
 
 				for (int i = 0; i < 2; ++i) {
 					IniDeserialiseObject(emulator.SegaPorts[i], Path.Combine(@"Controllers\Sega", i.ToString()), "Port.ini", zipFile);

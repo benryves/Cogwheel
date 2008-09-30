@@ -23,6 +23,9 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 		[DllImport("emu2413.dll", EntryPoint = "OPLL_generate_samples")]
 		public static extern void GenerateSamples(IntPtr opll, int sampleCount, [MarshalAs(UnmanagedType.LPArray)] short[] samples);
+
+		[DllImport("emu2413.dll", EntryPoint = "OPLL_getOpllStateSize")]
+		public static extern int GetStateSize();
 		
 	}
 }

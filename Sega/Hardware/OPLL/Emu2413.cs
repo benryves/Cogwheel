@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace BeeDevelopment.Sega8Bit.Hardware {
 
@@ -10,10 +11,39 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		private IntPtr Handle;
 		private bool IsDisposed = false;
 
+		#region Properties
+
 		/// <summary>
 		/// Gets or sets a value used by the hardware to detect the presence of a YM2413.
 		/// </summary>
 		public byte DetectionValue { get; set; }
+
+		/// <summary>
+		/// Gets or sets the latched register.
+		/// </summary>
+		public byte LatchedRegister { get; set; }
+
+		private byte[] registers;
+		/// <summary>
+		/// Gets or sets the YM2413 registers.
+		/// </summary>
+		public byte[] Registers {
+			get {
+				this.CheckNotDisposed();
+				return this.registers;
+			}
+			set {
+				this.CheckNotDisposed();
+				if (value == null || value.Length != this.registers.Length) throw new InvalidOperationException();
+				this.registers = value;
+				this.Reset();
+				for (int i = 0; i < this.registers.Length; ++i) this.WriteToRegister(i, this.registers[i]);
+			}
+		}
+
+		#endregion
+
+
 
 		#region Initialisation
 
@@ -24,6 +54,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <param name="sampleRate">The sound sample rate.</param>
 		public Emu2413(int clockRate, int sampleRate) {
 			this.Handle = OPLL.New(clockRate, sampleRate);
+			this.Reset();
 		}
 
 		/// <summary>
@@ -39,6 +70,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		public void Reset() {
 			this.CheckNotDisposed();
 			this.DetectionValue = 0;
+			this.registers = new byte[64];
 			OPLL.Reset(this.Handle);
 		}
 
@@ -53,6 +85,11 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <param name="value">The value to write.</param>
 		public void WriteToAddress(int address, byte value) {
 			this.CheckNotDisposed();
+			if ((address & 0x01) == 1) {
+				this.registers[this.LatchedRegister] = value;
+			} else {
+				this.LatchedRegister = value;
+			}
 			OPLL.WriteIO(this.Handle, address, value);
 		}
 
@@ -63,6 +100,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <param name="value">The value to write.</param>
 		public void WriteToRegister(int register, byte value) {
 			this.CheckNotDisposed();
+			this.registers[register & 0x3F] = value;
 			OPLL.WriteRegister(this.Handle, register, value);
 		}
 
@@ -88,7 +126,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		}
 
 		#endregion
-
 
 		#region Cleanup
 
@@ -123,14 +160,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 		#endregion
 
-		private byte LatchedRegister;
+		
 
-		public void LatchRegister(byte value) {
-			LatchedRegister = value;
-		}
-
-		internal void Write(byte value) {
-			this.WriteToRegister(this.LatchedRegister, value);
-		}
 	}
 }
