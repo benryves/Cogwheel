@@ -1862,9 +1862,3 @@ OPLL_generate_samples (OPLL * opll, e_uint32 samples, e_int16 * out)
 		out[i + 1] = stereo[1];
 	}
 }
-
-e_uint32
-OPLL_getOpllStateSize()
-{
-	return sizeof(OPLL);
-}

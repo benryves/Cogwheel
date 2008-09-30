@@ -139,7 +139,6 @@ EMU2413_API void OPLL_forceRefresh(OPLL *) ;
 EMU2413_API void OPLL_dump2patch(const e_uint8 *dump, OPLL_PATCH *patch) ;
 EMU2413_API void OPLL_patch2dump(const OPLL_PATCH *patch, e_uint8 *dump) ;
 EMU2413_API void OPLL_getDefaultPatch(e_int32 type, e_int32 num, OPLL_PATCH *) ;
-EMU2413_API e_uint32 OPLL_getOpllStateSize();
 
 /* Channel Mask */
 EMU2413_API e_uint32 OPLL_setMask(OPLL *, e_uint32 mask) ;
@@ -152,4 +151,3 @@ EMU2413_API e_uint32 OPLL_toggleMask(OPLL *, e_uint32 mask) ;
 #endif
 
 #endif
-

@@ -20,4 +20,3 @@ EXPORTS
 	OPLL_setMask
 	OPLL_toggleMask
 	OPLL_generate_samples
-	OPLL_getOpllStateSize
