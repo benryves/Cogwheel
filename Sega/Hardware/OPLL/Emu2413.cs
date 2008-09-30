@@ -1,8 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BeeDevelopment.Sega8Bit.Hardware {
+
+	/// <summary>
+	/// Provides a managed wrapper for the emu2413 YM2413 emulator.
+	/// </summary>
 	public class Emu2413 : IDisposable {
 
 		private IntPtr Handle;
