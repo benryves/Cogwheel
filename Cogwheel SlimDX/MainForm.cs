@@ -810,7 +810,7 @@ namespace CogwheelSlimDX {
 		private void EnableFMSoundMenu_Click(object sender, EventArgs e) {
 			if ((this.Emulator.FmSoundEnabled = Properties.Settings.Default.OptionEnableFMSound ^= true) && !Properties.Settings.Default.SeenWarningFMSound) {
 				Properties.Settings.Default.SeenWarningFMSound = true;
-				MessageBox.Show(this, "YM2413 FM sound emulation is experimental and unusable for most games. Consider yourself warned!", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show(this, "YM2413 FM sound emulation is experimental and incompatible with save-states.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 
 		}
