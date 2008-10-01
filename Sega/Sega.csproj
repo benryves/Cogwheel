@@ -55,6 +55,7 @@
     <Compile Include="Hardware\DebugConsole.cs" />
     <Compile Include="Hardware\OPLL\Emu2413.cs" />
     <Compile Include="Hardware\OPLL\Functions.cs" />
+    <Compile Include="Hardware\OPLL\Types.cs" />
     <Compile Include="Hardware\PinDirection.cs" />
     <Compile Include="Hardware\ProgrammablePeripheralInterface\IO.cs" />
     <Compile Include="Hardware\ProgrammablePeripheralInterface\ProgrammablePeripheralInterface.cs" />

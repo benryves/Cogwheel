@@ -6,6 +6,7 @@ using BeeDevelopment.Brazil;
 using BeeDevelopment.Sega8Bit.Hardware.Controllers;
 using BeeDevelopment.Sega8Bit.Mappers;
 using BeeDevelopment.Zip;
+using System.Globalization;
 
 namespace BeeDevelopment.Sega8Bit.Utility {
 	public static class SaveState {
@@ -27,6 +28,11 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 				IniSerialiseObject(emulator.Video, "Video", "Video.ini", zipFile);
 				IniSerialiseObject(emulator.Sound, "Sound", "PSG.ini", zipFile);
 				IniSerialiseObject(emulator.FmSound, @"Sound\OPLL", "YM2413.ini", zipFile);
+
+				var FmState = emulator.FmSound.State;
+				IniSerialiseObject(FmState, @"Sound\OPLL\emu2413", "State.ini", zipFile);
+				for (int i = 0; i < FmState.Patches.Length; ++i) IniSerialiseObject(FmState.Patches[i], @"Sound\OPLL\emu2413\Patches", string.Format(CultureInfo.InvariantCulture, "{0:D2}.ini", i), zipFile);
+				for (int i = 0; i < FmState.Slots.Length; ++i) IniSerialiseObject(FmState.Slots[i], string.Format(CultureInfo.InvariantCulture, @"Sound\OPLL\emu2413\Slots\{0:D2}", i), "Slot.ini", zipFile);
 
 				for (int i = 0; i < 2; ++i) {
 					IniSerialiseObject(emulator.SegaPorts[i], Path.Combine(@"Controllers\Sega", i.ToString()), "Port.ini", zipFile);
@@ -56,6 +62,12 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 				IniDeserialiseObject(emulator.Video, "Video", "Video.ini", zipFile);
 				IniDeserialiseObject(emulator.Sound, "Sound", "PSG.ini", zipFile);
 				IniDeserialiseObject(emulator.FmSound, @"Sound\OPLL", "YM2413.ini", zipFile);
+
+				BeeDevelopment.Sega8Bit.Hardware.Emu2413.OPLL_STATE FmState = emulator.FmSound.State;
+				IniDeserialiseObject(FmState, @"Sound\OPLL\emu2413", "State.ini", zipFile);
+				for (int i = 0; i < FmState.Patches.Length; ++i) IniDeserialiseObject(FmState.Patches[i], @"Sound\OPLL\emu2413\Patches", string.Format(CultureInfo.InvariantCulture, "{0:D2}.ini", i), zipFile);
+				for (int i = 0; i < FmState.Slots.Length; ++i) IniDeserialiseObject(FmState.Slots[i], string.Format(CultureInfo.InvariantCulture, @"Sound\OPLL\emu2413\Slots\{0:D2}", i), "Slot.ini", zipFile);
+				emulator.FmSound.State = FmState;
 
 				for (int i = 0; i < 2; ++i) {
 					IniDeserialiseObject(emulator.SegaPorts[i], Path.Combine(@"Controllers\Sega", i.ToString()), "Port.ini", zipFile);
@@ -106,7 +118,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 									Data = (byte[])Value,
 								});
 								IniFile.AppendLine(string.Format("{0}=Dump({1})", Property.Name, RawDataName));
-							} else if (Property.PropertyType.IsArray && Property.PropertyType.GetElementType() == typeof(int)) {
+							} else if (Property.PropertyType.IsArray && (Property.PropertyType.GetElementType() == typeof(int) || Property.PropertyType.GetElementType() == typeof(uint))) {
 								string RawDataName = Path.Combine(iniDirectory, Property.Name + ".bin");
 								using (var DumpedInts = new MemoryStream()) {
 									using (var IntWriter = new BinaryWriter(DumpedInts)) {
@@ -185,11 +197,16 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 						}
 					} else if (Property.PropertyType.IsArray && Property.PropertyType.GetElementType() == typeof(byte)) {
 						if (DumpedData != null) { Property.SetValue(Result, DumpedData.Data, null); }
-					} else if (Property.PropertyType.IsArray && Property.PropertyType.GetElementType() == typeof(int)) {
+					} else if (Property.PropertyType.IsArray && (Property.PropertyType.GetElementType() == typeof(int) || Property.PropertyType.GetElementType() == typeof(uint))) {
 						if (DumpedData != null) {
 							var IntArray = new int[DumpedData.Data.Length / 4];
 							for (int i = 0; i < IntArray.Length; ++i) IntArray[i] = BitConverter.ToInt32(DumpedData.Data, i * 4);
-							Property.SetValue(Result, IntArray, null); 
+							if (Property.PropertyType.GetElementType() == typeof(int)) {
+								Property.SetValue(Result, IntArray, null);
+							} else if (Property.PropertyType.GetElementType() == typeof(uint)) {
+								Property.SetValue(Result, Array.ConvertAll(IntArray, i => (uint)i), null);
+							}
+							
 						}
 					} else {
 						// Not deserialised.
