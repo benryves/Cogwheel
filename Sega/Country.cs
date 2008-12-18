@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
+#if SILVERLIGHT
+using EnumEx = System.EnumEx;
+#else
+using EnumEx = System.Enum;
+#endif
+
 namespace BeeDevelopment.Sega8Bit {
 
 	/// <summary>
@@ -66,7 +72,7 @@ namespace BeeDevelopment.Sega8Bit {
 		public static Country IdentifierToCountry(string identifier) {
 			if (string.IsNullOrEmpty(identifier) || identifier.Length != 2) return Country.None;
 
-			foreach (Country PossibleMatch in Enum.GetValues(typeof(Country))) {
+			foreach (Country PossibleMatch in EnumEx.GetValues(typeof(Country))) {
 				if (CountryToIdentifier(PossibleMatch) == identifier.ToUpperInvariant()) return PossibleMatch;
 			}
 

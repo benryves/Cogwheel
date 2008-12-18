@@ -1,7 +1,12 @@
 ﻿#region Using Directives
 using System;
 using System.IO;
+#if SILVERLIGHT
+using FileEx = System.IO.FileEx;
+#else
 using System.IO.Compression;
+using FileEx = System.IO.File;
+#endif
 using System.Text;
 #endregion
 
@@ -164,9 +169,11 @@ namespace BeeDevelopment.Zip {
 					case CompressionMethod.Store:
 						CompressingStream = CompressedStream;
 						break;
+#if !SILVERLIGHT
 					case CompressionMethod.Deflate:
 						CompressingStream = new DeflateStream(CompressedStream, CompressionMode.Compress, true);
 						break;
+#endif
 					default:
 						throw new NotSupportedException();
 				}
@@ -205,9 +212,8 @@ namespace BeeDevelopment.Zip {
 		/// <param name="comment">Outputs the encoded comment.</param>
 		/// <returns>True if the strings are encoded using UTF-8, false if using legacy codepage 437.</returns>
 		internal bool EncodeStrings(out byte[] filename, out byte[] comment) {
-			
-			var LegacyEncoding = Encoding.GetEncoding(437);
-		
+
+			var LegacyEncoding = Encoding.GetEncoding("IBM437");
 			var RequiresUnicode =
 				(LegacyEncoding.GetString(LegacyEncoding.GetBytes(this.Name ?? "")) != (this.Name ?? "")) ||
 				(LegacyEncoding.GetString(LegacyEncoding.GetBytes(this.Comment ?? "")) != (this.Comment ?? ""));
@@ -249,7 +255,7 @@ namespace BeeDevelopment.Zip {
 			return new ZipFileEntry() {
 				Name = filename,
 				LastWriteTime = SourceInfo.LastWriteTime,
-				Data = File.ReadAllBytes(filename),
+				Data = FileEx.ReadAllBytes(filename),
 			};
 
 		}
@@ -292,7 +298,7 @@ namespace BeeDevelopment.Zip {
 			}
 
 
-			var StringEncoder = ((Result.Attributes & AttributeBits.UnicodeNames) == AttributeBits.None) ? Encoding.GetEncoding(437) : Encoding.UTF8;
+			var StringEncoder = ((Result.Attributes & AttributeBits.UnicodeNames) == AttributeBits.None) ? Encoding.GetEncoding("IBM437") : Encoding.UTF8;
 
 			Result.Name = StringEncoder.GetString(EntryReader.ReadBytes(EncodedNameLength));
 
@@ -311,9 +317,11 @@ namespace BeeDevelopment.Zip {
 				switch (Result.Method) {
 					case CompressionMethod.Store:
 						break;
+#if !SILVERLIGHT
 					case CompressionMethod.Deflate:
 						DecompressingStream = new DeflateStream(stream, CompressionMode.Decompress, true);
 						break;
+#endif
 					default:
 						DecompressingStream = null;
 						break;

@@ -386,8 +386,12 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// </summary>
 		/// <param name="value">The string to write.</param>
 		public void WriteString(string s) {
-			foreach (var Character in Encoding.ASCII.GetBytes(s)) {
-				this.WriteCharacter(Character);
+			foreach (var Character in s) {
+				if (Character < 128) {
+					this.WriteCharacter((byte)Character);
+				} else {
+					this.WriteCharacter((byte)'?');
+				}
 			}
 		}
 		

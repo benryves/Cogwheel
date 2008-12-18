@@ -1,0 +1,327 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InteractSw.GenerateBitmap</name>
+    </assembly>
+    <members>
+        <member name="T:InteractSw.GenerateBitmap.PngChunk">
+            <summary>
+            Represents a chunk in a PNG file.
+            </summary>
+            <remarks>
+            A PNG file's top level structure is: a PNG signature followed by a sequence of chunks.
+            Instances of this class represent a single chunk.
+            
+            This class allows the chunk type (a 4-byte identifier for the chunk's purpose) and data
+            to be provided. It presents the chunk contents in the binary form required by the PNG
+            spec through the Read and Reset methods. The binary representation requires each chunk
+            to be length-prefixed, and to end with a CRC32.
+            </remarks>
+        </member>
+        <member name="F:InteractSw.GenerateBitmap.PngChunk.m_chunkType">
+            <summary>
+            4-byte array containing the PNG chunk type.
+            </summary>
+        </member>
+        <member name="F:InteractSw.GenerateBitmap.PngChunk.m_length">
+            <summary>
+            4-byte array containing the chunk length, in network order.
+            </summary>
+        </member>
+        <member name="F:InteractSw.GenerateBitmap.PngChunk.m_data">
+            <summary>
+            The data for this chunk, or null if there is no data.
+            </summary>
+        </member>
+        <member name="F:InteractSw.GenerateBitmap.PngChunk.m_crcBytes">
+            <summary>
+            The CRC for this chunk.
+            </summary>
+        </member>
+        <member name="F:InteractSw.GenerateBitmap.PngChunk.position">
+            <summary>
+            The current position into the byte representation of this chunk for the
+            next Read operation.
+            </summary>
+        </member>
+        <member name="M:InteractSw.GenerateBitmap.PngChunk.#ctor(System.Byte[])">
+            <summary>
+            Construct a new PNG chunk of the specified chunk type.
+            </summary>
+            <param name="chunkType">4 byte array containing the chunk type.</param>
+            <remarks>
+            TODO: Should we force passing of data (allowing null) here, and then change
+            SetData to UpdateData?
+            </remarks>
+        </member>
+        <member name="M:InteractSw.GenerateBitmap.PngChunk.SetData(System.Byte[])">
+            <summary>
+            Provide the data for this chunk. (Not all chunks have data.)
+            </summary>
+            <param name="data">The data for this chunk.</param>
+        </member>
+        <member name="M:InteractSw.GenerateBitmap.PngChunk.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Read bytes from this chunk.
+            </summary>
+            <param name="buffer">Buffer into which to write bytes.</param>
+            <param name="offset">Offset in buffer at which to start
+            writing bytes.</param>
+            <param name="count">Maximum number of bytes to fetch.</param>
+            <returns>The number of bytes placed into the buffer. If the
+            buffer is larger than the amount of remaining data, this will
+            be less than count. Returns 0 to indicate that no data is left.
+            </returns>
+        </member>
+        <member name="M:InteractSw.GenerateBitmap.PngChunk.Rewind">
+            <summary>
+            Resets the Read position.
+            </summary>
+            <remarks>
+            Repeated calls to Read fetch data progressively from the chunk. Calling
+            this method resets the position back to the start, so the data can be
+            fetched again.
+            </remarks>
+        </member>
+        <member name="P:InteractSw.GenerateBitmap.PngChunk.Length">
+            <summary>
+            Total length of chunk's byte representation.
+            </summary>
+        </member>
+        <member name="T:InteractSw.GenerateBitmap.NetworkOrderBitConverter">
+            <summary>
+            Conversion between numeric types and their network order (big endian) byte representations.
+            </summary>
+        </member>
+        <member name="M:InteractSw.GenerateBitmap.NetworkOrderBitConverter.ToUint32(System.Byte[],System.Int32)">
+            <summary>
+            Converts 4 bytes in network (big-endian) order into an UInt32.
+            </summary>
+            <param name="value">Array holding the bytes to be converted.</param>
+            <param name="startIndex">Offset into array at which bytes are location.</param>
+            <returns>The unsigned 32-bit value represented by the 4 bytes in the array.</returns>
+        </member>
+        <member name="M:InteractSw.GenerateBitmap.NetworkOrderBitConverter.GetBytes(System.UInt32,System.Byte[],System.Int32)">
+            <summary>
+            Converts a UInt32 into its network order (big endian) byte representation.
+            </summary>
+            <param name="value">The 32-bit unsigned integer value to be converted.</param>
+            <returns>A 4-byte array containing the big-endian representation of the value.</returns>
+        </member>
+        <member name="M:InteractSw.GenerateBitmap.NetworkOrderBitConverter.GetBytes(System.UInt32)">
+            <summary>
+            Converts a UInt32 into its network order (big endian) byte representation.
+            </summary>
+            <param name="value">The 32-bit unsigned integer value to be converted.</param>
+            <returns>A 4-byte array containing the big-endian representation of the value.</returns>
+        </member>
+        <member name="T:InteractSw.GenerateBitmap.Crc32">
+            <summary>
+            Implements the 32-bit cyclic redundancy check used by PNG chunks.
+            </summary>
+            <remarks>
+            PNG appears to use the same CRC as IEEE 802.3, V.42 and MPEG-2.
+            
+            Irritatingly there are at least 2 implementations of this already in .NET, but
+            they're not public...
+            </remarks>
+        </member>
+        <member name="F:InteractSw.GenerateBitmap.Crc32.CrcTable">
+            <summary>
+            Table of CRCs of all 8-bit messages.
+            </summary>
+        </member>
+        <member name="M:InteractSw.GenerateBitmap.Crc32.MakeCrcTable">
+            <summary>
+            Precalculate a table for fast CRC generation.
+            </summary>
+        </member>
+        <member name="M:InteractSw.GenerateBitmap.Crc32.UpdateCrc(System.UInt32,System.Byte[])">
+            <summary>
+            Updates a running CRC.
+            </summary>
+            <param name="crc">Current CRC value. Use 0xffffffff if this is the first
+            run of bytes.</param>
+            <param name="buffer">Bytes to be added into the current CRC.</param>
+            <returns>The current CRC. Once done chaining CRC runs together,
+            XOR this with 0xffffffff to get the final output.</returns>
+        </member>
+        <member name="M:InteractSw.GenerateBitmap.Crc32.Crc(System.Byte[])">
+            <summary>
+            Calculates the CRC for the data provided.
+            </summary>
+            <param name="buffer">Data for which to calculate the CRC.</param>
+            <returns>The CRC for this data.</returns>
+        </member>
+        <member name="T:InteractSw.GenerateBitmap.PngGenerator">
+            <summary>
+            Dynamically generates a PNG bitmap stream from pixel data.
+            </summary>
+        </member>
+        <member name="F:InteractSw.GenerateBitmap.PngGenerator.m_ihdrChunk">
+            <summary>
+            The image header chunk.
+            </summary>
+        </member>
+        <member name="F:InteractSw.GenerateBitmap.PngGenerator.m_idatChunk">
+            <summary>
+            The image pixel data chunk.
+            </summary>
+        </member>
+        <member name="F:InteractSw.GenerateBitmap.PngGenerator.m_iendChunk">
+            <summary>
+            The 'trailer' chunk.
+            </summary>
+        </member>
+        <member name="F:InteractSw.GenerateBitmap.PngGenerator.m_imageWidth">
+            <summary>
+            The width of the generated image in pixels.
+            </summary>
+        </member>
+        <member name="F:InteractSw.GenerateBitmap.PngGenerator.m_imageHeight">
+            <summary>
+            The height of the generated image in pixels.
+            </summary>
+        </member>
+        <member name="F:InteractSw.GenerateBitmap.PngGenerator.pngPixelData">
+             <summary>
+             Pixel data as it is represented in the PNG.
+             </summary>
+             <remarks>
+             There seem to be two limiting factors on performance with this
+             bitmap generator. One is how quickly Silverlight can load the image
+             we give it. (Pregenerating two images in memory, and flipping between
+             them on my test system manages the full frame rate for 1024x768, but
+             only 40fps at 1280x1024. Since the PNG streams are already right there
+             in memory, there's not a lot we can do about that.)
+             
+             The other factor is how many copies we make of the data. The more copies
+             the slower it all goes. So the SetPixelColorData function writes pixels
+             directly in the format that'll be passed back to PNG to avoid an extra
+             copy. This is a bit freakish because we need to leave some holes to cope
+             with the way PNG wants the data formatted.
+             
+             The biggest complication is that the data is nominally compressed using
+             the deflate algorithm. We cheat by using the 'uncompressible block'
+             option. This is designed to allow data that would get larger if you tried
+             to compress it to be packaged verbatim, but we're using it for everything
+             for simplicity - the 'compression' isn't compression at all here. This would
+             be dead simple except you can only store up to 0xffff bytes in a non-compressible
+             block. So we have to insert extra blocks regularly.
+            
+             Also, each individual row of pixels is preceded by an extra 0, to indicate
+             that we're using the pass through PNG filter, again for simplicity.
+             </remarks>
+        </member>
+        <member name="M:InteractSw.GenerateBitmap.PngGenerator.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Create a new PNG generator for an image of the specified size.
+            </summary>
+            <param name="width">Width of image in pixels.</param>
+            <param name="height">Height of image in pixels.</param>
+        </member>
+        <member name="M:InteractSw.GenerateBitmap.PngGenerator.SetPixelColorData(System.Windows.Media.Color[])">
+            <summary>
+            Set the pixel data from which to generate this PNG as Color values.
+            </summary>
+            <param name="pixels">And array of Color values. This is assumed to contain
+            Width*Height pixels, where Width and Height are the values passed in at
+            construction.</param>
+        </member>
+        <member name="M:InteractSw.GenerateBitmap.PngGenerator.CreateStream">
+            <summary>
+            Create a new Stream object that returns the image in PNG format.
+            </summary>
+            <returns>A stream containing PNG format data, representing the pixels
+            provided for this image.</returns>
+        </member>
+        <member name="T:InteractSw.GenerateBitmap.PngGenerator.PngStream">
+            <summary>
+            Stream that returns PNG data.
+            </summary>
+            <remarks>
+            We have a custom stream rather than just building the PNG in memory in
+            order to minimize copies. Copying pixels around is about the slowest
+            thing this library does, and it's slow enough to cause measurable
+            performance problems. The current version still has a couple of places
+            where we could reduce the number of copies further, but this class has
+            a particularly important role: it's the one Silverlight itself talks to.
+            </remarks>
+        </member>
+        <member name="F:InteractSw.GenerateBitmap.PngGenerator.PngStream.PngSignature">
+            <summary>
+            Signature that appears at the start of all PNG files.
+            </summary>
+        </member>
+        <member name="F:InteractSw.GenerateBitmap.PngGenerator.PngStream.m_chunks">
+            <summary>
+            The chunks that make up this particular PNG stream.
+            </summary>
+        </member>
+        <member name="M:InteractSw.GenerateBitmap.PngGenerator.PngStream.#ctor(InteractSw.GenerateBitmap.PngChunk[])">
+            <summary>
+            Builds a PNG stream around a set of chunks.
+            </summary>
+            <param name="chunks">The chunks that make up this PNG image.</param>
+            <remarks>See http://www.w3.org/TR/PNG/ for more detail on all
+            this stuff.</remarks>
+        </member>
+        <member name="M:InteractSw.GenerateBitmap.PngGenerator.PngStream.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Read bytes from the stream. (Called by Silverlight.)
+            </summary>
+            <param name="buffer">The buffer into which we put the data being read.</param>
+            <param name="offset">Position in buffer at which to start copying.</param>
+            <param name="count">How much to copy.</param>
+            <returns>The number of bytes read.</returns>
+        </member>
+        <member name="M:InteractSw.GenerateBitmap.PngGenerator.PngStream.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+            Move to a specific location within the stream.
+            </summary>
+            <param name="offset">Distance to move.</param>
+            <param name="origin">Point to which 'offset' argument is relative.</param>
+            <returns>Current position.</returns>
+        </member>
+        <member name="P:InteractSw.GenerateBitmap.PngGenerator.PngStream.Length">
+            <summary>
+            Gets total length of stream.
+            </summary>
+            <remarks>
+            Silverlight calls this to find out how big a buffer to allocate
+            when loading the PNG.
+            </remarks>
+        </member>
+        <member name="P:InteractSw.GenerateBitmap.PngGenerator.PngStream.Position">
+            <summary>
+            Current offset in stream.
+            </summary>
+        </member>
+        <member name="T:InteractSw.GenerateBitmap.CopyUtilities">
+            <summary>
+            Helpers for copying data around.
+            </summary>
+        </member>
+        <member name="M:InteractSw.GenerateBitmap.CopyUtilities.WriteAsMuchDataAsPossible(System.Byte[],System.Int32,System.Int32,System.Byte[],System.Int32)">
+            <summary>
+            Copy as much data as possible for a read operation.
+            </summary>
+            <param name="targetBuffer">Buffer to put data being read.</param>
+            <param name="targetOffset">Position from which to start putting read data.</param>
+            <param name="targetEnd">Offset at which no more data must be written.</param>
+            <param name="source">Buffer from which data is being copied.</param>
+            <param name="sourceOffset">Offset from which to start copying.</param>
+            <returns>Number of bytes copied.</returns>
+            <remarks>
+            We frequently end up needing to copy data around, and the size of the source and
+            target buffers don't necessarily match up neatly. The simple approach is to copy
+            one byte at a time, but that has dreadful perf. This works out the largest amount
+            that can be copied while still fitting into the remaining space, and without
+            attempting to copy more data than there is.
+            
+            The slightly peculiar bunch of arguments comes from the fact that this fell out
+            of a refactoring exercise. It's not a wonderfully useful general-purpose method.
+            </remarks>
+        </member>
+    </members>
+</doc>

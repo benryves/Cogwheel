@@ -4,6 +4,16 @@ using System.IO;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 
+#if SILVERLIGHT
+using EnumEx = System.EnumEx;
+using CharEx = System.CharEx;
+using ArrayEx = System.ArrayEx;
+#else
+using EnumEx = System.Enum;
+using CharEx = System.Char;
+using ArrayEx = System.Array;
+#endif
+
 namespace BeeDevelopment.Sega8Bit.Utility {
 	/// <summary>
 	/// Describes a ROM dump.
@@ -158,7 +168,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 				s = new Regex(@"\((([^\(]*?)overdump)\)", Options).Replace(s, "");
 				s = new Regex(@"\(([^\(]*?)change extension(.*?)\)", Options).Replace(s, "");
 
-				foreach (Country C in Enum.GetValues(typeof(Country))) {
+				foreach (Country C in EnumEx.GetValues(typeof(Country))) {
 					s = new Regex(@"\(" + Countries.CountryToIdentifier(C) + @"\)", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase).Replace(s, "");
 				}
 
@@ -192,7 +202,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 		public RomInfo(string romDataDefinition)
 			: this() {
 
-			string[] Components = Array.ConvertAll(romDataDefinition.Split('\t'), s => s.Trim());
+			string[] Components = ArrayEx.ConvertAll(romDataDefinition.Split('\t'), s => s.Trim());
 			if (Components.Length < 3) throw new InvalidDataException("Not enough fields in the ROM data definition.");
 			
 			this.Crc32 = Convert.ToInt32(Components[0], 16);
@@ -215,7 +225,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 
 			// Find country.
 			this.Country = Country.None;
-			foreach (Country PossibleMatch in Enum.GetValues(typeof(Country))) {
+			foreach (Country PossibleMatch in EnumEx.GetValues(typeof(Country))) {
 				if (this.FullName.ToUpperInvariant().Contains("(" + Countries.CountryToIdentifier(PossibleMatch) + ")")) {
 					this.Country = PossibleMatch;
 				}
@@ -237,7 +247,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 						this.CorrectedExtension = Components[3];
 						break;
 					case RomType.Bad:
-						this.CorrectivePatch = Array.ConvertAll(Components[3].Split('&'), Patch => { var Values = Array.ConvertAll(Patch.Split('='), Value => Convert.ToInt32(Value, 16)); return new KeyValuePair<int, byte>(Values[0], (byte)Values[1]); });
+						this.CorrectivePatch = ArrayEx.ConvertAll(Components[3].Split('&'), Patch => { var Values = ArrayEx.ConvertAll(Patch.Split('='), Value => Convert.ToInt32(Value, 16)); return new KeyValuePair<int, byte>(Values[0], (byte)Values[1]); });
 						break;
 					case RomType.HeaderedFootered:
 						if (Components[3].Length > 0) {
@@ -248,7 +258,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 								Amount = Convert.ToInt32(Components[3].Substring(1));
 							}
 
-							switch (char.ToUpperInvariant(Components[3][0])) {
+							switch (CharEx.ToUpperInvariant(Components[3][0])) {
 								case 'F':
 									this.FooterSize = Amount;
 									break;
@@ -260,7 +270,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 						break;
 					case RomType.Overdumped:
 						if (Components[3].Length > 0) {
-							this.CorrectedSize = Convert.ToInt32(char.ToUpperInvariant(Components[3][0]) == 'O' ? Components[3].Substring(1) : Components[3], 16);
+							this.CorrectedSize = Convert.ToInt32(CharEx.ToUpperInvariant(Components[3][0]) == 'O' ? Components[3].Substring(1) : Components[3], 16);
 						}
 						break;
 				}

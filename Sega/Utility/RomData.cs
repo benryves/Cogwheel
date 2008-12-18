@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-
+#if SILVERLIGHT
+using ArrayEx = System.ArrayEx;
+#else
+using ArrayEx = System.Array;
+#endif
 namespace BeeDevelopment.Sega8Bit.Utility {
 	/// <summary>
 	/// Provides methods for reading <c>.romdata</c> files.
@@ -69,7 +73,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 							this.ModelName = CurrentLine.Substring(1).Trim();
 						} else if (this.Extensions == null) {
 
-							this.Extensions = Array.ConvertAll(CurrentLine.Substring(1).ToLowerInvariant().Split('.'), Extension => "." + Extension.Trim());
+							this.Extensions = ArrayEx.ConvertAll(CurrentLine.Substring(1).ToLowerInvariant().Split('.'), Extension => "." + Extension.Trim());
 
 							foreach (var Extension in this.Extensions) {
 								this.Model = RomIdentifier.GetModelFromExtension(Extension);

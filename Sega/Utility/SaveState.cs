@@ -8,6 +8,14 @@ using BeeDevelopment.Sega8Bit.Mappers;
 using BeeDevelopment.Zip;
 using System.Globalization;
 
+#if SILVERLIGHT
+using EnumEx = System.EnumEx;
+using ArrayEx = System.ArrayEx;
+#else
+using EnumEx = System.Enum;
+using ArrayEx = System.Array;
+#endif
+
 namespace BeeDevelopment.Sega8Bit.Utility {
 	public static class SaveState {
 
@@ -19,6 +27,8 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 		/// <param name="emulator">The <see cref="Emulator"/> state to save.</param>
 		/// <param name="zipFile">The <see cref="ZipFile"/> to save the state to.</param>
 		public static void Save(Emulator emulator, ZipFile zipFile) {
+
+#if !SILVERLIGHT
 
 			lock (emulator) {
 
@@ -49,6 +59,9 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 					}
 				}
 			}
+
+#endif
+
 		}
 
 		/// <summary>
@@ -57,6 +70,9 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 		/// <param name="emulator">The emulator to load into.</param>
 		/// <param name="zipFile">The <see cref="ZipFile"/> to load the state from.</param>
 		public static void Load(out Emulator emulator, ZipFile zipFile) {
+#if SILVERLIGHT
+			emulator = null;
+#else
 			emulator = (Emulator)IniDeserialiseObject(null, "", "Main.ini", zipFile);
 			lock (emulator) {
 				IniDeserialiseObject(emulator.Video, "Video", "Video.ini", zipFile);
@@ -85,6 +101,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 					}
 				}
 			}
+#endif
 		}
 
 		#endregion
@@ -155,7 +172,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 
 			var SourceData = zipFile[Path.Combine(iniDirectory, iniFilename)];
 			if (SourceData == null) return null; // No entry in the zip file.
-			var IniLines = Array.ConvertAll(Encoding.UTF8.GetString(SourceData.Data).Split('\n'), s => s.Split(';')[0].Trim());
+			var IniLines = ArrayEx.ConvertAll(Encoding.UTF8.GetString(SourceData.Data).Split('\n'), s => s.Split(';')[0].Trim());
 
 			object Result = toDeserialiseInto;
 
@@ -175,7 +192,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 						}
 					}
 				} else {
-					var Parameter = Array.ConvertAll(IniItem.Split('='), s => s.Trim());
+					var Parameter = ArrayEx.ConvertAll(IniItem.Split('='), s => s.Trim());
 					if (Result == null) throw new InvalidDataException("Cannot set parameter before type is specified.");
 					if (Parameter.Length != 2) throw new InvalidDataException("Invalid parameter.");
 
@@ -188,9 +205,9 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 					}
 
 					if (Property.PropertyType.IsPrimitive) {
-						Property.SetValue(Result, Convert.ChangeType(Parameter[1], Property.PropertyType), null);
+						Property.SetValue(Result, Convert.ChangeType(Parameter[1], Property.PropertyType, CultureInfo.CurrentCulture), null);
 					} else if (Property.PropertyType.BaseType == typeof(Enum)) {
-						foreach (var EnumValue in Enum.GetValues(Property.PropertyType)) {
+						foreach (var EnumValue in EnumEx.GetValues(Property.PropertyType)) {
 							if (EnumValue.ToString() == Parameter[1]) {
 								Property.SetValue(Result, EnumValue, null);
 							}
@@ -204,7 +221,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 							if (Property.PropertyType.GetElementType() == typeof(int)) {
 								Property.SetValue(Result, IntArray, null);
 							} else if (Property.PropertyType.GetElementType() == typeof(uint)) {
-								Property.SetValue(Result, Array.ConvertAll(IntArray, i => (uint)i), null);
+								Property.SetValue(Result, ArrayEx.ConvertAll(IntArray, i => (uint)i), null);
 							}
 							
 						}

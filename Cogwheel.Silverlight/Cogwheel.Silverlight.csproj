@@ -1,0 +1,267 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{920826F7-02F0-420F-BF80-2327C4252531}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BeeDevelopment.Cogwheel.Silverlight.Silverlight</RootNamespace>
+    <AssemblyName>Cogwheel.Silverlight</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>Cogwheel.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>BeeDevelopment.Cogwheel.Silverlight.App</SilverlightAppEntry>
+    <TestPageFileName>TestPage.html</TestPageFileName>
+    <CreateTestPage>true</CreateTestPage>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>false</ThrowErrorsInValidation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="InteractSw.GenerateBitmap, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binary Libraries\InteractSw.GenerateBitmap\InteractSw.GenerateBitmap.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows" />
+    <Reference Include="mscorlib" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Windows.Browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Brazil\Fetch Execute.cs">
+      <Link>Brazil\Fetch Execute.cs</Link>
+    </Compile>
+    <Compile Include="..\Brazil\Hardware.cs">
+      <Link>Brazil\Hardware.cs</Link>
+    </Compile>
+    <Compile Include="..\Brazil\Interrupts.cs">
+      <Link>Brazil\Interrupts.cs</Link>
+    </Compile>
+    <Compile Include="..\Brazil\Memory.cs">
+      <Link>Brazil\Memory.cs</Link>
+    </Compile>
+    <Compile Include="..\Brazil\Registers.cs">
+      <Link>Brazil\Registers.cs</Link>
+    </Compile>
+    <Compile Include="..\Brazil\StateNotSavedAttribute.cs">
+      <Link>Brazil\StateNotSavedAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Brazil\Tables.cs">
+      <Link>Brazil\Tables.cs</Link>
+    </Compile>
+    <Compile Include="..\Brazil\Z80A.cs">
+      <Link>Brazil\Z80A.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Country.cs">
+      <Link>Sega\Country.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Emulator.Controllers.cs">
+      <Link>Sega\Emulator.Controllers.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Emulator.cs">
+      <Link>Sega\Emulator.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Emulator.IO.cs">
+      <Link>Sega\Emulator.IO.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Emulator.Memory.cs">
+      <Link>Sega\Emulator.Memory.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\HardwareModel.cs">
+      <Link>Sega\HardwareModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\Controllers\ColecoVisionControllerPort.cs">
+      <Link>Sega\Hardware\Controllers\ColecoVisionControllerPort.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\Controllers\SC3000Keyboard.cs">
+      <Link>Sega\Hardware\Controllers\SC3000Keyboard.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\Controllers\SegaControllerPort.cs">
+      <Link>Sega\Hardware\Controllers\SegaControllerPort.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\DebugConsole.cs">
+      <Link>Sega\Hardware\DebugConsole.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\PinDirection.cs">
+      <Link>Sega\Hardware\PinDirection.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\ProgrammablePeripheralInterface\IO.cs">
+      <Link>Sega\Hardware\ProgrammablePeripheralInterface\IO.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\ProgrammablePeripheralInterface\ProgrammablePeripheralInterface.cs">
+      <Link>Sega\Hardware\ProgrammablePeripheralInterface\ProgrammablePeripheralInterface.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\ProgrammableSoundGenerator\IO.cs">
+      <Link>Sega\Hardware\ProgrammableSoundGenerator\IO.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\ProgrammableSoundGenerator\Output.cs">
+      <Link>Sega\Hardware\ProgrammableSoundGenerator\Output.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\ProgrammableSoundGenerator\ProgrammableSoundGenerator.cs">
+      <Link>Sega\Hardware\ProgrammableSoundGenerator\ProgrammableSoundGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\ProgrammableSoundGenerator\QueuedWrite.cs">
+      <Link>Sega\Hardware\ProgrammableSoundGenerator\QueuedWrite.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\ProgrammableSoundGenerator\Registers.cs">
+      <Link>Sega\Hardware\ProgrammableSoundGenerator\Registers.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\ProgrammableSoundGenerator\StereoDistribution.cs">
+      <Link>Sega\Hardware\ProgrammableSoundGenerator\StereoDistribution.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\VideoDisplayProcessor\Capabilities.cs">
+      <Link>Sega\Hardware\VideoDisplayProcessor\Capabilities.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\VideoDisplayProcessor\Interrupts.cs">
+      <Link>Sega\Hardware\VideoDisplayProcessor\Interrupts.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\VideoDisplayProcessor\IO.cs">
+      <Link>Sega\Hardware\VideoDisplayProcessor\IO.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\VideoDisplayProcessor\Palette.cs">
+      <Link>Sega\Hardware\VideoDisplayProcessor\Palette.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\VideoDisplayProcessor\Rasteriser.cs">
+      <Link>Sega\Hardware\VideoDisplayProcessor\Rasteriser.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\VideoDisplayProcessor\Registers.cs">
+      <Link>Sega\Hardware\VideoDisplayProcessor\Registers.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Hardware\VideoDisplayProcessor\VideoDisplayProcessor.cs">
+      <Link>Sega\Hardware\VideoDisplayProcessor\VideoDisplayProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Mappers\Codemasters.cs">
+      <Link>Sega\Mappers\Codemasters.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Mappers\FlatMemory.cs">
+      <Link>Sega\Mappers\FlatMemory.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Mappers\IMemoryMapper.cs">
+      <Link>Sega\Mappers\IMemoryMapper.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Mappers\Shared1KBios.cs">
+      <Link>Sega\Mappers\Shared1KBios.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Mappers\Standard.cs">
+      <Link>Sega\Mappers\Standard.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\MemoryCheat.cs">
+      <Link>Sega\MemoryCheat.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\MemoryDevice.cs">
+      <Link>Sega\MemoryDevice.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Region.cs">
+      <Link>Sega\Region.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Utility\FrameBlender.cs">
+      <Link>Sega\Utility\FrameBlender.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Utility\Patch.cs">
+      <Link>Sega\Utility\Patch.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Utility\RomData.cs">
+      <Link>Sega\Utility\RomData.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Utility\RomIdentifier.cs">
+      <Link>Sega\Utility\RomIdentifier.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Utility\RomInfo.cs">
+      <Link>Sega\Utility\RomInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Utility\SaveState.cs">
+      <Link>Sega\Utility\SaveState.cs</Link>
+    </Compile>
+    <Compile Include="..\Sega\Utility\ZipLoader.cs">
+      <Link>Sega\Utility\ZipLoader.cs</Link>
+    </Compile>
+    <Compile Include="..\Source Libraries\BeeZip\Crc32.cs">
+      <Link>Sega\BeeZip\Crc32.cs</Link>
+    </Compile>
+    <Compile Include="..\Source Libraries\BeeZip\DosDateTime.cs">
+      <Link>Sega\BeeZip\DosDateTime.cs</Link>
+    </Compile>
+    <Compile Include="..\Source Libraries\BeeZip\ZipFile.cs">
+      <Link>Sega\BeeZip\ZipFile.cs</Link>
+    </Compile>
+    <Compile Include="..\Source Libraries\BeeZip\ZipFileEntry.cs">
+      <Link>Sega\BeeZip\ZipFileEntry.cs</Link>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DummySilverlight.cs" />
+    <Compile Include="Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RenderLoop.cs" />
+    <Compile Include="Sega\Hardware\OPLL\Emu2413.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="Page.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\AppManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\control_pause_blue.png" />
+    <Resource Include="Resources\control_play_blue.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\v2.0\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

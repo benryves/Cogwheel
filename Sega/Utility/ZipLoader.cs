@@ -1,7 +1,11 @@
 ﻿using System;
 using BeeDevelopment.Zip;
 using System.IO;
-
+#if SILVERLIGHT
+using FileEx = System.IO.FileEx;
+#else
+using FileEx = System.IO.File;
+#endif
 namespace BeeDevelopment.Sega8Bit.Utility {
 	
 	/// <summary>
@@ -55,15 +59,15 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 
 
 						} else {
-							return File.ReadAllBytes(searchFileName);
+							return FileEx.ReadAllBytes(searchFileName);
 						}
 
 					}
 				}
 			} catch {
-				return File.ReadAllBytes(searchFileName);
+				return FileEx.ReadAllBytes(searchFileName);
 			}
-			return File.ReadAllBytes(searchFileName);
+			return FileEx.ReadAllBytes(searchFileName);
 		}
 	}
 }

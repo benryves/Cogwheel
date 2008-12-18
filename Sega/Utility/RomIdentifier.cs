@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System;
 using BeeDevelopment.Sega8Bit.Mappers;
-using System.Diagnostics;
+#if SILVERLIGHT
+using FileEx = System.IO.FileEx;
+#else
+using FileEx = System.IO.File;
+#endif
 
 namespace BeeDevelopment.Sega8Bit.Utility {
 	public class RomIdentifier {
@@ -186,11 +190,13 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 
 				if (Model == HardwareModel.ColecoVision) {
 					try {
-						string ColecoBiosRomPath = Path.Combine(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName), "COLECO.ROM");
+#if !SILVERLIGHT
+						string ColecoBiosRomPath = Path.Combine(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName), "COLECO.ROM");
 						if (File.Exists(ColecoBiosRomPath)) {
 							emulator.Bios.Memory = new Rom8();
-							emulator.Bios.Memory.Load(File.ReadAllBytes(ColecoBiosRomPath));
+							emulator.Bios.Memory.Load(FileEx.ReadAllBytes(ColecoBiosRomPath));
 						}
+#endif
 					} catch { }
 				}
 

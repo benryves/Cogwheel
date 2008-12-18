@@ -107,7 +107,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <param name="samples">An array of <see cref="Int16"/> to store the sound samples.</param>
 		public void GenerateSamples(short[] samples) {
 			this.CheckNotDisposed();
-			OPLL.GenerateSamples(this.Handle, samples.Length, samples);
+			//OPLL.GenerateSamples(this.Handle, samples.Length, samples);
 		}
 
 		#endregion
