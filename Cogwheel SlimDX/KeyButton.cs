@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace CogwheelSlimDX {
 	class KeyButton : CheckBox {
@@ -187,7 +188,6 @@ namespace CogwheelSlimDX {
 
 		#endregion
 
-
 		private void UpdateText() {
 			this.Image = null;
 			switch (this.Mode) { 
@@ -252,7 +252,36 @@ namespace CogwheelSlimDX {
 					
 					break;
 				case Modes.XInput:
-					base.Text = this.XInputTrigger.ToString();
+					base.Text = "";
+					switch (this.XInputTrigger) {
+						case XInputSource.InputTrigger.DPadLeft:
+						case XInputSource.InputTrigger.LeftThumbLeft:
+						case XInputSource.InputTrigger.RightThumbLeft:
+							this.Image = Properties.Resources.Icon_ArrowLeft;
+							base.Text = (this.XInputTrigger.ToString().StartsWith("DPad")) ? "D-Pad" : this.XInputTrigger.ToString().Split('T')[0] + " Stick";
+							break;
+						case XInputSource.InputTrigger.DPadRight:
+						case XInputSource.InputTrigger.LeftThumbRight:
+						case XInputSource.InputTrigger.RightThumbRight:
+							this.Image = Properties.Resources.Icon_ArrowRight;
+							base.Text = (this.XInputTrigger.ToString().StartsWith("DPad")) ? "D-Pad" : this.XInputTrigger.ToString().Split('T')[0] + " Stick";
+							break;
+						case XInputSource.InputTrigger.DPadUp:
+						case XInputSource.InputTrigger.LeftThumbUp:
+						case XInputSource.InputTrigger.RightThumbUp:
+							this.Image = Properties.Resources.Icon_ArrowUp;
+							base.Text = (this.XInputTrigger.ToString().StartsWith("DPad")) ? "D-Pad" : this.XInputTrigger.ToString().Split('T')[0] + " Stick";
+							break;
+						case XInputSource.InputTrigger.DPadDown:
+						case XInputSource.InputTrigger.LeftThumbDown:
+						case XInputSource.InputTrigger.RightThumbDown:
+							this.Image = Properties.Resources.Icon_ArrowDown;
+							base.Text = (this.XInputTrigger.ToString().StartsWith("DPad")) ? "D-Pad" : this.XInputTrigger.ToString().Split('T')[0] + " Stick";
+							break;
+						default:
+							base.Text = new Regex("([A-Z])").Replace(this.XInputTrigger.ToString(), " $1").Trim();
+							break;
+					}
 					break;
 				default:
 					base.Text = "";
@@ -273,6 +302,7 @@ namespace CogwheelSlimDX {
 			this.JoystickTrigger = JoystickInputSource.InputTrigger.None;
 			this.Appearance = Appearance.Button;
 			this.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.TextImageRelation = TextImageRelation.TextBeforeImage;
 			this.AutoCheck = false;
 		}
 
