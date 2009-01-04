@@ -4,7 +4,7 @@ a:hover { color: #33F; text-decoration: underline; }
 td, th { padding: 2px; text-align: left; vertical-align: top; border: 1px solid #999; }
 table { border-collapse: collapse; width: 100%; }
 </style>
-<p>Written by <a href="mailto:benryves@benryves.com">Ben Ryves</a> 2006-2008.</p>
+<p>Written by <a href="mailto:benryves@benryves.com">Ben Ryves</a> 2006-2009.</p>
 <p style="font-weight: bold;">Contributors</p>
 <ul>
 	<li>emu2413 YM2413 emulator written by Mitsutaka Okazaki.</li>
