@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -199,6 +198,30 @@ namespace CogwheelSlimDX {
 							break;
 						case JoystickInputSource.InputTrigger.YAxisIncrease:
 							this.Image = Properties.Resources.Icon_ArrowDown;
+							break;
+						case JoystickInputSource.InputTrigger.PovN:
+							this.Image = Properties.Resources.Icon_PovN;
+							break;
+						case JoystickInputSource.InputTrigger.PovNE:
+							this.Image = Properties.Resources.Icon_PovNE;
+							break;
+						case JoystickInputSource.InputTrigger.PovE:
+							this.Image = Properties.Resources.Icon_PovE;
+							break;
+						case JoystickInputSource.InputTrigger.PovSE:
+							this.Image = Properties.Resources.Icon_PovSE;
+							break;
+						case JoystickInputSource.InputTrigger.PovS:
+							this.Image = Properties.Resources.Icon_PovS;
+							break;
+						case JoystickInputSource.InputTrigger.PovSW:
+							this.Image = Properties.Resources.Icon_PovSW;
+							break;
+						case JoystickInputSource.InputTrigger.PovW:
+							this.Image = Properties.Resources.Icon_PovW;
+							break;
+						case JoystickInputSource.InputTrigger.PovNW:
+							this.Image = Properties.Resources.Icon_PovNW;
 							break;
 						case JoystickInputSource.InputTrigger.ZAxisDecrease:
 						case JoystickInputSource.InputTrigger.ZAxisIncrease:

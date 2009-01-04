@@ -253,4 +253,28 @@
   <data name="Icon_Disk" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\disk.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Icon_PovE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pov_e.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_PovN" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pov_n.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_PovNE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pov_ne.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_PovNW" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pov_nw.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_PovS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pov_s.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_PovSE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pov_se.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_PovSW" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pov_sw.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_PovW" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pov_w.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

@@ -235,6 +235,14 @@
     <None Include="Resources\application_xp_terminal.png" />
     <None Include="Resources\bullet_black.png" />
     <Content Include="Resources\Config_DefaultKeyMapping.txt" />
+    <None Include="Resources\pov_w.png" />
+    <None Include="Resources\pov_sw.png" />
+    <None Include="Resources\pov_se.png" />
+    <None Include="Resources\pov_s.png" />
+    <None Include="Resources\pov_nw.png" />
+    <None Include="Resources\pov_ne.png" />
+    <None Include="Resources\pov_n.png" />
+    <None Include="Resources\pov_e.png" />
     <None Include="Resources\disk.png" />
     <None Include="Resources\television.png" />
     <None Include="Resources\Font.gif" />
