@@ -1,0 +1,8 @@
+A=>0.Trigger1
+B=>0.Trigger2
+LeftThumbUp=>0.Up
+LeftThumbDown=>0.Down
+LeftThumbLeft=>0.Left
+LeftThumbRight=>0.Right
+Back=>0.Reset
+Start=>0.Pause;0.Start

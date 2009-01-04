@@ -916,6 +916,10 @@ namespace CogwheelSlimDX {
 		public override string SettingsFilename {
 			get { return string.Format("Joystick.{0:X4}.{1:X4}.config", this.Joystick.VendorId, this.Joystick.ProductId); }
 		}
+
+		public override string DefaultSettingsFile {
+			get { return Properties.Resources.Config_DefaultJoystickMapping; }
+		}
 	}
 
 	#endregion
@@ -1084,6 +1088,10 @@ namespace CogwheelSlimDX {
 
 		public override string SettingsFilename {
 			get { return string.Format("XInput.{0}.config", this.UserIndex); }
+		}
+
+		public override string DefaultSettingsFile {
+			get { return Properties.Resources.Config_DefaultXInputMapping; }
 		}
 	}
 

@@ -61,6 +61,21 @@ namespace CogwheelSlimDX.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Button1=&gt;0.Trigger1
+        ///Button2=&gt;0.Trigger2
+        ///YAxisDecrease=&gt;0.Up
+        ///YAxisIncrease=&gt;0.Down
+        ///XAxisDecrease=&gt;0.Left
+        ///XAxisIncrease=&gt;0.Right
+        ///.
+        /// </summary>
+        internal static string Config_DefaultJoystickMapping {
+            get {
+                return ResourceManager.GetString("Config_DefaultJoystickMapping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ; General buttons:
         ///Space=&gt;0.Start;0.Pause
         ///Back=&gt;0.Reset
@@ -100,6 +115,23 @@ namespace CogwheelSlimDX.Properties {
         internal static string Config_DefaultKeyMapping {
             get {
                 return ResourceManager.GetString("Config_DefaultKeyMapping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A=&gt;0.Trigger1
+        ///B=&gt;0.Trigger2
+        ///LeftThumbUp=&gt;0.Up
+        ///LeftThumbDown=&gt;0.Down
+        ///LeftThumbLeft=&gt;0.Left
+        ///LeftThumbRight=&gt;0.Right
+        ///Back=&gt;0.Reset
+        ///Start=&gt;0.Pause;0.Start
+        ///.
+        /// </summary>
+        internal static string Config_DefaultXInputMapping {
+            get {
+                return ResourceManager.GetString("Config_DefaultXInputMapping", resourceCulture);
             }
         }
         

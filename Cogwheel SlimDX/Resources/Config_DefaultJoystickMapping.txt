@@ -1,0 +1,6 @@
+Button1=>0.Trigger1
+Button2=>0.Trigger2
+YAxisDecrease=>0.Up
+YAxisIncrease=>0.Down
+XAxisDecrease=>0.Left
+XAxisIncrease=>0.Right
