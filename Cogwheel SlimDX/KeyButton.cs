@@ -126,9 +126,19 @@ namespace CogwheelSlimDX {
 			set { this.joystickTrigger = value; this.UpdateText(); }
 		}
 
+		private XInputSource.InputTrigger xInputTrigger;
+		/// <summary>
+		/// Gets or sets the current <see cref="XInputSource.InputTrigger"/> trigger that this button is mapped to.
+		/// </summary>
+		public XInputSource.InputTrigger XInputTrigger {
+			get { return this.xInputTrigger; }
+			set { this.xInputTrigger = value; this.UpdateText(); }
+		}
+
 		public enum Modes {
 			Keyboard,
 			Joystick,
+			XInput,
 		}
 
 		private Modes mode;
@@ -240,6 +250,9 @@ namespace CogwheelSlimDX {
 							break;
 					}
 					
+					break;
+				case Modes.XInput:
+					base.Text = this.XInputTrigger.ToString();
 					break;
 				default:
 					base.Text = "";

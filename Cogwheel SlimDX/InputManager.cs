@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using BeeDevelopment.Sega8Bit;
 using BeeDevelopment.Sega8Bit.Hardware.Controllers;
 using CogwheelSlimDX.JoystickInput;
+using SlimDX.XInput;
 
 namespace CogwheelSlimDX {
 
@@ -628,6 +629,9 @@ namespace CogwheelSlimDX {
 
 	#region Joystick
 
+	/// <summary>
+	/// Provides input from a joystick.
+	/// </summary>
 	public class JoystickInputSource : TriggeredInputSource<JoystickInputSource.InputTrigger> {
 
 		#region Types
@@ -916,6 +920,175 @@ namespace CogwheelSlimDX {
 
 	#endregion
 
-	
+	#region XInput
+
+	/// <summary>
+	/// Provides input from an XInput device.
+	/// </summary>
+	public class XInputSource : TriggeredInputSource<XInputSource.InputTrigger> {
+
+		#region Types
+
+		public enum InputTrigger {
+			/// <summary>No trigger is selected.</summary>
+			None,
+			/// <summary>Up on the D-pad.</summary>
+			DPadUp = 1,
+			/// <summary>Down on the D-pad.</summary>
+			DPadDown = 2,
+			/// <summary>Left on the D-pad.</summary>
+			DPadLeft = 3,
+			/// <summary>Right on the D-pad.</summary>
+			DPadRight = 4,
+			/// <summary>Start button.</summary>
+			Start = 5,
+			/// <summary>Back button.</summary>
+			Back = 6,
+			/// <summary>Left thumbstick button.</summary>
+			LeftThumb = 7,
+			/// <summary>Right thumbstick button.</summary>
+			RightThumb = 8,
+			/// <summary>Left shoulder button.</summary>
+			LeftShoulder = 9,
+			/// <summary>Right shoulder button.</summary>
+			RightShoulder = 10,
+			/// <summary>"A" button.</summary>
+			A = 13,
+			/// <summary>"B" button.</summary>
+			B = 14,
+			/// <summary>"X" button.</summary>
+			X = 15,
+			/// <summary>"Y" button.</summary>
+			Y = 16,
+			/// <summary>The left thumbstick is moved up.</summary>
+			LeftThumbUp,
+			/// <summary>The left thumbstick is moved down.</summary>
+			LeftThumbDown,
+			/// <summary>The left thumbstick is moved left.</summary>
+			LeftThumbLeft,
+			/// <summary>The left thumbstick is moved right.</summary>
+			LeftThumbRight,
+			/// <summary>The right thumbstick is moved up.</summary>
+			RightThumbUp,
+			/// <summary>The right thumbstick is moved down.</summary>
+			RightThumbDown,
+			/// <summary>The right thumbstick is moved left.</summary>
+			RightThumbLeft,
+			/// <summary>The right thumbstick is moved right.</summary>
+			RightThumbRight,
+			/// <summart>The left trigger is pulled.
+			LeftTrigger,
+			/// <summart>The right trigger is pulled.
+			RightTrigger,
+		}
+
+		#endregion
+
+		#region Properties
+
+		/// <summary>
+		/// Gets the XInput <see cref="Controller"/> that this source retrieves input from.
+		/// </summary>
+		public Controller Controller { get; private set; }
+
+		/// <summary>
+		/// Gets the <see cref="UserIndex"/> of the controller.
+		/// </summary>
+		public UserIndex UserIndex { get; private set;}
+
+		#endregion
+
+		#region Fields
+
+		private State State;
+
+		#endregion
+
+		public XInputSource(InputManager manager, UserIndex userIndex)
+			: base(manager) {
+			this.UserIndex = userIndex;
+			this.Controller = new Controller(this.UserIndex);
+		}
+
+		#region Methods
+
+		private void AddAxisEvent(List<KeyValuePair<InputTrigger, bool>> events, short oldAxisValue, short newAxisValue, InputTrigger increased, InputTrigger decreased) {
+			short Threshold = 10000;
+			if (oldAxisValue < +Threshold && newAxisValue > +Threshold) events.Add(new KeyValuePair<InputTrigger, bool>(increased, true));
+			if (newAxisValue < +Threshold && oldAxisValue > +Threshold) events.Add(new KeyValuePair<InputTrigger, bool>(increased, false));
+			if (oldAxisValue > -Threshold && newAxisValue < -Threshold) events.Add(new KeyValuePair<InputTrigger, bool>(decreased, true));
+			if (newAxisValue > -Threshold && oldAxisValue < -Threshold) events.Add(new KeyValuePair<InputTrigger, bool>(decreased, false));
+		}
+
+		public KeyValuePair<InputTrigger, bool>[] GetTriggeredEvents() {
+			var Events = new List<KeyValuePair<InputTrigger, bool>>();
+
+			var NewState = this.Controller.GetState();
+			if (this.State != null) {
+				// Button states.
+				foreach (GamepadButtonFlags Button in Enum.GetValues(typeof(GamepadButtonFlags))) {
+					if ((NewState.Gamepad.Buttons & Button) != (State.Gamepad.Buttons & Button)) {
+						Events.Add(new KeyValuePair<InputTrigger, bool>(
+							(InputTrigger)Enum.Parse(typeof(InputTrigger), Button.ToString()),
+							(NewState.Gamepad.Buttons & Button) != 0
+						));
+					}
+				}
+				// Axes.
+				AddAxisEvent(Events, State.Gamepad.LeftThumbX, NewState.Gamepad.LeftThumbX, InputTrigger.LeftThumbRight, InputTrigger.LeftThumbLeft);
+				AddAxisEvent(Events, State.Gamepad.LeftThumbY, NewState.Gamepad.LeftThumbY, InputTrigger.LeftThumbUp, InputTrigger.LeftThumbDown);
+				AddAxisEvent(Events, State.Gamepad.RightThumbX, NewState.Gamepad.RightThumbX, InputTrigger.RightThumbRight, InputTrigger.RightThumbLeft);
+				AddAxisEvent(Events, State.Gamepad.RightThumbY, NewState.Gamepad.RightThumbY, InputTrigger.RightThumbUp, InputTrigger.RightThumbDown);
+
+				// Triggers.
+				if (State.Gamepad.LeftTrigger < 128 && NewState.Gamepad.LeftTrigger > 127) Events.Add(new KeyValuePair<InputTrigger, bool>(InputTrigger.LeftTrigger, true));
+				if (State.Gamepad.LeftTrigger > 127 && NewState.Gamepad.LeftTrigger < 128) Events.Add(new KeyValuePair<InputTrigger, bool>(InputTrigger.LeftTrigger, false));
+				if (State.Gamepad.RightTrigger < 128 && NewState.Gamepad.RightTrigger > 127) Events.Add(new KeyValuePair<InputTrigger, bool>(InputTrigger.RightTrigger, true));
+				if (State.Gamepad.RightTrigger > 127 && NewState.Gamepad.RightTrigger < 128) Events.Add(new KeyValuePair<InputTrigger, bool>(InputTrigger.RightTrigger, false));
+			}
+			this.State = NewState;
+
+			return Events.ToArray();
+		}
+
+		public override void Poll() {
+			var State = this.Controller.GetState();
+			foreach (var MappedButton in this.KeyMapping) {
+				bool Triggered = false;
+				if (MappedButton.Key >= InputTrigger.DPadUp && MappedButton.Key <= InputTrigger.Y) {
+					Triggered = ((int)State.Gamepad.Buttons & (1 << (((int)MappedButton.Key) - 1))) != 0;
+				} else if (MappedButton.Key >= InputTrigger.LeftThumbUp && MappedButton.Key <= InputTrigger.RightThumbRight) {
+					short Threshold = 10000;
+					switch (MappedButton.Key) {
+						case InputTrigger.LeftThumbLeft: Triggered = State.Gamepad.LeftThumbX < -Threshold; break;
+						case InputTrigger.LeftThumbRight: Triggered = State.Gamepad.LeftThumbX > +Threshold; break;
+						case InputTrigger.LeftThumbUp: Triggered = State.Gamepad.LeftThumbY > +Threshold; break;
+						case InputTrigger.LeftThumbDown: Triggered = State.Gamepad.LeftThumbY < -Threshold; break;
+						case InputTrigger.RightThumbLeft: Triggered = State.Gamepad.RightThumbX < -Threshold; break;
+						case InputTrigger.RightThumbRight: Triggered = State.Gamepad.RightThumbX > +Threshold; break;
+						case InputTrigger.RightThumbUp: Triggered = State.Gamepad.RightThumbY > +Threshold; break;
+						case InputTrigger.RightThumbDown: Triggered = State.Gamepad.RightThumbY < -Threshold; break;
+					}
+				} else if (MappedButton.Key == InputTrigger.LeftTrigger) {
+					Triggered = State.Gamepad.LeftTrigger > 127;
+				} else if (MappedButton.Key == InputTrigger.RightTrigger) {
+					Triggered = State.Gamepad.RightTrigger > 127;
+				}
+				foreach (var TargetButton in MappedButton.Value) {
+					this.CurrentStates[TargetButton.Key][TargetButton.Value] = Triggered;
+				}
+			}
+		}
+
+		#endregion
+
+		public override string SettingsFilename {
+			get { return string.Format("XInput.{0}.config", this.UserIndex); }
+		}
+	}
+
+	#endregion
+
+
 
 }

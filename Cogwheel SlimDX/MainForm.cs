@@ -406,7 +406,13 @@ namespace CogwheelSlimDX {
 			this.Input = new InputManager(profileDirectory);
 			this.KeyboardInput = new KeyboardInputSource(Input);
 			this.Input.Sources.Add(this.KeyboardInput);
-			this.Input.Sources.AddRange(Array.ConvertAll(new JoystickInput.JoystickCollection().Joysticks, J => new JoystickInputSource(Input, J)));
+			
+			for (int i = 0; i < 4; i++) {
+				var C = new SlimDX.XInput.Controller((SlimDX.XInput.UserIndex)i);
+				if (C.IsConnected) this.Input.Sources.Add(new XInputSource(this.Input, (SlimDX.XInput.UserIndex)i));
+			}
+	
+			this.Input.Sources.AddRange(Array.ConvertAll(new JoystickInput.JoystickCollection().Joysticks, J => new JoystickInputSource(Input, J)));			
 			this.Input.ReloadSettings();
 		}
 
