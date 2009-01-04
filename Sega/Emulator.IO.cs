@@ -42,6 +42,8 @@ namespace BeeDevelopment.Sega8Bit {
 		[StateNotSaved()]
 		public DebugConsole DebugConsole { get; private set; }
 
+#if EMU2413
+
 		/// <summary>
 		/// Gets the <see cref="YM2413"/> connected to the system.
 		/// </summary>
@@ -52,6 +54,8 @@ namespace BeeDevelopment.Sega8Bit {
 		/// Gets or sets whether FM sound is enabled/available.
 		/// </summary>
 		public bool FmSoundEnabled { get; set; }
+
+#endif
 
 		#endregion
 
@@ -156,9 +160,11 @@ namespace BeeDevelopment.Sega8Bit {
 							break;
 					}
 
+#if EMU2413
 					if ((port & 0xFF) == 0xF2 && this.FmSoundEnabled) {
 						Result &= this.FmSound.DetectionValue;
 					}
+#endif
 
 					return Result;
 			}
@@ -283,6 +289,7 @@ namespace BeeDevelopment.Sega8Bit {
 
 
 						switch (port & 0xFF) {
+#if EMU2413
 							case 0xF0:
 							case 0xF1:
 								if (this.FmSoundEnabled) this.FmSound.WriteToAddress(port, value);
@@ -290,6 +297,7 @@ namespace BeeDevelopment.Sega8Bit {
 							case 0xF2:
 								if (this.FmSoundEnabled) this.FmSound.DetectionValue = value;
 								break;
+#endif
 							case 0xFC:
 								this.DebugConsole.WriteControl(value);
 								break;

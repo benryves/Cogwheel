@@ -79,7 +79,9 @@
 			this.SaveStateDialog = new System.Windows.Forms.SaveFileDialog();
 			this.CursorHider = new System.Windows.Forms.Timer(this.components);
 			this.OptionsSep1 = new System.Windows.Forms.ToolStripSeparator();
+#if EMU2413
 			this.EnableFMSoundMenu = new System.Windows.Forms.ToolStripMenuItem();
+#endif
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -360,7 +362,9 @@
             this.CustomiseControlsMenu,
             this.OptionsSep0,
             this.EnableSoundMenu,
+#if EMU2413
             this.EnableFMSoundMenu,
+#endif
             this.OptionsSep1,
             this.SimulateGameGearLcdMenu,
             this.LinearInterpolationMenu,
@@ -513,10 +517,12 @@
 			// 
 			// EnableFMSoundMenu
 			// 
+#if EMU2413
 			this.EnableFMSoundMenu.Name = "EnableFMSoundMenu";
 			this.EnableFMSoundMenu.Size = new System.Drawing.Size(247, 22);
 			this.EnableFMSoundMenu.Text = "Enable &FM Sound (Experimental)";
 			this.EnableFMSoundMenu.Click += new System.EventHandler(this.EnableFMSoundMenu_Click);
+#endif
 			// 
 			// MainForm
 			// 
@@ -598,7 +604,9 @@
 		private System.Windows.Forms.ToolStripMenuItem GameGenieEnabledMenu;
 		private System.Windows.Forms.ToolStripMenuItem GameGenieEditMenu;
 		private System.Windows.Forms.ToolStripSeparator OptionsSep1;
+#if EMU2413
 		private System.Windows.Forms.ToolStripMenuItem EnableFMSoundMenu;
+#endif
 	}
 }
 

@@ -69,7 +69,9 @@ namespace BeeDevelopment.Sega8Bit {
 			this.Sound.Reset();
 			this.MainPPI.Reset();
 			this.DebugConsole.Reset();
+#if EMU2413
 			this.FmSound.Reset();
+#endif
 		}
 
 		#endregion
@@ -85,7 +87,9 @@ namespace BeeDevelopment.Sega8Bit {
 			this.Cheats = new MemoryCheatCollection();
 			this.MainPPI = new ProgrammablePeripheralInterface();
 			this.DebugConsole = new DebugConsole(this);
+#if EMU2413
 			this.FmSound = new Emu2413();
+#endif
 			
 			#region Memory
 

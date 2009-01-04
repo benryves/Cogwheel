@@ -77,7 +77,9 @@ namespace CogwheelSlimDX {
 
 			// Load the emulator.
 			this.Emulator = new BeeDevelopment.Sega8Bit.Emulator() {
+#if EMU2413
 				FmSoundEnabled = Properties.Settings.Default.OptionEnableFMSound,
+#endif
 			};
 
 			// Load the ROM data (if required).
@@ -159,6 +161,7 @@ namespace CogwheelSlimDX {
 							this.IsLiveFrame = true;
 							short[] Buffer = new short[735 * 2];
 							this.Emulator.Sound.CreateSamples(Buffer);
+#if EMU2413
 							if (this.Emulator.FmSoundEnabled) {
 								var FmBuffer = new short[Buffer.Length];
 								this.Emulator.FmSound.GenerateSamples(FmBuffer);
@@ -166,6 +169,7 @@ namespace CogwheelSlimDX {
 									Buffer[i] = (short)(Buffer[i] + FmBuffer[i] * 2);
 								}
 							}
+#endif
 							this.GeneratedSoundSamples.Enqueue(Buffer);
 							this.Input.Poll();
 							this.Input.UpdateEmulatorState(this.Emulator);
@@ -783,7 +787,9 @@ namespace CogwheelSlimDX {
 			this.MaintainAspectRatioMenu.Checked = Properties.Settings.Default.OptionMaintainAspectRatio;
 			if (this.EnableSoundMenu.Image != null) this.EnableSoundMenu.Image.Dispose();
 			this.EnableSoundMenu.Image = Properties.Settings.Default.OptionEnableSound ? Properties.Resources.Icon_Sound : Properties.Resources.Icon_SoundMute;
+#if EMU2413
 			this.EnableFMSoundMenu.Checked = Properties.Settings.Default.OptionEnableFMSound;
+#endif
 		}
 
 		private void SimulateGameGearLcdMenu_Click(object sender, EventArgs e) {
@@ -807,6 +813,8 @@ namespace CogwheelSlimDX {
 			this.Dumper.ScaleMode = Properties.Settings.Default.OptionMaintainAspectRatio ? PixelDumper.ScaleModes.ZoomInside : PixelDumper.ScaleModes.Stretch;
 		}
 
+#if EMU2413
+
 		private void EnableFMSoundMenu_Click(object sender, EventArgs e) {
 			if ((this.Emulator.FmSoundEnabled = Properties.Settings.Default.OptionEnableFMSound ^= true) && !Properties.Settings.Default.SeenWarningFMSound) {
 				Properties.Settings.Default.SeenWarningFMSound = true;
@@ -814,6 +822,7 @@ namespace CogwheelSlimDX {
 			}
 
 		}
+#endif
 
 		#endregion
 
