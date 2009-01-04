@@ -149,7 +149,7 @@ namespace CogwheelSlimDX {
 				};
 
 				// Try and create the device.
-				this.GraphicsDevice = new Device(0, DeviceType.Hardware, this.Control.Handle, CreateFlags.HardwareVertexProcessing, Params);
+				this.GraphicsDevice = new Device(Program.D3D, 0, DeviceType.Hardware, this.Control.Handle, CreateFlags.HardwareVertexProcessing, Params);
 
 				// Create the vertex buffer.
 				this.Vertices = new VertexBuffer(this.GraphicsDevice, 6 * Vertex.Size, Usage.WriteOnly, VertexFormat.None, Pool.Managed);
@@ -295,9 +295,11 @@ namespace CogwheelSlimDX {
 				this.GraphicsDevice.EndScene();
 				try {
 					this.GraphicsDevice.Present();
-				} catch (DeviceLostException) {
-					this.ReinitialiseRenderer();
-					this.Render(data, width, height, backgroundColour);
+				} catch (Direct3D9Exception) {
+					if (Result.Last == SlimDX.Direct3D9.ResultCode.DeviceLost) {
+						this.ReinitialiseRenderer();
+						this.Render(data, width, height, backgroundColour);
+					}
 				}
 
 			} catch {
