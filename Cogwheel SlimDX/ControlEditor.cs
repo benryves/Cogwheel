@@ -24,7 +24,7 @@ namespace CogwheelSlimDX {
 
 			this.TabIcons.Images.Add(Properties.Resources.Icon_Keyboard);
 			this.TabIcons.Images.Add(Properties.Resources.Icon_Joystick);
-			this.TabIcons.Images.Add(Properties.Resources.Icon_Controller);
+			this.TabIcons.Images.Add(Properties.Resources.Icon_XInput);
 
 			foreach (var Source in this.Manager.Sources) {
 				if (Source is KeyboardInputSource) {

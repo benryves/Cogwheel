@@ -233,6 +233,7 @@
     <None Include="Resources\bullet_black.png" />
     <None Include="Resources\Config_DefaultJoystickMapping.txt" />
     <Content Include="Resources\Config_DefaultKeyMapping.txt" />
+    <None Include="Resources\xinput.png" />
     <None Include="Resources\Config_DefaultXInputMapping.txt" />
     <None Include="Resources\pov_w.png" />
     <None Include="Resources\pov_sw.png" />

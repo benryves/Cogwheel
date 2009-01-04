@@ -531,6 +531,13 @@ namespace CogwheelSlimDX.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Icon_XInput {
+            get {
+                object obj = ResourceManager.GetObject("Icon_XInput", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Image_Banner {
             get {
                 object obj = ResourceManager.GetObject("Image_Banner", resourceCulture);
