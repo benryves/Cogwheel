@@ -726,6 +726,22 @@ namespace CogwheelSlimDX {
 			VAxisDecrease,
 			/// <summary>The value of the V axis is increased past the threshold.</summary>
 			VAxisIncrease,
+			/// <summary>The POV hat is pointing North.</summary>
+			PovN,
+			/// <summary>The POV hat is pointing North-East.</summary>
+			PovNE,
+			/// <summary>The POV hat is pointing East.</summary>
+			PovE,
+			/// <summary>The POV hat is pointing South-East.</summary>
+			PovSE,
+			/// <summary>The POV hat is pointing South.</summary>
+			PovS,
+			/// <summary>The POV hat is pointing South-West.</summary>
+			PovSW,
+			/// <summary>The POV hat is pointing West.</summary>
+			PovW,
+			/// <summary>The POV hat is pointing North-West.</summary>
+			PovNW,
 		}
 
 		#endregion
@@ -752,8 +768,6 @@ namespace CogwheelSlimDX {
 
 		public KeyValuePair<InputTrigger, bool>[] GetTriggeredEvents() {
 
-			
-
 			var Events = new List<KeyValuePair<InputTrigger, bool>>(8);
 
 			var NewState = this.Joystick.GetState();
@@ -774,11 +788,72 @@ namespace CogwheelSlimDX {
 				if (this.Joystick.HasVAxis) AddAxisEvent(Events, this.State.VAxis, NewState.VAxis, InputTrigger.VAxisIncrease, InputTrigger.VAxisDecrease);
 				if (this.Joystick.HasRudder) AddAxisEvent(Events, this.State.Rudder, NewState.Rudder, InputTrigger.RudderIncrease, InputTrigger.RudderDecrease);
 
+				// POV hat.
+				if (NewState.PointOfView.HasValue != State.PointOfView.HasValue) {
+					if (NewState.PointOfView.HasValue) {
+						// POV hat moved from neutral to point at something.
+						Events.Add(new KeyValuePair<InputTrigger, bool>(BearingToPovTrigger(NewState.PointOfView.Value), true));
+					} else {
+						// POV hat moved from something to neutral.
+						Events.Add(new KeyValuePair<InputTrigger, bool>(BearingToPovTrigger(State.PointOfView.Value), false));
+					}
+				} else if (NewState.PointOfView.HasValue && NewState.PointOfView != State.PointOfView) {
+					// POV hat moved from one bearing to another without returning to neutral.
+					InputTrigger NewPovTrigger = BearingToPovTrigger(NewState.PointOfView.Value);
+					InputTrigger OldPovTrigger = BearingToPovTrigger(State.PointOfView.Value);
+					if (NewPovTrigger != OldPovTrigger) {
+						Events.Add(new KeyValuePair<InputTrigger, bool>(OldPovTrigger, false));
+						Events.Add(new KeyValuePair<InputTrigger, bool>(NewPovTrigger, true));
+					}
+				}
+
 				this.State = NewState;
 			}
 
 			return Events.ToArray();
 		}
+
+		static InputTrigger BearingToPovTrigger(float bearing) {
+			for (int i = 0; i < 8; ++i) {
+				float Comparison = i * 45f;
+				if (AngleIsInRange(bearing, Comparison - 22.5f, Comparison + 22.5f)) {
+					return InputTrigger.PovN + i;
+				}
+			}
+			return InputTrigger.None;
+		}
+
+
+		static float NormaliseAngle(float a) {
+			a += 180f;
+			while (a < 0f) a += 360f;
+			while (a >= 360f) a -= 360f;
+			a -= 180f;
+			return a;
+		}
+
+		static bool AngleIsInRange(float angle, float min, float max) {
+			angle = angle - min; max = max - min; min = 0f;
+			angle = NormaliseAngle(angle);
+			min = NormaliseAngle(min);
+			max = NormaliseAngle(max);
+			return min <= angle && angle <= max;
+		}
+
+		static float PovTriggerToBearing(InputTrigger trigger) {
+			switch (trigger) {
+				case InputTrigger.PovN:  return 000f;
+				case InputTrigger.PovNE: return 045f;
+				case InputTrigger.PovE:  return 090f;
+				case InputTrigger.PovSE: return 135f;
+				case InputTrigger.PovS:  return 180f;
+				case InputTrigger.PovSW: return 225f;
+				case InputTrigger.PovW:  return 270f;
+				case InputTrigger.PovNW: return 315f;
+			}
+			return float.NaN;
+		}
+
 
 		private void AddAxisEvent(List<KeyValuePair<InputTrigger, bool>> triggers, float oldAxisValue, float newAxisValue, InputTrigger increased, InputTrigger decreased) {
 			float Threshold = 0.3f;
@@ -795,7 +870,7 @@ namespace CogwheelSlimDX {
 				bool Triggered = false;
 				if (MappedButton.Key >= InputTrigger.Button1 && MappedButton.Key <= InputTrigger.Button32) {
 					Triggered = ((int)State.Buttons & (1 << (((int)MappedButton.Key) - 1))) != 0;
-				} else {
+				} else if (MappedButton.Key >= InputTrigger.XAxisDecrease && MappedButton.Key <= InputTrigger.VAxisIncrease) {
 					float Threshold = 0.3f;
 					switch (MappedButton.Key) {
 						case InputTrigger.XAxisIncrease: Triggered = this.Joystick.HasXAxis && State.XAxis > +Threshold; break;
@@ -810,6 +885,11 @@ namespace CogwheelSlimDX {
 						case InputTrigger.VAxisDecrease: Triggered = this.Joystick.HasVAxis && State.VAxis < -Threshold; break;
 						case InputTrigger.RudderIncrease: Triggered = this.Joystick.HasRudder && State.Rudder > +Threshold; break;
 						case InputTrigger.RudderDecrease: Triggered = this.Joystick.HasRudder && State.Rudder < -Threshold; break;
+					}
+				} else if (MappedButton.Key >= InputTrigger.PovN && MappedButton.Key <= InputTrigger.PovNW) {
+					if (State.PointOfView.HasValue) {
+						var Bearing = PovTriggerToBearing(MappedButton.Key);
+						Triggered = AngleIsInRange(State.PointOfView.Value, Bearing - 45.0f, Bearing + 45.0f);
 					}
 				}
 				foreach (var TargetButton in MappedButton.Value) {
