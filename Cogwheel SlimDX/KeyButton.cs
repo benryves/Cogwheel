@@ -171,6 +171,7 @@ namespace CogwheelSlimDX {
 					this.Checked = false;
 					this.KeyboardTrigger = Keys.None;
 					this.JoystickTrigger = JoystickInputSource.InputTrigger.None;
+					this.XInputTrigger = XInputSource.InputTrigger.None;
 					this.OnSettingChanged(new EventArgs());
 					break;
 			}

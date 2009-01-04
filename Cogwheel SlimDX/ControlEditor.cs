@@ -81,6 +81,8 @@ namespace CogwheelSlimDX {
 							CurrentInputSource.SetTrigger(Sender.ControllerIndex, Sender.InputButton, Sender.KeyboardTrigger);
 						} else if (CurrentInputSource is JoystickInputSource) {
 							CurrentInputSource.SetTrigger(Sender.ControllerIndex, Sender.InputButton, Sender.JoystickTrigger);
+						} else if (CurrentInputSource is XInputSource) {
+							CurrentInputSource.SetTrigger(Sender.ControllerIndex, Sender.InputButton, Sender.XInputTrigger);
 						} else {
 							throw new NotImplementedException();
 						}
