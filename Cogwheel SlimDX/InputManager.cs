@@ -634,6 +634,15 @@ namespace CogwheelSlimDX {
 	/// </summary>
 	public class JoystickInputSource : TriggeredInputSource<JoystickInputSource.InputTrigger> {
 
+		private float? axisThreshold;
+		/// <summary>
+		/// Gets or sets the axis trigger threshold.
+		/// </summary>
+		public float AxisThreshold {
+			get { return this.axisThreshold.HasValue ? this.axisThreshold.Value : (this.axisThreshold = Properties.Settings.Default.InputJoystickAxisThreshold).Value; }
+			set { this.axisThreshold = Properties.Settings.Default.InputJoystickAxisThreshold = value; }
+		}
+
 		#region Types
 
 		/// <summary>
@@ -860,7 +869,7 @@ namespace CogwheelSlimDX {
 
 
 		private void AddAxisEvent(List<KeyValuePair<InputTrigger, bool>> triggers, float oldAxisValue, float newAxisValue, InputTrigger increased, InputTrigger decreased) {
-			float Threshold = 0.3f;
+			float Threshold = this.AxisThreshold;
 			if (oldAxisValue < +Threshold && newAxisValue > +Threshold) triggers.Add(new KeyValuePair<InputTrigger, bool>(increased, true));
 			if (newAxisValue < +Threshold && oldAxisValue > +Threshold) triggers.Add(new KeyValuePair<InputTrigger, bool>(increased, false));
 			if (oldAxisValue > -Threshold && newAxisValue < -Threshold) triggers.Add(new KeyValuePair<InputTrigger, bool>(decreased, true));
@@ -875,7 +884,7 @@ namespace CogwheelSlimDX {
 				if (MappedButton.Key >= InputTrigger.Button1 && MappedButton.Key <= InputTrigger.Button32) {
 					Triggered = ((int)State.Buttons & (1 << (((int)MappedButton.Key) - 1))) != 0;
 				} else if (MappedButton.Key >= InputTrigger.XAxisDecrease && MappedButton.Key <= InputTrigger.VAxisIncrease) {
-					float Threshold = 0.3f;
+					float Threshold = this.AxisThreshold;
 					switch (MappedButton.Key) {
 						case InputTrigger.XAxisIncrease: Triggered = this.Joystick.HasXAxis && State.XAxis > +Threshold; break;
 						case InputTrigger.XAxisDecrease: Triggered = this.Joystick.HasXAxis && State.XAxis < -Threshold; break;
@@ -1000,6 +1009,24 @@ namespace CogwheelSlimDX {
 		/// </summary>
 		public UserIndex UserIndex { get; private set;}
 
+		private short? axisThreshold;
+		/// <summary>
+		/// Gets or sets the axis trigger threshold.
+		/// </summary>
+		public short AxisThreshold {
+			get { return this.axisThreshold.HasValue ? this.axisThreshold.Value : (this.axisThreshold = (short)(Properties.Settings.Default.InputXInputAxisThreshold * short.MaxValue)).Value; }
+			set { Properties.Settings.Default.InputXInputAxisThreshold = (this.axisThreshold = value).Value / (float)short.MaxValue; }
+		}
+
+		private byte? triggerThreshold;
+		/// <summary>
+		/// Gets or sets the trigger threshold.
+		/// </summary>
+		public byte TriggerThreshold {
+			get { return this.triggerThreshold.HasValue ? this.triggerThreshold.Value : (this.triggerThreshold = (byte)(Properties.Settings.Default.InputXInputTriggerThreshold * byte.MaxValue)).Value; }
+			set { Properties.Settings.Default.InputXInputTriggerThreshold = (this.triggerThreshold = value).Value / (float)byte.MaxValue; }
+		}
+
 		#endregion
 
 		#region Fields
@@ -1017,7 +1044,7 @@ namespace CogwheelSlimDX {
 		#region Methods
 
 		private void AddAxisEvent(List<KeyValuePair<InputTrigger, bool>> events, short oldAxisValue, short newAxisValue, InputTrigger increased, InputTrigger decreased) {
-			short Threshold = 10000;
+			short Threshold = this.AxisThreshold;
 			if (oldAxisValue < +Threshold && newAxisValue > +Threshold) events.Add(new KeyValuePair<InputTrigger, bool>(increased, true));
 			if (newAxisValue < +Threshold && oldAxisValue > +Threshold) events.Add(new KeyValuePair<InputTrigger, bool>(increased, false));
 			if (oldAxisValue > -Threshold && newAxisValue < -Threshold) events.Add(new KeyValuePair<InputTrigger, bool>(decreased, true));
@@ -1045,10 +1072,11 @@ namespace CogwheelSlimDX {
 				AddAxisEvent(Events, State.Gamepad.RightThumbY, NewState.Gamepad.RightThumbY, InputTrigger.RightThumbUp, InputTrigger.RightThumbDown);
 
 				// Triggers.
-				if (State.Gamepad.LeftTrigger < 128 && NewState.Gamepad.LeftTrigger > 127) Events.Add(new KeyValuePair<InputTrigger, bool>(InputTrigger.LeftTrigger, true));
-				if (State.Gamepad.LeftTrigger > 127 && NewState.Gamepad.LeftTrigger < 128) Events.Add(new KeyValuePair<InputTrigger, bool>(InputTrigger.LeftTrigger, false));
-				if (State.Gamepad.RightTrigger < 128 && NewState.Gamepad.RightTrigger > 127) Events.Add(new KeyValuePair<InputTrigger, bool>(InputTrigger.RightTrigger, true));
-				if (State.Gamepad.RightTrigger > 127 && NewState.Gamepad.RightTrigger < 128) Events.Add(new KeyValuePair<InputTrigger, bool>(InputTrigger.RightTrigger, false));
+				byte TriggerThreshold = this.TriggerThreshold;
+				if (State.Gamepad.LeftTrigger < TriggerThreshold && NewState.Gamepad.LeftTrigger > TriggerThreshold) Events.Add(new KeyValuePair<InputTrigger, bool>(InputTrigger.LeftTrigger, true));
+				if (State.Gamepad.LeftTrigger > TriggerThreshold && NewState.Gamepad.LeftTrigger < TriggerThreshold) Events.Add(new KeyValuePair<InputTrigger, bool>(InputTrigger.LeftTrigger, false));
+				if (State.Gamepad.RightTrigger < TriggerThreshold && NewState.Gamepad.RightTrigger > TriggerThreshold) Events.Add(new KeyValuePair<InputTrigger, bool>(InputTrigger.RightTrigger, true));
+				if (State.Gamepad.RightTrigger > TriggerThreshold && NewState.Gamepad.RightTrigger < TriggerThreshold) Events.Add(new KeyValuePair<InputTrigger, bool>(InputTrigger.RightTrigger, false));
 			}
 			this.State = NewState;
 
@@ -1062,7 +1090,7 @@ namespace CogwheelSlimDX {
 				if (MappedButton.Key >= InputTrigger.DPadUp && MappedButton.Key <= InputTrigger.Y) {
 					Triggered = ((int)State.Gamepad.Buttons & (1 << (((int)MappedButton.Key) - 1))) != 0;
 				} else if (MappedButton.Key >= InputTrigger.LeftThumbUp && MappedButton.Key <= InputTrigger.RightThumbRight) {
-					short Threshold = 10000;
+					short Threshold = this.AxisThreshold;
 					switch (MappedButton.Key) {
 						case InputTrigger.LeftThumbLeft: Triggered = State.Gamepad.LeftThumbX < -Threshold; break;
 						case InputTrigger.LeftThumbRight: Triggered = State.Gamepad.LeftThumbX > +Threshold; break;
@@ -1074,9 +1102,9 @@ namespace CogwheelSlimDX {
 						case InputTrigger.RightThumbDown: Triggered = State.Gamepad.RightThumbY < -Threshold; break;
 					}
 				} else if (MappedButton.Key == InputTrigger.LeftTrigger) {
-					Triggered = State.Gamepad.LeftTrigger > 127;
+					Triggered = State.Gamepad.LeftTrigger > TriggerThreshold;
 				} else if (MappedButton.Key == InputTrigger.RightTrigger) {
-					Triggered = State.Gamepad.RightTrigger > 127;
+					Triggered = State.Gamepad.RightTrigger > TriggerThreshold;
 				}
 				foreach (var TargetButton in MappedButton.Value) {
 					this.CurrentStates[TargetButton.Key][TargetButton.Value] = Triggered;
