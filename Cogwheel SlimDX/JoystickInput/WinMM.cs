@@ -1,6 +1,6 @@
-﻿
+﻿using System;
 using System.Runtime.InteropServices;
-using System;
+
 namespace CogwheelSlimDX.JoystickInput {
 	/// <summary>
 	/// Provides access to WinMM types and functions.
