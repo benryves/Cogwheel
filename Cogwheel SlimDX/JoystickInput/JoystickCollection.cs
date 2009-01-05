@@ -18,16 +18,26 @@ namespace CogwheelSlimDX.JoystickInput {
 		/// <summary>
 		/// Creates an instance of the <see cref="JoystickCollection"/> class.
 		/// </summary>
-		public JoystickCollection() {
+		/// <param name="skipXInputDevices">Set to true to ignore XInput devices.</param>
+		public JoystickCollection(bool skipXInputDevices) {
 			var SearchJoysticks = new List<Joystick>();
 			int MaxJoysticks = WinMM.joyGetNumDevs();
 			for (int i = 0; i < MaxJoysticks; ++i) {
 				WinMM.JOYCAPS Caps = new WinMM.JOYCAPS();
 				if (WinMM.joyGetDevCaps(i, ref Caps, Marshal.SizeOf(Caps)) == WinMM.Result.JOYERR_NOERROR) {
-					SearchJoysticks.Add(new Joystick(i));
+					var J = new Joystick(i);
+					if (!(skipXInputDevices && J.IsXInputDevice)) SearchJoysticks.Add(J);
 				}
 			}
 			this.Joysticks = SearchJoysticks.ToArray();
+		}
+
+
+		/// <summary>
+		/// Creates an instance of the <see cref="JoystickCollection"/> class.
+		/// </summary>
+		public JoystickCollection()
+			: this(false) {
 		}
 
 	}

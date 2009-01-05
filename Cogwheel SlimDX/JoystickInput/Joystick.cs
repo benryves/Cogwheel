@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
+using System.Text.RegularExpressions;
+using System.Globalization;
+using System.Management;
 
 namespace CogwheelSlimDX.JoystickInput {
 	/// <summary>
@@ -50,6 +53,37 @@ namespace CogwheelSlimDX.JoystickInput {
 		private WinMM.JOYCAPS Caps { get; set; }
 
 		/// <summary>
+		/// Determines whether the device is an XInput device or not. Returns true if it is, false if it isn't.
+		/// </summary>
+		public bool IsXInputDevice {
+			get {
+				var ParseIds = new Regex(@"([VP])ID_([\da-fA-F]{4})");
+				using (var QueryPnp = new System.Management.ManagementObjectSearcher(@"\\.\root\cimv2", string.Format("Select * FROM Win32_PNPEntity"), new EnumerationOptions() {
+					BlockSize = 20,
+				})) {
+					foreach (var PNP in QueryPnp.Get()) {
+						var DeviceId = (string)PNP.Properties["DeviceID"].Value;
+						if (DeviceId.Contains("IG_")) {
+							var Ids = ParseIds.Matches(DeviceId);
+							if (Ids.Count == 2) {
+								ushort? VId = null, PId = null;
+								foreach (Match M in Ids) {
+									ushort Value = ushort.Parse(M.Groups[2].Value, NumberStyles.HexNumber);
+									switch (M.Groups[1].Value) {
+										case "V": VId = Value; break;
+										case "P": PId = Value; break;
+									}
+								}
+								if (VId.HasValue && this.VendorId == VId && PId.HasValue && this.ProductId == PId) return true;
+							}
+						}
+					}
+				}
+				return false;
+			}
+		}
+
+		/// <summary>
 		/// Creates an instance of the <see cref="Joystick"/> class.
 		/// </summary>
 		/// <param name="id">The identifier of the joystick.</param>
@@ -69,6 +103,7 @@ namespace CogwheelSlimDX.JoystickInput {
 			this.HasRudder = Caps.AxisCount > 3;
 			this.HasUAxis = Caps.AxisCount > 4;
 			this.HasVAxis = Caps.AxisCount > 5;
+			Console.WriteLine(this.IsXInputDevice);
 		}
 
 		/// <summary>
