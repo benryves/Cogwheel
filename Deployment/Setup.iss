@@ -1,5 +1,5 @@
 ; Setup Script for Cogwheel.
-; Ben Ryves / Bee Development 2008.
+; Ben Ryves / Bee Development 2009.
 [Setup]
 AppName=Cogwheel
 AppVerName=Cogwheel
@@ -17,6 +17,8 @@ SolidCompression=yes
 ChangesAssociations=yes
 ChangesEnvironment=yes
 PrivilegesRequired=admin
+
+#include "SlimDX.iss"
 
 [Files]
 ; Main executables:
@@ -58,11 +60,10 @@ Name: "{group}\{cm:ProgramOnTheWeb,Cogwheel}"; Filename: "{app}\Cogwheel Website
 Name: "{group}\{cm:UninstallProgram,Cogwheel}"; Filename: "{uninstallexe}";
 
 [Run]
-Filename: "{win}\Microsoft.NET\Framework\v2.0.50727\RegAsm.exe"; Parameters: "/codebase ""{app}\CogStateThumbnailer.dll"""; Flags: runhidden skipifdoesntexist;
+Filename: "{win}\Microsoft.NET\Framework\v2.0.50727\RegAsm.exe"; Parameters: "/codebase ""{app}\CogStateThumbnailer.dll"""; Flags: runhidden skipifdoesntexist;  StatusMsg: "Registering thumbnailer..."
 
 [UninstallRun]
 Filename: "{win}\Microsoft.NET\Framework\v2.0.50727\RegAsm.exe"; Parameters: "/unregister ""{app}\CogStateThumbnailer.dll"""; Flags: runhidden skipifdoesntexist;
-
 
 [UninstallDelete]
 Type: files; Name: "{app}\Cogwheel Website.url";
