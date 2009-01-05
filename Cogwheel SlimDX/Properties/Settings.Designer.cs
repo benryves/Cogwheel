@@ -238,5 +238,17 @@ namespace CogwheelSlimDX.Properties {
                 this["InputXInputTriggerThreshold"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool InputSkipDuplicatedXInputJoysticks {
+            get {
+                return ((bool)(this["InputSkipDuplicatedXInputJoysticks"]));
+            }
+            set {
+                this["InputSkipDuplicatedXInputJoysticks"] = value;
+            }
+        }
     }
 }

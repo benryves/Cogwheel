@@ -412,7 +412,7 @@ namespace CogwheelSlimDX {
 				if (C.IsConnected) this.Input.Sources.Add(new XInputSource(this.Input, (SlimDX.XInput.UserIndex)i));
 			}
 	
-			this.Input.Sources.AddRange(Array.ConvertAll(new JoystickInput.JoystickCollection().Joysticks, J => new JoystickInputSource(Input, J)));			
+			this.Input.Sources.AddRange(Array.ConvertAll(new JoystickInput.JoystickCollection(Properties.Settings.Default.InputSkipDuplicatedXInputJoysticks).Joysticks, J => new JoystickInputSource(Input, J)));			
 			this.Input.ReloadSettings();
 		}
 
