@@ -17,6 +17,9 @@ SolidCompression=yes
 ChangesAssociations=yes
 ChangesEnvironment=yes
 PrivilegesRequired=admin
+InfoBeforeFile=InfoBefore.rtf
+WizardImageFile=WizardImageFile.bmp
+WizardSmallImageFile=WizardSmallImageFile.bmp
 
 #include "SlimDX.iss"
 
