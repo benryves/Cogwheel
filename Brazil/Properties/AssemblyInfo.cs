@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Bee Development")]
 [assembly: AssemblyProduct("Brazil")]
-[assembly: AssemblyCopyright("Copyright © Bee Development 2006-2007")]
+[assembly: AssemblyCopyright("Copyright © Bee Development 2006-2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
