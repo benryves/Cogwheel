@@ -103,7 +103,6 @@ namespace CogwheelSlimDX.JoystickInput {
 			this.HasRudder = Caps.AxisCount > 3;
 			this.HasUAxis = Caps.AxisCount > 4;
 			this.HasVAxis = Caps.AxisCount > 5;
-			Console.WriteLine(this.IsXInputDevice);
 		}
 
 		/// <summary>
