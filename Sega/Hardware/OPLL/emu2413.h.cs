@@ -1,8 +1,9 @@
 ﻿using System;
-using e_int32 = System.Int32;
-using e_uint16 = System.UInt16;
-using e_uint32 = System.UInt32;
 using e_uint8 = System.Byte;
+using e_int16 = System.Int16;
+using e_uint16 = System.UInt16;
+using e_int32 = System.Int32;
+using e_uint32 = System.UInt32;
 
 namespace BeeDevelopment.Sega8Bit.Hardware {
 
@@ -34,7 +35,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			public e_int32[] output = new e_int32[2];   /* Output value of slot */
 
 			/* for Phase Generator (PG) */
-			public e_uint16[] sintbl;   /* Wavetable */
+			public e_int16[] sintbl;   /* Wavetable */
 			public e_uint32 phase;      /* Phase */
 			public e_uint32 dphase;     /* Phase increment amount */
 			public e_uint32 pgout;      /* output */

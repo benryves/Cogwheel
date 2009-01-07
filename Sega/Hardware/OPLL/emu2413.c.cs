@@ -216,7 +216,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
  
                   Create tables
  
-****************************************************/
+		****************************************************/
 		static e_int32 Min(e_int32 i, e_int32 j) {
 			if (i < j)
 				return i;
@@ -328,9 +328,9 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 
 			double[] kltable = new double[] {
-    dB2 (0.000), dB2 (9.000), dB2 (12.000), dB2 (13.875), dB2 (15.000), dB2 (16.125), dB2 (16.875), dB2 (17.625),
-    dB2 (18.000), dB2 (18.750), dB2 (19.125), dB2 (19.500), dB2 (19.875), dB2 (20.250), dB2 (20.625), dB2 (21.000)
-  };
+				dB2 (0.000), dB2 (9.000), dB2 (12.000), dB2 (13.875), dB2 (15.000), dB2 (16.125), dB2 (16.875), dB2 (17.625),
+				dB2 (18.000), dB2 (18.750), dB2 (19.125), dB2 (19.500), dB2 (19.875), dB2 (20.250), dB2 (20.625), dB2 (21.000)
+			};
 
 			e_int32 tmp;
 			e_int32 fnum, block, TL, KL;
@@ -524,7 +524,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			}
 		}
 		static void UPDATE_RKS(OPLL_SLOT S) { (S).rks = (uint)rksTable[((S).fnum) >> 8, (S).block, (S).patch.KR]; }
-		static void UPDATE_WF(OPLL_SLOT S) { (S).sintbl = Array.ConvertAll(waveform[(S).patch.WF], s => (ushort)s); }
+		static void UPDATE_WF(OPLL_SLOT S) { (S).sintbl = waveform[(S).patch.WF]; }
 		static void UPDATE_EG(OPLL_SLOT S) { (S).eg_dphase = calc_eg_dphase(S); }
 		static void UPDATE_ALL(OPLL_SLOT S) {
 			UPDATE_PG(S);
@@ -758,7 +758,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		static void
 		OPLL_SLOT_reset(OPLL_SLOT slot, int type) {
 			slot.type = type;
-			slot.sintbl = Array.ConvertAll(waveform[0], s => (ushort)s);
+			slot.sintbl = waveform[0];
 			slot.phase = 0;
 			slot.dphase = 0;
 			slot.output[0] = 0;
