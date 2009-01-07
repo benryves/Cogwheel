@@ -52,26 +52,12 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		}
 
 		/// <summary>
-		/// Generates a single stereo sample.
-		/// </summary>
-		/// <param name="left">Outputs the level for the left channel.</param>
-		/// <param name="right">Outputs the level for the right channel.</param>
-		public void CalculateStereo(out int left, out int right) {
-			var Samples = new int[2];
-			OPLL_calc_stereo(this.opll, Samples);
-			left = Samples[0]; right = Samples[1];
-		}
-
-		/// <summary>
 		/// Generates a number of sound samples in 16-bit stereo format.
 		/// </summary>
 		/// <param name="samples">An array of <see cref="Int16"/> to store the sound samples.</param>
 		public void GenerateSamples(short[] samples) {
-			var Samples = new int[2];
 			for (int i = 0; i < samples.Length; i += 2) {
-				OPLL_calc_stereo(this.opll, Samples);
-				samples[i + 0] = (short)Samples[0];
-				samples[i + 1] = (short)Samples[1];
+				samples[i + 0] = samples[i + 1] = calc(this.opll);
 			}
 		}
 

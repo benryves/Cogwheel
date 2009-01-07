@@ -414,7 +414,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		}
 
 		static void
-OPLL_dump2patch(e_uint8[] dump, OPLL_PATCH[] patch) {
+		OPLL_dump2patch(e_uint8[] dump, OPLL_PATCH[] patch) {
 			patch[0].AM = (uint)(dump[0] >> 7) & 1;
 			patch[1].AM = (uint)(dump[1] >> 7) & 1;
 			patch[0].PM = (uint)(dump[0] >> 6) & 1;
@@ -753,7 +753,7 @@ OPLL_dump2patch(e_uint8[] dump, OPLL_PATCH[] patch) {
 
                       Initializing
 
-***********************************************************/
+		***********************************************************/
 
 		static void
 		OPLL_SLOT_reset(OPLL_SLOT slot, int type) {
