@@ -1,4 +1,4 @@
-﻿namespace CogwheelSlimDX {
+﻿namespace BeeDevelopment.Cogwheel {
 	partial class ControlEditor {
 		/// <summary>
 		/// Required designer variable.
@@ -34,43 +34,43 @@
 			this.KeyboardSymbolsTable = new System.Windows.Forms.TableLayoutPanel();
 			this.label7 = new System.Windows.Forms.Label();
 			this.label8 = new System.Windows.Forms.Label();
-			this.keyButton37 = new CogwheelSlimDX.KeyButton();
-			this.keyButton38 = new CogwheelSlimDX.KeyButton();
-			this.keyButton39 = new CogwheelSlimDX.KeyButton();
-			this.keyButton33 = new CogwheelSlimDX.KeyButton();
-			this.keyButton34 = new CogwheelSlimDX.KeyButton();
-			this.keyButton35 = new CogwheelSlimDX.KeyButton();
-			this.keyButton36 = new CogwheelSlimDX.KeyButton();
+			this.keyButton37 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton38 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton39 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton33 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton34 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton35 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton36 = new BeeDevelopment.Cogwheel.KeyButton();
 			this.label12 = new System.Windows.Forms.Label();
 			this.label13 = new System.Windows.Forms.Label();
 			this.label14 = new System.Windows.Forms.Label();
 			this.label15 = new System.Windows.Forms.Label();
-			this.keyButton30 = new CogwheelSlimDX.KeyButton();
+			this.keyButton30 = new BeeDevelopment.Cogwheel.KeyButton();
 			this.label6 = new System.Windows.Forms.Label();
 			this.label10 = new System.Windows.Forms.Label();
 			this.label11 = new System.Windows.Forms.Label();
-			this.keyButton31 = new CogwheelSlimDX.KeyButton();
-			this.keyButton32 = new CogwheelSlimDX.KeyButton();
+			this.keyButton31 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton32 = new BeeDevelopment.Cogwheel.KeyButton();
 			this.label9 = new System.Windows.Forms.Label();
 			this.label16 = new System.Windows.Forms.Label();
 			this.GeneralGroup = new System.Windows.Forms.GroupBox();
 			this.KeyboardGeneralTable = new System.Windows.Forms.TableLayoutPanel();
 			this.label1 = new System.Windows.Forms.Label();
-			this.keyButton25 = new CogwheelSlimDX.KeyButton();
+			this.keyButton25 = new BeeDevelopment.Cogwheel.KeyButton();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
 			this.label5 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
-			this.keyButton28 = new CogwheelSlimDX.KeyButton();
-			this.keyButton27 = new CogwheelSlimDX.KeyButton();
-			this.keyButton29 = new CogwheelSlimDX.KeyButton();
-			this.keyButton26 = new CogwheelSlimDX.KeyButton();
+			this.keyButton28 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton27 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton29 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton26 = new BeeDevelopment.Cogwheel.KeyButton();
 			this.label18 = new System.Windows.Forms.Label();
 			this.label19 = new System.Windows.Forms.Label();
-			this.keyButton42 = new CogwheelSlimDX.KeyButton();
-			this.keyButton43 = new CogwheelSlimDX.KeyButton();
+			this.keyButton42 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton43 = new BeeDevelopment.Cogwheel.KeyButton();
 			this.label20 = new System.Windows.Forms.Label();
-			this.keyButton44 = new CogwheelSlimDX.KeyButton();
+			this.keyButton44 = new BeeDevelopment.Cogwheel.KeyButton();
 			this.StandardConfigurationPanel = new System.Windows.Forms.Panel();
 			this.JoypadGroup = new System.Windows.Forms.GroupBox();
 			this.JoypadTable = new System.Windows.Forms.TableLayoutPanel();
@@ -80,65 +80,65 @@
 			this.LabelDown = new System.Windows.Forms.Label();
 			this.LabelLeft = new System.Windows.Forms.Label();
 			this.LabelRight = new System.Windows.Forms.Label();
-			this.Player1TL = new CogwheelSlimDX.KeyButton();
-			this.Player1TR = new CogwheelSlimDX.KeyButton();
-			this.Player1Up = new CogwheelSlimDX.KeyButton();
-			this.Player1Down = new CogwheelSlimDX.KeyButton();
-			this.Player1Left = new CogwheelSlimDX.KeyButton();
-			this.Player1Right = new CogwheelSlimDX.KeyButton();
-			this.Player2TL = new CogwheelSlimDX.KeyButton();
-			this.Player2TR = new CogwheelSlimDX.KeyButton();
-			this.Player2Up = new CogwheelSlimDX.KeyButton();
-			this.Player2Down = new CogwheelSlimDX.KeyButton();
-			this.Player2Left = new CogwheelSlimDX.KeyButton();
-			this.Player2Right = new CogwheelSlimDX.KeyButton();
+			this.Player1TL = new BeeDevelopment.Cogwheel.KeyButton();
+			this.Player1TR = new BeeDevelopment.Cogwheel.KeyButton();
+			this.Player1Up = new BeeDevelopment.Cogwheel.KeyButton();
+			this.Player1Down = new BeeDevelopment.Cogwheel.KeyButton();
+			this.Player1Left = new BeeDevelopment.Cogwheel.KeyButton();
+			this.Player1Right = new BeeDevelopment.Cogwheel.KeyButton();
+			this.Player2TL = new BeeDevelopment.Cogwheel.KeyButton();
+			this.Player2TR = new BeeDevelopment.Cogwheel.KeyButton();
+			this.Player2Up = new BeeDevelopment.Cogwheel.KeyButton();
+			this.Player2Down = new BeeDevelopment.Cogwheel.KeyButton();
+			this.Player2Left = new BeeDevelopment.Cogwheel.KeyButton();
+			this.Player2Right = new BeeDevelopment.Cogwheel.KeyButton();
 			this.ConsoleGroup = new System.Windows.Forms.GroupBox();
 			this.ConsoleTable = new System.Windows.Forms.TableLayoutPanel();
 			this.LabelPause = new System.Windows.Forms.Label();
 			this.LabelReset = new System.Windows.Forms.Label();
 			this.LabelStart = new System.Windows.Forms.Label();
-			this.ConsolePause = new CogwheelSlimDX.KeyButton();
-			this.ConsoleReset = new CogwheelSlimDX.KeyButton();
-			this.ConsoleStart = new CogwheelSlimDX.KeyButton();
+			this.ConsolePause = new BeeDevelopment.Cogwheel.KeyButton();
+			this.ConsoleReset = new BeeDevelopment.Cogwheel.KeyButton();
+			this.ConsoleStart = new BeeDevelopment.Cogwheel.KeyButton();
 			this.ColecoVisionConfigurationPanel = new System.Windows.Forms.Panel();
 			this.ColecoVisionGroup = new System.Windows.Forms.GroupBox();
 			this.ColecoVisionTable = new System.Windows.Forms.TableLayoutPanel();
 			this.LabelHash = new System.Windows.Forms.Label();
-			this.keyButton23 = new CogwheelSlimDX.KeyButton();
-			this.keyButton24 = new CogwheelSlimDX.KeyButton();
+			this.keyButton23 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton24 = new BeeDevelopment.Cogwheel.KeyButton();
 			this.LabelNum1 = new System.Windows.Forms.Label();
 			this.LabelNum2 = new System.Windows.Forms.Label();
 			this.LabelNum3 = new System.Windows.Forms.Label();
 			this.LabelNum4 = new System.Windows.Forms.Label();
 			this.LabelNum5 = new System.Windows.Forms.Label();
 			this.LabelNum6 = new System.Windows.Forms.Label();
-			this.keyButton1 = new CogwheelSlimDX.KeyButton();
-			this.keyButton2 = new CogwheelSlimDX.KeyButton();
-			this.keyButton3 = new CogwheelSlimDX.KeyButton();
-			this.keyButton4 = new CogwheelSlimDX.KeyButton();
-			this.keyButton5 = new CogwheelSlimDX.KeyButton();
-			this.keyButton6 = new CogwheelSlimDX.KeyButton();
-			this.keyButton7 = new CogwheelSlimDX.KeyButton();
-			this.keyButton8 = new CogwheelSlimDX.KeyButton();
-			this.keyButton9 = new CogwheelSlimDX.KeyButton();
-			this.keyButton10 = new CogwheelSlimDX.KeyButton();
-			this.keyButton11 = new CogwheelSlimDX.KeyButton();
-			this.keyButton12 = new CogwheelSlimDX.KeyButton();
+			this.keyButton1 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton2 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton3 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton4 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton5 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton6 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton7 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton8 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton9 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton10 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton11 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton12 = new BeeDevelopment.Cogwheel.KeyButton();
 			this.LabelNum7 = new System.Windows.Forms.Label();
-			this.keyButton13 = new CogwheelSlimDX.KeyButton();
-			this.keyButton14 = new CogwheelSlimDX.KeyButton();
+			this.keyButton13 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton14 = new BeeDevelopment.Cogwheel.KeyButton();
 			this.LabelNum8 = new System.Windows.Forms.Label();
-			this.keyButton15 = new CogwheelSlimDX.KeyButton();
-			this.keyButton16 = new CogwheelSlimDX.KeyButton();
+			this.keyButton15 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton16 = new BeeDevelopment.Cogwheel.KeyButton();
 			this.LabelNum9 = new System.Windows.Forms.Label();
-			this.keyButton17 = new CogwheelSlimDX.KeyButton();
-			this.keyButton18 = new CogwheelSlimDX.KeyButton();
+			this.keyButton17 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton18 = new BeeDevelopment.Cogwheel.KeyButton();
 			this.LabelNum0 = new System.Windows.Forms.Label();
-			this.keyButton19 = new CogwheelSlimDX.KeyButton();
-			this.keyButton20 = new CogwheelSlimDX.KeyButton();
+			this.keyButton19 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton20 = new BeeDevelopment.Cogwheel.KeyButton();
 			this.LabelStar = new System.Windows.Forms.Label();
-			this.keyButton21 = new CogwheelSlimDX.KeyButton();
-			this.keyButton22 = new CogwheelSlimDX.KeyButton();
+			this.keyButton21 = new BeeDevelopment.Cogwheel.KeyButton();
+			this.keyButton22 = new BeeDevelopment.Cogwheel.KeyButton();
 			this.ControllerEditing = new System.Windows.Forms.ComboBox();
 			this.TabIcons = new System.Windows.Forms.ImageList(this.components);
 			this.PanelOKCancel = new System.Windows.Forms.Panel();
@@ -302,18 +302,18 @@
 			this.keyButton37.ControllerIndex = 0;
 			this.keyButton37.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton37.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton37.InputButton = CogwheelSlimDX.InputButton.KeyboardMinus;
-			this.keyButton37.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton37.InputButton = BeeDevelopment.Cogwheel.InputButton.KeyboardMinus;
+			this.keyButton37.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton37.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton37.Location = new System.Drawing.Point(71, 3);
-			this.keyButton37.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton37.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton37.Name = "keyButton37";
 			this.keyButton37.Size = new System.Drawing.Size(96, 22);
 			this.keyButton37.TabIndex = 18;
 			this.keyButton37.Text = "None";
 			this.keyButton37.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton37.UseVisualStyleBackColor = true;
-			this.keyButton37.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton37.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton38
 			// 
@@ -322,18 +322,18 @@
 			this.keyButton38.ControllerIndex = 0;
 			this.keyButton38.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton38.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton38.InputButton = CogwheelSlimDX.InputButton.KeyboardCaret;
-			this.keyButton38.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton38.InputButton = BeeDevelopment.Cogwheel.InputButton.KeyboardCaret;
+			this.keyButton38.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton38.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton38.Location = new System.Drawing.Point(71, 31);
-			this.keyButton38.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton38.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton38.Name = "keyButton38";
 			this.keyButton38.Size = new System.Drawing.Size(96, 22);
 			this.keyButton38.TabIndex = 20;
 			this.keyButton38.Text = "None";
 			this.keyButton38.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton38.UseVisualStyleBackColor = true;
-			this.keyButton38.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton38.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton39
 			// 
@@ -342,18 +342,18 @@
 			this.keyButton39.ControllerIndex = 0;
 			this.keyButton39.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton39.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton39.InputButton = CogwheelSlimDX.InputButton.KeyboardAtSign;
-			this.keyButton39.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton39.InputButton = BeeDevelopment.Cogwheel.InputButton.KeyboardAtSign;
+			this.keyButton39.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton39.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton39.Location = new System.Drawing.Point(71, 59);
-			this.keyButton39.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton39.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton39.Name = "keyButton39";
 			this.keyButton39.Size = new System.Drawing.Size(96, 22);
 			this.keyButton39.TabIndex = 19;
 			this.keyButton39.Text = "None";
 			this.keyButton39.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton39.UseVisualStyleBackColor = true;
-			this.keyButton39.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton39.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton33
 			// 
@@ -362,18 +362,18 @@
 			this.keyButton33.ControllerIndex = 0;
 			this.keyButton33.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton33.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton33.InputButton = CogwheelSlimDX.InputButton.KeyboardSemicolon;
-			this.keyButton33.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton33.InputButton = BeeDevelopment.Cogwheel.InputButton.KeyboardSemicolon;
+			this.keyButton33.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton33.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton33.Location = new System.Drawing.Point(241, 3);
-			this.keyButton33.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton33.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton33.Name = "keyButton33";
 			this.keyButton33.Size = new System.Drawing.Size(99, 22);
 			this.keyButton33.TabIndex = 27;
 			this.keyButton33.Text = "None";
 			this.keyButton33.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton33.UseVisualStyleBackColor = true;
-			this.keyButton33.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton33.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton34
 			// 
@@ -382,18 +382,18 @@
 			this.keyButton34.ControllerIndex = 0;
 			this.keyButton34.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton34.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton34.InputButton = CogwheelSlimDX.InputButton.KeyboardColon;
-			this.keyButton34.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton34.InputButton = BeeDevelopment.Cogwheel.InputButton.KeyboardColon;
+			this.keyButton34.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton34.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton34.Location = new System.Drawing.Point(241, 31);
-			this.keyButton34.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton34.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton34.Name = "keyButton34";
 			this.keyButton34.Size = new System.Drawing.Size(99, 22);
 			this.keyButton34.TabIndex = 28;
 			this.keyButton34.Text = "None";
 			this.keyButton34.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton34.UseVisualStyleBackColor = true;
-			this.keyButton34.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton34.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton35
 			// 
@@ -402,18 +402,18 @@
 			this.keyButton35.ControllerIndex = 0;
 			this.keyButton35.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton35.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton35.InputButton = CogwheelSlimDX.InputButton.KeyboardSlash;
-			this.keyButton35.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton35.InputButton = BeeDevelopment.Cogwheel.InputButton.KeyboardSlash;
+			this.keyButton35.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton35.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton35.Location = new System.Drawing.Point(241, 59);
-			this.keyButton35.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton35.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton35.Name = "keyButton35";
 			this.keyButton35.Size = new System.Drawing.Size(99, 22);
 			this.keyButton35.TabIndex = 29;
 			this.keyButton35.Text = "None";
 			this.keyButton35.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton35.UseVisualStyleBackColor = true;
-			this.keyButton35.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton35.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton36
 			// 
@@ -422,18 +422,18 @@
 			this.keyButton36.ControllerIndex = 0;
 			this.keyButton36.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton36.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton36.InputButton = CogwheelSlimDX.InputButton.KeyboardPi;
-			this.keyButton36.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton36.InputButton = BeeDevelopment.Cogwheel.InputButton.KeyboardPi;
+			this.keyButton36.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton36.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton36.Location = new System.Drawing.Point(241, 87);
-			this.keyButton36.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton36.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton36.Name = "keyButton36";
 			this.keyButton36.Size = new System.Drawing.Size(99, 22);
 			this.keyButton36.TabIndex = 30;
 			this.keyButton36.Text = "None";
 			this.keyButton36.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton36.UseVisualStyleBackColor = true;
-			this.keyButton36.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton36.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// label12
 			// 
@@ -482,18 +482,18 @@
 			this.keyButton30.ControllerIndex = 0;
 			this.keyButton30.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton30.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton30.InputButton = CogwheelSlimDX.InputButton.KeyboardYen;
-			this.keyButton30.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton30.InputButton = BeeDevelopment.Cogwheel.InputButton.KeyboardYen;
+			this.keyButton30.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton30.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton30.Location = new System.Drawing.Point(241, 115);
-			this.keyButton30.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton30.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton30.Name = "keyButton30";
 			this.keyButton30.Size = new System.Drawing.Size(99, 22);
 			this.keyButton30.TabIndex = 24;
 			this.keyButton30.Text = "None";
 			this.keyButton30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton30.UseVisualStyleBackColor = true;
-			this.keyButton30.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton30.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// label6
 			// 
@@ -532,18 +532,18 @@
 			this.keyButton31.ControllerIndex = 0;
 			this.keyButton31.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton31.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton31.InputButton = CogwheelSlimDX.InputButton.KeyboardOpenBrackets;
-			this.keyButton31.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton31.InputButton = BeeDevelopment.Cogwheel.InputButton.KeyboardOpenBrackets;
+			this.keyButton31.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton31.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton31.Location = new System.Drawing.Point(71, 87);
-			this.keyButton31.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton31.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton31.Name = "keyButton31";
 			this.keyButton31.Size = new System.Drawing.Size(96, 22);
 			this.keyButton31.TabIndex = 25;
 			this.keyButton31.Text = "None";
 			this.keyButton31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton31.UseVisualStyleBackColor = true;
-			this.keyButton31.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton31.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton32
 			// 
@@ -552,18 +552,18 @@
 			this.keyButton32.ControllerIndex = 0;
 			this.keyButton32.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton32.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton32.InputButton = CogwheelSlimDX.InputButton.KeyboardCloseBrackets;
-			this.keyButton32.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton32.InputButton = BeeDevelopment.Cogwheel.InputButton.KeyboardCloseBrackets;
+			this.keyButton32.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton32.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton32.Location = new System.Drawing.Point(71, 115);
-			this.keyButton32.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton32.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton32.Name = "keyButton32";
 			this.keyButton32.Size = new System.Drawing.Size(96, 22);
 			this.keyButton32.TabIndex = 26;
 			this.keyButton32.Text = "None";
 			this.keyButton32.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton32.UseVisualStyleBackColor = true;
-			this.keyButton32.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton32.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// label9
 			// 
@@ -649,18 +649,18 @@
 			this.keyButton25.ControllerIndex = 0;
 			this.keyButton25.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton25.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton25.InputButton = CogwheelSlimDX.InputButton.KeyboardFunc;
-			this.keyButton25.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton25.InputButton = BeeDevelopment.Cogwheel.InputButton.KeyboardFunc;
+			this.keyButton25.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton25.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton25.Location = new System.Drawing.Point(71, 3);
-			this.keyButton25.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton25.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton25.Name = "keyButton25";
 			this.keyButton25.Size = new System.Drawing.Size(96, 22);
 			this.keyButton25.TabIndex = 6;
 			this.keyButton25.Text = "None";
 			this.keyButton25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton25.UseVisualStyleBackColor = true;
-			this.keyButton25.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton25.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// label2
 			// 
@@ -709,18 +709,18 @@
 			this.keyButton28.ControllerIndex = 0;
 			this.keyButton28.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton28.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton28.InputButton = CogwheelSlimDX.InputButton.KeyboardGraph;
-			this.keyButton28.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton28.InputButton = BeeDevelopment.Cogwheel.InputButton.KeyboardGraph;
+			this.keyButton28.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton28.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton28.Location = new System.Drawing.Point(241, 3);
-			this.keyButton28.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton28.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton28.Name = "keyButton28";
 			this.keyButton28.Size = new System.Drawing.Size(99, 22);
 			this.keyButton28.TabIndex = 9;
 			this.keyButton28.Text = "None";
 			this.keyButton28.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton28.UseVisualStyleBackColor = true;
-			this.keyButton28.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton28.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton27
 			// 
@@ -729,18 +729,18 @@
 			this.keyButton27.ControllerIndex = 0;
 			this.keyButton27.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton27.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton27.InputButton = CogwheelSlimDX.InputButton.KeyboardShift;
-			this.keyButton27.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton27.InputButton = BeeDevelopment.Cogwheel.InputButton.KeyboardShift;
+			this.keyButton27.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton27.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton27.Location = new System.Drawing.Point(71, 59);
-			this.keyButton27.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton27.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton27.Name = "keyButton27";
 			this.keyButton27.Size = new System.Drawing.Size(96, 22);
 			this.keyButton27.TabIndex = 8;
 			this.keyButton27.Text = "None";
 			this.keyButton27.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton27.UseVisualStyleBackColor = true;
-			this.keyButton27.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton27.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton29
 			// 
@@ -749,18 +749,18 @@
 			this.keyButton29.ControllerIndex = 0;
 			this.keyButton29.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton29.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton29.InputButton = CogwheelSlimDX.InputButton.KeyboardEngDiers;
-			this.keyButton29.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton29.InputButton = BeeDevelopment.Cogwheel.InputButton.KeyboardEngDiers;
+			this.keyButton29.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton29.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton29.Location = new System.Drawing.Point(241, 31);
-			this.keyButton29.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton29.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton29.Name = "keyButton29";
 			this.keyButton29.Size = new System.Drawing.Size(99, 22);
 			this.keyButton29.TabIndex = 10;
 			this.keyButton29.Text = "None";
 			this.keyButton29.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton29.UseVisualStyleBackColor = true;
-			this.keyButton29.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton29.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton26
 			// 
@@ -769,18 +769,18 @@
 			this.keyButton26.ControllerIndex = 0;
 			this.keyButton26.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton26.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton26.InputButton = CogwheelSlimDX.InputButton.KeyboardControl;
-			this.keyButton26.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton26.InputButton = BeeDevelopment.Cogwheel.InputButton.KeyboardControl;
+			this.keyButton26.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton26.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton26.Location = new System.Drawing.Point(71, 31);
-			this.keyButton26.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton26.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton26.Name = "keyButton26";
 			this.keyButton26.Size = new System.Drawing.Size(96, 22);
 			this.keyButton26.TabIndex = 7;
 			this.keyButton26.Text = "None";
 			this.keyButton26.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton26.UseVisualStyleBackColor = true;
-			this.keyButton26.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton26.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// label18
 			// 
@@ -809,18 +809,18 @@
 			this.keyButton42.ControllerIndex = 0;
 			this.keyButton42.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton42.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton42.InputButton = CogwheelSlimDX.InputButton.KeyboardHomeClr;
-			this.keyButton42.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton42.InputButton = BeeDevelopment.Cogwheel.InputButton.KeyboardHomeClr;
+			this.keyButton42.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton42.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton42.Location = new System.Drawing.Point(241, 59);
-			this.keyButton42.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton42.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton42.Name = "keyButton42";
 			this.keyButton42.Size = new System.Drawing.Size(99, 22);
 			this.keyButton42.TabIndex = 10;
 			this.keyButton42.Text = "None";
 			this.keyButton42.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton42.UseVisualStyleBackColor = true;
-			this.keyButton42.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton42.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton43
 			// 
@@ -829,18 +829,18 @@
 			this.keyButton43.ControllerIndex = 0;
 			this.keyButton43.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton43.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton43.InputButton = CogwheelSlimDX.InputButton.KeyboardInsDel;
-			this.keyButton43.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton43.InputButton = BeeDevelopment.Cogwheel.InputButton.KeyboardInsDel;
+			this.keyButton43.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton43.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton43.Location = new System.Drawing.Point(241, 87);
-			this.keyButton43.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton43.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton43.Name = "keyButton43";
 			this.keyButton43.Size = new System.Drawing.Size(99, 22);
 			this.keyButton43.TabIndex = 10;
 			this.keyButton43.Text = "None";
 			this.keyButton43.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton43.UseVisualStyleBackColor = true;
-			this.keyButton43.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton43.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// label20
 			// 
@@ -859,18 +859,18 @@
 			this.keyButton44.ControllerIndex = 0;
 			this.keyButton44.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton44.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton44.InputButton = CogwheelSlimDX.InputButton.KeyboardBreak;
-			this.keyButton44.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton44.InputButton = BeeDevelopment.Cogwheel.InputButton.KeyboardBreak;
+			this.keyButton44.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton44.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton44.Location = new System.Drawing.Point(71, 87);
-			this.keyButton44.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton44.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton44.Name = "keyButton44";
 			this.keyButton44.Size = new System.Drawing.Size(96, 22);
 			this.keyButton44.TabIndex = 10;
 			this.keyButton44.Text = "None";
 			this.keyButton44.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton44.UseVisualStyleBackColor = true;
-			this.keyButton44.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton44.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// StandardConfigurationPanel
 			// 
@@ -997,18 +997,18 @@
 			this.Player1TL.ControllerIndex = 0;
 			this.Player1TL.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player1TL.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.Player1TL.InputButton = CogwheelSlimDX.InputButton.Trigger1;
-			this.Player1TL.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.Player1TL.InputButton = BeeDevelopment.Cogwheel.InputButton.Trigger1;
+			this.Player1TL.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.Player1TL.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.Player1TL.Location = new System.Drawing.Point(117, 3);
-			this.Player1TL.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.Player1TL.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.Player1TL.Name = "Player1TL";
 			this.Player1TL.Size = new System.Drawing.Size(108, 27);
 			this.Player1TL.TabIndex = 6;
 			this.Player1TL.Text = "None";
 			this.Player1TL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.Player1TL.UseVisualStyleBackColor = true;
-			this.Player1TL.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.Player1TL.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// Player1TR
 			// 
@@ -1017,18 +1017,18 @@
 			this.Player1TR.ControllerIndex = 0;
 			this.Player1TR.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player1TR.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.Player1TR.InputButton = CogwheelSlimDX.InputButton.Trigger2;
-			this.Player1TR.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.Player1TR.InputButton = BeeDevelopment.Cogwheel.InputButton.Trigger2;
+			this.Player1TR.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.Player1TR.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.Player1TR.Location = new System.Drawing.Point(117, 36);
-			this.Player1TR.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.Player1TR.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.Player1TR.Name = "Player1TR";
 			this.Player1TR.Size = new System.Drawing.Size(108, 27);
 			this.Player1TR.TabIndex = 7;
 			this.Player1TR.Text = "None";
 			this.Player1TR.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.Player1TR.UseVisualStyleBackColor = true;
-			this.Player1TR.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.Player1TR.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// Player1Up
 			// 
@@ -1037,18 +1037,18 @@
 			this.Player1Up.ControllerIndex = 0;
 			this.Player1Up.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player1Up.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.Player1Up.InputButton = CogwheelSlimDX.InputButton.Up;
-			this.Player1Up.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.Player1Up.InputButton = BeeDevelopment.Cogwheel.InputButton.Up;
+			this.Player1Up.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.Player1Up.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.Player1Up.Location = new System.Drawing.Point(117, 69);
-			this.Player1Up.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.Player1Up.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.Player1Up.Name = "Player1Up";
 			this.Player1Up.Size = new System.Drawing.Size(108, 27);
 			this.Player1Up.TabIndex = 8;
 			this.Player1Up.Text = "None";
 			this.Player1Up.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.Player1Up.UseVisualStyleBackColor = true;
-			this.Player1Up.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.Player1Up.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// Player1Down
 			// 
@@ -1057,18 +1057,18 @@
 			this.Player1Down.ControllerIndex = 0;
 			this.Player1Down.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player1Down.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.Player1Down.InputButton = CogwheelSlimDX.InputButton.Down;
-			this.Player1Down.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.Player1Down.InputButton = BeeDevelopment.Cogwheel.InputButton.Down;
+			this.Player1Down.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.Player1Down.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.Player1Down.Location = new System.Drawing.Point(117, 102);
-			this.Player1Down.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.Player1Down.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.Player1Down.Name = "Player1Down";
 			this.Player1Down.Size = new System.Drawing.Size(108, 27);
 			this.Player1Down.TabIndex = 9;
 			this.Player1Down.Text = "None";
 			this.Player1Down.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.Player1Down.UseVisualStyleBackColor = true;
-			this.Player1Down.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.Player1Down.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// Player1Left
 			// 
@@ -1077,18 +1077,18 @@
 			this.Player1Left.ControllerIndex = 0;
 			this.Player1Left.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player1Left.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.Player1Left.InputButton = CogwheelSlimDX.InputButton.Left;
-			this.Player1Left.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.Player1Left.InputButton = BeeDevelopment.Cogwheel.InputButton.Left;
+			this.Player1Left.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.Player1Left.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.Player1Left.Location = new System.Drawing.Point(117, 135);
-			this.Player1Left.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.Player1Left.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.Player1Left.Name = "Player1Left";
 			this.Player1Left.Size = new System.Drawing.Size(108, 27);
 			this.Player1Left.TabIndex = 10;
 			this.Player1Left.Text = "None";
 			this.Player1Left.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.Player1Left.UseVisualStyleBackColor = true;
-			this.Player1Left.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.Player1Left.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// Player1Right
 			// 
@@ -1097,18 +1097,18 @@
 			this.Player1Right.ControllerIndex = 0;
 			this.Player1Right.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player1Right.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.Player1Right.InputButton = CogwheelSlimDX.InputButton.Right;
-			this.Player1Right.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.Player1Right.InputButton = BeeDevelopment.Cogwheel.InputButton.Right;
+			this.Player1Right.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.Player1Right.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.Player1Right.Location = new System.Drawing.Point(117, 168);
-			this.Player1Right.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.Player1Right.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.Player1Right.Name = "Player1Right";
 			this.Player1Right.Size = new System.Drawing.Size(108, 29);
 			this.Player1Right.TabIndex = 12;
 			this.Player1Right.Text = "None";
 			this.Player1Right.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.Player1Right.UseVisualStyleBackColor = true;
-			this.Player1Right.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.Player1Right.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// Player2TL
 			// 
@@ -1117,18 +1117,18 @@
 			this.Player2TL.ControllerIndex = 1;
 			this.Player2TL.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player2TL.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.Player2TL.InputButton = CogwheelSlimDX.InputButton.Trigger1;
-			this.Player2TL.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.Player2TL.InputButton = BeeDevelopment.Cogwheel.InputButton.Trigger1;
+			this.Player2TL.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.Player2TL.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.Player2TL.Location = new System.Drawing.Point(231, 3);
-			this.Player2TL.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.Player2TL.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.Player2TL.Name = "Player2TL";
 			this.Player2TL.Size = new System.Drawing.Size(109, 27);
 			this.Player2TL.TabIndex = 11;
 			this.Player2TL.Text = "None";
 			this.Player2TL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.Player2TL.UseVisualStyleBackColor = true;
-			this.Player2TL.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.Player2TL.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// Player2TR
 			// 
@@ -1137,18 +1137,18 @@
 			this.Player2TR.ControllerIndex = 1;
 			this.Player2TR.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player2TR.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.Player2TR.InputButton = CogwheelSlimDX.InputButton.Trigger2;
-			this.Player2TR.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.Player2TR.InputButton = BeeDevelopment.Cogwheel.InputButton.Trigger2;
+			this.Player2TR.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.Player2TR.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.Player2TR.Location = new System.Drawing.Point(231, 36);
-			this.Player2TR.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.Player2TR.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.Player2TR.Name = "Player2TR";
 			this.Player2TR.Size = new System.Drawing.Size(109, 27);
 			this.Player2TR.TabIndex = 13;
 			this.Player2TR.Text = "None";
 			this.Player2TR.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.Player2TR.UseVisualStyleBackColor = true;
-			this.Player2TR.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.Player2TR.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// Player2Up
 			// 
@@ -1157,18 +1157,18 @@
 			this.Player2Up.ControllerIndex = 1;
 			this.Player2Up.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player2Up.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.Player2Up.InputButton = CogwheelSlimDX.InputButton.Up;
-			this.Player2Up.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.Player2Up.InputButton = BeeDevelopment.Cogwheel.InputButton.Up;
+			this.Player2Up.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.Player2Up.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.Player2Up.Location = new System.Drawing.Point(231, 69);
-			this.Player2Up.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.Player2Up.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.Player2Up.Name = "Player2Up";
 			this.Player2Up.Size = new System.Drawing.Size(109, 27);
 			this.Player2Up.TabIndex = 14;
 			this.Player2Up.Text = "None";
 			this.Player2Up.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.Player2Up.UseVisualStyleBackColor = true;
-			this.Player2Up.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.Player2Up.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// Player2Down
 			// 
@@ -1177,18 +1177,18 @@
 			this.Player2Down.ControllerIndex = 1;
 			this.Player2Down.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player2Down.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.Player2Down.InputButton = CogwheelSlimDX.InputButton.Down;
-			this.Player2Down.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.Player2Down.InputButton = BeeDevelopment.Cogwheel.InputButton.Down;
+			this.Player2Down.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.Player2Down.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.Player2Down.Location = new System.Drawing.Point(231, 102);
-			this.Player2Down.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.Player2Down.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.Player2Down.Name = "Player2Down";
 			this.Player2Down.Size = new System.Drawing.Size(109, 27);
 			this.Player2Down.TabIndex = 15;
 			this.Player2Down.Text = "None";
 			this.Player2Down.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.Player2Down.UseVisualStyleBackColor = true;
-			this.Player2Down.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.Player2Down.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// Player2Left
 			// 
@@ -1197,18 +1197,18 @@
 			this.Player2Left.ControllerIndex = 1;
 			this.Player2Left.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player2Left.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.Player2Left.InputButton = CogwheelSlimDX.InputButton.Left;
-			this.Player2Left.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.Player2Left.InputButton = BeeDevelopment.Cogwheel.InputButton.Left;
+			this.Player2Left.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.Player2Left.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.Player2Left.Location = new System.Drawing.Point(231, 135);
-			this.Player2Left.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.Player2Left.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.Player2Left.Name = "Player2Left";
 			this.Player2Left.Size = new System.Drawing.Size(109, 27);
 			this.Player2Left.TabIndex = 16;
 			this.Player2Left.Text = "None";
 			this.Player2Left.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.Player2Left.UseVisualStyleBackColor = true;
-			this.Player2Left.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.Player2Left.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// Player2Right
 			// 
@@ -1217,18 +1217,18 @@
 			this.Player2Right.ControllerIndex = 1;
 			this.Player2Right.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Player2Right.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.Player2Right.InputButton = CogwheelSlimDX.InputButton.Right;
-			this.Player2Right.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.Player2Right.InputButton = BeeDevelopment.Cogwheel.InputButton.Right;
+			this.Player2Right.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.Player2Right.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.Player2Right.Location = new System.Drawing.Point(231, 168);
-			this.Player2Right.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.Player2Right.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.Player2Right.Name = "Player2Right";
 			this.Player2Right.Size = new System.Drawing.Size(109, 29);
 			this.Player2Right.TabIndex = 17;
 			this.Player2Right.Text = "None";
 			this.Player2Right.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.Player2Right.UseVisualStyleBackColor = true;
-			this.Player2Right.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.Player2Right.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// ConsoleGroup
 			// 
@@ -1299,18 +1299,18 @@
 			this.ConsolePause.ControllerIndex = 0;
 			this.ConsolePause.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.ConsolePause.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.ConsolePause.InputButton = CogwheelSlimDX.InputButton.Pause;
-			this.ConsolePause.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.ConsolePause.InputButton = BeeDevelopment.Cogwheel.InputButton.Pause;
+			this.ConsolePause.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.ConsolePause.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.ConsolePause.Location = new System.Drawing.Point(117, 3);
-			this.ConsolePause.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.ConsolePause.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.ConsolePause.Name = "ConsolePause";
 			this.ConsolePause.Size = new System.Drawing.Size(223, 26);
 			this.ConsolePause.TabIndex = 18;
 			this.ConsolePause.Text = "None";
 			this.ConsolePause.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.ConsolePause.UseVisualStyleBackColor = true;
-			this.ConsolePause.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.ConsolePause.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// ConsoleReset
 			// 
@@ -1319,18 +1319,18 @@
 			this.ConsoleReset.ControllerIndex = 0;
 			this.ConsoleReset.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.ConsoleReset.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.ConsoleReset.InputButton = CogwheelSlimDX.InputButton.Reset;
-			this.ConsoleReset.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.ConsoleReset.InputButton = BeeDevelopment.Cogwheel.InputButton.Reset;
+			this.ConsoleReset.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.ConsoleReset.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.ConsoleReset.Location = new System.Drawing.Point(117, 35);
-			this.ConsoleReset.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.ConsoleReset.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.ConsoleReset.Name = "ConsoleReset";
 			this.ConsoleReset.Size = new System.Drawing.Size(223, 26);
 			this.ConsoleReset.TabIndex = 20;
 			this.ConsoleReset.Text = "None";
 			this.ConsoleReset.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.ConsoleReset.UseVisualStyleBackColor = true;
-			this.ConsoleReset.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.ConsoleReset.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// ConsoleStart
 			// 
@@ -1339,18 +1339,18 @@
 			this.ConsoleStart.ControllerIndex = 0;
 			this.ConsoleStart.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.ConsoleStart.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.ConsoleStart.InputButton = CogwheelSlimDX.InputButton.Start;
-			this.ConsoleStart.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.ConsoleStart.InputButton = BeeDevelopment.Cogwheel.InputButton.Start;
+			this.ConsoleStart.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.ConsoleStart.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.ConsoleStart.Location = new System.Drawing.Point(117, 67);
-			this.ConsoleStart.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.ConsoleStart.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.ConsoleStart.Name = "ConsoleStart";
 			this.ConsoleStart.Size = new System.Drawing.Size(223, 26);
 			this.ConsoleStart.TabIndex = 19;
 			this.ConsoleStart.Text = "None";
 			this.ConsoleStart.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.ConsoleStart.UseVisualStyleBackColor = true;
-			this.ConsoleStart.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.ConsoleStart.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// ColecoVisionConfigurationPanel
 			// 
@@ -1451,18 +1451,18 @@
 			this.keyButton23.ControllerIndex = 0;
 			this.keyButton23.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton23.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton23.InputButton = CogwheelSlimDX.InputButton.Hash;
-			this.keyButton23.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton23.InputButton = BeeDevelopment.Cogwheel.InputButton.Hash;
+			this.keyButton23.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton23.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton23.Location = new System.Drawing.Point(117, 289);
-			this.keyButton23.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton23.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton23.Name = "keyButton23";
 			this.keyButton23.Size = new System.Drawing.Size(108, 20);
 			this.keyButton23.TabIndex = 37;
 			this.keyButton23.Text = "None";
 			this.keyButton23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton23.UseVisualStyleBackColor = true;
-			this.keyButton23.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton23.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton24
 			// 
@@ -1471,18 +1471,18 @@
 			this.keyButton24.ControllerIndex = 1;
 			this.keyButton24.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton24.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton24.InputButton = CogwheelSlimDX.InputButton.Hash;
-			this.keyButton24.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton24.InputButton = BeeDevelopment.Cogwheel.InputButton.Hash;
+			this.keyButton24.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton24.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton24.Location = new System.Drawing.Point(231, 289);
-			this.keyButton24.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton24.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton24.Name = "keyButton24";
 			this.keyButton24.Size = new System.Drawing.Size(109, 20);
 			this.keyButton24.TabIndex = 38;
 			this.keyButton24.Text = "None";
 			this.keyButton24.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton24.UseVisualStyleBackColor = true;
-			this.keyButton24.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton24.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// LabelNum1
 			// 
@@ -1551,18 +1551,18 @@
 			this.keyButton1.ControllerIndex = 0;
 			this.keyButton1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton1.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton1.InputButton = CogwheelSlimDX.InputButton.Number1;
-			this.keyButton1.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton1.InputButton = BeeDevelopment.Cogwheel.InputButton.Number1;
+			this.keyButton1.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton1.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton1.Location = new System.Drawing.Point(117, 3);
-			this.keyButton1.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton1.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton1.Name = "keyButton1";
 			this.keyButton1.Size = new System.Drawing.Size(108, 20);
 			this.keyButton1.TabIndex = 6;
 			this.keyButton1.Text = "None";
 			this.keyButton1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton1.UseVisualStyleBackColor = true;
-			this.keyButton1.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton1.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton2
 			// 
@@ -1571,18 +1571,18 @@
 			this.keyButton2.ControllerIndex = 0;
 			this.keyButton2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton2.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton2.InputButton = CogwheelSlimDX.InputButton.Number2;
-			this.keyButton2.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton2.InputButton = BeeDevelopment.Cogwheel.InputButton.Number2;
+			this.keyButton2.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton2.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton2.Location = new System.Drawing.Point(117, 29);
-			this.keyButton2.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton2.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton2.Name = "keyButton2";
 			this.keyButton2.Size = new System.Drawing.Size(108, 20);
 			this.keyButton2.TabIndex = 7;
 			this.keyButton2.Text = "None";
 			this.keyButton2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton2.UseVisualStyleBackColor = true;
-			this.keyButton2.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton2.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton3
 			// 
@@ -1591,18 +1591,18 @@
 			this.keyButton3.ControllerIndex = 0;
 			this.keyButton3.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton3.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton3.InputButton = CogwheelSlimDX.InputButton.Number3;
-			this.keyButton3.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton3.InputButton = BeeDevelopment.Cogwheel.InputButton.Number3;
+			this.keyButton3.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton3.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton3.Location = new System.Drawing.Point(117, 55);
-			this.keyButton3.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton3.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton3.Name = "keyButton3";
 			this.keyButton3.Size = new System.Drawing.Size(108, 20);
 			this.keyButton3.TabIndex = 8;
 			this.keyButton3.Text = "None";
 			this.keyButton3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton3.UseVisualStyleBackColor = true;
-			this.keyButton3.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton3.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton4
 			// 
@@ -1611,18 +1611,18 @@
 			this.keyButton4.ControllerIndex = 0;
 			this.keyButton4.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton4.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton4.InputButton = CogwheelSlimDX.InputButton.Number4;
-			this.keyButton4.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton4.InputButton = BeeDevelopment.Cogwheel.InputButton.Number4;
+			this.keyButton4.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton4.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton4.Location = new System.Drawing.Point(117, 81);
-			this.keyButton4.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton4.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton4.Name = "keyButton4";
 			this.keyButton4.Size = new System.Drawing.Size(108, 20);
 			this.keyButton4.TabIndex = 9;
 			this.keyButton4.Text = "None";
 			this.keyButton4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton4.UseVisualStyleBackColor = true;
-			this.keyButton4.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton4.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton5
 			// 
@@ -1631,18 +1631,18 @@
 			this.keyButton5.ControllerIndex = 0;
 			this.keyButton5.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton5.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton5.InputButton = CogwheelSlimDX.InputButton.Number5;
-			this.keyButton5.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton5.InputButton = BeeDevelopment.Cogwheel.InputButton.Number5;
+			this.keyButton5.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton5.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton5.Location = new System.Drawing.Point(117, 107);
-			this.keyButton5.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton5.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton5.Name = "keyButton5";
 			this.keyButton5.Size = new System.Drawing.Size(108, 20);
 			this.keyButton5.TabIndex = 10;
 			this.keyButton5.Text = "None";
 			this.keyButton5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton5.UseVisualStyleBackColor = true;
-			this.keyButton5.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton5.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton6
 			// 
@@ -1651,18 +1651,18 @@
 			this.keyButton6.ControllerIndex = 0;
 			this.keyButton6.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton6.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton6.InputButton = CogwheelSlimDX.InputButton.Number6;
-			this.keyButton6.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton6.InputButton = BeeDevelopment.Cogwheel.InputButton.Number6;
+			this.keyButton6.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton6.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton6.Location = new System.Drawing.Point(117, 133);
-			this.keyButton6.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton6.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton6.Name = "keyButton6";
 			this.keyButton6.Size = new System.Drawing.Size(108, 20);
 			this.keyButton6.TabIndex = 12;
 			this.keyButton6.Text = "None";
 			this.keyButton6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton6.UseVisualStyleBackColor = true;
-			this.keyButton6.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton6.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton7
 			// 
@@ -1671,18 +1671,18 @@
 			this.keyButton7.ControllerIndex = 1;
 			this.keyButton7.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton7.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton7.InputButton = CogwheelSlimDX.InputButton.Number1;
-			this.keyButton7.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton7.InputButton = BeeDevelopment.Cogwheel.InputButton.Number1;
+			this.keyButton7.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton7.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton7.Location = new System.Drawing.Point(231, 3);
-			this.keyButton7.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton7.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton7.Name = "keyButton7";
 			this.keyButton7.Size = new System.Drawing.Size(109, 20);
 			this.keyButton7.TabIndex = 11;
 			this.keyButton7.Text = "None";
 			this.keyButton7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton7.UseVisualStyleBackColor = true;
-			this.keyButton7.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton7.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton8
 			// 
@@ -1691,18 +1691,18 @@
 			this.keyButton8.ControllerIndex = 1;
 			this.keyButton8.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton8.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton8.InputButton = CogwheelSlimDX.InputButton.Number2;
-			this.keyButton8.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton8.InputButton = BeeDevelopment.Cogwheel.InputButton.Number2;
+			this.keyButton8.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton8.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton8.Location = new System.Drawing.Point(231, 29);
-			this.keyButton8.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton8.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton8.Name = "keyButton8";
 			this.keyButton8.Size = new System.Drawing.Size(109, 20);
 			this.keyButton8.TabIndex = 13;
 			this.keyButton8.Text = "None";
 			this.keyButton8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton8.UseVisualStyleBackColor = true;
-			this.keyButton8.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton8.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton9
 			// 
@@ -1711,18 +1711,18 @@
 			this.keyButton9.ControllerIndex = 1;
 			this.keyButton9.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton9.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton9.InputButton = CogwheelSlimDX.InputButton.Number3;
-			this.keyButton9.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton9.InputButton = BeeDevelopment.Cogwheel.InputButton.Number3;
+			this.keyButton9.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton9.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton9.Location = new System.Drawing.Point(231, 55);
-			this.keyButton9.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton9.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton9.Name = "keyButton9";
 			this.keyButton9.Size = new System.Drawing.Size(109, 20);
 			this.keyButton9.TabIndex = 14;
 			this.keyButton9.Text = "None";
 			this.keyButton9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton9.UseVisualStyleBackColor = true;
-			this.keyButton9.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton9.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton10
 			// 
@@ -1731,18 +1731,18 @@
 			this.keyButton10.ControllerIndex = 1;
 			this.keyButton10.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton10.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton10.InputButton = CogwheelSlimDX.InputButton.Number4;
-			this.keyButton10.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton10.InputButton = BeeDevelopment.Cogwheel.InputButton.Number4;
+			this.keyButton10.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton10.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton10.Location = new System.Drawing.Point(231, 81);
-			this.keyButton10.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton10.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton10.Name = "keyButton10";
 			this.keyButton10.Size = new System.Drawing.Size(109, 20);
 			this.keyButton10.TabIndex = 15;
 			this.keyButton10.Text = "None";
 			this.keyButton10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton10.UseVisualStyleBackColor = true;
-			this.keyButton10.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton10.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton11
 			// 
@@ -1751,18 +1751,18 @@
 			this.keyButton11.ControllerIndex = 1;
 			this.keyButton11.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton11.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton11.InputButton = CogwheelSlimDX.InputButton.Number5;
-			this.keyButton11.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton11.InputButton = BeeDevelopment.Cogwheel.InputButton.Number5;
+			this.keyButton11.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton11.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton11.Location = new System.Drawing.Point(231, 107);
-			this.keyButton11.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton11.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton11.Name = "keyButton11";
 			this.keyButton11.Size = new System.Drawing.Size(109, 20);
 			this.keyButton11.TabIndex = 16;
 			this.keyButton11.Text = "None";
 			this.keyButton11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton11.UseVisualStyleBackColor = true;
-			this.keyButton11.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton11.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton12
 			// 
@@ -1771,18 +1771,18 @@
 			this.keyButton12.ControllerIndex = 1;
 			this.keyButton12.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton12.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton12.InputButton = CogwheelSlimDX.InputButton.Number6;
-			this.keyButton12.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton12.InputButton = BeeDevelopment.Cogwheel.InputButton.Number6;
+			this.keyButton12.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton12.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton12.Location = new System.Drawing.Point(231, 133);
-			this.keyButton12.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton12.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton12.Name = "keyButton12";
 			this.keyButton12.Size = new System.Drawing.Size(109, 20);
 			this.keyButton12.TabIndex = 17;
 			this.keyButton12.Text = "None";
 			this.keyButton12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton12.UseVisualStyleBackColor = true;
-			this.keyButton12.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton12.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// LabelNum7
 			// 
@@ -1801,18 +1801,18 @@
 			this.keyButton13.ControllerIndex = 0;
 			this.keyButton13.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton13.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton13.InputButton = CogwheelSlimDX.InputButton.Number7;
-			this.keyButton13.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton13.InputButton = BeeDevelopment.Cogwheel.InputButton.Number7;
+			this.keyButton13.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton13.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton13.Location = new System.Drawing.Point(117, 159);
-			this.keyButton13.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton13.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton13.Name = "keyButton13";
 			this.keyButton13.Size = new System.Drawing.Size(108, 20);
 			this.keyButton13.TabIndex = 22;
 			this.keyButton13.Text = "None";
 			this.keyButton13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton13.UseVisualStyleBackColor = true;
-			this.keyButton13.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton13.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton14
 			// 
@@ -1821,18 +1821,18 @@
 			this.keyButton14.ControllerIndex = 1;
 			this.keyButton14.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton14.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton14.InputButton = CogwheelSlimDX.InputButton.Number7;
-			this.keyButton14.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton14.InputButton = BeeDevelopment.Cogwheel.InputButton.Number7;
+			this.keyButton14.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton14.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton14.Location = new System.Drawing.Point(231, 159);
-			this.keyButton14.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton14.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton14.Name = "keyButton14";
 			this.keyButton14.Size = new System.Drawing.Size(109, 20);
 			this.keyButton14.TabIndex = 23;
 			this.keyButton14.Text = "None";
 			this.keyButton14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton14.UseVisualStyleBackColor = true;
-			this.keyButton14.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton14.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// LabelNum8
 			// 
@@ -1851,18 +1851,18 @@
 			this.keyButton15.ControllerIndex = 0;
 			this.keyButton15.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton15.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton15.InputButton = CogwheelSlimDX.InputButton.Number8;
-			this.keyButton15.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton15.InputButton = BeeDevelopment.Cogwheel.InputButton.Number8;
+			this.keyButton15.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton15.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton15.Location = new System.Drawing.Point(117, 185);
-			this.keyButton15.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton15.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton15.Name = "keyButton15";
 			this.keyButton15.Size = new System.Drawing.Size(108, 20);
 			this.keyButton15.TabIndex = 25;
 			this.keyButton15.Text = "None";
 			this.keyButton15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton15.UseVisualStyleBackColor = true;
-			this.keyButton15.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton15.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton16
 			// 
@@ -1871,18 +1871,18 @@
 			this.keyButton16.ControllerIndex = 1;
 			this.keyButton16.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton16.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton16.InputButton = CogwheelSlimDX.InputButton.Number8;
-			this.keyButton16.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton16.InputButton = BeeDevelopment.Cogwheel.InputButton.Number8;
+			this.keyButton16.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton16.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton16.Location = new System.Drawing.Point(231, 185);
-			this.keyButton16.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton16.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton16.Name = "keyButton16";
 			this.keyButton16.Size = new System.Drawing.Size(109, 20);
 			this.keyButton16.TabIndex = 26;
 			this.keyButton16.Text = "None";
 			this.keyButton16.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton16.UseVisualStyleBackColor = true;
-			this.keyButton16.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton16.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// LabelNum9
 			// 
@@ -1901,18 +1901,18 @@
 			this.keyButton17.ControllerIndex = 0;
 			this.keyButton17.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton17.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton17.InputButton = CogwheelSlimDX.InputButton.Number9;
-			this.keyButton17.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton17.InputButton = BeeDevelopment.Cogwheel.InputButton.Number9;
+			this.keyButton17.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton17.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton17.Location = new System.Drawing.Point(117, 211);
-			this.keyButton17.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton17.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton17.Name = "keyButton17";
 			this.keyButton17.Size = new System.Drawing.Size(108, 20);
 			this.keyButton17.TabIndex = 28;
 			this.keyButton17.Text = "None";
 			this.keyButton17.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton17.UseVisualStyleBackColor = true;
-			this.keyButton17.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton17.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton18
 			// 
@@ -1921,18 +1921,18 @@
 			this.keyButton18.ControllerIndex = 1;
 			this.keyButton18.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton18.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton18.InputButton = CogwheelSlimDX.InputButton.Number9;
-			this.keyButton18.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton18.InputButton = BeeDevelopment.Cogwheel.InputButton.Number9;
+			this.keyButton18.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton18.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton18.Location = new System.Drawing.Point(231, 211);
-			this.keyButton18.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton18.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton18.Name = "keyButton18";
 			this.keyButton18.Size = new System.Drawing.Size(109, 20);
 			this.keyButton18.TabIndex = 29;
 			this.keyButton18.Text = "None";
 			this.keyButton18.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton18.UseVisualStyleBackColor = true;
-			this.keyButton18.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton18.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// LabelNum0
 			// 
@@ -1951,18 +1951,18 @@
 			this.keyButton19.ControllerIndex = 0;
 			this.keyButton19.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton19.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton19.InputButton = CogwheelSlimDX.InputButton.Number0;
-			this.keyButton19.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton19.InputButton = BeeDevelopment.Cogwheel.InputButton.Number0;
+			this.keyButton19.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton19.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton19.Location = new System.Drawing.Point(117, 237);
-			this.keyButton19.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton19.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton19.Name = "keyButton19";
 			this.keyButton19.Size = new System.Drawing.Size(108, 20);
 			this.keyButton19.TabIndex = 31;
 			this.keyButton19.Text = "None";
 			this.keyButton19.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton19.UseVisualStyleBackColor = true;
-			this.keyButton19.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton19.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton20
 			// 
@@ -1971,18 +1971,18 @@
 			this.keyButton20.ControllerIndex = 1;
 			this.keyButton20.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton20.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton20.InputButton = CogwheelSlimDX.InputButton.Number0;
-			this.keyButton20.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton20.InputButton = BeeDevelopment.Cogwheel.InputButton.Number0;
+			this.keyButton20.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton20.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton20.Location = new System.Drawing.Point(231, 237);
-			this.keyButton20.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton20.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton20.Name = "keyButton20";
 			this.keyButton20.Size = new System.Drawing.Size(109, 20);
 			this.keyButton20.TabIndex = 32;
 			this.keyButton20.Text = "None";
 			this.keyButton20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton20.UseVisualStyleBackColor = true;
-			this.keyButton20.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton20.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// LabelStar
 			// 
@@ -2001,18 +2001,18 @@
 			this.keyButton21.ControllerIndex = 0;
 			this.keyButton21.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton21.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton21.InputButton = CogwheelSlimDX.InputButton.Star;
-			this.keyButton21.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton21.InputButton = BeeDevelopment.Cogwheel.InputButton.Star;
+			this.keyButton21.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton21.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton21.Location = new System.Drawing.Point(117, 263);
-			this.keyButton21.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton21.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton21.Name = "keyButton21";
 			this.keyButton21.Size = new System.Drawing.Size(108, 20);
 			this.keyButton21.TabIndex = 34;
 			this.keyButton21.Text = "None";
 			this.keyButton21.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton21.UseVisualStyleBackColor = true;
-			this.keyButton21.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton21.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// keyButton22
 			// 
@@ -2021,18 +2021,18 @@
 			this.keyButton22.ControllerIndex = 1;
 			this.keyButton22.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.keyButton22.ForeColor = System.Drawing.SystemColors.GrayText;
-			this.keyButton22.InputButton = CogwheelSlimDX.InputButton.Star;
-			this.keyButton22.JoystickTrigger = CogwheelSlimDX.JoystickInputSource.InputTrigger.None;
+			this.keyButton22.InputButton = BeeDevelopment.Cogwheel.InputButton.Star;
+			this.keyButton22.JoystickTrigger = BeeDevelopment.Cogwheel.JoystickInputSource.InputTrigger.None;
 			this.keyButton22.KeyboardTrigger = System.Windows.Forms.Keys.None;
 			this.keyButton22.Location = new System.Drawing.Point(231, 263);
-			this.keyButton22.Mode = CogwheelSlimDX.KeyButton.Modes.Keyboard;
+			this.keyButton22.Mode = BeeDevelopment.Cogwheel.KeyButton.Modes.Keyboard;
 			this.keyButton22.Name = "keyButton22";
 			this.keyButton22.Size = new System.Drawing.Size(109, 20);
 			this.keyButton22.TabIndex = 35;
 			this.keyButton22.Text = "None";
 			this.keyButton22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.keyButton22.UseVisualStyleBackColor = true;
-			this.keyButton22.XInputTrigger = CogwheelSlimDX.XInputSource.InputTrigger.None;
+			this.keyButton22.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
 			// ControllerEditing
 			// 
@@ -2092,7 +2092,7 @@
 			// ShowJoystickControlPanel
 			// 
 			this.ShowJoystickControlPanel.Dock = System.Windows.Forms.DockStyle.Left;
-			this.ShowJoystickControlPanel.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Joystick;
+			this.ShowJoystickControlPanel.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Joystick;
 			this.ShowJoystickControlPanel.Location = new System.Drawing.Point(0, 0);
 			this.ShowJoystickControlPanel.Margin = new System.Windows.Forms.Padding(0);
 			this.ShowJoystickControlPanel.Name = "ShowJoystickControlPanel";

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CogwheelSlimDX.Properties {
+namespace BeeDevelopment.Cogwheel.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace CogwheelSlimDX.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CogwheelSlimDX.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BeeDevelopment.Cogwheel.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -253,7 +253,7 @@ namespace CogwheelSlimDX.Properties {
         ///td, th { padding: 2px; text-align: left; vertical-align: top; border: 1px solid #999; }
         ///table { border-collapse: collapse; width: 100%; }
         ///&lt;/style&gt;
-        ///&lt;p&gt;Written by &lt;a href=&quot;mailto:benryves@benryves.com&quot;&gt;Ben Ryves&lt;/a&gt; 2006-2008.&lt;/p&gt;
+        ///&lt;p&gt;Written by &lt;a href=&quot;mailto:benryves@benryves.com&quot;&gt;Ben Ryves&lt;/a&gt; 2006-2009.&lt;/p&gt;
         ///&lt;p style=&quot;font-weight: bold;&quot;&gt;Contributors&lt;/p&gt;
         ///&lt;ul&gt;
         ///	&lt;li&gt;emu2413 YM2413 emulator written by Mitsutaka Okazaki.&lt;/li&gt;

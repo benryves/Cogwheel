@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CogwheelSlimDX.JoystickInput {
+namespace BeeDevelopment.Cogwheel.JoystickInput {
 
 	[Flags]
 	public enum Buttons {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace CogwheelSlimDX.JoystickInput {
+namespace BeeDevelopment.Cogwheel.JoystickInput {
 
 	/// <summary>
 	/// Provides methods to access the joysticks connected to the system.

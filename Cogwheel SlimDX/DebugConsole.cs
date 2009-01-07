@@ -9,7 +9,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using BeeDevelopment.Sega8Bit;
 
-namespace CogwheelSlimDX {
+namespace BeeDevelopment.Cogwheel {
 	public partial class DebugConsole : Form {
 
 		private Bitmap RenderedConsole;

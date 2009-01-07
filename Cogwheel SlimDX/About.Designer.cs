@@ -1,4 +1,4 @@
-﻿namespace CogwheelSlimDX {
+﻿namespace BeeDevelopment.Cogwheel {
 	partial class About {
 		/// <summary>
 		/// Required designer variable.
@@ -67,7 +67,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Control;
-			this.BackgroundImage = global::CogwheelSlimDX.Properties.Resources.Image_Banner;
+			this.BackgroundImage = global::BeeDevelopment.Cogwheel.Properties.Resources.Image_Banner;
 			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
 			this.ClientSize = new System.Drawing.Size(501, 282);
 			this.Controls.Add(this.AboutText);

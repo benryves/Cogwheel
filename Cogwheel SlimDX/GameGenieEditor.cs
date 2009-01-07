@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 using BeeDevelopment.Sega8Bit;
 
-namespace CogwheelSlimDX {
+namespace BeeDevelopment.Cogwheel {
 	public partial class GameGenieEditor : Form {
 
 		public MemoryCheatCollection Collection { get; private set; }

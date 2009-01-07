@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 
-namespace CogwheelSlimDX {
+namespace BeeDevelopment.Cogwheel {
 	public partial class AdvancedRomLoadDialog : Form {
 
 		public string CartridgeFileName {

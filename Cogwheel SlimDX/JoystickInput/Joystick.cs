@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 using System.Management;
 
-namespace CogwheelSlimDX.JoystickInput {
+namespace BeeDevelopment.Cogwheel.JoystickInput {
 	/// <summary>
 	/// Provides methods for retrieving the state from a joystick.
 	/// </summary>

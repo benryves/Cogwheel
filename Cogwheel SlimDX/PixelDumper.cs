@@ -9,7 +9,7 @@ using System.Threading;
 using System.Management;
 using System.Collections.Generic;
 
-namespace CogwheelSlimDX {
+namespace BeeDevelopment.Cogwheel {
 	class PixelDumper : IDisposable {
 
 		#region Types

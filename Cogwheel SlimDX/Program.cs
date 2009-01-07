@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using SlimDX.Direct3D9;
 
-namespace CogwheelSlimDX {
+namespace BeeDevelopment.Cogwheel {
 	static class Program {
 
 		internal static Direct3D D3D;

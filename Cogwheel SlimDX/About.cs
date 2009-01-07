@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 
-namespace CogwheelSlimDX {
+namespace BeeDevelopment.Cogwheel {
 	public partial class About : Form {
 		public About() {
 			InitializeComponent();

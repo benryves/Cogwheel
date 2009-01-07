@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 
-namespace CogwheelSlimDX {
+namespace BeeDevelopment.Cogwheel {
 	class KeyButton : CheckBox {
 
 		#region Converting Keys into human-readable strings.

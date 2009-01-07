@@ -1,4 +1,4 @@
-﻿namespace CogwheelSlimDX {
+﻿namespace BeeDevelopment.Cogwheel {
 	partial class AdvancedRomLoadDialog {
 		/// <summary>
 		/// Required designer variable.

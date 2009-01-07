@@ -1,4 +1,4 @@
-﻿namespace CogwheelSlimDX {
+﻿namespace BeeDevelopment.Cogwheel {
 	partial class MainForm {
 		/// <summary>
 		/// Required designer variable.
@@ -132,7 +132,7 @@
 			// 
 			// QuickLoadRomMenu
 			// 
-			this.QuickLoadRomMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_SmsRom;
+			this.QuickLoadRomMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_SmsRom;
 			this.QuickLoadRomMenu.Name = "QuickLoadRomMenu";
 			this.QuickLoadRomMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
 			this.QuickLoadRomMenu.Size = new System.Drawing.Size(216, 22);
@@ -153,7 +153,7 @@
 			// 
 			// LoadStateMenu
 			// 
-			this.LoadStateMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_TimeGo;
+			this.LoadStateMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_TimeGo;
 			this.LoadStateMenu.Name = "LoadStateMenu";
 			this.LoadStateMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F8)));
 			this.LoadStateMenu.Size = new System.Drawing.Size(216, 22);
@@ -248,7 +248,7 @@
 			// 
 			// CopyScreenshotMenu
 			// 
-			this.CopyScreenshotMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Camera;
+			this.CopyScreenshotMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Camera;
 			this.CopyScreenshotMenu.Name = "CopyScreenshotMenu";
 			this.CopyScreenshotMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
 			this.CopyScreenshotMenu.Size = new System.Drawing.Size(205, 22);
@@ -257,7 +257,7 @@
 			// 
 			// ToggleFullScreenMenu
 			// 
-			this.ToggleFullScreenMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Monitor;
+			this.ToggleFullScreenMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Monitor;
 			this.ToggleFullScreenMenu.Name = "ToggleFullScreenMenu";
 			this.ToggleFullScreenMenu.ShortcutKeys = System.Windows.Forms.Keys.F11;
 			this.ToggleFullScreenMenu.Size = new System.Drawing.Size(205, 22);
@@ -282,7 +282,7 @@
             this.EmulationVideoSep0,
             this.EmulationVideoBackgroundEnabledMenu,
             this.EmulationVideoSpritesEnabledMenu});
-			this.EmulationVideoMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Television;
+			this.EmulationVideoMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Television;
 			this.EmulationVideoMenu.Name = "EmulationVideoMenu";
 			this.EmulationVideoMenu.Size = new System.Drawing.Size(152, 22);
 			this.EmulationVideoMenu.Text = "&Video";
@@ -326,7 +326,7 @@
 			this.GameGenieMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.GameGenieEnabledMenu,
             this.GameGenieEditMenu});
-			this.GameGenieMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_GameGenie;
+			this.GameGenieMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
 			this.GameGenieMenu.Size = new System.Drawing.Size(152, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
@@ -349,7 +349,7 @@
 			// 
 			// SdscDebugConsoleMenu
 			// 
-			this.SdscDebugConsoleMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Terminal;
+			this.SdscDebugConsoleMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Terminal;
 			this.SdscDebugConsoleMenu.Name = "SdscDebugConsoleMenu";
 			this.SdscDebugConsoleMenu.Size = new System.Drawing.Size(152, 22);
 			this.SdscDebugConsoleMenu.Text = "&SDSC Console";
@@ -401,7 +401,7 @@
 			// 
 			// CustomiseControlsMenu
 			// 
-			this.CustomiseControlsMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Controller;
+			this.CustomiseControlsMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Controller;
 			this.CustomiseControlsMenu.Name = "CustomiseControlsMenu";
 			this.CustomiseControlsMenu.Size = new System.Drawing.Size(247, 22);
 			this.CustomiseControlsMenu.Text = "&Customise Controls...";
@@ -452,7 +452,7 @@
 			// 
 			// AboutMenu
 			// 
-			this.AboutMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Information;
+			this.AboutMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Information;
 			this.AboutMenu.Name = "AboutMenu";
 			this.AboutMenu.Size = new System.Drawing.Size(142, 22);
 			this.AboutMenu.Text = "&About";
@@ -465,7 +465,7 @@
 			// 
 			// BugReportMenu
 			// 
-			this.BugReportMenu.Image = global::CogwheelSlimDX.Properties.Resources.Icon_Bug;
+			this.BugReportMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Bug;
 			this.BugReportMenu.Name = "BugReportMenu";
 			this.BugReportMenu.Size = new System.Drawing.Size(142, 22);
 			this.BugReportMenu.Text = "&Report a Bug";

@@ -12,8 +12,7 @@ using BeeDevelopment.Sega8Bit.Mappers;
 using BeeDevelopment.Sega8Bit.Utility;
 using BeeDevelopment.Zip;
 
-
-namespace CogwheelSlimDX {
+namespace BeeDevelopment.Cogwheel {
 	public partial class MainForm : Form {
 
 		#region Fields

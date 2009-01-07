@@ -4,10 +4,10 @@ using System.IO;
 using System.Windows.Forms;
 using BeeDevelopment.Sega8Bit;
 using BeeDevelopment.Sega8Bit.Hardware.Controllers;
-using CogwheelSlimDX.JoystickInput;
+using BeeDevelopment.Cogwheel.JoystickInput;
 using SlimDX.XInput;
 
-namespace CogwheelSlimDX {
+namespace BeeDevelopment.Cogwheel {
 
 	#region Types
 

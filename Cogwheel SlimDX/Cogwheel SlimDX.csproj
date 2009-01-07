@@ -8,12 +8,12 @@
     <ProjectGuid>{BA61BC42-6CB2-4913-B29A-D18D1C38113A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CogwheelSlimDX</RootNamespace>
+    <RootNamespace>BeeDevelopment.Cogwheel</RootNamespace>
     <AssemblyName>Cogwheel Interface</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ApplicationIcon>Cog.ico</ApplicationIcon>
-    <StartupObject>CogwheelSlimDX.Program</StartupObject>
+    <StartupObject>BeeDevelopment.Cogwheel.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
