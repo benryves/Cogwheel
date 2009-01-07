@@ -158,18 +158,20 @@ namespace BeeDevelopment.Cogwheel {
 							RefreshStepper += SystemRefreshRate;
 							this.Emulator.RunFrame();
 							this.IsLiveFrame = true;
-							short[] Buffer = new short[735 * 2];
-							this.Emulator.Sound.CreateSamples(Buffer);
+							if (!this.SoundMuted) {
+								short[] Buffer = new short[735 * 2];
+								this.Emulator.Sound.CreateSamples(Buffer);
 #if EMU2413
-							if (this.Emulator.FmSoundEnabled) {
-								var FmBuffer = new short[Buffer.Length];
-								this.Emulator.FmSound.GenerateSamples(FmBuffer);
-								for (int i = 0; i < FmBuffer.Length; ++i) {
-									Buffer[i] = (short)(Buffer[i] + FmBuffer[i] * 2);
+								if (this.Emulator.FmSoundEnabled) {
+									var FmBuffer = new short[Buffer.Length];
+									this.Emulator.FmSound.GenerateSamples(FmBuffer);
+									for (int i = 0; i < FmBuffer.Length; ++i) {
+										Buffer[i] = (short)(Buffer[i] + FmBuffer[i] * 2);
+									}
 								}
-							}
 #endif
-							this.GeneratedSoundSamples.Enqueue(Buffer);
+								this.GeneratedSoundSamples.Enqueue(Buffer);
+							}
 							this.Input.Poll();
 							this.Input.UpdateEmulatorState(this.Emulator);
 						}
