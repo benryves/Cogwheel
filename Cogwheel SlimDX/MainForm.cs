@@ -61,6 +61,7 @@ namespace BeeDevelopment.Cogwheel {
 		public MainForm(string[] arguments) {
 
 			InitializeComponent();
+			this.Menus.Renderer = this.Status.Renderer = new Szotar.WindowsForms.ToolStripAeroRenderer(Szotar.WindowsForms.ToolbarTheme.MediaToolbar);
 
 			// Set up input devices:
 			this.ReinitialiseInput(null);

@@ -64,6 +64,8 @@
 			this.CustomiseControlsMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.OptionsSep0 = new System.Windows.Forms.ToolStripSeparator();
 			this.EnableSoundMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.EnableFMSoundMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.OptionsSep1 = new System.Windows.Forms.ToolStripSeparator();
 			this.SimulateGameGearLcdMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.LinearInterpolationMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.MaintainAspectRatioMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,10 +80,6 @@
 			this.OpenStateDialog = new System.Windows.Forms.OpenFileDialog();
 			this.SaveStateDialog = new System.Windows.Forms.SaveFileDialog();
 			this.CursorHider = new System.Windows.Forms.Timer(this.components);
-			this.OptionsSep1 = new System.Windows.Forms.ToolStripSeparator();
-#if EMU2413
-			this.EnableFMSoundMenu = new System.Windows.Forms.ToolStripMenuItem();
-#endif
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -284,7 +282,7 @@
             this.EmulationVideoSpritesEnabledMenu});
 			this.EmulationVideoMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Television;
 			this.EmulationVideoMenu.Name = "EmulationVideoMenu";
-			this.EmulationVideoMenu.Size = new System.Drawing.Size(152, 22);
+			this.EmulationVideoMenu.Size = new System.Drawing.Size(148, 22);
 			this.EmulationVideoMenu.Text = "&Video";
 			this.EmulationVideoMenu.DropDownOpening += new System.EventHandler(this.DebugVideoMenu_DropDownOpening);
 			// 
@@ -328,7 +326,7 @@
             this.GameGenieEditMenu});
 			this.GameGenieMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(152, 22);
+			this.GameGenieMenu.Size = new System.Drawing.Size(148, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
 			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
 			// 
@@ -351,7 +349,7 @@
 			// 
 			this.SdscDebugConsoleMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Terminal;
 			this.SdscDebugConsoleMenu.Name = "SdscDebugConsoleMenu";
-			this.SdscDebugConsoleMenu.Size = new System.Drawing.Size(152, 22);
+			this.SdscDebugConsoleMenu.Size = new System.Drawing.Size(148, 22);
 			this.SdscDebugConsoleMenu.Text = "&SDSC Console";
 			this.SdscDebugConsoleMenu.Click += new System.EventHandler(this.SdscDebugConsoleMenu_Click);
 			// 
@@ -362,9 +360,7 @@
             this.CustomiseControlsMenu,
             this.OptionsSep0,
             this.EnableSoundMenu,
-#if EMU2413
             this.EnableFMSoundMenu,
-#endif
             this.OptionsSep1,
             this.SimulateGameGearLcdMenu,
             this.LinearInterpolationMenu,
@@ -418,6 +414,18 @@
 			this.EnableSoundMenu.Size = new System.Drawing.Size(247, 22);
 			this.EnableSoundMenu.Text = "&Enable Sound";
 			this.EnableSoundMenu.Click += new System.EventHandler(this.EnableSoundMenu_Click);
+			// 
+			// EnableFMSoundMenu
+			// 
+			this.EnableFMSoundMenu.Name = "EnableFMSoundMenu";
+			this.EnableFMSoundMenu.Size = new System.Drawing.Size(247, 22);
+			this.EnableFMSoundMenu.Text = "Enable &FM Sound (Experimental)";
+			this.EnableFMSoundMenu.Click += new System.EventHandler(this.EnableFMSoundMenu_Click);
+			// 
+			// OptionsSep1
+			// 
+			this.OptionsSep1.Name = "OptionsSep1";
+			this.OptionsSep1.Size = new System.Drawing.Size(244, 6);
 			// 
 			// SimulateGameGearLcdMenu
 			// 
@@ -482,8 +490,8 @@
 			this.Status.Location = new System.Drawing.Point(0, 286);
 			this.Status.Name = "Status";
 			this.Status.Size = new System.Drawing.Size(325, 22);
+			this.Status.SizingGrip = false;
 			this.Status.TabIndex = 0;
-			this.Status.Text = "statusStrip1";
 			// 
 			// MessageStatus
 			// 
@@ -509,20 +517,6 @@
 			// 
 			this.CursorHider.Interval = 1000;
 			this.CursorHider.Tick += new System.EventHandler(this.CursorHider_Tick);
-			// 
-			// OptionsSep1
-			// 
-			this.OptionsSep1.Name = "OptionsSep1";
-			this.OptionsSep1.Size = new System.Drawing.Size(244, 6);
-			// 
-			// EnableFMSoundMenu
-			// 
-#if EMU2413
-			this.EnableFMSoundMenu.Name = "EnableFMSoundMenu";
-			this.EnableFMSoundMenu.Size = new System.Drawing.Size(247, 22);
-			this.EnableFMSoundMenu.Text = "Enable &FM Sound (Experimental)";
-			this.EnableFMSoundMenu.Click += new System.EventHandler(this.EnableFMSoundMenu_Click);
-#endif
 			// 
 			// MainForm
 			// 
