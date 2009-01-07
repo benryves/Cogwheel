@@ -916,7 +916,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
                  Generate wave data
 
-*********************************************************/
+		*********************************************************/
 		/* Convert Amp(0 to EG_HEIGHT) to Phase(0 to 2PI). */
 		static int wave2_2pi(int e) {
 			return ((SLOT_AMP_BITS - PG_BITS) > 0) ?
@@ -980,9 +980,9 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		calc_envelope(OPLL_SLOT slot, e_int32 lfo) {
 
 			e_uint32[] SL = new[] {
-    S2E (0.0), S2E (3.0), S2E (6.0), S2E (9.0), S2E (12.0), S2E (15.0), S2E (18.0), S2E (21.0),
-    S2E (24.0), S2E (27.0), S2E (30.0), S2E (33.0), S2E (36.0), S2E (39.0), S2E (42.0), S2E (48.0)
-  };
+				S2E (0.0), S2E (3.0), S2E (6.0), S2E (9.0), S2E (12.0), S2E (15.0), S2E (18.0), S2E (21.0),
+				S2E (24.0), S2E (27.0), S2E (30.0), S2E (33.0), S2E (36.0), S2E (39.0), S2E (42.0), S2E (48.0)
+			};
 
 			e_uint32 egout;
 
