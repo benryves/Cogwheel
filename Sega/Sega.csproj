@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A59F09F7-37CE-409C-B290-7C6B160E0B11}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -26,7 +26,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;EMU2413</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -53,9 +53,9 @@
     <Compile Include="Hardware\Controllers\SC3000Keyboard.cs" />
     <Compile Include="Hardware\Controllers\SegaControllerPort.cs" />
     <Compile Include="Hardware\DebugConsole.cs" />
+    <Compile Include="Hardware\OPLL\emu2413.c.cs" />
     <Compile Include="Hardware\OPLL\Emu2413.cs" />
-    <Compile Include="Hardware\OPLL\Functions.cs" />
-    <Compile Include="Hardware\OPLL\Types.cs" />
+    <Compile Include="Hardware\OPLL\emu2413.h.cs" />
     <Compile Include="Hardware\PinDirection.cs" />
     <Compile Include="Hardware\ProgrammablePeripheralInterface\IO.cs" />
     <Compile Include="Hardware\ProgrammablePeripheralInterface\ProgrammablePeripheralInterface.cs" />

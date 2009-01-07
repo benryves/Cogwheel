@@ -1,52 +1,21 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using BeeDevelopment.Brazil;
 
 namespace BeeDevelopment.Sega8Bit.Hardware {
 
 	/// <summary>
-	/// Provides a managed wrapper for the emu2413 YM2413 emulator.
+	/// Emulates a YM2413 sound chip.
 	/// </summary>
-	public partial class Emu2413 : IDisposable {
+	public partial class Emu2413 {
 
-		private IntPtr Handle;
-		private bool IsDisposed = false;
-
-		#region Properties
-
-		/// <summary>
-		/// Gets or sets a value used by the hardware to detect the presence of a YM2413.
-		/// </summary>
-		public byte DetectionValue { get; set; }
-
-		/// <summary>
-		/// Gets or sets the underlying state of the YM2413 chip.
-		/// </summary>
-		[StateNotSaved()]
-		public OPLL_STATE State {
-			get {
-				this.CheckNotDisposed();
-				return (OPLL_STATE)Marshal.PtrToStructure(this.Handle, typeof(OPLL_STATE));
-			}
-			set {
-				this.CheckNotDisposed();
-				Marshal.StructureToPtr(value, this.Handle, false);
-				OPLL.ForceRefresh(this.Handle);
-			}
-		}
-
-		#endregion
-
-		#region Initialisation
+		private OPLL opll;
 
 		/// <summary>
 		/// Creates an instance of the <see cref="Emu2413"/> emulator class.
 		/// </summary>
 		/// <param name="clockRate">The clock rate of the emulated YM2413.</param>
 		/// <param name="sampleRate">The sound sample rate.</param>
-		public Emu2413(int clockRate, int sampleRate) {
-			this.Handle = OPLL.New(clockRate, sampleRate);
-			this.Reset();
+		public Emu2413(int clockSpeed, int sampleRate) {
+			this.opll = OPLL_new((uint)clockSpeed, (uint)sampleRate);
 		}
 
 		/// <summary>
@@ -57,17 +26,12 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		}
 
 		/// <summary>
-		/// Resets the <see cref="Emu2413"/> emulator.
+		/// Resets the emulated YM2413.
 		/// </summary>
 		public void Reset() {
-			this.CheckNotDisposed();
+			OPLL_reset(this.opll);
 			this.DetectionValue = 0;
-			OPLL.Reset(this.Handle);
 		}
-
-		#endregion
-
-		#region Public Interface
 
 		/// <summary>
 		/// Writes a byte to an address.
@@ -75,8 +39,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <param name="address">The address of the YM2413 write.</param>
 		/// <param name="value">The value to write.</param>
 		public void WriteToAddress(int address, byte value) {
-			this.CheckNotDisposed();
-			OPLL.WriteIO(this.Handle, address, value);
+			OPLL_writeIO(this.opll, (uint)address, (uint)value);
 		}
 
 		/// <summary>
@@ -85,8 +48,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <param name="register">The YM2413 register to write to.</param>
 		/// <param name="value">The value to write.</param>
 		public void WriteToRegister(int register, byte value) {
-			this.CheckNotDisposed();
-			OPLL.WriteRegister(this.Handle, register, value);
+			OPLL_writeReg(this.opll, (uint)register, (uint)value);
 		}
 
 		/// <summary>
@@ -95,9 +57,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <param name="left">Outputs the level for the left channel.</param>
 		/// <param name="right">Outputs the level for the right channel.</param>
 		public void CalculateStereo(out int left, out int right) {
-			this.CheckNotDisposed();
 			var Samples = new int[2];
-			OPLL.CalculateStereo(this.Handle, Samples);
+			OPLL_calc_stereo(this.opll, Samples);
 			left = Samples[0]; right = Samples[1];
 		}
 
@@ -106,46 +67,19 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// </summary>
 		/// <param name="samples">An array of <see cref="Int16"/> to store the sound samples.</param>
 		public void GenerateSamples(short[] samples) {
-			this.CheckNotDisposed();
-			//OPLL.GenerateSamples(this.Handle, samples.Length, samples);
-		}
-
-		#endregion
-
-		#region Cleanup
-
-		/// <summary>
-		/// Bail out by throwing an <see cref="ObjectDisposedException"/> if the instance has been disposed.
-		/// </summary>
-		private void CheckNotDisposed() {
-			if (this.IsDisposed) throw new ObjectDisposedException("Emu2413");
-		}
-
-		/// <summary>
-		/// Disposes the <see cref="Emu2413"/> instance.
-		/// </summary>
-		public void Dispose() {
-			if (!this.IsDisposed) {
-				try {
-					OPLL.Delete(this.Handle);
-				} finally {
-					this.IsDisposed = true;
-				}
+			var Samples = new int[2];
+			for (int i = 0; i < samples.Length; i += 2) {
+				OPLL_calc_stereo(this.opll, Samples);
+				samples[i + 0] = (short)Samples[0];
+				samples[i + 1] = (short)Samples[1];
 			}
 		}
 
 		/// <summary>
-		/// Disposes the <see cref="Emu2413"/> instance.
+		/// Gets or sets a byte value to detect the chip.
 		/// </summary>
-		~Emu2413() {
-			try {
-				this.Dispose();
-			} catch { }
-		}
-
-		#endregion
-
-		
+		public byte DetectionValue { get; set; }
 
 	}
+
 }
