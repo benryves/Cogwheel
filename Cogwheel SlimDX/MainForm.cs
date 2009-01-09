@@ -11,6 +11,9 @@ using BeeDevelopment.Sega8Bit;
 using BeeDevelopment.Sega8Bit.Mappers;
 using BeeDevelopment.Sega8Bit.Utility;
 using BeeDevelopment.Zip;
+using SlimDX;
+using SlimDX.DirectSound;
+using SlimDX.Multimedia;
 
 namespace BeeDevelopment.Cogwheel {
 	public partial class MainForm : Form {
@@ -171,7 +174,15 @@ namespace BeeDevelopment.Cogwheel {
 									}
 								}
 #endif
-								this.GeneratedSoundSamples.Enqueue(Buffer);
+
+								for (int i = 0; i < Buffer.Length; ++i) {
+									InternalSoundBuffer[this.SoundBufferPosition++] = (byte)Buffer[i];
+									InternalSoundBuffer[this.SoundBufferPosition++] = (byte)(Buffer[i] >> 8);
+								}
+								if (this.SoundBufferPosition >= SoundBufferSize) this.SoundBufferPosition = 0;
+
+								this.SoundBuffer.Write(this.InternalSoundBuffer, 0, LockFlags.EntireBuffer);
+
 							}
 							this.Input.Poll();
 							this.Input.UpdateEmulatorState(this.Emulator);
@@ -347,58 +358,48 @@ namespace BeeDevelopment.Cogwheel {
 
 		#region Sound Output
 
-		private WaveLib.WaveOutPlayer WaveOutput;
+		private SecondarySoundBuffer SoundBuffer;
 
-		private int SoundBufferSizeInFrames = 4;
+		private const int SoundBufferSizeInFrames = 8;
+		private const int SoundBufferSize = 735 * 2 * 2 * SoundBufferSizeInFrames;
+		private int SoundBufferPosition = SoundBufferSize - 735 * 2 * 2;
 
-		private Queue<short[]> GeneratedSoundSamples;
+		private byte[] InternalSoundBuffer;
 
 		private void InitialiseSound() {
-			this.GeneratedSoundSamples = new Queue<short[]>();
-			var Format = new WaveLib.WaveFormat (44100, 16, 2);
-			this.WaveOutput = new WaveLib.WaveOutPlayer(-1, Format, SoundBufferSizeInFrames * 735 * 4, 3, new WaveLib.BufferFillEventHandler(SoundBufferFiller));
+
+			Program.DS.SetCooperativeLevel(this.Handle, CooperativeLevel.Priority);
+
+			var Format = new WaveFormat() {
+				Channels = 2,
+				BitsPerSample = 16,
+				FormatTag = WaveFormatTag.Pcm,
+				SamplesPerSecond = 44100,
+				BlockAlignment = 4,
+				AverageBytesPerSecond = 44100 * 2 * 2
+			};
+
+			var Description = new SoundBufferDescription() {
+				Format = Format,
+				Flags = BufferFlags.GlobalFocus | BufferFlags.Software,
+				SizeInBytes = SoundBufferSize,
+			};
+
+			this.SoundBuffer = new SecondarySoundBuffer(Program.DS, Description);
+			this.InternalSoundBuffer = new byte[SoundBufferSize];
+
+			this.SoundBuffer.Play(0, PlayFlags.Looping);
+
 		}
 
 		private void DisposeSound() {
-			if (this.WaveOutput != null) {
-				this.WaveOutput.Dispose();
-				this.WaveOutput = null;
+			if (this.SoundBuffer != null && !this.SoundBuffer.Disposed) {
+				this.SoundBuffer.Dispose();
+				this.SoundBuffer = null;
 			}
 		}
 
 		private bool SoundMuted = false;
-
-		private void SoundBufferFiller(IntPtr data, int size) {
-			lock (this.GeneratedSoundSamples) {
-
-				short[] Generated = new short[size / 2];
-
-				if (SoundMuted || Paused) {
-
-					this.GeneratedSoundSamples.Clear();
-
-				} else {
-
-					for (int i = 0; i < Generated.Length; ) {
-						short[] Samples = null;
-						if (this.GeneratedSoundSamples.Count > 0) Samples = this.GeneratedSoundSamples.Dequeue();
-						if (Samples != null && Samples.Length > 0) {
-							Array.Copy(Samples, 0, Generated, i, Samples.Length);
-							i += Samples.Length;
-						} else {
-							short[] Temp = new short[Generated.Length - i];
-							if (this.Emulator != null) this.Emulator.Sound.CreateSamples(Temp);
-							Array.Copy(Temp, 0, Generated, i, Temp.Length);
-							i += Temp.Length;
-						}
-					}
-				}
-
-				Marshal.Copy(Generated, 0, data, size / 2);
-				while (this.GeneratedSoundSamples.Count > this.SoundBufferSizeInFrames) this.GeneratedSoundSamples.Dequeue();
-
-			}
-		}
 
 		#endregion
 
