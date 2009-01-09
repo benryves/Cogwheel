@@ -163,25 +163,50 @@ namespace BeeDevelopment.Cogwheel {
 							this.Emulator.RunFrame();
 							this.IsLiveFrame = true;
 							if (!this.SoundMuted) {
-								short[] Buffer = new short[735 * 2];
-								this.Emulator.Sound.CreateSamples(Buffer);
+
+								// How many frames of sound should we generate? Usually, one.
+								int FramesOfSoundToGenerate = 1;
+
+								// Determine how far the "write" buffer pointer is ahead of the "read" buffer pointer.
+								int WriteAheadOfPlay = this.SoundBufferPosition - this.SoundBuffer.CurrentPlayPosition;
+								while (WriteAheadOfPlay < 0) WriteAheadOfPlay += SoundBufferSize;
+
+								// If the write pointer is less than half a buffer away, we're reading faster than writing.
+								if (WriteAheadOfPlay < 735 * 2 * 2 * ((SoundBufferSizeInFrames / 2) - 1)) {
+									FramesOfSoundToGenerate += ((SoundBufferSizeInFrames / 2) - 1);
+								}
+
+								// If the write pointer is more than half a buffer away, we're writing faster than reading.
+								if (WriteAheadOfPlay > 735 * 2 * 2 * ((SoundBufferSizeInFrames / 2) + 1)) {
+									FramesOfSoundToGenerate -= ((SoundBufferSizeInFrames / 2) - 1);
+								}
+
+								// Generate samples as appropriate.
+								if (FramesOfSoundToGenerate > 0) {
+
+									short[] Buffer = new short[735 * 2 * FramesOfSoundToGenerate];
+									this.Emulator.Sound.CreateSamples(Buffer);
 #if EMU2413
-								if (this.Emulator.FmSoundEnabled) {
-									var FmBuffer = new short[Buffer.Length];
-									this.Emulator.FmSound.GenerateSamples(FmBuffer);
-									for (int i = 0; i < FmBuffer.Length; ++i) {
-										Buffer[i] = (short)(Buffer[i] + FmBuffer[i] * 2);
+									if (this.Emulator.FmSoundEnabled) {
+										var FmBuffer = new short[Buffer.Length];
+										this.Emulator.FmSound.GenerateSamples(FmBuffer);
+										for (int i = 0; i < FmBuffer.Length; ++i) {
+											Buffer[i] = (short)(Buffer[i] + FmBuffer[i] * 2);
+										}
 									}
-								}
 #endif
+									// Convert 16-bit samples to 8-bit bytes of data.
+									for (int i = 0; i < Buffer.Length; i += 735 * 2) {
+										for (int j = 0; j < 735 * 2; ++j) {
+											InternalSoundBuffer[this.SoundBufferPosition++] = (byte)Buffer[i + j];
+											InternalSoundBuffer[this.SoundBufferPosition++] = (byte)(Buffer[i + j] >> 8);
+										}
+										if (this.SoundBufferPosition >= SoundBufferSize) this.SoundBufferPosition = 0;
+									}									
 
-								for (int i = 0; i < Buffer.Length; ++i) {
-									InternalSoundBuffer[this.SoundBufferPosition++] = (byte)Buffer[i];
-									InternalSoundBuffer[this.SoundBufferPosition++] = (byte)(Buffer[i] >> 8);
+									this.SoundBuffer.Write(this.InternalSoundBuffer, 0, LockFlags.EntireBuffer);
+
 								}
-								if (this.SoundBufferPosition >= SoundBufferSize) this.SoundBufferPosition = 0;
-
-								this.SoundBuffer.Write(this.InternalSoundBuffer, 0, LockFlags.EntireBuffer);
 
 							}
 							this.Input.Poll();
@@ -192,6 +217,8 @@ namespace BeeDevelopment.Cogwheel {
 				}
 			}
 		}
+
+		int LastWriteAheadOfPlay = 0;
 
 		#endregion
 
@@ -362,7 +389,7 @@ namespace BeeDevelopment.Cogwheel {
 
 		private const int SoundBufferSizeInFrames = 8;
 		private const int SoundBufferSize = 735 * 2 * 2 * SoundBufferSizeInFrames;
-		private int SoundBufferPosition = SoundBufferSize - 735 * 2 * 2;
+		private int SoundBufferPosition = (SoundBufferSizeInFrames / 2) * 735 * 2 * 2;
 
 		private byte[] InternalSoundBuffer;
 
