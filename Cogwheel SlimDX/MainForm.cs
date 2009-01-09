@@ -218,8 +218,6 @@ namespace BeeDevelopment.Cogwheel {
 			}
 		}
 
-		int LastWriteAheadOfPlay = 0;
-
 		#endregion
 
 		#region Video Output / Window State
