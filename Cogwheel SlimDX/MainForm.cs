@@ -788,6 +788,7 @@ namespace BeeDevelopment.Cogwheel {
 				if (F is DebugConsole && F.Focused) return;
 			}
 			this.Paused = true;
+			if (!this.SoundMuted) this.SoundBuffer.Stop();
 			this.Input.ReleaseAll();
 			this.ShowCursor();
 			base.OnLostFocus(e);
@@ -795,6 +796,7 @@ namespace BeeDevelopment.Cogwheel {
 
 		protected override void OnGotFocus(EventArgs e) {
 			this.Paused = false;
+			if (!this.SoundMuted) this.StartPlayingSound();
 			base.OnGotFocus(e);
 		}
 
