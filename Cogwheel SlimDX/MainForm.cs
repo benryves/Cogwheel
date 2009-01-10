@@ -413,8 +413,15 @@ namespace BeeDevelopment.Cogwheel {
 			this.SoundBuffer = new SecondarySoundBuffer(Program.DS, Description);
 			this.InternalSoundBuffer = new byte[SoundBufferSize];
 
-			this.SoundBuffer.Play(0, PlayFlags.Looping);
+			if (!this.SoundMuted) this.StartPlayingSound();
 
+		}
+
+		private void StartPlayingSound() {
+			this.InternalSoundBuffer = new byte[this.InternalSoundBuffer.Length];
+			this.SoundBufferPosition = 0;
+			this.SoundBuffer.CurrentPlayPosition = 0;
+			this.SoundBuffer.Play(0, PlayFlags.Looping);
 		}
 
 		private void DisposeSound() {
@@ -840,7 +847,13 @@ namespace BeeDevelopment.Cogwheel {
 		private void EnableSoundMenu_Click(object sender, EventArgs e) {
 			Properties.Settings.Default.OptionEnableSound ^= true;
 			this.SoundMuted = !Properties.Settings.Default.OptionEnableSound;
+			if (this.SoundMuted) {
+				this.SoundBuffer.Stop();
+			} else {
+				this.StartPlayingSound();
+			}
 		}
+
 
 		private void MaintainAspectRatioMenu_Click(object sender, EventArgs e) {
 			Properties.Settings.Default.OptionMaintainAspectRatio ^= true;
