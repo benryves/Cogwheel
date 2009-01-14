@@ -1,4 +1,5 @@
 ﻿using System;
+using BeeDevelopment.Brazil;
 
 namespace BeeDevelopment.Sega8Bit.Hardware {
 
@@ -8,6 +9,11 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 	public partial class Emu2413 {
 
 		private OPLL opll;
+		/// <summary>
+		/// Gets the running <see cref="OPLL"/> wrapper instance.
+		/// </summary>
+		[StateNotSaved()]
+		public OPLL Opll { get { return this.opll; } }
 
 		/// <summary>
 		/// Creates an instance of the <see cref="Emu2413"/> emulator class.
@@ -65,6 +71,13 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// Gets or sets a byte value to detect the chip.
 		/// </summary>
 		public byte DetectionValue { get; set; }
+
+		/// <summary>
+		/// Forces the OPLL to update after changing state.
+		/// </summary>
+		internal void Update() {
+			OPLL_forceRefresh(this.opll);
+		}
 
 	}
 

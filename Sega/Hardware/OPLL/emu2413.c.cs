@@ -198,7 +198,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		static OPLL_PATCH[,] default_patch = new OPLL_PATCH[OPLL_TONE_NUM, (16 + 3) * 2];
 
 		/* Definition of envelope mode */
-		enum OPLL_EG_STATE { READY, ATTACK, DECAY, SUSHOLD, SUSTINE, RELEASE, SETTLE, FINISH };
+		public enum OPLL_EG_STATE { READY, ATTACK, DECAY, SUSHOLD, SUSTINE, RELEASE, SETTLE, FINISH };
 
 		/* Phase incr table for Attack */
 		static e_uint32[,] dphaseARTable = new e_uint32[16, 16];
@@ -415,30 +415,30 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 		static void
 		OPLL_dump2patch(e_uint8[] dump, OPLL_PATCH[] patch) {
-			patch[0].AM = (uint)(dump[0] >> 7) & 1;
-			patch[1].AM = (uint)(dump[1] >> 7) & 1;
-			patch[0].PM = (uint)(dump[0] >> 6) & 1;
-			patch[1].PM = (uint)(dump[1] >> 6) & 1;
-			patch[0].EG = (uint)(dump[0] >> 5) & 1;
-			patch[1].EG = (uint)(dump[1] >> 5) & 1;
-			patch[0].KR = (uint)(dump[0] >> 4) & 1;
-			patch[1].KR = (uint)(dump[1] >> 4) & 1;
-			patch[0].ML = (uint)(dump[0]) & 15;
-			patch[1].ML = (uint)(dump[1]) & 15;
-			patch[0].KL = (uint)(dump[2] >> 6) & 3;
-			patch[1].KL = (uint)(dump[3] >> 6) & 3;
-			patch[0].TL = (uint)(dump[2]) & 63;
-			patch[0].FB = (uint)(dump[3]) & 7;
-			patch[0].WF = (uint)(dump[3] >> 3) & 1;
-			patch[1].WF = (uint)(dump[3] >> 4) & 1;
-			patch[0].AR = (uint)(dump[4] >> 4) & 15;
-			patch[1].AR = (uint)(dump[5] >> 4) & 15;
-			patch[0].DR = (uint)(dump[4]) & 15;
-			patch[1].DR = (uint)(dump[5]) & 15;
-			patch[0].SL = (uint)(dump[6] >> 4) & 15;
-			patch[1].SL = (uint)(dump[7] >> 4) & 15;
-			patch[0].RR = (uint)(dump[6]) & 15;
-			patch[1].RR = (uint)(dump[7]) & 15;
+			patch[0].am = (uint)(dump[0] >> 7) & 1;
+			patch[1].am = (uint)(dump[1] >> 7) & 1;
+			patch[0].pm = (uint)(dump[0] >> 6) & 1;
+			patch[1].pm = (uint)(dump[1] >> 6) & 1;
+			patch[0].eg = (uint)(dump[0] >> 5) & 1;
+			patch[1].eg = (uint)(dump[1] >> 5) & 1;
+			patch[0].kr = (uint)(dump[0] >> 4) & 1;
+			patch[1].kr = (uint)(dump[1] >> 4) & 1;
+			patch[0].ml = (uint)(dump[0]) & 15;
+			patch[1].ml = (uint)(dump[1]) & 15;
+			patch[0].kl = (uint)(dump[2] >> 6) & 3;
+			patch[1].kl = (uint)(dump[3] >> 6) & 3;
+			patch[0].tl = (uint)(dump[2]) & 63;
+			patch[0].fb = (uint)(dump[3]) & 7;
+			patch[0].wf = (uint)(dump[3] >> 3) & 1;
+			patch[1].wf = (uint)(dump[3] >> 4) & 1;
+			patch[0].ar = (uint)(dump[4] >> 4) & 15;
+			patch[1].ar = (uint)(dump[5] >> 4) & 15;
+			patch[0].dr = (uint)(dump[4]) & 15;
+			patch[1].dr = (uint)(dump[5]) & 15;
+			patch[0].sl = (uint)(dump[6] >> 4) & 15;
+			patch[1].sl = (uint)(dump[7] >> 4) & 15;
+			patch[0].rr = (uint)(dump[6]) & 15;
+			patch[1].rr = (uint)(dump[7]) & 15;
 		}
 
 		static void
@@ -473,22 +473,22 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 			switch (slot.eg_mode) {
 				case OPLL_EG_STATE.ATTACK:
-					return dphaseARTable[slot.patch.AR, slot.rks];
+					return dphaseARTable[slot.patch.ar, slot.rks];
 
 				case OPLL_EG_STATE.DECAY:
-					return dphaseDRTable[slot.patch.DR, slot.rks];
+					return dphaseDRTable[slot.patch.dr, slot.rks];
 
 				case OPLL_EG_STATE.SUSHOLD:
 					return 0;
 
 				case OPLL_EG_STATE.SUSTINE:
-					return dphaseDRTable[slot.patch.RR, slot.rks];
+					return dphaseDRTable[slot.patch.rr, slot.rks];
 
 				case OPLL_EG_STATE.RELEASE:
 					if (slot.sustine != 0)
 						return dphaseDRTable[5, slot.rks];
-					else if (slot.patch.EG != 0)
-						return dphaseDRTable[slot.patch.RR, slot.rks];
+					else if (slot.patch.eg != 0)
+						return dphaseDRTable[slot.patch.rr, slot.rks];
 					else
 						return dphaseDRTable[7, slot.rks];
 
@@ -515,16 +515,16 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		const int SLOT_TOM = 16;
 		const int SLOT_CYM = 17;
 
-		static void UPDATE_PG(OPLL_SLOT S) { (S).dphase = dphaseTable[(S).fnum, (S).block, (S).patch.ML]; }
+		static void UPDATE_PG(OPLL_SLOT S) { (S).dphase = dphaseTable[(S).fnum, (S).block, (S).patch.ml]; }
 		static void UPDATE_TLL(OPLL_SLOT S) {
 			if (S.type == 0) {
-				(S).tll = tllTable[((S).fnum) >> 5, (S).block, (S).patch.TL, (S).patch.KL];
+				(S).tll = tllTable[((S).fnum) >> 5, (S).block, (S).patch.tl, (S).patch.kl];
 			} else {
-				(S).tll = tllTable[((S).fnum) >> 5, (S).block, (S).volume, (S).patch.KL];
+				(S).tll = tllTable[((S).fnum) >> 5, (S).block, (S).volume, (S).patch.kl];
 			}
 		}
-		static void UPDATE_RKS(OPLL_SLOT S) { (S).rks = (uint)rksTable[((S).fnum) >> 8, (S).block, (S).patch.KR]; }
-		static void UPDATE_WF(OPLL_SLOT S) { (S).sintbl = waveform[(S).patch.WF]; }
+		static void UPDATE_RKS(OPLL_SLOT S) { (S).rks = (uint)rksTable[((S).fnum) >> 8, (S).block, (S).patch.kr]; }
+		static void UPDATE_WF(OPLL_SLOT S) { (S).sintbl = waveform[(S).patch.wf]; }
 		static void UPDATE_EG(OPLL_SLOT S) { (S).eg_dphase = calc_eg_dphase(S); }
 		static void UPDATE_ALL(OPLL_SLOT S) {
 			UPDATE_PG(S);
@@ -957,7 +957,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/* PG */
 		static void
 		calc_phase(OPLL_SLOT slot, e_int32 lfo) {
-			if (slot.patch.PM != 0)
+			if (slot.patch.pm != 0)
 				slot.phase += (uint)((slot.dphase * lfo) >> PM_AMP_BITS);
 			else
 				slot.phase += slot.dphase;
@@ -989,7 +989,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 				case OPLL_EG_STATE.ATTACK:
 					egout = (uint)AR_ADJUST_TABLE[HIGHBITS(slot.eg_phase, EG_DP_BITS - EG_BITS)];
 					slot.eg_phase += slot.eg_dphase;
-					if ((EG_DP_WIDTH & slot.eg_phase) != 0 || (slot.patch.AR == 15)) {
+					if ((EG_DP_WIDTH & slot.eg_phase) != 0 || (slot.patch.ar == 15)) {
 						egout = 0;
 						slot.eg_phase = 0;
 						slot.eg_mode = OPLL_EG_STATE.DECAY;
@@ -1000,13 +1000,13 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 				case OPLL_EG_STATE.DECAY:
 					egout = HIGHBITS(slot.eg_phase, EG_DP_BITS - EG_BITS);
 					slot.eg_phase += slot.eg_dphase;
-					if (slot.eg_phase >= SL[slot.patch.SL]) {
-						if (slot.patch.EG != 0) {
-							slot.eg_phase = SL[slot.patch.SL];
+					if (slot.eg_phase >= SL[slot.patch.sl]) {
+						if (slot.patch.eg != 0) {
+							slot.eg_phase = SL[slot.patch.sl];
 							slot.eg_mode = OPLL_EG_STATE.SUSHOLD;
 							UPDATE_EG(slot);
 						} else {
-							slot.eg_phase = SL[slot.patch.SL];
+							slot.eg_phase = SL[slot.patch.sl];
 							slot.eg_mode = OPLL_EG_STATE.SUSTINE;
 							UPDATE_EG(slot);
 						}
@@ -1015,7 +1015,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 				case OPLL_EG_STATE.SUSHOLD:
 					egout = HIGHBITS(slot.eg_phase, EG_DP_BITS - EG_BITS);
-					if (slot.patch.EG == 0) {
+					if (slot.patch.eg == 0) {
 						slot.eg_mode = OPLL_EG_STATE.SUSTINE;
 						UPDATE_EG(slot);
 					}
@@ -1050,7 +1050,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					break;
 			}
 
-			if (slot.patch.AM != 0)
+			if (slot.patch.am != 0)
 				egout = (uint)(EG2DB(egout + slot.tll) + lfo);
 			else
 				egout = EG2DB(egout + slot.tll);
@@ -1083,8 +1083,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 			if (slot.egout >= (DB_MUTE - 1)) {
 				slot.output[0] = 0;
-			} else if (slot.patch.FB != 0) {
-				fm = wave2_4pi(slot.feedback) >> (int)(7 - slot.patch.FB);
+			} else if (slot.patch.fb != 0) {
+				fm = wave2_4pi(slot.feedback) >> (int)(7 - slot.patch.fb);
 				slot.output[0] = DB2LIN_TABLE[slot.sintbl[(slot.pgout + fm) & (PG_WIDTH - 1)] + slot.egout];
 			} else {
 				slot.output[0] = DB2LIN_TABLE[slot.sintbl[slot.pgout] + slot.egout];
@@ -1278,11 +1278,11 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 			switch (reg) {
 				case 0x00:
-					opll.patch[0].AM = (data >> 7) & 1;
-					opll.patch[0].PM = (data >> 6) & 1;
-					opll.patch[0].EG = (data >> 5) & 1;
-					opll.patch[0].KR = (data >> 4) & 1;
-					opll.patch[0].ML = (data) & 15;
+					opll.patch[0].am = (data >> 7) & 1;
+					opll.patch[0].pm = (data >> 6) & 1;
+					opll.patch[0].eg = (data >> 5) & 1;
+					opll.patch[0].kr = (data >> 4) & 1;
+					opll.patch[0].ml = (data) & 15;
 					for (i = 0; i < 9; i++) {
 						if (opll.patch_number[i] == 0) {
 							UPDATE_PG(MOD(opll, i));
@@ -1293,11 +1293,11 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					break;
 
 				case 0x01:
-					opll.patch[1].AM = (data >> 7) & 1;
-					opll.patch[1].PM = (data >> 6) & 1;
-					opll.patch[1].EG = (data >> 5) & 1;
-					opll.patch[1].KR = (data >> 4) & 1;
-					opll.patch[1].ML = (data) & 15;
+					opll.patch[1].am = (data >> 7) & 1;
+					opll.patch[1].pm = (data >> 6) & 1;
+					opll.patch[1].eg = (data >> 5) & 1;
+					opll.patch[1].kr = (data >> 4) & 1;
+					opll.patch[1].ml = (data) & 15;
 					for (i = 0; i < 9; i++) {
 						if (opll.patch_number[i] == 0) {
 							UPDATE_PG(CAR(opll, i));
@@ -1308,8 +1308,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					break;
 
 				case 0x02:
-					opll.patch[0].KL = (data >> 6) & 3;
-					opll.patch[0].TL = (data) & 63;
+					opll.patch[0].kl = (data >> 6) & 3;
+					opll.patch[0].tl = (data) & 63;
 					for (i = 0; i < 9; i++) {
 						if (opll.patch_number[i] == 0) {
 							UPDATE_TLL(MOD(opll, i));
@@ -1318,10 +1318,10 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					break;
 
 				case 0x03:
-					opll.patch[1].KL = (data >> 6) & 3;
-					opll.patch[1].WF = (data >> 4) & 1;
-					opll.patch[0].WF = (data >> 3) & 1;
-					opll.patch[0].FB = (data) & 7;
+					opll.patch[1].kl = (data >> 6) & 3;
+					opll.patch[1].wf = (data >> 4) & 1;
+					opll.patch[0].wf = (data >> 3) & 1;
+					opll.patch[0].fb = (data) & 7;
 					for (i = 0; i < 9; i++) {
 						if (opll.patch_number[i] == 0) {
 							UPDATE_WF(MOD(opll, i));
@@ -1331,8 +1331,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					break;
 
 				case 0x04:
-					opll.patch[0].AR = (data >> 4) & 15;
-					opll.patch[0].DR = (data) & 15;
+					opll.patch[0].ar = (data >> 4) & 15;
+					opll.patch[0].dr = (data) & 15;
 					for (i = 0; i < 9; i++) {
 						if (opll.patch_number[i] == 0) {
 							UPDATE_EG(MOD(opll, i));
@@ -1341,8 +1341,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					break;
 
 				case 0x05:
-					opll.patch[1].AR = (data >> 4) & 15;
-					opll.patch[1].DR = (data) & 15;
+					opll.patch[1].ar = (data >> 4) & 15;
+					opll.patch[1].dr = (data) & 15;
 					for (i = 0; i < 9; i++) {
 						if (opll.patch_number[i] == 0) {
 							UPDATE_EG(CAR(opll, i));
@@ -1351,8 +1351,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					break;
 
 				case 0x06:
-					opll.patch[0].SL = (data >> 4) & 15;
-					opll.patch[0].RR = (data) & 15;
+					opll.patch[0].sl = (data >> 4) & 15;
+					opll.patch[0].rr = (data) & 15;
 					for (i = 0; i < 9; i++) {
 						if (opll.patch_number[i] == 0) {
 							UPDATE_EG(MOD(opll, i));
@@ -1361,8 +1361,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					break;
 
 				case 0x07:
-					opll.patch[1].SL = (data >> 4) & 15;
-					opll.patch[1].RR = (data) & 15;
+					opll.patch[1].sl = (data >> 4) & 15;
+					opll.patch[1].rr = (data) & 15;
 					for (i = 0; i < 9; i++) {
 						if (opll.patch_number[i] == 0) {
 							UPDATE_EG(CAR(opll, i));
@@ -1567,5 +1567,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			output[1] = (e_int16)(((double)opll.snext[1] * (opll.opllstep - opll.oplltime)
 								 + (double)opll.sprev[1] * opll.oplltime) / opll.opllstep);
 		}
+
 	}
 }

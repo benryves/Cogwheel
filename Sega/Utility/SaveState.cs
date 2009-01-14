@@ -38,12 +38,14 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 				IniSerialiseObject(emulator.Video, "Video", "Video.ini", zipFile);
 				IniSerialiseObject(emulator.Sound, "Sound", "PSG.ini", zipFile);
 #if EMU2413
-				/*IniSerialiseObject(emulator.FmSound, @"Sound\OPLL", "YM2413.ini", zipFile);
+				IniSerialiseObject(emulator.FmSound, @"Sound\OPLL", "YM2413.ini", zipFile);
 
-				var FmState = emulator.FmSound.State;
-				IniSerialiseObject(FmState, @"Sound\OPLL\emu2413", "State.ini", zipFile);
-				for (int i = 0; i < FmState.Patches.Length; ++i) IniSerialiseObject(FmState.Patches[i], @"Sound\OPLL\emu2413\Patches", string.Format(CultureInfo.InvariantCulture, "{0:D2}.ini", i), zipFile);
-				for (int i = 0; i < FmState.Slots.Length; ++i) IniSerialiseObject(FmState.Slots[i], string.Format(CultureInfo.InvariantCulture, @"Sound\OPLL\emu2413\Slots\{0:D2}", i), "Slot.ini", zipFile);*/
+				IniSerialiseObject(emulator.FmSound.Opll, @"Sound\OPLL\emu2413", "State.ini", zipFile);
+				for (int i = 0; i < emulator.FmSound.Opll.Patch.Length; ++i) IniSerialiseObject(emulator.FmSound.Opll.Patch[i], @"Sound\OPLL\emu2413\Patches", string.Format(CultureInfo.InvariantCulture, "{0:D2}.ini", i), zipFile);
+				for (int i = 0; i < emulator.FmSound.Opll.Slot.Length; ++i) {
+					IniSerialiseObject(emulator.FmSound.Opll.Slot[i], string.Format(CultureInfo.InvariantCulture, @"Sound\OPLL\emu2413\Slots\{0:D2}", i), "Slot.ini", zipFile);
+					IniSerialiseObject(emulator.FmSound.Opll.Slot[i].Patch, string.Format(CultureInfo.InvariantCulture, @"Sound\OPLL\emu2413\Slots\{0:D2}", i), "Patch.ini", zipFile);
+				}
 #endif
 				for (int i = 0; i < 2; ++i) {
 					IniSerialiseObject(emulator.SegaPorts[i], Path.Combine(@"Controllers\Sega", i.ToString()), "Port.ini", zipFile);
@@ -79,12 +81,14 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 				IniDeserialiseObject(emulator.Video, "Video", "Video.ini", zipFile);
 				IniDeserialiseObject(emulator.Sound, "Sound", "PSG.ini", zipFile);
 #if EMU2413
-				/*IniDeserialiseObject(emulator.FmSound, @"Sound\OPLL", "YM2413.ini", zipFile);
-				BeeDevelopment.Sega8Bit.Hardware.Emu2413.OPLL_STATE FmState = emulator.FmSound.State;
-				IniDeserialiseObject(FmState, @"Sound\OPLL\emu2413", "State.ini", zipFile);
-				for (int i = 0; i < FmState.Patches.Length; ++i) IniDeserialiseObject(FmState.Patches[i], @"Sound\OPLL\emu2413\Patches", string.Format(CultureInfo.InvariantCulture, "{0:D2}.ini", i), zipFile);
-				for (int i = 0; i < FmState.Slots.Length; ++i) IniDeserialiseObject(FmState.Slots[i], string.Format(CultureInfo.InvariantCulture, @"Sound\OPLL\emu2413\Slots\{0:D2}", i), "Slot.ini", zipFile);
-				emulator.FmSound.State = FmState;*/
+				IniDeserialiseObject(emulator.FmSound, @"Sound\OPLL", "YM2413.ini", zipFile);
+				IniDeserialiseObject(emulator.FmSound.Opll, @"Sound\OPLL\emu2413", "State.ini", zipFile);
+				for (int i = 0; i < emulator.FmSound.Opll.Patch.Length; ++i) IniDeserialiseObject(emulator.FmSound.Opll.Patch[i], @"Sound\OPLL\emu2413\Patches", string.Format(CultureInfo.InvariantCulture, "{0:D2}.ini", i), zipFile);
+				for (int i = 0; i < emulator.FmSound.Opll.Slot.Length; ++i) {
+					IniDeserialiseObject(emulator.FmSound.Opll.Slot[i], string.Format(CultureInfo.InvariantCulture, @"Sound\OPLL\emu2413\Slots\{0:D2}", i), "Slot.ini", zipFile);
+					IniDeserialiseObject(emulator.FmSound.Opll.Slot[i].Patch, string.Format(CultureInfo.InvariantCulture, @"Sound\OPLL\emu2413\Slots\{0:D2}", i), "Patch.ini", zipFile);
+				}
+				emulator.FmSound.Update();
 #endif
 				for (int i = 0; i < 2; ++i) {
 					IniDeserialiseObject(emulator.SegaPorts[i], Path.Combine(@"Controllers\Sega", i.ToString()), "Port.ini", zipFile);
@@ -135,6 +139,18 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 									Name = RawDataName,
 									Data = (byte[])Value,
 								});
+								IniFile.AppendLine(string.Format("{0}=Dump({1})", Property.Name, RawDataName));
+							} else if (Property.PropertyType.IsArray && (Property.PropertyType.GetElementType() == typeof(short) || Property.PropertyType.GetElementType() == typeof(ushort))) {
+								string RawDataName = Path.Combine(iniDirectory, Property.Name + ".bin");
+								using (var DumpedShorts= new MemoryStream()) {
+									using (var ShortWriter = new BinaryWriter(DumpedShorts)) {
+										foreach (var i in (short[])Value) ShortWriter.Write(i);
+									}
+									zipFile.Add(new ZipFileEntry() {
+										Name = RawDataName,
+										Data = DumpedShorts.ToArray(),
+									});
+								}
 								IniFile.AppendLine(string.Format("{0}=Dump({1})", Property.Name, RawDataName));
 							} else if (Property.PropertyType.IsArray && (Property.PropertyType.GetElementType() == typeof(int) || Property.PropertyType.GetElementType() == typeof(uint))) {
 								string RawDataName = Path.Combine(iniDirectory, Property.Name + ".bin");
@@ -215,6 +231,17 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 						}
 					} else if (Property.PropertyType.IsArray && Property.PropertyType.GetElementType() == typeof(byte)) {
 						if (DumpedData != null) { Property.SetValue(Result, DumpedData.Data, null); }
+					} else if (Property.PropertyType.IsArray && (Property.PropertyType.GetElementType() == typeof(short) || Property.PropertyType.GetElementType() == typeof(ushort))) {
+						if (DumpedData != null) {
+							var ShortArray = new short[DumpedData.Data.Length / 2];
+							for (int i = 0; i < ShortArray.Length; ++i) ShortArray[i] = BitConverter.ToInt16(DumpedData.Data, i * 2);
+							if (Property.PropertyType.GetElementType() == typeof(short)) {
+								Property.SetValue(Result, ShortArray, null);
+							} else if (Property.PropertyType.GetElementType() == typeof(ushort)) {
+								Property.SetValue(Result, ArrayEx.ConvertAll(ShortArray, i => (ushort)i), null);
+							}
+
+						}
 					} else if (Property.PropertyType.IsArray && (Property.PropertyType.GetElementType() == typeof(int) || Property.PropertyType.GetElementType() == typeof(uint))) {
 						if (DumpedData != null) {
 							var IntArray = new int[DumpedData.Data.Length / 4];
