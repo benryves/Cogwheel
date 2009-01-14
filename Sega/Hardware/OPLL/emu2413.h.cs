@@ -144,6 +144,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 			/* Noise Generator */
 			internal e_uint32 noise_seed;
+			public e_uint32 NoiseSeed { get { return this.noise_seed; } set { this.noise_seed = value; } }
 
 			/* Channel Data */
 			internal e_int32[] patch_number = new e_int32[9];

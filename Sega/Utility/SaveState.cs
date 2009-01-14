@@ -83,10 +83,18 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 #if EMU2413
 				IniDeserialiseObject(emulator.FmSound, @"Sound\OPLL", "YM2413.ini", zipFile);
 				IniDeserialiseObject(emulator.FmSound.Opll, @"Sound\OPLL\emu2413", "State.ini", zipFile);
-				for (int i = 0; i < emulator.FmSound.Opll.Patch.Length; ++i) IniDeserialiseObject(emulator.FmSound.Opll.Patch[i], @"Sound\OPLL\emu2413\Patches", string.Format(CultureInfo.InvariantCulture, "{0:D2}.ini", i), zipFile);
+				for (int i = 0; i < emulator.FmSound.Opll.Patch.Length; ++i) {
+					var P = emulator.FmSound.Opll.Patch[i];
+					IniDeserialiseObject(P, @"Sound\OPLL\emu2413\Patches", string.Format(CultureInfo.InvariantCulture, "{0:D2}.ini", i), zipFile);
+					emulator.FmSound.Opll.Patch[i] = P;
+				}
 				for (int i = 0; i < emulator.FmSound.Opll.Slot.Length; ++i) {
-					IniDeserialiseObject(emulator.FmSound.Opll.Slot[i], string.Format(CultureInfo.InvariantCulture, @"Sound\OPLL\emu2413\Slots\{0:D2}", i), "Slot.ini", zipFile);
-					IniDeserialiseObject(emulator.FmSound.Opll.Slot[i].Patch, string.Format(CultureInfo.InvariantCulture, @"Sound\OPLL\emu2413\Slots\{0:D2}", i), "Patch.ini", zipFile);
+					var S = emulator.FmSound.Opll.Slot[i];
+					IniDeserialiseObject(S, string.Format(CultureInfo.InvariantCulture, @"Sound\OPLL\emu2413\Slots\{0:D2}", i), "Slot.ini", zipFile);
+					var P = S.Patch;
+					IniDeserialiseObject(P, string.Format(CultureInfo.InvariantCulture, @"Sound\OPLL\emu2413\Slots\{0:D2}", i), "Patch.ini", zipFile);
+					S.Patch = P;
+					emulator.FmSound.Opll.Slot[i] = S;
 				}
 				emulator.FmSound.Update();
 #endif
