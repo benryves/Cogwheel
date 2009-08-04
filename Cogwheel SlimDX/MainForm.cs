@@ -228,12 +228,8 @@ namespace BeeDevelopment.Cogwheel {
 
 		#region Video Output / Window State
 
-		private Emulator.GlassesShutter? LastOpenShutter = null;
-		private void UpdateGlassesEye() {
-			if (this.LastOpenShutter.HasValue) {
-				this.LcdShutterGlasses.RtsEnable = this.LastOpenShutter == Emulator.GlassesShutter.Left;
-				this.LastOpenShutter = null;
-			}
+		private void UpdateGlassesEye(object vBlankData) {
+			this.LcdShutterGlasses.RtsEnable = ((Emulator.GlassesShutter)vBlankData) == Emulator.GlassesShutter.Left;
 		}
 
 		private void RepaintVideo() {
@@ -250,15 +246,14 @@ namespace BeeDevelopment.Cogwheel {
 				}
 			}
 
-			if (this.FramesSinceEyeWasUpdated < 3) {
+			if (this.FramesSinceEyeWasUpdated < 60) {
 
 				if (this.LcdShutterGlasses != null && this.LcdShutterGlasses.IsOpen) {
 
 					// Output to LCD shutter glasses.
 					this.Dumper.VBlankAction = UpdateGlassesEye;
-					if (!this.LastOpenShutter.HasValue) this.LastOpenShutter = this.Emulator.Video.LastOpenGlassesShutter;
 					this.LcdShutterGlasses.DtrEnable = !this.Paused; // Switch on glasses.
-					this.Dumper.Render(this.Emulator.Video.LastCompleteFrame, this.Emulator.Video.LastCompleteFrameWidth, this.Emulator.Video.LastCompleteFrameHeight, BackdropColour);
+					this.Dumper.Render(this.Emulator.Video.LastCompleteFrame, this.Emulator.Video.LastCompleteFrameWidth, this.Emulator.Video.LastCompleteFrameHeight, BackdropColour, this.Emulator.Video.LastOpenGlassesShutter);
 
 				} else {
 

@@ -145,7 +145,7 @@ namespace BeeDevelopment.Cogwheel {
 					BackBufferWidth = Math.Max(1, this.Control.ClientSize.Width),
 					BackBufferHeight = Math.Max(1, this.Control.ClientSize.Height),
 					DeviceWindowHandle = this.Control.Handle,
-					PresentationInterval = this.VBlankAction == null ? PresentInterval.One : PresentInterval.Immediate,
+					PresentationInterval =  this.VBlankAction == null ? PresentInterval.One : PresentInterval.Immediate,
 				};
 
 				// Try and create the device.
@@ -169,7 +169,6 @@ namespace BeeDevelopment.Cogwheel {
 				// Create a texture to write to to create video ouptut.
 				this.VideoOutput = new Texture(this.GraphicsDevice, this.VideoOutputWidth, this.VideoOutputHeight, 0, Usage.None, Format.A8R8G8B8, Pool.Managed);
 
-
 				this.LastClearedHeight = 0;
 				this.LastClearedWidth = 0;
 
@@ -182,7 +181,23 @@ namespace BeeDevelopment.Cogwheel {
 		/// <summary>
 		/// Renders the <see cref="PixelDumper"/> output to the control.
 		/// </summary>
+		/// <param name="data">The colour data to render in 32-bit ARGB format.</param>
+		/// <param name="width">The width of the image to render in pixels.</param>
+		/// <param name="height">The height of the image to render in pixels.</param>
+		/// <param name="backgroundColour">The background colour to fill the unused area of the screen width.</param>
 		public void Render(int[] data, int width, int height, Color backgroundColour) {
+			this.Render(data, width, height, backgroundColour, null);
+		}
+
+		/// <summary>
+		/// Renders the <see cref="PixelDumper"/> output to the control.
+		/// </summary>
+		/// <param name="data">The colour data to render in 32-bit ARGB format.</param>
+		/// <param name="width">The width of the image to render in pixels.</param>
+		/// <param name="height">The height of the image to render in pixels.</param>
+		/// <param name="backgroundColour">The background colour to fill the unused area of the screen width.</param>
+		/// <param name="vBlankData">Data to pass to VBlankAction.</param>
+		public void Render(int[] data, int width, int height, Color backgroundColour, object vBlankData) {
 
 			if (this.GraphicsDevice == null) {
 				this.ReinitialiseRenderer();
@@ -225,8 +240,6 @@ namespace BeeDevelopment.Cogwheel {
 								OutputStream.Data.Seek(PitchOverflow, SeekOrigin.Current);
 							}
 						}
-
-
 						this.VideoOutput.UnlockRectangle(0);
 					}
 				}
@@ -235,7 +248,6 @@ namespace BeeDevelopment.Cogwheel {
 				this.GraphicsDevice.SetRenderState(RenderState.Lighting, false);
 
 				this.GraphicsDevice.BeginScene();
-
 
 				this.GraphicsDevice.SetSamplerState(0, SamplerState.MagFilter, this.LinearInterpolation ? TextureFilter.Linear : TextureFilter.Point);
 
@@ -303,7 +315,7 @@ namespace BeeDevelopment.Cogwheel {
 						// Wait for VBlank.
 						while (!this.GraphicsDevice.GetRasterStatus(0).InVBlank) Thread.Sleep(0);
 						// Perform the action:
-						this.vBlankAction();
+						this.vBlankAction(vBlankData);	
 					}
 
 					// Present!
@@ -311,7 +323,7 @@ namespace BeeDevelopment.Cogwheel {
 				} catch (Direct3D9Exception) {
 					if (Result.Last == SlimDX.Direct3D9.ResultCode.DeviceLost) {
 						this.ReinitialiseRenderer();
-						this.Render(data, width, height, backgroundColour);
+						this.Render(data, width, height, backgroundColour, vBlankData);
 					}
 				}
 
@@ -357,11 +369,11 @@ namespace BeeDevelopment.Cogwheel {
 		/// </summary>
 		public ScaleModes ScaleMode { get; set; }
 
-		private Action vBlankAction = null;
+		private Action<object> vBlankAction = null;
 		/// <summary>
 		/// Gets or set an <see cref="Action"/> that is performed during VBlank.
 		/// </summary>
-		public Action VBlankAction {
+		public Action<object> VBlankAction {
 			get { return this.vBlankAction; }
 			set {
 				var PresentationStyleChanged = (this.vBlankAction == null && value != null) || (this.vBlankAction != null && value == null);
