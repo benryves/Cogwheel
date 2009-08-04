@@ -289,8 +289,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 			// Reset backdrop to 0.
 			this.LastBackdropColour = 0;
-
-
 		}
 
 		private int[] lastCompleteFrame;
@@ -309,6 +307,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			this.LastCompleteFrameWidth = this.CroppedFrameWidth;
 			this.LastCompleteFrameHeight = this.CroppedFrameHeight;
 			this.lastCompleteFrame = new int[this.CroppedFrameWidth * this.CroppedFrameHeight];
+			this.LastOpenGlassesShutter = this.OpenGlassesShutter;
 
 			switch (this.ResizingMode) {
 				case ResizingModes.Normal:
@@ -934,7 +933,10 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 				}
 			}
 
-			//this.SpriteCollision = (R.Next() & 1) == 0;
+			// Copy the open glasses shutter value from the middle of the current frame.
+			if (this.BeamLocation == BeamRegion.ActiveDisplay && this.RemainingScanlinesInRegion == this.ActiveFrameHeight / 2) {
+				this.OpenGlassesShutter = this.Emulator.OpenGlassesShutter;
+			}
 
 			return FrameInterrupted;
 		}

@@ -239,8 +239,8 @@ namespace BeeDevelopment.Cogwheel {
 		private void RepaintVideo() {
 			var BackdropColour = Color.FromArgb(unchecked((int)0xFF000000 | Emulator.Video.LastBackdropColour));
 
-			if (this.Emulator.OpenGlassesShutter != this.LastEye) {
-				this.LastEye = this.Emulator.OpenGlassesShutter;
+			if (this.Emulator.Video.LastOpenGlassesShutter != this.LastEye) {
+				this.LastEye = this.Emulator.Video.LastOpenGlassesShutter;
 				this.FramesSinceEyeWasUpdated = 0;
 			} else {
 				if (this.IsLiveFrame) {
@@ -256,7 +256,7 @@ namespace BeeDevelopment.Cogwheel {
 
 					// Output to LCD shutter glasses.
 					this.Dumper.VBlankAction = UpdateGlassesEye;
-					if (!this.LastOpenShutter.HasValue) this.LastOpenShutter = this.Emulator.OpenGlassesShutter;
+					if (!this.LastOpenShutter.HasValue) this.LastOpenShutter = this.Emulator.Video.LastOpenGlassesShutter;
 					this.LcdShutterGlasses.DtrEnable = !this.Paused; // Switch on glasses.
 					this.Dumper.Render(this.Emulator.Video.LastCompleteFrame, this.Emulator.Video.LastCompleteFrameWidth, this.Emulator.Video.LastCompleteFrameHeight, BackdropColour);
 
@@ -264,7 +264,7 @@ namespace BeeDevelopment.Cogwheel {
 
 					// Render an anaglyph.
 
-					if (this.Emulator.OpenGlassesShutter == Emulator.GlassesShutter.Left) {
+					if (this.Emulator.Video.LastOpenGlassesShutter == Emulator.GlassesShutter.Left) {
 						this.LastLeftFrameData = this.Emulator.Video.LastCompleteFrame;
 						this.LastLeftFrameWidth = this.Emulator.Video.LastCompleteFrameWidth;
 						this.LastLeftFrameHeight = this.Emulator.Video.LastCompleteFrameHeight;
