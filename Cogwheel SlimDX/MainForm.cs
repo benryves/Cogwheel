@@ -235,57 +235,61 @@ namespace BeeDevelopment.Cogwheel {
 		private void RepaintVideo() {
 			var BackdropColour = Color.FromArgb(unchecked((int)0xFF000000 | Emulator.Video.LastBackdropColour));
 
-			if (this.Emulator.Video.LastOpenGlassesShutter != this.LastEye) {
-				this.LastEye = this.Emulator.Video.LastOpenGlassesShutter;
-				this.FramesSinceEyeWasUpdated = 0;
-			} else {
-				if (this.IsLiveFrame) {
-					++this.FramesSinceEyeWasUpdated;
-					if (this.FramesSinceEyeWasUpdated > 100) this.FramesSinceEyeWasUpdated = 100;
-					this.IsLiveFrame = false;
-				}
-			}
+			var Video = this.Emulator.Video;
 
-			if (this.FramesSinceEyeWasUpdated < 60) {
-
-				if (this.LcdShutterGlasses != null && this.LcdShutterGlasses.IsOpen) {
-
-					// Output to LCD shutter glasses.
-					this.Dumper.VBlankAction = UpdateGlassesEye;
-					this.LcdShutterGlasses.DtrEnable = !this.Paused; // Switch on glasses.
-					this.Dumper.Render(this.Emulator.Video.LastCompleteFrame, this.Emulator.Video.LastCompleteFrameWidth, this.Emulator.Video.LastCompleteFrameHeight, BackdropColour, this.Emulator.Video.LastOpenGlassesShutter);
-
+			lock (Video) {
+				if (Video.LastOpenGlassesShutter != this.LastEye) {
+					this.LastEye = Video.LastOpenGlassesShutter;
+					this.FramesSinceEyeWasUpdated = 0;
 				} else {
+					if (this.IsLiveFrame) {
+						++this.FramesSinceEyeWasUpdated;
+						if (this.FramesSinceEyeWasUpdated > 100) this.FramesSinceEyeWasUpdated = 100;
+						this.IsLiveFrame = false;
+					}
+				}
 
-					// Render an anaglyph.
+				if (this.FramesSinceEyeWasUpdated < 60) {
 
-					if (this.Emulator.Video.LastOpenGlassesShutter == Emulator.GlassesShutter.Left) {
-						this.LastLeftFrameData = this.Emulator.Video.LastCompleteFrame;
-						this.LastLeftFrameWidth = this.Emulator.Video.LastCompleteFrameWidth;
-						this.LastLeftFrameHeight = this.Emulator.Video.LastCompleteFrameHeight;
+					if (this.LcdShutterGlasses != null && this.LcdShutterGlasses.IsOpen) {
+
+						// Output to LCD shutter glasses.
+						this.Dumper.VBlankAction = UpdateGlassesEye;
+						this.LcdShutterGlasses.DtrEnable = !this.Paused; // Switch on glasses.
+						this.Dumper.Render(Video.LastCompleteFrame, Video.LastCompleteFrameWidth, Video.LastCompleteFrameHeight, BackdropColour, Video.LastOpenGlassesShutter);
+
 					} else {
-						this.LastRightFrameData = this.Emulator.Video.LastCompleteFrame;
-						this.LastRightFrameWidth = this.Emulator.Video.LastCompleteFrameWidth;
-						this.LastRightFrameHeight = this.Emulator.Video.LastCompleteFrameHeight;
+
+						// Render an anaglyph.
+
+						if (Video.LastOpenGlassesShutter == Emulator.GlassesShutter.Left) {
+							this.LastLeftFrameData = Video.LastCompleteFrame;
+							this.LastLeftFrameWidth = Video.LastCompleteFrameWidth;
+							this.LastLeftFrameHeight = Video.LastCompleteFrameHeight;
+						} else {
+							this.LastRightFrameData = Video.LastCompleteFrame;
+							this.LastRightFrameWidth = Video.LastCompleteFrameWidth;
+							this.LastRightFrameHeight = Video.LastCompleteFrameHeight;
+						}
+
+						BackdropColour = Color.Black;
+
+						this.Dumper.Render(
+							FrameBlender.Blend(FrameBlender.BlendMode.Anaglyph, this.LastLeftFrameData, this.LastLeftFrameWidth, this.LastLeftFrameHeight, this.LastRightFrameData, this.LastRightFrameWidth, this.LastRightFrameHeight),
+							this.LastLeftFrameWidth, this.LastLeftFrameHeight,
+							BackdropColour
+						);
+
 					}
 
-					BackdropColour = Color.Black;
-
-					this.Dumper.Render(
-						FrameBlender.Blend(FrameBlender.BlendMode.Anaglyph, this.LastLeftFrameData, this.LastLeftFrameWidth, this.LastLeftFrameHeight, this.LastRightFrameData, this.LastRightFrameWidth, this.LastRightFrameHeight),
-						this.LastLeftFrameWidth, this.LastLeftFrameHeight,
-						BackdropColour
-					);
-
+				} else {
+					this.Dumper.VBlankAction = null; // We don't need to perform any blanking action.
+					if (this.LcdShutterGlasses != null && this.LcdShutterGlasses.IsOpen) this.LcdShutterGlasses.DtrEnable = false; // Switch off glasses.
+					this.Dumper.Render(Video.LastCompleteFrame, Video.LastCompleteFrameWidth, Video.LastCompleteFrameHeight, BackdropColour);
 				}
 
-			} else {
-				this.Dumper.VBlankAction = null; // We don't need to perform any blanking action.
-				if (this.LcdShutterGlasses != null && this.LcdShutterGlasses.IsOpen) this.LcdShutterGlasses.DtrEnable = false; // Switch off glasses.
-				this.Dumper.Render(this.Emulator.Video.LastCompleteFrame, this.Emulator.Video.LastCompleteFrameWidth, this.Emulator.Video.LastCompleteFrameHeight, BackdropColour);
+				this.RenderPanel.BackColor = BackdropColour;
 			}
-
-			this.RenderPanel.BackColor = BackdropColour;
 
 		}
 
