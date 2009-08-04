@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
+using System.IO.Ports;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -26,6 +28,7 @@ namespace BeeDevelopment.Cogwheel {
 
 		// Output.
 		private PixelDumper Dumper;
+		private SerialPort LcdShutterGlasses;
 
 		// Emulator stuff.
 		internal Emulator Emulator;
@@ -125,11 +128,14 @@ namespace BeeDevelopment.Cogwheel {
 				} catch { }
 			}
 
+			// Initialise 3D glasses.
+			this.SetThreeDeeGlassesPort(Properties.Settings.Default.LcdShutterGlassesPort);
 		}
 
 		void MainForm_Disposed(object sender, EventArgs e) {
 			this.DisposeSound();
 			if (this.Dumper != null) this.Dumper.Dispose();
+			if (this.LcdShutterGlasses != null) this.LcdShutterGlasses.Dispose();
 		}
 		
 		#endregion
@@ -238,25 +244,39 @@ namespace BeeDevelopment.Cogwheel {
 
 			if (this.FramesSinceEyeWasUpdated < 3) {
 
-				if (this.Emulator.OpenGlassesShutter == Emulator.GlassesShutter.Left) {
-					this.LastLeftFrameData = this.Emulator.Video.LastCompleteFrame;
-					this.LastLeftFrameWidth = this.Emulator.Video.LastCompleteFrameWidth;
-					this.LastLeftFrameHeight = this.Emulator.Video.LastCompleteFrameHeight;
+				if (this.LcdShutterGlasses != null && this.LcdShutterGlasses.IsOpen) {
+
+					// Output to LCD shutter glasses.
+					this.LcdShutterGlasses.DtrEnable = !this.Paused; // Switch on glasses.
+					this.Dumper.Render(this.Emulator.Video.LastCompleteFrame, this.Emulator.Video.LastCompleteFrameWidth, this.Emulator.Video.LastCompleteFrameHeight, BackdropColour);
+					this.LcdShutterGlasses.RtsEnable = this.Emulator.OpenGlassesShutter == Emulator.GlassesShutter.Left; // Set open eye appropriately.
+
 				} else {
-					this.LastRightFrameData = this.Emulator.Video.LastCompleteFrame;
-					this.LastRightFrameWidth = this.Emulator.Video.LastCompleteFrameWidth;
-					this.LastRightFrameHeight = this.Emulator.Video.LastCompleteFrameHeight;
+
+					// Render an anaglyph.
+
+					if (this.Emulator.OpenGlassesShutter == Emulator.GlassesShutter.Left) {
+						this.LastLeftFrameData = this.Emulator.Video.LastCompleteFrame;
+						this.LastLeftFrameWidth = this.Emulator.Video.LastCompleteFrameWidth;
+						this.LastLeftFrameHeight = this.Emulator.Video.LastCompleteFrameHeight;
+					} else {
+						this.LastRightFrameData = this.Emulator.Video.LastCompleteFrame;
+						this.LastRightFrameWidth = this.Emulator.Video.LastCompleteFrameWidth;
+						this.LastRightFrameHeight = this.Emulator.Video.LastCompleteFrameHeight;
+					}
+
+					BackdropColour = Color.Black;
+
+					this.Dumper.Render(
+						FrameBlender.Blend(FrameBlender.BlendMode.Anaglyph, this.LastLeftFrameData, this.LastLeftFrameWidth, this.LastLeftFrameHeight, this.LastRightFrameData, this.LastRightFrameWidth, this.LastRightFrameHeight),
+						this.LastLeftFrameWidth, this.LastLeftFrameHeight,
+						BackdropColour
+					);
+
 				}
 
-				BackdropColour = Color.Black;
-
-				this.Dumper.Render(
-					FrameBlender.Blend(FrameBlender.BlendMode.Anaglyph, this.LastLeftFrameData, this.LastLeftFrameWidth, this.LastLeftFrameHeight, this.LastRightFrameData, this.LastRightFrameWidth, this.LastRightFrameHeight),
-					this.LastLeftFrameWidth, this.LastLeftFrameHeight,
-					BackdropColour
-				);
-
 			} else {
+				if (this.LcdShutterGlasses != null && this.LcdShutterGlasses.IsOpen) this.LcdShutterGlasses.DtrEnable = false; // Switch off glasses.
 				this.Dumper.Render(this.Emulator.Video.LastCompleteFrame, this.Emulator.Video.LastCompleteFrameWidth, this.Emulator.Video.LastCompleteFrameHeight, BackdropColour);
 			}
 
@@ -873,6 +893,71 @@ namespace BeeDevelopment.Cogwheel {
 		}
 #endif
 
+		private void ThreeDeeGlassesMenu_DropDownOpening(object sender, EventArgs e) {
+			// Remove old COM ports.
+			for (int i = this.ThreeDeeGlassesMenu.DropDownItems.Count - 1; i >= 1; i--) {
+				this.ThreeDeeGlassesMenu.DropDownItems.RemoveAt(i);	
+			}
+			
+			// Get available COM ports.
+			var ComPorts = SerialPort.GetPortNames();
+			this.ThreeDeeGlassesDisabledMenu.Image = Properties.Resources.Icon_Bullet_Black;
+			if (ComPorts.Length == 0) return;
+
+			// Populate menu with COM port names.
+			Array.Sort(ComPorts, (a, b) => {
+				int aNumber, bNumber;
+				if (
+					a.StartsWith("COM") &&
+					b.StartsWith("COM") &&
+					int.TryParse(a.Substring(3), NumberStyles.Integer, CultureInfo.InvariantCulture, out aNumber) &&
+					int.TryParse(b.Substring(3), NumberStyles.Integer, CultureInfo.InvariantCulture, out bNumber)
+				) {
+					return aNumber.CompareTo(bNumber);
+				} else {
+					return a.CompareTo(b);
+				}
+			});
+			this.ThreeDeeGlassesMenu.DropDownItems.Add(new ToolStripSeparator());
+			foreach (var ComPort in ComPorts) {
+				var IsSelected = this.LcdShutterGlasses!=null && this.LcdShutterGlasses.PortName==ComPort;
+				if (IsSelected) {
+					this.ThreeDeeGlassesDisabledMenu.Image = null;
+				}
+				this.ThreeDeeGlassesMenu.DropDownItems.Add(ComPort, IsSelected ? Properties.Resources.Icon_Bullet_Black : null, (comPortSender,comPortE) => {
+					this.SetThreeDeeGlassesPort(((ToolStripMenuItem)comPortSender).Text);
+				});
+			}			
+		}
+
+
+		private void ThreeDeeGlassesDisabledMenu_Click(object sender, EventArgs e) {
+			this.SetThreeDeeGlassesPort(null);
+		}
+
+		private void SetThreeDeeGlassesPort(string portName) {
+			if (this.LcdShutterGlasses != null) {
+				this.LcdShutterGlasses.Dispose();
+				this.LcdShutterGlasses = null;
+			}
+			if (!string.IsNullOrEmpty(portName)) {
+				try {
+					this.LcdShutterGlasses = new SerialPort(portName);
+				} catch (Exception ex) {
+					MessageBox.Show(this, "Could not set 3D glasses port: " + ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					return;
+				}
+				try {
+					this.LcdShutterGlasses.Open();
+				} catch (Exception ex) {
+					MessageBox.Show(this, "Could not open 3D glasses port: " + ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					return;
+				}
+			}
+			Properties.Settings.Default.LcdShutterGlassesPort = portName;
+			
+		}
+
 		#endregion
 
 		#region State Saving
@@ -1113,6 +1198,7 @@ namespace BeeDevelopment.Cogwheel {
 				SubItem.Image = (this.Input.ProfileDirectory == (string)SubItem.Tag) ? Properties.Resources.Icon_Bullet_Black : null;
 			}
 		}
+
 
 	}
 }

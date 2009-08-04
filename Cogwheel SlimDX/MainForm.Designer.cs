@@ -80,6 +80,9 @@
 			this.OpenStateDialog = new System.Windows.Forms.OpenFileDialog();
 			this.SaveStateDialog = new System.Windows.Forms.SaveFileDialog();
 			this.CursorHider = new System.Windows.Forms.Timer(this.components);
+			this.ThreeDeeGlassesMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.OptionsSep2 = new System.Windows.Forms.ToolStripSeparator();
+			this.ThreeDeeGlassesDisabledMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -282,7 +285,7 @@
             this.EmulationVideoSpritesEnabledMenu});
 			this.EmulationVideoMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Television;
 			this.EmulationVideoMenu.Name = "EmulationVideoMenu";
-			this.EmulationVideoMenu.Size = new System.Drawing.Size(148, 22);
+			this.EmulationVideoMenu.Size = new System.Drawing.Size(152, 22);
 			this.EmulationVideoMenu.Text = "&Video";
 			this.EmulationVideoMenu.DropDownOpening += new System.EventHandler(this.DebugVideoMenu_DropDownOpening);
 			// 
@@ -326,7 +329,7 @@
             this.GameGenieEditMenu});
 			this.GameGenieMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(148, 22);
+			this.GameGenieMenu.Size = new System.Drawing.Size(152, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
 			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
 			// 
@@ -349,7 +352,7 @@
 			// 
 			this.SdscDebugConsoleMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Terminal;
 			this.SdscDebugConsoleMenu.Name = "SdscDebugConsoleMenu";
-			this.SdscDebugConsoleMenu.Size = new System.Drawing.Size(148, 22);
+			this.SdscDebugConsoleMenu.Size = new System.Drawing.Size(152, 22);
 			this.SdscDebugConsoleMenu.Text = "&SDSC Console";
 			this.SdscDebugConsoleMenu.Click += new System.EventHandler(this.SdscDebugConsoleMenu_Click);
 			// 
@@ -364,7 +367,9 @@
             this.OptionsSep1,
             this.SimulateGameGearLcdMenu,
             this.LinearInterpolationMenu,
-            this.MaintainAspectRatioMenu});
+            this.MaintainAspectRatioMenu,
+            this.OptionsSep2,
+            this.ThreeDeeGlassesMenu});
 			this.OptionsMenu.Name = "OptionsMenu";
 			this.OptionsMenu.Size = new System.Drawing.Size(61, 20);
 			this.OptionsMenu.Text = "&Options";
@@ -518,6 +523,27 @@
 			this.CursorHider.Interval = 1000;
 			this.CursorHider.Tick += new System.EventHandler(this.CursorHider_Tick);
 			// 
+			// ThreeDeeGlassesMenu
+			// 
+			this.ThreeDeeGlassesMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ThreeDeeGlassesDisabledMenu});
+			this.ThreeDeeGlassesMenu.Name = "ThreeDeeGlassesMenu";
+			this.ThreeDeeGlassesMenu.Size = new System.Drawing.Size(247, 22);
+			this.ThreeDeeGlassesMenu.Text = "&3D Glasses";
+			this.ThreeDeeGlassesMenu.DropDownOpening += new System.EventHandler(this.ThreeDeeGlassesMenu_DropDownOpening);
+			// 
+			// OptionsSep2
+			// 
+			this.OptionsSep2.Name = "OptionsSep2";
+			this.OptionsSep2.Size = new System.Drawing.Size(244, 6);
+			// 
+			// ThreeDeeGlassesDisabledMenu
+			// 
+			this.ThreeDeeGlassesDisabledMenu.Name = "ThreeDeeGlassesDisabledMenu";
+			this.ThreeDeeGlassesDisabledMenu.Size = new System.Drawing.Size(152, 22);
+			this.ThreeDeeGlassesDisabledMenu.Text = "&Disabled";
+			this.ThreeDeeGlassesDisabledMenu.Click += new System.EventHandler(this.ThreeDeeGlassesDisabledMenu_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -600,6 +626,9 @@
 		private System.Windows.Forms.ToolStripSeparator OptionsSep1;
 #if EMU2413
 		private System.Windows.Forms.ToolStripMenuItem EnableFMSoundMenu;
+		private System.Windows.Forms.ToolStripSeparator OptionsSep2;
+		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesMenu;
+		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesDisabledMenu;
 #endif
 	}
 }
