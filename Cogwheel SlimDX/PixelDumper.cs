@@ -145,7 +145,7 @@ namespace BeeDevelopment.Cogwheel {
 					BackBufferWidth = Math.Max(1, this.Control.ClientSize.Width),
 					BackBufferHeight = Math.Max(1, this.Control.ClientSize.Height),
 					DeviceWindowHandle = this.Control.Handle,
-					PresentationInterval = PresentInterval.One,
+					PresentationInterval = this.VBlankAction == null ? PresentInterval.One : PresentInterval.Immediate,
 				};
 
 				// Try and create the device.
@@ -293,7 +293,20 @@ namespace BeeDevelopment.Cogwheel {
 				this.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
 
 				this.GraphicsDevice.EndScene();
+
+				
+
 				try {
+
+					// Do we need to perform an action during the VBlank?
+					if (this.vBlankAction != null) {
+						// Wait for VBlank.
+						while (!this.GraphicsDevice.GetRasterStatus(0).InVBlank) Thread.Sleep(0);
+						// Perform the action:
+						this.vBlankAction();
+					}
+
+					// Present!
 					this.GraphicsDevice.Present();
 				} catch (Direct3D9Exception) {
 					if (Result.Last == SlimDX.Direct3D9.ResultCode.DeviceLost) {
@@ -343,6 +356,19 @@ namespace BeeDevelopment.Cogwheel {
 		/// Gets the <see cref="ScaleModes"/> used to scale the image.
 		/// </summary>
 		public ScaleModes ScaleMode { get; set; }
+
+		private Action vBlankAction = null;
+		/// <summary>
+		/// Gets or set an <see cref="Action"/> that is performed during VBlank.
+		/// </summary>
+		public Action VBlankAction {
+			get { return this.vBlankAction; }
+			set {
+				var PresentationStyleChanged = (this.vBlankAction == null && value != null) || (this.vBlankAction != null && value == null);
+				this.vBlankAction = value;
+				if (PresentationStyleChanged) this.ReinitialiseRenderer();
+			}
+		}
 
 		#endregion
 

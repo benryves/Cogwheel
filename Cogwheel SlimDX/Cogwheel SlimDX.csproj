@@ -48,6 +48,7 @@
     <Compile Include="About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
+    <Compile Include="Action.cs" />
     <Compile Include="AdvancedRomLoadDialog.cs">
       <SubType>Form</SubType>
     </Compile>

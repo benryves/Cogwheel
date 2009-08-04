@@ -228,6 +228,14 @@ namespace BeeDevelopment.Cogwheel {
 
 		#region Video Output / Window State
 
+		private Emulator.GlassesShutter? LastOpenShutter = null;
+		private void UpdateGlassesEye() {
+			if (this.LastOpenShutter.HasValue) {
+				this.LcdShutterGlasses.RtsEnable = this.LastOpenShutter == Emulator.GlassesShutter.Left;
+				this.LastOpenShutter = null;
+			}
+		}
+
 		private void RepaintVideo() {
 			var BackdropColour = Color.FromArgb(unchecked((int)0xFF000000 | Emulator.Video.LastBackdropColour));
 
@@ -247,9 +255,10 @@ namespace BeeDevelopment.Cogwheel {
 				if (this.LcdShutterGlasses != null && this.LcdShutterGlasses.IsOpen) {
 
 					// Output to LCD shutter glasses.
+					this.Dumper.VBlankAction = UpdateGlassesEye;
+					if (!this.LastOpenShutter.HasValue) this.LastOpenShutter = this.Emulator.OpenGlassesShutter;
 					this.LcdShutterGlasses.DtrEnable = !this.Paused; // Switch on glasses.
 					this.Dumper.Render(this.Emulator.Video.LastCompleteFrame, this.Emulator.Video.LastCompleteFrameWidth, this.Emulator.Video.LastCompleteFrameHeight, BackdropColour);
-					this.LcdShutterGlasses.RtsEnable = this.Emulator.OpenGlassesShutter == Emulator.GlassesShutter.Left; // Set open eye appropriately.
 
 				} else {
 
@@ -276,6 +285,7 @@ namespace BeeDevelopment.Cogwheel {
 				}
 
 			} else {
+				this.Dumper.VBlankAction = null; // We don't need to perform any blanking action.
 				if (this.LcdShutterGlasses != null && this.LcdShutterGlasses.IsOpen) this.LcdShutterGlasses.DtrEnable = false; // Switch off glasses.
 				this.Dumper.Render(this.Emulator.Video.LastCompleteFrame, this.Emulator.Video.LastCompleteFrameWidth, this.Emulator.Video.LastCompleteFrameHeight, BackdropColour);
 			}
