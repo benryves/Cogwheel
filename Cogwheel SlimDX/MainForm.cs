@@ -349,15 +349,24 @@ namespace BeeDevelopment.Cogwheel {
 			}
 		}
 
+		private Point LastMouseLocation;
+
 		private void RenderPanel_MouseMove(object sender, MouseEventArgs e) {
-			if (this.WindowState == FormWindowState.Maximized) {
-				this.Menus.Visible = e.Y < this.Menus.ClientSize.Height;
-				this.Status.Visible = e.Y >= this.RenderPanel.ClientSize.Height - this.Status.ClientSize.Height;
-				this.ShowCursor();
-				if (!(this.Menus.Visible || this.Status.Visible)) {
-					this.CursorHider.Start();
-				} else {
-					this.CursorHider.Stop();
+
+			// Check the amount the mouse has moved to prevent accidental 1 pixel "jitters" from showing the cursor.
+			double DistanceMovedSquared = Math.Pow(e.X - LastMouseLocation.X, 2.0d) + Math.Pow(e.Y - LastMouseLocation.Y, 2.0d);
+			LastMouseLocation = e.Location;
+
+			if (DistanceMovedSquared > 64) {
+				if (this.WindowState == FormWindowState.Maximized) {
+					this.Menus.Visible = e.Y < this.Menus.ClientSize.Height;
+					this.Status.Visible = e.Y >= this.RenderPanel.ClientSize.Height - this.Status.ClientSize.Height;
+					this.ShowCursor();
+					if (!(this.Menus.Visible || this.Status.Visible)) {
+						this.CursorHider.Start();
+					} else {
+						this.CursorHider.Stop();
+					}
 				}
 			}
 		}
@@ -811,12 +820,14 @@ namespace BeeDevelopment.Cogwheel {
 			if (!this.SoundMuted) this.SoundBuffer.Stop();
 			this.Input.ReleaseAll();
 			this.ShowCursor();
+			this.CursorHider.Stop();
 			base.OnLostFocus(e);
 		}
 
 		protected override void OnGotFocus(EventArgs e) {
 			this.Paused = false;
 			if (!this.SoundMuted) this.StartPlayingSound();
+			this.OnMouseMove(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
 			base.OnGotFocus(e);
 		}
 
