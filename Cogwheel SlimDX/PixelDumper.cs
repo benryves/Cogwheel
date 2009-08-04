@@ -145,7 +145,7 @@ namespace BeeDevelopment.Cogwheel {
 					BackBufferWidth = Math.Max(1, this.Control.ClientSize.Width),
 					BackBufferHeight = Math.Max(1, this.Control.ClientSize.Height),
 					DeviceWindowHandle = this.Control.Handle,
-					PresentationInterval =  this.VBlankAction == null ? PresentInterval.One : PresentInterval.Immediate,
+					PresentationInterval =  PresentInterval.One,
 				};
 
 				// Try and create the device.
@@ -304,22 +304,15 @@ namespace BeeDevelopment.Cogwheel {
 				this.GraphicsDevice.VertexFormat = Vertex.Format;
 				this.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
 
-				this.GraphicsDevice.EndScene();
-
-				
+				this.GraphicsDevice.EndScene();				
 
 				try {
-
-					// Do we need to perform an action during the VBlank?
 					if (this.vBlankAction != null) {
-						// Wait for VBlank.
-						while (!this.GraphicsDevice.GetRasterStatus(0).InVBlank) Thread.Sleep(0);
-						// Perform the action:
-						this.vBlankAction(vBlankData);	
+						this.GraphicsDevice.Present();
+						this.vBlankAction(vBlankData);
+					} else {
+						this.GraphicsDevice.Present();
 					}
-
-					// Present!
-					this.GraphicsDevice.Present();
 				} catch (Direct3D9Exception) {
 					if (Result.Last == SlimDX.Direct3D9.ResultCode.DeviceLost) {
 						this.ReinitialiseRenderer();

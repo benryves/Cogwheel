@@ -40,7 +40,7 @@ namespace BeeDevelopment.Cogwheel {
 		private int[] LastRightFrameData = null; private int LastRightFrameWidth, LastRightFrameHeight;
 
 		Emulator.GlassesShutter LastEye;
-		int FramesSinceEyeWasUpdated = 5;
+		int FramesSinceEyeWasUpdated = 100;
 
 		#endregion
 
@@ -252,7 +252,6 @@ namespace BeeDevelopment.Cogwheel {
 				if (this.FramesSinceEyeWasUpdated < 60) {
 
 					if (this.LcdShutterGlasses != null && this.LcdShutterGlasses.IsOpen) {
-
 						// Output to LCD shutter glasses.
 						this.Dumper.VBlankAction = UpdateGlassesEye;
 						this.LcdShutterGlasses.DtrEnable = !this.Paused; // Switch on glasses.

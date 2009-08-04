@@ -77,13 +77,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		public Emulator Emulator { get; private set; }
 
 		/// <summary>
-		/// Gets the open shutter on the Sega 3D glasses in the middle of the active display.
-		/// </summary>
-		[StateNotSaved()]
-		public Emulator.GlassesShutter OpenGlassesShutter { get; private set; }
-
-		/// <summary>
-		/// Gets the open shutter on the Sega 3D glasses in the middle f the active display from the last frame.
+		/// Gets the open shutter of the Sega 3D glasses during the active display from the last frame.
 		/// </summary>
 		[StateNotSaved()]
 		public Emulator.GlassesShutter LastOpenGlassesShutter { get; private set; }
