@@ -418,7 +418,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <summary>
 		/// Gets the offset to the name table in VRAM.
 		/// </summary>
-		/// <param name="yscroll">The current y scroll offset.</param>
+		/// <param name="yScroll">The current y scroll offset.</param>
 		/// <returns>The address of the first tile in the row that corresponds to the number of scanlines rendered and the y-scroll offset.</returns>
 		private int GetNameTableOffset(int yScroll) {
 
