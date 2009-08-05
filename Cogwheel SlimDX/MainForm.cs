@@ -229,7 +229,9 @@ namespace BeeDevelopment.Cogwheel {
 		#region Video Output / Window State
 
 		private void UpdateGlassesEye(object vBlankData) {
-			this.LcdShutterGlasses.RtsEnable = ((Emulator.GlassesShutter)vBlankData) == Emulator.GlassesShutter.Left;
+			if (this.LcdShutterGlasses != null && this.LcdShutterGlasses.IsOpen) {
+				this.LcdShutterGlasses.RtsEnable = ((Emulator.GlassesShutter)vBlankData) == Emulator.GlassesShutter.Left;
+			}
 		}
 
 		private void RepaintVideo() {

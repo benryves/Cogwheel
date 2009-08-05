@@ -94,6 +94,7 @@
     </Compile>
     <Compile Include="NativeToolStripRenderer.cs" />
     <Compile Include="PixelDumper.cs" />
+    <Compile Include="PowerStrip.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="About.resx">
