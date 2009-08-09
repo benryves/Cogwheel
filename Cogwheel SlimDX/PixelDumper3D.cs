@@ -67,6 +67,18 @@ namespace BeeDevelopment.Cogwheel {
 		}
 
 		/// <summary>
+		/// Defines the way that the image is stretched to fill the control.
+		/// </summary>
+		public enum ScaleModes {
+			/// <summary>The image fills the entire control, ignoring it aspect ratio.</summary>
+			Stretch,
+			/// <summary>The image is zoomed, retaining its aspect ratio, so that it just fits inside the control (leaving borders).</summary>
+			ZoomInside,
+			/// <summary>The image is zoomed, retaining its aspect ratio, so that it entirely fills the control, cropping some of itself.</summary>
+			ZoomOutside,
+		}
+
+		/// <summary>
 		/// Represents a vertex with a 3D position and 2D texture coordinate.
 		/// </summary>
 		[StructLayout(LayoutKind.Sequential)]
@@ -164,6 +176,16 @@ namespace BeeDevelopment.Cogwheel {
 		/// </summary>
 		private Eye MostRecentlyUpdatedEye;
 
+		/// <summary>
+		/// Stores the most recently written width.
+		/// </summary>
+		private int MostRecentWidth = 1;
+
+		/// <summary>
+		/// Stores the most recently written height.
+		/// </summary>
+		private int MostRecentHeight = 1;
+
 		#endregion
 
 		#region Properties
@@ -218,6 +240,20 @@ namespace BeeDevelopment.Cogwheel {
 						this.Effect.Technique.Dispose();
 					}
 					this.Effect.Technique = this.Effect.GetTechnique(EffectTechnique.ToString());
+				}
+			}
+		}
+
+		private ScaleModes scaleMode = ScaleModes.ZoomInside;
+		/// <summary>
+		/// Gets the <see cref="ScaleModes"/> used to scale the image.
+		/// </summary>
+		public ScaleModes ScaleMode {
+			get {return this.scaleMode;}
+			set {
+				this.scaleMode = value;
+				if (this.GraphicsDevice != null) {
+					this.RewriteVertexBuffer();
 				}
 			}
 		}
@@ -298,15 +334,53 @@ namespace BeeDevelopment.Cogwheel {
 			this.VertexDeclaration = new VertexDeclaration(this.GraphicsDevice, VertexPositionTexture.Elements);
 			// Create the vertex buffer:
 			this.Vertices = new VertexBuffer(this.GraphicsDevice, 6 * VertexPositionTexture.Size, Usage.WriteOnly, VertexFormat.None, Pool.Managed);
+			this.RewriteVertexBuffer();	
+		}
+
+		private void RewriteVertexBuffer() {
+			// Start at the full size:
+			float Left = -1.0f, Right = +1.0f, Top = +1.0f, Bottom = -1.0f;
+
+			// Calculate the aspect ratio of the source image and the viewport.
+			float ImageAspectRatio = (float)this.MostRecentWidth / (float)this.MostRecentHeight;
+			float ViewportAspectRatio = (float)this.GraphicsDevice.Viewport.Width / (float)this.GraphicsDevice.Viewport.Height;
+
+			// If need be, adjust the two images.
+			switch (this.scaleMode) {
+				case ScaleModes.ZoomInside:
+					if (ImageAspectRatio > ViewportAspectRatio) {
+						Top *= (ViewportAspectRatio / ImageAspectRatio);
+						Bottom *= (ViewportAspectRatio / ImageAspectRatio);
+					} else {
+						Left /= (ViewportAspectRatio / ImageAspectRatio);
+						Right /= (ViewportAspectRatio / ImageAspectRatio);
+					}
+					break;
+				case ScaleModes.ZoomOutside:
+					if (ImageAspectRatio < ViewportAspectRatio) {
+						Top *= (ViewportAspectRatio / ImageAspectRatio);
+						Bottom *= (ViewportAspectRatio / ImageAspectRatio);
+					} else {
+						Left /= (ViewportAspectRatio / ImageAspectRatio);
+						Right /= (ViewportAspectRatio / ImageAspectRatio);
+					}
+					break;
+			}
+
+			// Create the vectors representing the corners of the screen:
+			Vector3 TL = new Vector3(Left, Top, 0.0f);
+			Vector3 TR = new Vector3(Right, Top, 0.0f);
+			Vector3 BL = new Vector3(Left, Bottom, 0.0f);
+			Vector3 BR = new Vector3(Right, Bottom, 0.0f);
 			using (var VertexStream = Vertices.Lock(0, 0, LockFlags.None)) {
 				VertexStream.WriteRange(
 					new[] {
-						new VertexPositionTexture(new Vector3(-1.0f,-1.0f,0.0f), new Vector2(0.0f, 1.0f)),
-						new VertexPositionTexture(new Vector3(+1.0f,+1.0f,0.0f), new Vector2(1.0f, 0.0f)),
-						new VertexPositionTexture(new Vector3(+1.0f,-1.0f,0.0f), new Vector2(1.0f, 1.0f)),
-						new VertexPositionTexture(new Vector3(-1.0f,-1.0f,0.0f), new Vector2(0.0f, 1.0f)),
-						new VertexPositionTexture(new Vector3(-1.0f,+1.0f,0.0f), new Vector2(0.0f, 0.0f)),
-						new VertexPositionTexture(new Vector3(+1.0f,+1.0f,0.0f), new Vector2(1.0f, 0.0f)),
+						new VertexPositionTexture(BL, new Vector2(0.0f, 1.0f)),
+						new VertexPositionTexture(TR, new Vector2(1.0f, 0.0f)),
+						new VertexPositionTexture(BR, new Vector2(1.0f, 1.0f)),
+						new VertexPositionTexture(BL, new Vector2(0.0f, 1.0f)),
+						new VertexPositionTexture(TL, new Vector2(0.0f, 0.0f)),
+						new VertexPositionTexture(TR, new Vector2(1.0f, 0.0f)),
 					}
 				);
 				this.Vertices.Unlock();
@@ -431,8 +505,15 @@ namespace BeeDevelopment.Cogwheel {
 				Data.WriteRange(data);
 				Texture.UnlockRectangle(0);
 			}
-			// Mark the most recently updated eye as such.
+
+
+			// Mark the most recently updated eye, width and height as such.
 			this.MostRecentlyUpdatedEye = eye;
+			if (width != this.MostRecentWidth || height != this.MostRecentHeight) {
+				this.MostRecentWidth = width;
+				this.MostRecentHeight = height;
+				this.RewriteVertexBuffer();
+			}
 		}
 
 		#endregion

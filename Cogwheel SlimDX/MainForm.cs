@@ -79,7 +79,7 @@ namespace BeeDevelopment.Cogwheel {
 				this.ThreeDeeDisplayMode = (PixelDumper3D.StereoscopicDisplayMode)Enum.Parse(typeof(PixelDumper3D.StereoscopicDisplayMode), Properties.Settings.Default.Option3DGlasses);
 			} catch { }
 			//this.Dumper.LinearInterpolation = Properties.Settings.Default.OptionLinearInterpolation;
-			//this.Dumper.ScaleMode = Properties.Settings.Default.OptionMaintainAspectRatio ? PixelDumper.ScaleModes.ZoomInside : PixelDumper.ScaleModes.Stretch;
+			this.Dumper.ScaleMode = Properties.Settings.Default.OptionMaintainAspectRatio ? PixelDumper3D.ScaleModes.ZoomInside : PixelDumper3D.ScaleModes.Stretch;
 
 			// Initialise sound.
 			this.InitialiseSound();
@@ -863,7 +863,7 @@ namespace BeeDevelopment.Cogwheel {
 
 		private void MaintainAspectRatioMenu_Click(object sender, EventArgs e) {
 			Properties.Settings.Default.OptionMaintainAspectRatio ^= true;
-			//this.Dumper.ScaleMode = Properties.Settings.Default.OptionMaintainAspectRatio ? PixelDumper.ScaleModes.ZoomInside : PixelDumper.ScaleModes.Stretch;
+			this.Dumper.ScaleMode = Properties.Settings.Default.OptionMaintainAspectRatio ? PixelDumper3D.ScaleModes.ZoomInside : PixelDumper3D.ScaleModes.Stretch;
 		}
 
 #if EMU2413
