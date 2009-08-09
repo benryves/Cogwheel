@@ -59,5 +59,8 @@
     <Setting Name="InputSkipDuplicatedXInputJoysticks" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="Option3DGlasses" Type="System.String" Scope="User">
+      <Value Profile="(Default)">MostRecentEyeOnly</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

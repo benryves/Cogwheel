@@ -93,7 +93,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="NativeToolStripRenderer.cs" />
-    <Compile Include="PixelDumper.cs" />
+    <Compile Include="PixelDumper3D.cs" />
     <Compile Include="PowerStrip.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -232,6 +232,7 @@
     <None Include="Resources\bullet_black.png" />
     <None Include="Resources\Config_DefaultJoystickMapping.txt" />
     <Content Include="Resources\Config_DefaultKeyMapping.txt" />
+    <None Include="Resources\PixelDumper3DShader.txt" />
     <None Include="Resources\xinput.png" />
     <None Include="Resources\Config_DefaultXInputMapping.txt" />
     <None Include="Resources\pov_w.png" />

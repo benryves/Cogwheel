@@ -27,7 +27,7 @@ namespace BeeDevelopment.Cogwheel {
 		private KeyboardInputSource KeyboardInput;
 
 		// Output.
-		private PixelDumper Dumper;
+		private PixelDumper3D Dumper;
 
 		// Emulator stuff.
 		internal Emulator Emulator;
@@ -38,8 +38,10 @@ namespace BeeDevelopment.Cogwheel {
 		private int[] LastLeftFrameData = null; private int LastLeftFrameWidth, LastLeftFrameHeight;
 		private int[] LastRightFrameData = null; private int LastRightFrameWidth, LastRightFrameHeight;
 
-		Emulator.GlassesShutter LastEye;
-		int FramesSinceEyeWasUpdated = 100;
+		private Emulator.GlassesShutter LastEye;
+		private int FramesSinceEyeWasUpdated = 100;
+		private PixelDumper3D.StereoscopicDisplayMode ThreeDeeDisplayMode = PixelDumper3D.StereoscopicDisplayMode.MostRecentEyeOnly;
+
 
 		#endregion
 
@@ -72,9 +74,12 @@ namespace BeeDevelopment.Cogwheel {
 			this.ReinitialiseInput(null);
 
 			// Create a pixel dumper.
-			this.Dumper = new PixelDumper(this.RenderPanel);
-			this.Dumper.LinearInterpolation = Properties.Settings.Default.OptionLinearInterpolation;
-			this.Dumper.ScaleMode = Properties.Settings.Default.OptionMaintainAspectRatio ? PixelDumper.ScaleModes.ZoomInside : PixelDumper.ScaleModes.Stretch;
+			this.Dumper = new PixelDumper3D(Program.D3D, this.RenderPanel);
+			try {
+				this.ThreeDeeDisplayMode = (PixelDumper3D.StereoscopicDisplayMode)Enum.Parse(typeof(PixelDumper3D.StereoscopicDisplayMode), Properties.Settings.Default.Option3DGlasses);
+			} catch { }
+			//this.Dumper.LinearInterpolation = Properties.Settings.Default.OptionLinearInterpolation;
+			//this.Dumper.ScaleMode = Properties.Settings.Default.OptionMaintainAspectRatio ? PixelDumper.ScaleModes.ZoomInside : PixelDumper.ScaleModes.Stretch;
 
 			// Initialise sound.
 			this.InitialiseSound();
@@ -140,20 +145,15 @@ namespace BeeDevelopment.Cogwheel {
 		[System.Security.SuppressUnmanagedCodeSecurity, DllImport("User32.dll", CharSet = CharSet.Auto)]
 		public static extern bool PeekMessage(out Message msg, IntPtr hWnd, UInt32 msgFilterMin, UInt32 msgFilterMax, UInt32 flags);
 
-		bool AppStillIdle {
-			get {
-				Message msg;
-				return !PeekMessage(out msg, IntPtr.Zero, 0, 0, 0);
-			}
-		}
 
-		int SystemRefreshRate = PixelDumper.GetCurrentRefreshRate();
+		int SystemRefreshRate = PixelDumper3D.GetCurrentRefreshRate();
 		int RefreshStepper = 0;
 		bool IsLiveFrame = false;
 
 		void Application_Idle(object sender, EventArgs e) {
 
-			while (AppStillIdle) {
+			Message msg;
+			while (!PeekMessage(out msg, IntPtr.Zero, 0, 0, 0)) {
 				if (this.WindowState == FormWindowState.Minimized) {
 					Thread.Sleep(100);
 				} else {
@@ -226,50 +226,35 @@ namespace BeeDevelopment.Cogwheel {
 		private void RepaintVideo() {
 			var BackdropColour = Color.FromArgb(unchecked((int)0xFF000000 | Emulator.Video.LastBackdropColour));
 
+			// Send the current frame to the renderer.
 			var Video = this.Emulator.Video;
-
-			lock (Video) {
-				if (Video.LastOpenGlassesShutter != this.LastEye) {
-					this.LastEye = Video.LastOpenGlassesShutter;
-					this.FramesSinceEyeWasUpdated = 0;
-				} else {
-					if (this.IsLiveFrame) {
-						++this.FramesSinceEyeWasUpdated;
-						if (this.FramesSinceEyeWasUpdated > 100) this.FramesSinceEyeWasUpdated = 100;
-						this.IsLiveFrame = false;
-					}
-				}
-
-				if (this.FramesSinceEyeWasUpdated < 60) {
-
-
-
-					// Render an anaglyph.
-
-					if (Video.LastOpenGlassesShutter == Emulator.GlassesShutter.Left) {
-						this.LastLeftFrameData = Video.LastCompleteFrame;
-						this.LastLeftFrameWidth = Video.LastCompleteFrameWidth;
-						this.LastLeftFrameHeight = Video.LastCompleteFrameHeight;
-					} else {
-						this.LastRightFrameData = Video.LastCompleteFrame;
-						this.LastRightFrameWidth = Video.LastCompleteFrameWidth;
-						this.LastRightFrameHeight = Video.LastCompleteFrameHeight;
-					}
-
-					BackdropColour = Color.Black;
-
-					this.Dumper.Render(
-						FrameBlender.Blend(FrameBlender.BlendMode.Anaglyph, this.LastLeftFrameData, this.LastLeftFrameWidth, this.LastLeftFrameHeight, this.LastRightFrameData, this.LastRightFrameWidth, this.LastRightFrameHeight),
-						this.LastLeftFrameWidth, this.LastLeftFrameHeight,
-						BackdropColour
-					);
-
-				} else {
-					this.Dumper.Render(Video.LastCompleteFrame, Video.LastCompleteFrameWidth, Video.LastCompleteFrameHeight, BackdropColour);
-				}
-
-				this.RenderPanel.BackColor = BackdropColour;
+			if (Video.LastCompleteFrameWidth > 0 && Video.LastCompleteFrameHeight > 0) {
+				this.Dumper.SetImage(Video.LastOpenGlassesShutter == Emulator.GlassesShutter.Left ? PixelDumper3D.Eye.Left : PixelDumper3D.Eye.Right, Video.LastCompleteFrame, Video.LastCompleteFrameWidth, Video.LastCompleteFrameHeight);
 			}
+
+			// Work out how recently the eye changed.
+			if (Video.LastOpenGlassesShutter != this.LastEye) {
+				this.LastEye = Video.LastOpenGlassesShutter;
+				this.FramesSinceEyeWasUpdated = 0;
+			} else {
+				if (this.IsLiveFrame) {
+					++this.FramesSinceEyeWasUpdated;
+					if (this.FramesSinceEyeWasUpdated > 100) this.FramesSinceEyeWasUpdated = 100;
+					this.IsLiveFrame = false;
+				}
+			}
+
+			if (this.FramesSinceEyeWasUpdated < 4) {
+				// If we have received a change in eye recently, enable a 3D mode.
+				if (this.Dumper.DisplayMode != this.ThreeDeeDisplayMode) this.Dumper.DisplayMode = this.ThreeDeeDisplayMode;
+			} else {
+				// If we haven't received a change in eye recently, disable the 3D mode.
+				if (this.Dumper.DisplayMode != PixelDumper3D.StereoscopicDisplayMode.MostRecentEyeOnly) this.Dumper.DisplayMode = PixelDumper3D.StereoscopicDisplayMode.MostRecentEyeOnly;
+			}
+
+			// Repaint.
+			this.Dumper.Render();
+			this.RenderPanel.BackColor = BackdropColour;
 		}
 
 		FormWindowState LastWindowState = FormWindowState.Normal;
@@ -281,7 +266,7 @@ namespace BeeDevelopment.Cogwheel {
 
 			
 			if (this.WindowState == FormWindowState.Maximized || this.LastWindowState == FormWindowState.Maximized) {
-				this.Dumper.ReinitialiseRenderer();
+				this.Dumper.RecreateDevice();
 				this.LastWindowState = this.WindowState;
 			}
 
@@ -326,7 +311,7 @@ namespace BeeDevelopment.Cogwheel {
 		}
 
 		private void MainForm_ResizeEnd(object sender, EventArgs e) {
-			this.Dumper.ReinitialiseRenderer();
+			this.Dumper.RecreateDevice();
 		}
 
 		private void ToggleFullScreenMenu_Click(object sender, EventArgs e) {
@@ -861,7 +846,7 @@ namespace BeeDevelopment.Cogwheel {
 
 		private void LinearInterpolationMenu_Click(object sender, EventArgs e) {
 			Properties.Settings.Default.OptionLinearInterpolation ^= true;
-			this.Dumper.LinearInterpolation = Properties.Settings.Default.OptionLinearInterpolation;
+			//this.Dumper.LinearInterpolation = Properties.Settings.Default.OptionLinearInterpolation;
 		}
 
 
@@ -878,7 +863,7 @@ namespace BeeDevelopment.Cogwheel {
 
 		private void MaintainAspectRatioMenu_Click(object sender, EventArgs e) {
 			Properties.Settings.Default.OptionMaintainAspectRatio ^= true;
-			this.Dumper.ScaleMode = Properties.Settings.Default.OptionMaintainAspectRatio ? PixelDumper.ScaleModes.ZoomInside : PixelDumper.ScaleModes.Stretch;
+			//this.Dumper.ScaleMode = Properties.Settings.Default.OptionMaintainAspectRatio ? PixelDumper.ScaleModes.ZoomInside : PixelDumper.ScaleModes.Stretch;
 		}
 
 #if EMU2413
@@ -891,6 +876,21 @@ namespace BeeDevelopment.Cogwheel {
 
 		}
 #endif
+
+		// 3D glasses drop-down population:
+		private void ThreeDeeGlassesMenu_DropDownOpening(object sender, EventArgs e) {
+			foreach (object item in ThreeDeeGlassesMenu.DropDownItems) {
+				if (item is ToolStripMenuItem) {
+					((ToolStripMenuItem)item).Image = (((ToolStripMenuItem)item).Tag.ToString() == this.ThreeDeeDisplayMode.ToString()) ? Properties.Resources.Icon_Bullet_Black : null;
+				}
+			}
+		}
+
+		// 3D glasses option selection:
+		private void ThreeDeeGlassesOption_Click(object sender, EventArgs e) {
+			this.ThreeDeeDisplayMode = (PixelDumper3D.StereoscopicDisplayMode)Enum.Parse(typeof(PixelDumper3D.StereoscopicDisplayMode), ((ToolStripMenuItem)sender).Tag.ToString());
+			Properties.Settings.Default.Option3DGlasses = this.ThreeDeeDisplayMode.ToString();
+		}
 
 		#endregion
 
@@ -1132,7 +1132,5 @@ namespace BeeDevelopment.Cogwheel {
 				SubItem.Image = (this.Input.ProfileDirectory == (string)SubItem.Tag) ? Properties.Resources.Icon_Bullet_Black : null;
 			}
 		}
-
-
 	}
 }

@@ -250,5 +250,17 @@ namespace BeeDevelopment.Cogwheel.Properties {
                 this["InputSkipDuplicatedXInputJoysticks"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("MostRecentEyeOnly")]
+        public string Option3DGlasses {
+            get {
+                return ((string)(this["Option3DGlasses"]));
+            }
+            set {
+                this["Option3DGlasses"] = value;
+            }
+        }
     }
 }

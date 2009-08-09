@@ -72,6 +72,16 @@
 			this.OptionsSep2 = new System.Windows.Forms.ToolStripSeparator();
 			this.ThreeDeeGlassesMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ThreeDeeGlassesDisabledMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.ThreeDeeGlassesSep0 = new System.Windows.Forms.ToolStripSeparator();
+			this.ThreeDeeGlassesLeftOnlyMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.ThreeDeeGlassesRightOnlyMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.ThreeDeeGlassesSep1 = new System.Windows.Forms.ToolStripSeparator();
+			this.ThreeDeeGlassesColouredAnaglyphMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.ThreeDeeGlassesMonochromeAnaglyphMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.ThreeDeeGlassesSep2 = new System.Windows.Forms.ToolStripSeparator();
+			this.ThreeDeeGlassesRowInterleavedMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.ThreeDeeGlassesColumnInterleavedMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.ThreeDeeGlassesChequerboardInterleavedMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.AboutMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.HelpSep0 = new System.Windows.Forms.ToolStripSeparator();
@@ -83,12 +93,6 @@
 			this.OpenStateDialog = new System.Windows.Forms.OpenFileDialog();
 			this.SaveStateDialog = new System.Windows.Forms.SaveFileDialog();
 			this.CursorHider = new System.Windows.Forms.Timer(this.components);
-			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-			this.showLeftSideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.showrightSideOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-			this.redcyanAnaglyphToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.interlacedLCDShutterGlassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -156,7 +160,7 @@
 			// FileSep0
 			// 
 			this.FileSep0.Name = "FileSep0";
-			this.FileSep0.Size = new System.Drawing.Size(213, 6);
+			this.FileSep0.Size = new System.Drawing.Size(210, 6);
 			// 
 			// LoadStateMenu
 			// 
@@ -178,7 +182,7 @@
 			// FileSep3
 			// 
 			this.FileSep3.Name = "FileSep3";
-			this.FileSep3.Size = new System.Drawing.Size(213, 6);
+			this.FileSep3.Size = new System.Drawing.Size(210, 6);
 			// 
 			// QuickLoadStateMenu
 			// 
@@ -214,14 +218,14 @@
 			// FileSep1
 			// 
 			this.FileSep1.Name = "FileSep1";
-			this.FileSep1.Size = new System.Drawing.Size(213, 6);
+			this.FileSep1.Size = new System.Drawing.Size(210, 6);
 			// 
 			// RecentRomsMenu
 			// 
 			this.RecentRomsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.dummyToolStripMenuItem});
 			this.RecentRomsMenu.Name = "RecentRomsMenu";
-			this.RecentRomsMenu.Size = new System.Drawing.Size(216, 22);
+			this.RecentRomsMenu.Size = new System.Drawing.Size(213, 22);
 			this.RecentRomsMenu.Text = "&Recent ROMs";
 			this.RecentRomsMenu.DropDownOpening += new System.EventHandler(this.RecentRomsMenu_DropDownOpening);
 			// 
@@ -234,13 +238,13 @@
 			// FileSep2
 			// 
 			this.FileSep2.Name = "FileSep2";
-			this.FileSep2.Size = new System.Drawing.Size(213, 6);
+			this.FileSep2.Size = new System.Drawing.Size(210, 6);
 			// 
 			// ExitMenu
 			// 
 			this.ExitMenu.Name = "ExitMenu";
 			this.ExitMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-			this.ExitMenu.Size = new System.Drawing.Size(216, 22);
+			this.ExitMenu.Size = new System.Drawing.Size(213, 22);
 			this.ExitMenu.Text = "E&xit";
 			this.ExitMenu.Click += new System.EventHandler(this.ExitMenu_Click);
 			// 
@@ -394,7 +398,7 @@
 			// ControllerProfileDefaultMenu
 			// 
 			this.ControllerProfileDefaultMenu.Name = "ControllerProfileDefaultMenu";
-			this.ControllerProfileDefaultMenu.Size = new System.Drawing.Size(170, 22);
+			this.ControllerProfileDefaultMenu.Size = new System.Drawing.Size(169, 22);
 			this.ControllerProfileDefaultMenu.Text = "&Default";
 			this.ControllerProfileDefaultMenu.Click += new System.EventHandler(this.SetControllerProfile_Click);
 			// 
@@ -417,7 +421,7 @@
 			// OptionsSep0
 			// 
 			this.OptionsSep0.Name = "OptionsSep0";
-			this.OptionsSep0.Size = new System.Drawing.Size(244, 6);
+			this.OptionsSep0.Size = new System.Drawing.Size(243, 6);
 			// 
 			// EnableSoundMenu
 			// 
@@ -436,7 +440,7 @@
 			// OptionsSep1
 			// 
 			this.OptionsSep1.Name = "OptionsSep1";
-			this.OptionsSep1.Size = new System.Drawing.Size(244, 6);
+			this.OptionsSep1.Size = new System.Drawing.Size(243, 6);
 			// 
 			// SimulateGameGearLcdMenu
 			// 
@@ -462,27 +466,105 @@
 			// OptionsSep2
 			// 
 			this.OptionsSep2.Name = "OptionsSep2";
-			this.OptionsSep2.Size = new System.Drawing.Size(244, 6);
+			this.OptionsSep2.Size = new System.Drawing.Size(243, 6);
 			// 
 			// ThreeDeeGlassesMenu
 			// 
 			this.ThreeDeeGlassesMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ThreeDeeGlassesDisabledMenu,
-            this.toolStripMenuItem1,
-            this.showLeftSideToolStripMenuItem,
-            this.showrightSideOnlyToolStripMenuItem,
-            this.toolStripMenuItem2,
-            this.redcyanAnaglyphToolStripMenuItem,
-            this.interlacedLCDShutterGlassesToolStripMenuItem});
+            this.ThreeDeeGlassesSep0,
+            this.ThreeDeeGlassesLeftOnlyMenu,
+            this.ThreeDeeGlassesRightOnlyMenu,
+            this.ThreeDeeGlassesSep1,
+            this.ThreeDeeGlassesColouredAnaglyphMenu,
+            this.ThreeDeeGlassesMonochromeAnaglyphMenu,
+            this.ThreeDeeGlassesSep2,
+            this.ThreeDeeGlassesRowInterleavedMenu,
+            this.ThreeDeeGlassesColumnInterleavedMenu,
+            this.ThreeDeeGlassesChequerboardInterleavedMenu});
 			this.ThreeDeeGlassesMenu.Name = "ThreeDeeGlassesMenu";
-			this.ThreeDeeGlassesMenu.Size = new System.Drawing.Size(247, 22);
+			this.ThreeDeeGlassesMenu.Size = new System.Drawing.Size(246, 22);
 			this.ThreeDeeGlassesMenu.Text = "&3D glasses";
+			this.ThreeDeeGlassesMenu.DropDownOpening += new System.EventHandler(this.ThreeDeeGlassesMenu_DropDownOpening);
 			// 
 			// ThreeDeeGlassesDisabledMenu
 			// 
 			this.ThreeDeeGlassesDisabledMenu.Name = "ThreeDeeGlassesDisabledMenu";
 			this.ThreeDeeGlassesDisabledMenu.Size = new System.Drawing.Size(216, 22);
+			this.ThreeDeeGlassesDisabledMenu.Tag = "MostRecentEyeOnly";
 			this.ThreeDeeGlassesDisabledMenu.Text = "&Disabled (Show both sides)";
+			this.ThreeDeeGlassesDisabledMenu.Click += new System.EventHandler(this.ThreeDeeGlassesOption_Click);
+			// 
+			// ThreeDeeGlassesSep0
+			// 
+			this.ThreeDeeGlassesSep0.Name = "ThreeDeeGlassesSep0";
+			this.ThreeDeeGlassesSep0.Size = new System.Drawing.Size(213, 6);
+			// 
+			// ThreeDeeGlassesLeftOnlyMenu
+			// 
+			this.ThreeDeeGlassesLeftOnlyMenu.Name = "ThreeDeeGlassesLeftOnlyMenu";
+			this.ThreeDeeGlassesLeftOnlyMenu.Size = new System.Drawing.Size(216, 22);
+			this.ThreeDeeGlassesLeftOnlyMenu.Tag = "LeftEyeOnly";
+			this.ThreeDeeGlassesLeftOnlyMenu.Text = "&Left side only";
+			this.ThreeDeeGlassesLeftOnlyMenu.Click += new System.EventHandler(this.ThreeDeeGlassesOption_Click);
+			// 
+			// ThreeDeeGlassesRightOnlyMenu
+			// 
+			this.ThreeDeeGlassesRightOnlyMenu.Name = "ThreeDeeGlassesRightOnlyMenu";
+			this.ThreeDeeGlassesRightOnlyMenu.Size = new System.Drawing.Size(216, 22);
+			this.ThreeDeeGlassesRightOnlyMenu.Tag = "RightEyeOnly";
+			this.ThreeDeeGlassesRightOnlyMenu.Text = "&Right side only";
+			this.ThreeDeeGlassesRightOnlyMenu.Click += new System.EventHandler(this.ThreeDeeGlassesOption_Click);
+			// 
+			// ThreeDeeGlassesSep1
+			// 
+			this.ThreeDeeGlassesSep1.Name = "ThreeDeeGlassesSep1";
+			this.ThreeDeeGlassesSep1.Size = new System.Drawing.Size(213, 6);
+			// 
+			// ThreeDeeGlassesColouredAnaglyphMenu
+			// 
+			this.ThreeDeeGlassesColouredAnaglyphMenu.Name = "ThreeDeeGlassesColouredAnaglyphMenu";
+			this.ThreeDeeGlassesColouredAnaglyphMenu.Size = new System.Drawing.Size(216, 22);
+			this.ThreeDeeGlassesColouredAnaglyphMenu.Tag = "ColourAnaglyph";
+			this.ThreeDeeGlassesColouredAnaglyphMenu.Text = "Coloured &anaglyph";
+			this.ThreeDeeGlassesColouredAnaglyphMenu.Click += new System.EventHandler(this.ThreeDeeGlassesOption_Click);
+			// 
+			// ThreeDeeGlassesMonochromeAnaglyphMenu
+			// 
+			this.ThreeDeeGlassesMonochromeAnaglyphMenu.Name = "ThreeDeeGlassesMonochromeAnaglyphMenu";
+			this.ThreeDeeGlassesMonochromeAnaglyphMenu.Size = new System.Drawing.Size(216, 22);
+			this.ThreeDeeGlassesMonochromeAnaglyphMenu.Tag = "MonochromeAnaglyph";
+			this.ThreeDeeGlassesMonochromeAnaglyphMenu.Text = "&Monochrome anaglyph";
+			this.ThreeDeeGlassesMonochromeAnaglyphMenu.Click += new System.EventHandler(this.ThreeDeeGlassesOption_Click);
+			// 
+			// ThreeDeeGlassesSep2
+			// 
+			this.ThreeDeeGlassesSep2.Name = "ThreeDeeGlassesSep2";
+			this.ThreeDeeGlassesSep2.Size = new System.Drawing.Size(213, 6);
+			// 
+			// ThreeDeeGlassesRowInterleavedMenu
+			// 
+			this.ThreeDeeGlassesRowInterleavedMenu.Name = "ThreeDeeGlassesRowInterleavedMenu";
+			this.ThreeDeeGlassesRowInterleavedMenu.Size = new System.Drawing.Size(216, 22);
+			this.ThreeDeeGlassesRowInterleavedMenu.Tag = "RowInterleaved";
+			this.ThreeDeeGlassesRowInterleavedMenu.Text = "Row &interleaved";
+			this.ThreeDeeGlassesRowInterleavedMenu.Click += new System.EventHandler(this.ThreeDeeGlassesOption_Click);
+			// 
+			// ThreeDeeGlassesColumnInterleavedMenu
+			// 
+			this.ThreeDeeGlassesColumnInterleavedMenu.Name = "ThreeDeeGlassesColumnInterleavedMenu";
+			this.ThreeDeeGlassesColumnInterleavedMenu.Size = new System.Drawing.Size(216, 22);
+			this.ThreeDeeGlassesColumnInterleavedMenu.Tag = "ColumnInterleaved";
+			this.ThreeDeeGlassesColumnInterleavedMenu.Text = "&Column interleaved";
+			this.ThreeDeeGlassesColumnInterleavedMenu.Click += new System.EventHandler(this.ThreeDeeGlassesOption_Click);
+			// 
+			// ThreeDeeGlassesChequerboardInterleavedMenu
+			// 
+			this.ThreeDeeGlassesChequerboardInterleavedMenu.Name = "ThreeDeeGlassesChequerboardInterleavedMenu";
+			this.ThreeDeeGlassesChequerboardInterleavedMenu.Size = new System.Drawing.Size(216, 22);
+			this.ThreeDeeGlassesChequerboardInterleavedMenu.Tag = "ChequerboardInterleaved";
+			this.ThreeDeeGlassesChequerboardInterleavedMenu.Text = "Che&querboard interleaved";
+			this.ThreeDeeGlassesChequerboardInterleavedMenu.Click += new System.EventHandler(this.ThreeDeeGlassesOption_Click);
 			// 
 			// HelpMenu
 			// 
@@ -511,7 +593,7 @@
 			// 
 			this.BugReportMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Bug;
 			this.BugReportMenu.Name = "BugReportMenu";
-			this.BugReportMenu.Size = new System.Drawing.Size(152, 22);
+			this.BugReportMenu.Size = new System.Drawing.Size(142, 22);
 			this.BugReportMenu.Text = "&Report a bug";
 			this.BugReportMenu.Click += new System.EventHandler(this.BugReportMenu_Click);
 			// 
@@ -553,40 +635,6 @@
 			// 
 			this.CursorHider.Interval = 1000;
 			this.CursorHider.Tick += new System.EventHandler(this.CursorHider_Tick);
-			// 
-			// toolStripMenuItem1
-			// 
-			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(213, 6);
-			// 
-			// showLeftSideToolStripMenuItem
-			// 
-			this.showLeftSideToolStripMenuItem.Name = "showLeftSideToolStripMenuItem";
-			this.showLeftSideToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-			this.showLeftSideToolStripMenuItem.Text = "&Left side only";
-			// 
-			// showrightSideOnlyToolStripMenuItem
-			// 
-			this.showrightSideOnlyToolStripMenuItem.Name = "showrightSideOnlyToolStripMenuItem";
-			this.showrightSideOnlyToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-			this.showrightSideOnlyToolStripMenuItem.Text = "&Right side only";
-			// 
-			// toolStripMenuItem2
-			// 
-			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-			this.toolStripMenuItem2.Size = new System.Drawing.Size(228, 6);
-			// 
-			// redcyanAnaglyphToolStripMenuItem
-			// 
-			this.redcyanAnaglyphToolStripMenuItem.Name = "redcyanAnaglyphToolStripMenuItem";
-			this.redcyanAnaglyphToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-			this.redcyanAnaglyphToolStripMenuItem.Text = "Red-cyan &anaglyph";
-			// 
-			// interlacedLCDShutterGlassesToolStripMenuItem
-			// 
-			this.interlacedLCDShutterGlassesToolStripMenuItem.Name = "interlacedLCDShutterGlassesToolStripMenuItem";
-			this.interlacedLCDShutterGlassesToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-			this.interlacedLCDShutterGlassesToolStripMenuItem.Text = "&Interlaced LCD shutter glasses";
 			// 
 			// MainForm
 			// 
@@ -673,12 +721,16 @@
 		private System.Windows.Forms.ToolStripSeparator OptionsSep2;
 		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesMenu;
 		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesDisabledMenu;
-		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-		private System.Windows.Forms.ToolStripMenuItem showLeftSideToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem showrightSideOnlyToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-		private System.Windows.Forms.ToolStripMenuItem redcyanAnaglyphToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem interlacedLCDShutterGlassesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator ThreeDeeGlassesSep0;
+		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesLeftOnlyMenu;
+		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesRightOnlyMenu;
+		private System.Windows.Forms.ToolStripSeparator ThreeDeeGlassesSep1;
+		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesColouredAnaglyphMenu;
+		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesMonochromeAnaglyphMenu;
+		private System.Windows.Forms.ToolStripSeparator ThreeDeeGlassesSep2;
+		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesRowInterleavedMenu;
+		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesColumnInterleavedMenu;
+		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesChequerboardInterleavedMenu;
 #endif
 	}
 }
