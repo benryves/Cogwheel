@@ -265,7 +265,6 @@ namespace BeeDevelopment.Cogwheel {
 					);
 
 				} else {
-					this.Dumper.VBlankAction = null; // We don't need to perform any blanking action.
 					this.Dumper.Render(Video.LastCompleteFrame, Video.LastCompleteFrameWidth, Video.LastCompleteFrameHeight, BackdropColour);
 				}
 

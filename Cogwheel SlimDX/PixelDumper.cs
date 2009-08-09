@@ -177,7 +177,6 @@ namespace BeeDevelopment.Cogwheel {
 			}
 		}
 
-
 		/// <summary>
 		/// Renders the <see cref="PixelDumper"/> output to the control.
 		/// </summary>
@@ -186,18 +185,6 @@ namespace BeeDevelopment.Cogwheel {
 		/// <param name="height">The height of the image to render in pixels.</param>
 		/// <param name="backgroundColour">The background colour to fill the unused area of the screen width.</param>
 		public void Render(int[] data, int width, int height, Color backgroundColour) {
-			this.Render(data, width, height, backgroundColour, null);
-		}
-
-		/// <summary>
-		/// Renders the <see cref="PixelDumper"/> output to the control.
-		/// </summary>
-		/// <param name="data">The colour data to render in 32-bit ARGB format.</param>
-		/// <param name="width">The width of the image to render in pixels.</param>
-		/// <param name="height">The height of the image to render in pixels.</param>
-		/// <param name="backgroundColour">The background colour to fill the unused area of the screen width.</param>
-		/// <param name="vBlankData">Data to pass to VBlankAction.</param>
-		public void Render(int[] data, int width, int height, Color backgroundColour, object vBlankData) {
 
 			if (this.GraphicsDevice == null) {
 				this.ReinitialiseRenderer();
@@ -307,16 +294,11 @@ namespace BeeDevelopment.Cogwheel {
 				this.GraphicsDevice.EndScene();				
 
 				try {
-					if (this.vBlankAction != null) {
-						this.GraphicsDevice.Present();
-						this.vBlankAction(vBlankData);
-					} else {
-						this.GraphicsDevice.Present();
-					}
+					this.GraphicsDevice.Present();
 				} catch (Direct3D9Exception) {
 					if (Result.Last == SlimDX.Direct3D9.ResultCode.DeviceLost) {
 						this.ReinitialiseRenderer();
-						this.Render(data, width, height, backgroundColour, vBlankData);
+						this.Render(data, width, height, backgroundColour);
 					}
 				}
 
@@ -368,19 +350,6 @@ namespace BeeDevelopment.Cogwheel {
 		/// Gets the <see cref="ScaleModes"/> used to scale the image.
 		/// </summary>
 		public ScaleModes ScaleMode { get; set; }
-
-		private Action<object> vBlankAction = null;
-		/// <summary>
-		/// Gets or set an <see cref="Action"/> that is performed during VBlank.
-		/// </summary>
-		public Action<object> VBlankAction {
-			get { return this.vBlankAction; }
-			set {
-				var PresentationStyleChanged = (this.vBlankAction == null && value != null) || (this.vBlankAction != null && value == null);
-				this.vBlankAction = value;
-				if (PresentationStyleChanged) this.ReinitialiseRenderer();
-			}
-		}
 
 		#endregion
 
