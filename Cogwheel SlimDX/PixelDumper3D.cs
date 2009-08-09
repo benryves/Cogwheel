@@ -479,12 +479,6 @@ namespace BeeDevelopment.Cogwheel {
 		/// <returns>The current refresh rate in Hertz.</returns>
 		public static int GetCurrentRefreshRate() {
 
-			if (EnTech.PowerStrip.IsAvailable) {
-				try {
-					return EnTech.PowerStrip.GetRefreshRate(0);
-				} catch { }
-			}
-
 			var RefreshRates = new List<int>();
 			using (var RefreshSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_VideoController")) {
 				foreach (var VideoCard in RefreshSearcher.Get()) RefreshRates.Add(Convert.ToInt32(VideoCard["CurrentRefreshRate"]));
