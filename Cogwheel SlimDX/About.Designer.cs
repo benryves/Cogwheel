@@ -46,10 +46,10 @@
 			this.WebsiteLink.BackColor = System.Drawing.Color.Transparent;
 			this.WebsiteLink.Location = new System.Drawing.Point(12, 36);
 			this.WebsiteLink.Name = "WebsiteLink";
-			this.WebsiteLink.Size = new System.Drawing.Size(68, 13);
+			this.WebsiteLink.Size = new System.Drawing.Size(65, 13);
 			this.WebsiteLink.TabIndex = 1;
 			this.WebsiteLink.TabStop = true;
-			this.WebsiteLink.Text = "Visit Website";
+			this.WebsiteLink.Text = "Visit website";
 			this.WebsiteLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.WebsiteLink_LinkClicked);
 			// 
 			// AboutText

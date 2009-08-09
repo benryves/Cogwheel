@@ -142,15 +142,15 @@
 			this.QuickLoadRomMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_SmsRom;
 			this.QuickLoadRomMenu.Name = "QuickLoadRomMenu";
 			this.QuickLoadRomMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-			this.QuickLoadRomMenu.Size = new System.Drawing.Size(216, 22);
-			this.QuickLoadRomMenu.Text = "&Quick Load ROM...";
+			this.QuickLoadRomMenu.Size = new System.Drawing.Size(213, 22);
+			this.QuickLoadRomMenu.Text = "&Quick load ROM...";
 			this.QuickLoadRomMenu.Click += new System.EventHandler(this.QuickLoadRomMenu_Click);
 			// 
 			// AdvancedLoadMenu
 			// 
 			this.AdvancedLoadMenu.Name = "AdvancedLoadMenu";
-			this.AdvancedLoadMenu.Size = new System.Drawing.Size(216, 22);
-			this.AdvancedLoadMenu.Text = "&Advanced Load...";
+			this.AdvancedLoadMenu.Size = new System.Drawing.Size(213, 22);
+			this.AdvancedLoadMenu.Text = "&Advanced load...";
 			this.AdvancedLoadMenu.Click += new System.EventHandler(this.AdvancedLoadMenu_Click);
 			// 
 			// FileSep0
@@ -163,16 +163,16 @@
 			this.LoadStateMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_TimeGo;
 			this.LoadStateMenu.Name = "LoadStateMenu";
 			this.LoadStateMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F8)));
-			this.LoadStateMenu.Size = new System.Drawing.Size(216, 22);
-			this.LoadStateMenu.Text = "&Load State As...";
+			this.LoadStateMenu.Size = new System.Drawing.Size(213, 22);
+			this.LoadStateMenu.Text = "&Load state as...";
 			this.LoadStateMenu.Click += new System.EventHandler(this.LoadStateMenu_Click);
 			// 
 			// SaveStateMenu
 			// 
 			this.SaveStateMenu.Name = "SaveStateMenu";
 			this.SaveStateMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F5)));
-			this.SaveStateMenu.Size = new System.Drawing.Size(216, 22);
-			this.SaveStateMenu.Text = "&Save State As...";
+			this.SaveStateMenu.Size = new System.Drawing.Size(213, 22);
+			this.SaveStateMenu.Text = "&Save state as...";
 			this.SaveStateMenu.Click += new System.EventHandler(this.SaveStateMenu_Click);
 			// 
 			// FileSep3
@@ -184,16 +184,16 @@
 			// 
 			this.QuickLoadStateMenu.Name = "QuickLoadStateMenu";
 			this.QuickLoadStateMenu.ShortcutKeys = System.Windows.Forms.Keys.F8;
-			this.QuickLoadStateMenu.Size = new System.Drawing.Size(216, 22);
-			this.QuickLoadStateMenu.Text = "Quick Load State";
+			this.QuickLoadStateMenu.Size = new System.Drawing.Size(213, 22);
+			this.QuickLoadStateMenu.Text = "Quick load state";
 			this.QuickLoadStateMenu.Click += new System.EventHandler(this.QuickLoadStateMenu_Click);
 			// 
 			// QuickSaveStateMenu
 			// 
 			this.QuickSaveStateMenu.Name = "QuickSaveStateMenu";
 			this.QuickSaveStateMenu.ShortcutKeys = System.Windows.Forms.Keys.F5;
-			this.QuickSaveStateMenu.Size = new System.Drawing.Size(216, 22);
-			this.QuickSaveStateMenu.Text = "Quick Save State";
+			this.QuickSaveStateMenu.Size = new System.Drawing.Size(213, 22);
+			this.QuickSaveStateMenu.Text = "Quick save state";
 			this.QuickSaveStateMenu.Click += new System.EventHandler(this.QuickSaveStateMenu_Click);
 			// 
 			// QuickStateSlotMenu
@@ -201,8 +201,8 @@
 			this.QuickStateSlotMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.dummyToolStripMenuItem1});
 			this.QuickStateSlotMenu.Name = "QuickStateSlotMenu";
-			this.QuickStateSlotMenu.Size = new System.Drawing.Size(216, 22);
-			this.QuickStateSlotMenu.Text = "Quick Save Slot";
+			this.QuickStateSlotMenu.Size = new System.Drawing.Size(213, 22);
+			this.QuickStateSlotMenu.Text = "Quick save slot";
 			this.QuickStateSlotMenu.DropDownOpening += new System.EventHandler(this.QuickStateSlotMenu_DropDownOpening);
 			// 
 			// dummyToolStripMenuItem1
@@ -258,8 +258,8 @@
 			this.CopyScreenshotMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Camera;
 			this.CopyScreenshotMenu.Name = "CopyScreenshotMenu";
 			this.CopyScreenshotMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-			this.CopyScreenshotMenu.Size = new System.Drawing.Size(205, 22);
-			this.CopyScreenshotMenu.Text = "&Copy Screenshot";
+			this.CopyScreenshotMenu.Size = new System.Drawing.Size(204, 22);
+			this.CopyScreenshotMenu.Text = "&Copy screenshot";
 			this.CopyScreenshotMenu.Click += new System.EventHandler(this.CopyScreenshotMenu_Click);
 			// 
 			// ToggleFullScreenMenu
@@ -267,8 +267,8 @@
 			this.ToggleFullScreenMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Monitor;
 			this.ToggleFullScreenMenu.Name = "ToggleFullScreenMenu";
 			this.ToggleFullScreenMenu.ShortcutKeys = System.Windows.Forms.Keys.F11;
-			this.ToggleFullScreenMenu.Size = new System.Drawing.Size(205, 22);
-			this.ToggleFullScreenMenu.Text = "Toggle &Full Screen";
+			this.ToggleFullScreenMenu.Size = new System.Drawing.Size(204, 22);
+			this.ToggleFullScreenMenu.Text = "Toggle &full screen";
 			this.ToggleFullScreenMenu.Click += new System.EventHandler(this.ToggleFullScreenMenu_Click);
 			// 
 			// EmulationMenu
@@ -359,7 +359,7 @@
 			this.SdscDebugConsoleMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Terminal;
 			this.SdscDebugConsoleMenu.Name = "SdscDebugConsoleMenu";
 			this.SdscDebugConsoleMenu.Size = new System.Drawing.Size(152, 22);
-			this.SdscDebugConsoleMenu.Text = "&SDSC Console";
+			this.SdscDebugConsoleMenu.Text = "&SDSC console";
 			this.SdscDebugConsoleMenu.Click += new System.EventHandler(this.SdscDebugConsoleMenu_Click);
 			// 
 			// OptionsMenu
@@ -387,8 +387,8 @@
             this.ControllerProfileDefaultMenu,
             this.ControllerProfileSC3000Menu});
 			this.ControllerProfileMenu.Name = "ControllerProfileMenu";
-			this.ControllerProfileMenu.Size = new System.Drawing.Size(247, 22);
-			this.ControllerProfileMenu.Text = "Controller &Profile";
+			this.ControllerProfileMenu.Size = new System.Drawing.Size(246, 22);
+			this.ControllerProfileMenu.Text = "Controller &profile";
 			this.ControllerProfileMenu.DropDownOpening += new System.EventHandler(this.ControllerProfileMenu_DropDownOpening);
 			// 
 			// ControllerProfileDefaultMenu
@@ -401,17 +401,17 @@
 			// ControllerProfileSC3000Menu
 			// 
 			this.ControllerProfileSC3000Menu.Name = "ControllerProfileSC3000Menu";
-			this.ControllerProfileSC3000Menu.Size = new System.Drawing.Size(170, 22);
+			this.ControllerProfileSC3000Menu.Size = new System.Drawing.Size(169, 22);
 			this.ControllerProfileSC3000Menu.Tag = "SC3000Keyboard";
-			this.ControllerProfileSC3000Menu.Text = "&SC-3000 Keyboard";
+			this.ControllerProfileSC3000Menu.Text = "&SC-3000 keyboard";
 			this.ControllerProfileSC3000Menu.Click += new System.EventHandler(this.SetControllerProfile_Click);
 			// 
 			// CustomiseControlsMenu
 			// 
 			this.CustomiseControlsMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Controller;
 			this.CustomiseControlsMenu.Name = "CustomiseControlsMenu";
-			this.CustomiseControlsMenu.Size = new System.Drawing.Size(247, 22);
-			this.CustomiseControlsMenu.Text = "&Customise Controls...";
+			this.CustomiseControlsMenu.Size = new System.Drawing.Size(246, 22);
+			this.CustomiseControlsMenu.Text = "&Customise controls...";
 			this.CustomiseControlsMenu.Click += new System.EventHandler(this.CustomiseControlsToolStripMenuItem_Click);
 			// 
 			// OptionsSep0
@@ -422,15 +422,15 @@
 			// EnableSoundMenu
 			// 
 			this.EnableSoundMenu.Name = "EnableSoundMenu";
-			this.EnableSoundMenu.Size = new System.Drawing.Size(247, 22);
-			this.EnableSoundMenu.Text = "&Enable Sound";
+			this.EnableSoundMenu.Size = new System.Drawing.Size(246, 22);
+			this.EnableSoundMenu.Text = "&Enable sound";
 			this.EnableSoundMenu.Click += new System.EventHandler(this.EnableSoundMenu_Click);
 			// 
 			// EnableFMSoundMenu
 			// 
 			this.EnableFMSoundMenu.Name = "EnableFMSoundMenu";
-			this.EnableFMSoundMenu.Size = new System.Drawing.Size(247, 22);
-			this.EnableFMSoundMenu.Text = "Enable &FM Sound (Experimental)";
+			this.EnableFMSoundMenu.Size = new System.Drawing.Size(246, 22);
+			this.EnableFMSoundMenu.Text = "Enable &FM sound (Experimental)";
 			this.EnableFMSoundMenu.Click += new System.EventHandler(this.EnableFMSoundMenu_Click);
 			// 
 			// OptionsSep1
@@ -441,22 +441,22 @@
 			// SimulateGameGearLcdMenu
 			// 
 			this.SimulateGameGearLcdMenu.Name = "SimulateGameGearLcdMenu";
-			this.SimulateGameGearLcdMenu.Size = new System.Drawing.Size(247, 22);
-			this.SimulateGameGearLcdMenu.Text = "Simulate Game Gear LCD &Scaling";
+			this.SimulateGameGearLcdMenu.Size = new System.Drawing.Size(246, 22);
+			this.SimulateGameGearLcdMenu.Text = "Simulate Game Gear LCD &scaling";
 			this.SimulateGameGearLcdMenu.Click += new System.EventHandler(this.SimulateGameGearLcdMenu_Click);
 			// 
 			// LinearInterpolationMenu
 			// 
 			this.LinearInterpolationMenu.Name = "LinearInterpolationMenu";
-			this.LinearInterpolationMenu.Size = new System.Drawing.Size(247, 22);
-			this.LinearInterpolationMenu.Text = "&Linear Interpolation (Smooth)";
+			this.LinearInterpolationMenu.Size = new System.Drawing.Size(246, 22);
+			this.LinearInterpolationMenu.Text = "&Linear interpolation (Smooth)";
 			this.LinearInterpolationMenu.Click += new System.EventHandler(this.LinearInterpolationMenu_Click);
 			// 
 			// MaintainAspectRatioMenu
 			// 
 			this.MaintainAspectRatioMenu.Name = "MaintainAspectRatioMenu";
-			this.MaintainAspectRatioMenu.Size = new System.Drawing.Size(247, 22);
-			this.MaintainAspectRatioMenu.Text = "Maintain &Aspect Ratio";
+			this.MaintainAspectRatioMenu.Size = new System.Drawing.Size(246, 22);
+			this.MaintainAspectRatioMenu.Text = "Maintain &aspect ratio";
 			this.MaintainAspectRatioMenu.Click += new System.EventHandler(this.MaintainAspectRatioMenu_Click);
 			// 
 			// OptionsSep2
@@ -511,8 +511,8 @@
 			// 
 			this.BugReportMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Bug;
 			this.BugReportMenu.Name = "BugReportMenu";
-			this.BugReportMenu.Size = new System.Drawing.Size(142, 22);
-			this.BugReportMenu.Text = "&Report a Bug";
+			this.BugReportMenu.Size = new System.Drawing.Size(152, 22);
+			this.BugReportMenu.Text = "&Report a bug";
 			this.BugReportMenu.Click += new System.EventHandler(this.BugReportMenu_Click);
 			// 
 			// OpenRomDialog

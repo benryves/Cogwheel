@@ -92,7 +92,7 @@
 			this.BrowseCartridgePatchLabel.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
 			this.BrowseCartridgePatchLabel.Size = new System.Drawing.Size(81, 23);
 			this.BrowseCartridgePatchLabel.TabIndex = 4;
-			this.BrowseCartridgePatchLabel.Text = "Cartridge Patch";
+			this.BrowseCartridgePatchLabel.Text = "Cartridge patch";
 			// 
 			// BrowseBiosFileName
 			// 
