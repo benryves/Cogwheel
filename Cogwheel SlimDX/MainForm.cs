@@ -28,7 +28,6 @@ namespace BeeDevelopment.Cogwheel {
 
 		// Output.
 		private PixelDumper Dumper;
-		private SerialPort LcdShutterGlasses;
 
 		// Emulator stuff.
 		internal Emulator Emulator;
@@ -127,15 +126,11 @@ namespace BeeDevelopment.Cogwheel {
 					}
 				} catch { }
 			}
-
-			// Initialise 3D glasses.
-			this.SetThreeDeeGlassesPort(Properties.Settings.Default.LcdShutterGlassesPort);
 		}
 
 		void MainForm_Disposed(object sender, EventArgs e) {
 			this.DisposeSound();
 			if (this.Dumper != null) this.Dumper.Dispose();
-			if (this.LcdShutterGlasses != null) this.LcdShutterGlasses.Dispose();
 		}
 		
 		#endregion
@@ -228,12 +223,6 @@ namespace BeeDevelopment.Cogwheel {
 
 		#region Video Output / Window State
 
-		private void UpdateGlassesEye(object vBlankData) {
-			if (this.LcdShutterGlasses != null && this.LcdShutterGlasses.IsOpen) {
-				this.LcdShutterGlasses.RtsEnable = ((Emulator.GlassesShutter)vBlankData) == Emulator.GlassesShutter.Left;
-			}
-		}
-
 		private void RepaintVideo() {
 			var BackdropColour = Color.FromArgb(unchecked((int)0xFF000000 | Emulator.Video.LastBackdropColour));
 
@@ -253,45 +242,35 @@ namespace BeeDevelopment.Cogwheel {
 
 				if (this.FramesSinceEyeWasUpdated < 60) {
 
-					if (this.LcdShutterGlasses != null && this.LcdShutterGlasses.IsOpen) {
-						// Output to LCD shutter glasses.
-						this.Dumper.VBlankAction = UpdateGlassesEye;
-						this.LcdShutterGlasses.DtrEnable = !this.Paused; // Switch on glasses.
-						this.Dumper.Render(Video.LastCompleteFrame, Video.LastCompleteFrameWidth, Video.LastCompleteFrameHeight, BackdropColour, Video.LastOpenGlassesShutter);
 
+
+					// Render an anaglyph.
+
+					if (Video.LastOpenGlassesShutter == Emulator.GlassesShutter.Left) {
+						this.LastLeftFrameData = Video.LastCompleteFrame;
+						this.LastLeftFrameWidth = Video.LastCompleteFrameWidth;
+						this.LastLeftFrameHeight = Video.LastCompleteFrameHeight;
 					} else {
-
-						// Render an anaglyph.
-
-						if (Video.LastOpenGlassesShutter == Emulator.GlassesShutter.Left) {
-							this.LastLeftFrameData = Video.LastCompleteFrame;
-							this.LastLeftFrameWidth = Video.LastCompleteFrameWidth;
-							this.LastLeftFrameHeight = Video.LastCompleteFrameHeight;
-						} else {
-							this.LastRightFrameData = Video.LastCompleteFrame;
-							this.LastRightFrameWidth = Video.LastCompleteFrameWidth;
-							this.LastRightFrameHeight = Video.LastCompleteFrameHeight;
-						}
-
-						BackdropColour = Color.Black;
-
-						this.Dumper.Render(
-							FrameBlender.Blend(FrameBlender.BlendMode.Anaglyph, this.LastLeftFrameData, this.LastLeftFrameWidth, this.LastLeftFrameHeight, this.LastRightFrameData, this.LastRightFrameWidth, this.LastRightFrameHeight),
-							this.LastLeftFrameWidth, this.LastLeftFrameHeight,
-							BackdropColour
-						);
-
+						this.LastRightFrameData = Video.LastCompleteFrame;
+						this.LastRightFrameWidth = Video.LastCompleteFrameWidth;
+						this.LastRightFrameHeight = Video.LastCompleteFrameHeight;
 					}
+
+					BackdropColour = Color.Black;
+
+					this.Dumper.Render(
+						FrameBlender.Blend(FrameBlender.BlendMode.Anaglyph, this.LastLeftFrameData, this.LastLeftFrameWidth, this.LastLeftFrameHeight, this.LastRightFrameData, this.LastRightFrameWidth, this.LastRightFrameHeight),
+						this.LastLeftFrameWidth, this.LastLeftFrameHeight,
+						BackdropColour
+					);
 
 				} else {
 					this.Dumper.VBlankAction = null; // We don't need to perform any blanking action.
-					if (this.LcdShutterGlasses != null && this.LcdShutterGlasses.IsOpen) this.LcdShutterGlasses.DtrEnable = false; // Switch off glasses.
 					this.Dumper.Render(Video.LastCompleteFrame, Video.LastCompleteFrameWidth, Video.LastCompleteFrameHeight, BackdropColour);
 				}
 
 				this.RenderPanel.BackColor = BackdropColour;
 			}
-
 		}
 
 		FormWindowState LastWindowState = FormWindowState.Normal;
@@ -913,71 +892,6 @@ namespace BeeDevelopment.Cogwheel {
 
 		}
 #endif
-
-		private void ThreeDeeGlassesMenu_DropDownOpening(object sender, EventArgs e) {
-			// Remove old COM ports.
-			for (int i = this.ThreeDeeGlassesMenu.DropDownItems.Count - 1; i >= 1; i--) {
-				this.ThreeDeeGlassesMenu.DropDownItems.RemoveAt(i);	
-			}
-			
-			// Get available COM ports.
-			var ComPorts = SerialPort.GetPortNames();
-			this.ThreeDeeGlassesDisabledMenu.Image = Properties.Resources.Icon_Bullet_Black;
-			if (ComPorts.Length == 0) return;
-
-			// Populate menu with COM port names.
-			Array.Sort(ComPorts, (a, b) => {
-				int aNumber, bNumber;
-				if (
-					a.StartsWith("COM") &&
-					b.StartsWith("COM") &&
-					int.TryParse(a.Substring(3), NumberStyles.Integer, CultureInfo.InvariantCulture, out aNumber) &&
-					int.TryParse(b.Substring(3), NumberStyles.Integer, CultureInfo.InvariantCulture, out bNumber)
-				) {
-					return aNumber.CompareTo(bNumber);
-				} else {
-					return a.CompareTo(b);
-				}
-			});
-			this.ThreeDeeGlassesMenu.DropDownItems.Add(new ToolStripSeparator());
-			foreach (var ComPort in ComPorts) {
-				var IsSelected = this.LcdShutterGlasses!=null && this.LcdShutterGlasses.PortName==ComPort;
-				if (IsSelected) {
-					this.ThreeDeeGlassesDisabledMenu.Image = null;
-				}
-				this.ThreeDeeGlassesMenu.DropDownItems.Add(ComPort, IsSelected ? Properties.Resources.Icon_Bullet_Black : null, (comPortSender,comPortE) => {
-					this.SetThreeDeeGlassesPort(((ToolStripMenuItem)comPortSender).Text);
-				});
-			}			
-		}
-
-
-		private void ThreeDeeGlassesDisabledMenu_Click(object sender, EventArgs e) {
-			this.SetThreeDeeGlassesPort(null);
-		}
-
-		private void SetThreeDeeGlassesPort(string portName) {
-			if (this.LcdShutterGlasses != null) {
-				this.LcdShutterGlasses.Dispose();
-				this.LcdShutterGlasses = null;
-			}
-			if (!string.IsNullOrEmpty(portName)) {
-				try {
-					this.LcdShutterGlasses = new SerialPort(portName);
-				} catch (Exception ex) {
-					MessageBox.Show(this, "Could not set 3D glasses port: " + ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
-				}
-				try {
-					this.LcdShutterGlasses.Open();
-				} catch (Exception ex) {
-					MessageBox.Show(this, "Could not open 3D glasses port: " + ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
-				}
-			}
-			Properties.Settings.Default.LcdShutterGlassesPort = portName;
-			
-		}
 
 		#endregion
 

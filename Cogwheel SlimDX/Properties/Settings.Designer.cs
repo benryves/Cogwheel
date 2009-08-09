@@ -250,17 +250,5 @@ namespace BeeDevelopment.Cogwheel.Properties {
                 this["InputSkipDuplicatedXInputJoysticks"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LcdShutterGlassesPort {
-            get {
-                return ((string)(this["LcdShutterGlassesPort"]));
-            }
-            set {
-                this["LcdShutterGlassesPort"] = value;
-            }
-        }
     }
 }

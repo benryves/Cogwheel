@@ -69,6 +69,9 @@
 			this.SimulateGameGearLcdMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.LinearInterpolationMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.MaintainAspectRatioMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.OptionsSep2 = new System.Windows.Forms.ToolStripSeparator();
+			this.ThreeDeeGlassesMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.ThreeDeeGlassesDisabledMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.AboutMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.HelpSep0 = new System.Windows.Forms.ToolStripSeparator();
@@ -80,9 +83,12 @@
 			this.OpenStateDialog = new System.Windows.Forms.OpenFileDialog();
 			this.SaveStateDialog = new System.Windows.Forms.SaveFileDialog();
 			this.CursorHider = new System.Windows.Forms.Timer(this.components);
-			this.ThreeDeeGlassesMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.OptionsSep2 = new System.Windows.Forms.ToolStripSeparator();
-			this.ThreeDeeGlassesDisabledMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+			this.showLeftSideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.showrightSideOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+			this.redcyanAnaglyphToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.interlacedLCDShutterGlassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -453,6 +459,31 @@
 			this.MaintainAspectRatioMenu.Text = "Maintain &Aspect Ratio";
 			this.MaintainAspectRatioMenu.Click += new System.EventHandler(this.MaintainAspectRatioMenu_Click);
 			// 
+			// OptionsSep2
+			// 
+			this.OptionsSep2.Name = "OptionsSep2";
+			this.OptionsSep2.Size = new System.Drawing.Size(244, 6);
+			// 
+			// ThreeDeeGlassesMenu
+			// 
+			this.ThreeDeeGlassesMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ThreeDeeGlassesDisabledMenu,
+            this.toolStripMenuItem1,
+            this.showLeftSideToolStripMenuItem,
+            this.showrightSideOnlyToolStripMenuItem,
+            this.toolStripMenuItem2,
+            this.redcyanAnaglyphToolStripMenuItem,
+            this.interlacedLCDShutterGlassesToolStripMenuItem});
+			this.ThreeDeeGlassesMenu.Name = "ThreeDeeGlassesMenu";
+			this.ThreeDeeGlassesMenu.Size = new System.Drawing.Size(247, 22);
+			this.ThreeDeeGlassesMenu.Text = "&3D glasses";
+			// 
+			// ThreeDeeGlassesDisabledMenu
+			// 
+			this.ThreeDeeGlassesDisabledMenu.Name = "ThreeDeeGlassesDisabledMenu";
+			this.ThreeDeeGlassesDisabledMenu.Size = new System.Drawing.Size(216, 22);
+			this.ThreeDeeGlassesDisabledMenu.Text = "&Disabled (Show both sides)";
+			// 
 			// HelpMenu
 			// 
 			this.HelpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -523,26 +554,39 @@
 			this.CursorHider.Interval = 1000;
 			this.CursorHider.Tick += new System.EventHandler(this.CursorHider_Tick);
 			// 
-			// ThreeDeeGlassesMenu
+			// toolStripMenuItem1
 			// 
-			this.ThreeDeeGlassesMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ThreeDeeGlassesDisabledMenu});
-			this.ThreeDeeGlassesMenu.Name = "ThreeDeeGlassesMenu";
-			this.ThreeDeeGlassesMenu.Size = new System.Drawing.Size(247, 22);
-			this.ThreeDeeGlassesMenu.Text = "&3D Glasses";
-			this.ThreeDeeGlassesMenu.DropDownOpening += new System.EventHandler(this.ThreeDeeGlassesMenu_DropDownOpening);
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(213, 6);
 			// 
-			// OptionsSep2
+			// showLeftSideToolStripMenuItem
 			// 
-			this.OptionsSep2.Name = "OptionsSep2";
-			this.OptionsSep2.Size = new System.Drawing.Size(244, 6);
+			this.showLeftSideToolStripMenuItem.Name = "showLeftSideToolStripMenuItem";
+			this.showLeftSideToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+			this.showLeftSideToolStripMenuItem.Text = "&Left side only";
 			// 
-			// ThreeDeeGlassesDisabledMenu
+			// showrightSideOnlyToolStripMenuItem
 			// 
-			this.ThreeDeeGlassesDisabledMenu.Name = "ThreeDeeGlassesDisabledMenu";
-			this.ThreeDeeGlassesDisabledMenu.Size = new System.Drawing.Size(152, 22);
-			this.ThreeDeeGlassesDisabledMenu.Text = "&Disabled";
-			this.ThreeDeeGlassesDisabledMenu.Click += new System.EventHandler(this.ThreeDeeGlassesDisabledMenu_Click);
+			this.showrightSideOnlyToolStripMenuItem.Name = "showrightSideOnlyToolStripMenuItem";
+			this.showrightSideOnlyToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+			this.showrightSideOnlyToolStripMenuItem.Text = "&Right side only";
+			// 
+			// toolStripMenuItem2
+			// 
+			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+			this.toolStripMenuItem2.Size = new System.Drawing.Size(228, 6);
+			// 
+			// redcyanAnaglyphToolStripMenuItem
+			// 
+			this.redcyanAnaglyphToolStripMenuItem.Name = "redcyanAnaglyphToolStripMenuItem";
+			this.redcyanAnaglyphToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+			this.redcyanAnaglyphToolStripMenuItem.Text = "Red-cyan &anaglyph";
+			// 
+			// interlacedLCDShutterGlassesToolStripMenuItem
+			// 
+			this.interlacedLCDShutterGlassesToolStripMenuItem.Name = "interlacedLCDShutterGlassesToolStripMenuItem";
+			this.interlacedLCDShutterGlassesToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+			this.interlacedLCDShutterGlassesToolStripMenuItem.Text = "&Interlaced LCD shutter glasses";
 			// 
 			// MainForm
 			// 
@@ -629,6 +673,12 @@
 		private System.Windows.Forms.ToolStripSeparator OptionsSep2;
 		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesMenu;
 		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesDisabledMenu;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem showLeftSideToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showrightSideOnlyToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+		private System.Windows.Forms.ToolStripMenuItem redcyanAnaglyphToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem interlacedLCDShutterGlassesToolStripMenuItem;
 #endif
 	}
 }
