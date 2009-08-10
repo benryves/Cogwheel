@@ -32,11 +32,16 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		[StateNotSaved()]
 		public Emulator Emulator { get; private set; }
 
+		private int clockSpeed;
 		/// <summary>
 		/// Gets or sets the clock speed of the sound generator.
 		/// </summary>
-		public int ClockSpeed { get; set; }
+		public int ClockSpeed {
+			get { return this.clockSpeed; }
+			set { this.clockSpeed = value; }
+		}
 
+		private int shiftRegisterWidth;
 		/// <summary>
 		/// Gets or sets the width of the linear feedback shift register.
 		/// </summary>
@@ -47,10 +52,13 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 				this.shiftRegisterWidth = value;
 			}
 		}
-		private int shiftRegisterWidth;
 
+		private int tappedBits;
 		/// <summary>Gets or sets the tapped bits for noise generation.</summary>
-		public int TappedBits { get; set; }
+		public int TappedBits {
+			get { return this.tappedBits; }
+			set { this.tappedBits = value; }
+		}
 
 		#endregion
 
@@ -62,9 +70,9 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <param name="emulator">The emulator that contains the <see cref="ProgrammableSoundGenerator"/>.</param>
 		public ProgrammableSoundGenerator(Emulator emulator) {
 			this.Emulator = emulator;
-			this.ClockSpeed = 3579545 / 16;
+			this.clockSpeed = 3579545 / 16;
 			this.ShiftRegisterWidth = 16;
-			this.TappedBits = 0x9;
+			this.tappedBits = 0x9;
 			this.Reset();
 		}
 
@@ -81,9 +89,9 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			this.QueuedWrites = new Queue<QueuedWrite>(256);
 			this.volumeRegisters = new byte[] { 0x0F, 0x0F, 0x0F, 0x0F };
 			this.toneRegisters = new ushort[4];
-			this.CountDown = new int[4];
-			this.Levels = new int[] { 1, 1, 1, 1 };
-			this.ShiftRegister = (ushort)(1 << (this.ShiftRegisterWidth - 1));
+			this.countDown = new int[4];
+			this.levels = new int[] { 1, 1, 1, 1 };
+			this.shiftRegister = (ushort)(1 << (this.ShiftRegisterWidth - 1));
 			this.StereoDistribution = 0xFF;
 		}
 
@@ -95,15 +103,15 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			switch (preset) {
 				case NoisePresets.SegaMasterSystem:
 					this.ShiftRegisterWidth = 16;
-					this.TappedBits = 0x0009;
+					this.tappedBits = 0x0009;
 					break;
 				case NoisePresets.SC3000:
 					this.ShiftRegisterWidth = 16;
-					this.TappedBits = 0x0006;
+					this.tappedBits = 0x0006;
 					break;
 				case NoisePresets.BbcMicro:
 					this.ShiftRegisterWidth = 15;
-					this.TappedBits = 0x8005;
+					this.tappedBits = 0x8005;
 					break;
 			}
 		}
