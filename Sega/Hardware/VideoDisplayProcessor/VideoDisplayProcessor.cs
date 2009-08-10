@@ -124,8 +124,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			this.PixelBuffer = new int[256 * 256];
 			this.TempPixelBuffer = new int[256 * 256];
 
-			this.SpriteLayerEnabled = true;
-			this.BackgroundLayerEnabled = true;
+			this.spriteLayerEnabled = true;
+			this.backgroundLayerEnabled = true;
 
 			this.BeginFrame();
 	

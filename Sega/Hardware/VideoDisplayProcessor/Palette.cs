@@ -45,7 +45,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <param name="value">The data to write to colour RAM.</param>
 		private void WriteColourRam(byte value) {
 
-			if (this.ExtendedPalette && (this.address & 1) == 0) {
+			if (this.extendedPalette && (this.address & 1) == 0) {
 
 				// Latch the colour data, but don't actually bother writing it.
 				this.LatchedColourRamData = value;
@@ -60,7 +60,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 				// The redundant-looking additions (rather than just scaling) is to more evenly spread the results.
 				// ie, a component of %01 doesn't become %01000000, but becomes %01010101.
 
-				if (this.ExtendedPalette) {
+				if (this.extendedPalette) {
 					PaletteIndex = (address / 2) & 31;
 					B = value & 0x0F; B += B * 16;
 					G = this.LatchedColourRamData & 0xF0; G += G / 16;

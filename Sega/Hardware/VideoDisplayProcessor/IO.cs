@@ -96,7 +96,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			if (this.accessMode == DataAccessMode.ColourRamWrite) {
 
 				// Writing to the palette (CRAM).
-				if (this.SupportsVariablePalette) this.WriteColourRam(value);
+				if (this.supportsVariablePalette) this.WriteColourRam(value);
 
 			} else {
 
@@ -176,15 +176,15 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			WaitingForSecond = false;
 			byte b = (byte)(
 				(this.frameInterruptPending ? 0x80 : 0x00) +
-				(this.SpriteOverflow ? 0x40 : 0x00) +
-				(this.SpriteCollision ? 0x20 : 0x00) +
-				this.InvalidSpriteIndex
+				(this.spriteOverflow ? 0x40 : 0x00) +
+				(this.spriteCollision ? 0x20 : 0x00) +
+				this.invalidSpriteIndex
 			);
 
 			this.frameInterruptPending = false;
 			this.lineInterruptPending = false;
-			this.SpriteOverflow = false;
-			this.SpriteCollision = false;
+			this.spriteOverflow = false;
+			this.spriteCollision = false;
 
 			this.UpdateIrq();
 
@@ -195,8 +195,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// Latches the value of the horizontal counter.
 		/// </summary>
 		public void LatchHorizontalCounter() {
-			int ExecutedCycles = this.Emulator.TotalExecutedCycles - this.CpuCyclesAtStartOfScanline;
-			int PixelsDrawn = (ExecutedCycles * 342) / this.CpuCyclesPerScanline;
+			int ExecutedCycles = this.Emulator.TotalExecutedCycles - this.cpuCyclesAtStartOfScanline;
+			int PixelsDrawn = (ExecutedCycles * 342) / this.cpuCyclesPerScanline;
 			this.HorizontalCounter = (byte)((PixelsDrawn - 8) / 2);
 			if (this.HorizontalCounter > 0x93) {
 				this.HorizontalCounter += 0xE9 - 0x94;

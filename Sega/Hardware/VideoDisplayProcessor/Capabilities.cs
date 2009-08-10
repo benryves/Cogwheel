@@ -1,57 +1,97 @@
 ﻿namespace BeeDevelopment.Sega8Bit.Hardware {
 	public partial class VideoDisplayProcessor {
 
+		private bool supportsMode4;
 		/// <summary>
 		/// Gets or sets whether the <see cref="VideoDisplayProcessor"/> supports the Sega Master System and Game Gear extended mode 4.
 		/// </summary>
 		/// <remarks>The regular TMS9918A <see cref="VideoDisplayProcessor"/> (as used in the SG-1000 and SC-3000) did not support mode 4.</remarks>
-		public bool SupportsMode4 { get; set; }
+		public bool SupportsMode4 {
+			get { return this.supportsMode4; }
+			set { this.supportsMode4 = value; }
+		}
 
+		private bool supportsLineInterrupts;
 		/// <summary>
 		/// Gets or sets whether the <see cref="VideoDisplayProcessor"/> supports line interrupts.
 		/// </summary>
-		public bool SupportsLineInterrupts { get; set; }
+		public bool SupportsLineInterrupts {
+			get { return this.supportsLineInterrupts; }
+			set { this.supportsLineInterrupts = value; }
+		}
 
+		private bool supportsFixedPalette;
 		/// <summary>
 		/// Gets or sets whether the <see cref="VideoDisplayProcessor"/> supports a fixed palette.
 		/// </summary>
-		public bool SupportsFixedPalette { get; set; }
+		public bool SupportsFixedPalette {
+			get { return this.supportsFixedPalette; }
+			set { this.supportsFixedPalette = value; }
+		}
 
+		private bool supportsVariablePalette;
 		/// <summary>
 		/// Gets or sets whether the <see cref="VideoDisplayProcessor"/> supports a variable palette.
 		/// </summary>
-		public bool SupportsVariablePalette { get; set; }
+		public bool SupportsVariablePalette {
+			get { return this.supportsVariablePalette; }
+			set { this.supportsVariablePalette = value; }
+		}
 
+		private bool extendedPalette;
 		/// <summary>
 		/// Gets or sets whether the device is using an extended (12-bit) palette.
 		/// </summary>
-		public bool ExtendedPalette { get; set; }
+		public bool ExtendedPalette {
+			get { return this.extendedPalette; }
+			set { this.extendedPalette = value; }
+		}
 
+		private int spritesPerScanline;
 		/// <summary>
 		/// Gets or sets the maximum number of displayable sprites per scanline.
 		/// </summary>
-		public int SpritesPerScanline { get; set; }
+		public int SpritesPerScanline {
+			get { return this.spritesPerScanline; }
+			set { this.spritesPerScanline = value; }
+		}
 
+		private int zoomedSpritesPerScanline;
 		/// <summary>
 		/// Gets or sets the maximum number of zoomed sprites per scanline.
 		/// </summary>
-		public int ZoomedSpritesPerScanline { get; set; }
+		public int ZoomedSpritesPerScanline {
+			get { return this.zoomedSpritesPerScanline; }
+			set { this.zoomedSpritesPerScanline = value; }
+		}
 
+		private bool supportsExtendedResolutions;
 		/// <summary>
 		/// Gets or sets whether the <see cref="VideoDisplayProcessor"/> supports the extended 224 and 240 line resolutions.
 		/// </summary>
-		public bool SupportsExtendedResolutions { get; set; }
+		public bool SupportsExtendedResolutions {
+			get { return this.supportsExtendedResolutions; }
+			set { this.supportsExtendedResolutions = value; }
+		}
 
+		private bool supportsMirroredNameTable;
 		/// <summary>
 		/// Gets or sets whether rows 0..15 should be repeated as rows 16..27 when bit 0 of register 2 is cleared.
 		/// </summary>
 		/// <remarks>This feature was only present in the original SMS VDP.</remarks>
-		public bool SupportsMirroredNameTable { get; set; }
+		public bool SupportsMirroredNameTable {
+			get { return this.supportsMirroredNameTable; }
+			set { this.supportsMirroredNameTable = value; }
+		}
 
+		private ResizingModes resizingMode;
 		/// <summary>
 		/// Gets or sets the method used to resize the display mode.
 		/// </summary>
-		public ResizingModes ResizingMode { get; set; }
+		public ResizingModes ResizingMode {
+			get { return this.resizingMode; }
+			set { this.resizingMode = value; }
+		}
 
 		/// <summary>
 		/// Defines the possible resizing modes.
@@ -83,13 +123,21 @@
 			NonMaskable,
 		}
 
+		private InterruptPins interruptPin;
 		/// <summary>Gets or sets the <see cref="InterruptPins"/> that the device is attached to.</summary>
-		public InterruptPins InterruptPin { get; set; }
+		public InterruptPins InterruptPin {
+			get { return this.interruptPin; }
+			set { this.interruptPin = value; }
+		}
 
+		private FixedPaletteModes fixedPaletteMode;
 		/// <summary>
 		/// Gets or sets the palette mode used with the legacy TMS9918 video modes.
 		/// </summary>
-		public FixedPaletteModes FixedPaletteMode { get; set; }
+		public FixedPaletteModes FixedPaletteMode {
+			get { return this.fixedPaletteMode; }
+			set { this.fixedPaletteMode = value; }
+		}
 
 		/// <summary>
 		/// Defines the possible fixed colour palette types.
@@ -115,27 +163,27 @@
 			bool Mark3OrLater = !(model == HardwareModel.SG1000 || model == HardwareModel.SC3000 || model == HardwareModel.SF7000 || model == HardwareModel.ColecoVision);
 
 			// General.
-			this.SupportsMode4 = Mark3OrLater;
-			this.SupportsExtendedResolutions = Mark3OrLater && model != HardwareModel.MasterSystem; // Original SMS VDP doesn't support the extended resolutions.
-			this.SupportsMirroredNameTable = model == HardwareModel.MasterSystem;
+			this.supportsMode4 = Mark3OrLater;
+			this.supportsExtendedResolutions = Mark3OrLater && model != HardwareModel.MasterSystem; // Original SMS VDP doesn't support the extended resolutions.
+			this.supportsMirroredNameTable = model == HardwareModel.MasterSystem;
 
 			// Sprites.
-			this.SpritesPerScanline = Mark3OrLater ? 8 : 4;
-			this.ZoomedSpritesPerScanline = (Mark3OrLater && model != HardwareModel.MasterSystem) ? 8 : 4; // A bug in the SMS1 VDP means only the first four sprites are zoomed horizontally!
+			this.spritesPerScanline = Mark3OrLater ? 8 : 4;
+			this.zoomedSpritesPerScanline = (Mark3OrLater && model != HardwareModel.MasterSystem) ? 8 : 4; // A bug in the SMS1 VDP means only the first four sprites are zoomed horizontally!
 
 			// Colour.
-			this.ExtendedPalette = model == HardwareModel.GameGear;
-			this.SupportsVariablePalette = Mark3OrLater;
-			this.SupportsFixedPalette = !(model == HardwareModel.GameGear || model == HardwareModel.GameGearMasterSystem); // The Game Gear VDP loses any sort of fixed TMS9918A palette.
-			this.FixedPaletteMode = Mark3OrLater ? FixedPaletteModes.MasterSystem : FixedPaletteModes.Tms9918;
-			this.ResizingMode = (model == HardwareModel.GameGear ? ResizingModes.Cropped : (model == HardwareModel.GameGearMasterSystem ? ResizingModes.Scaled : ResizingModes.Normal));
+			this.extendedPalette = model == HardwareModel.GameGear;
+			this.supportsVariablePalette = Mark3OrLater;
+			this.supportsFixedPalette = !(model == HardwareModel.GameGear || model == HardwareModel.GameGearMasterSystem); // The Game Gear VDP loses any sort of fixed TMS9918A palette.
+			this.fixedPaletteMode = Mark3OrLater ? FixedPaletteModes.MasterSystem : FixedPaletteModes.Tms9918;
+			this.resizingMode = (model == HardwareModel.GameGear ? ResizingModes.Cropped : (model == HardwareModel.GameGearMasterSystem ? ResizingModes.Scaled : ResizingModes.Normal));
 
 			// Interrupts:
-			this.SupportsLineInterrupts = Mark3OrLater;
-			this.InterruptPin = model == HardwareModel.ColecoVision ? InterruptPins.NonMaskable : InterruptPins.Maskable;
+			this.supportsLineInterrupts = Mark3OrLater;
+			this.interruptPin = model == HardwareModel.ColecoVision ? InterruptPins.NonMaskable : InterruptPins.Maskable;
 
 			// Timing:
-			this.CpuCyclesPerScanline = 228;
+			this.cpuCyclesPerScanline = 228;
 
 		}
 

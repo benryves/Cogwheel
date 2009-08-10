@@ -25,32 +25,60 @@ namespace BeeDevelopment.Sega8Bit {
 
 		#region Properties
 
+		private IMemoryMapper memory;
 		/// <summary>Gets or sets the underlying <see cref="IMemoryMapper"/> that provides access to the memory.</summary>
 		/// <remarks>Set this to <c>null</c> to represent memory that is not present (for example, an empty cartridge slot).</remarks>
-		public IMemoryMapper Memory { get; set; }
+		public IMemoryMapper Memory {
+			get { return this.memory; }
+			set { this.memory = value; }
+		}
 
+		private AccessibilityMode accessibility;
 		/// <summary>Gets or sets the <see cref="AccessibilityMode"/> of the memory.</summary>
-		public AccessibilityMode Accessibility { get; set; }
+		public AccessibilityMode Accessibility {
+			get { return this.accessibility; }
+			set {
+				this.accessibility = value;
+				this.UpdateAccessibility();
+			}
+		}
 
+		private bool enabled;
 		/// <summary>Gets or sets whether the device is enabled or disabled.</summary>
 		/// <remarks>Some devices cannot be disabled, in which case this flag is ignored.</remarks>
-		public bool Enabled { get; set; }
+		public bool Enabled {
+			get { return this.enabled; }
+			set {
+				this.enabled = value;
+				this.UpdateAccessibility();
+			}
+		}
 
+		/// <summary>
+		/// Update whether the <see cref="MemoryDevice"/> is accessible or not.
+		/// </summary>
+		private void UpdateAccessibility() {
+			switch (this.accessibility) {
+				case AccessibilityMode.Always:
+					this.isAccessible = true;
+					break;
+				case AccessibilityMode.Optional:
+					this.isAccessible = this.enabled;
+					break;
+				case AccessibilityMode.Never:
+					this.isAccessible = false;
+					break;
+				default:
+					this.isAccessible = false;
+					break;
+			}
+		}
+
+		private bool isAccessible;
 		/// <summary>Gets whether the memory is currently accessible or not.</summary>
 		[StateNotSaved()]
 		public bool IsAccessible {
-			get {
-				switch (this.Accessibility) {
-					case AccessibilityMode.Always:
-						return true;
-					case AccessibilityMode.Optional:
-						return this.Enabled;
-					case AccessibilityMode.Never:
-						return false;
-					default:
-						return false;
-				}
-			}
+			get { return this.isAccessible; }
 		}
 
 		#endregion
@@ -70,7 +98,7 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <param name="value">The value to write.</param>
 		/// <remarks>Memory is only written to if <see cref="IsAccessible"/> is <c>true</c>.</remarks>
 		public void Write(ushort address, byte value) {
-			if (this.IsAccessible && this.Memory != null) this.Memory.WriteMemory(address, value);
+			if (this.isAccessible && this.memory != null) this.memory.WriteMemory(address, value);
 		}
 
 		/// <summary>Reads a byte from memory.</summary>
@@ -78,7 +106,7 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <returns>The value read from memory if it is accessible and present; otherwise, 0xFF.</returns>
 		/// <remarks>If the memory is not present or <see cref="IsAccessible"/> is <c>false</c>, this method returns 0xFF.</remarks>
 		public byte Read(ushort address) {
-			return (this.IsAccessible && this.Memory != null) ? this.Memory.ReadMemory(address) : (byte)0xFF;
+			return (this.isAccessible && this.Memory != null) ? this.Memory.ReadMemory(address) : (byte)0xFF;
 		}
 
 		#endregion

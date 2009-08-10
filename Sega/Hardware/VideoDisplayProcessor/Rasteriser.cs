@@ -69,36 +69,60 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 		#region Properties
 
+		private BeamRegion beamLocation;
 		/// <summary>
 		/// Gets the <see cref="BeamRegion"/> of the scanning electron beam.
 		/// </summary>
-		public BeamRegion BeamLocation { get; private set; }
+		public BeamRegion BeamLocation {
+			get { return this.beamLocation; }
+			private set { this.beamLocation = value; }
+		}
 
+		private TimingProfiles timingProfile;
 		/// <summary>
 		/// Gets the current <see cref="TimingProfiles"/> for the video frame being generated.
-		/// </summary>
-		public TimingProfiles TimingProfile { get; private set; }
+		/// </summary>		
+		public TimingProfiles TimingProfile {
+			get { return this.timingProfile; }
+			private set { this.timingProfile = value; }
+		}
 
+		private bool spriteOverflow;
 		/// <summary>
 		/// Gets or sets the sprite overflow flag.
 		/// </summary>
 		/// <remarks>This flag is set automatically when more than the supported number of sprites are displayed on a scanline.</remarks>
-		public bool SpriteOverflow { get; set; }
+		public bool SpriteOverflow {
+			get { return this.spriteOverflow; }
+			set { this.spriteOverflow = value; }
+		}
 
+		private bool spriteCollision;
 		/// <summary>
 		/// Gets or sets whether a sprite collision has occured.
 		/// </summary>
-		public bool SpriteCollision { get; set; }
+		public bool SpriteCollision {
+			get { return this.spriteCollision; }
+			set { this.spriteCollision = value; }
+		}		
 
+		private int invalidSpriteIndex;
 		/// <summary>
 		/// Gets or sets the index of the first invalid sprite.
 		/// </summary>
-		public int InvalidSpriteIndex { get; set; }
+		public int InvalidSpriteIndex {
+			get { return this.invalidSpriteIndex; }
+			set { this.invalidSpriteIndex = value; }
+		}
 
+		private int lastBackdropColour;
 		/// <summary>
 		/// Gets or sets the last background colour as a 32-bit RGB value.
 		/// </summary>
-		public int LastBackdropColour { get; set; }
+		public int LastBackdropColour {
+			get { return this.lastBackdropColour; }
+			set { this.lastBackdropColour = value; }
+		}
 
 		/// <summary>
 		/// Gets the frame rate of the VDP in Hertz.
@@ -117,25 +141,42 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			}
 		}
 
+		private int cpuCyclesPerScanline;
 		/// <summary>
 		/// Gets or sets the number of CPU cycles that are executed per scanline.
 		/// </summary>
-		public int CpuCyclesPerScanline { get; set; }
+		public int CpuCyclesPerScanline {
+			get { return this.cpuCyclesPerScanline; }
+			set { this.cpuCyclesPerScanline = value; }
+		}
 
+		private int cpuCyclesAtStartOfScanline;
 		/// <summary>
 		/// Gets or sets the total number of CPU cycles that had been executed at the start of the current scanline.
 		/// </summary>
-		public int CpuCyclesAtStartOfScanline { get; set; }
+		public int CpuCyclesAtStartOfScanline {
+			get { return this.cpuCyclesAtStartOfScanline; }
+			set { this.cpuCyclesAtStartOfScanline = value; }
+		}
 
+		private bool spriteLayerEnabled;
 		/// <summary>
 		/// Gets or sets whether the sprite layer is enabled.
 		/// </summary>
-		public bool SpriteLayerEnabled { get; set; }
+		public bool SpriteLayerEnabled {
+			get { return this.spriteLayerEnabled; }
+			set { this.spriteLayerEnabled = value; }
+		}
 
+		private bool backgroundLayerEnabled;
 		/// <summary>
 		/// Gets or sets whether the background layer is enabled.
 		/// </summary>
-		public bool BackgroundLayerEnabled { get; set; }
+		public bool BackgroundLayerEnabled {
+			get { return this.backgroundLayerEnabled; }
+			set { this.backgroundLayerEnabled = value; }
+		}
+		
 
 		#endregion
 
@@ -206,40 +247,68 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 		#region Frame State
 
+		private int yScrollAtStartOfFrame;
 		/// <summary>
 		/// Stores the Y scroll value taken at the start of the frame.
 		/// </summary>
-		public int YScrollAtStartOfFrame { get; private set; }
+		public int YScrollAtStartOfFrame {
+			get { return this.yScrollAtStartOfFrame; }
+			private set { this.yScrollAtStartOfFrame = value; }
+		}		
 
+		private int scanlinesDrawn;
 		/// <summary>
 		/// Gets the total number of drawn scanlines this frame.
 		/// </summary>
-		public int ScanlinesDrawn { get; private set; }
+		public int ScanlinesDrawn {
+			get { return this.scanlinesDrawn; }
+			private set { this.scanlinesDrawn = value; }
+		}
 
+		private int remainingScanlinesInRegion;
 		/// <summary>
 		/// Gets the number of remaining scanlines in the current region.
 		/// </summary>
-		public int RemainingScanlinesInRegion { get; private set; }
+		public int RemainingScanlinesInRegion {
+			get { return this.remainingScanlinesInRegion; }
+			private set { this.remainingScanlinesInRegion = value; }
+		}
 
+		private int lineInterruptCounter;
 		/// <summary>
 		/// Counts down to trigger line interrupts.
 		/// </summary>
-		public int LineInterruptCounter { get; private set; }
+		public int LineInterruptCounter {
+			get { return this.lineInterruptCounter; }
+			private set { this.lineInterruptCounter = value; }
+		}
 
+		private int activeFrameHeight;
 		/// <summary>
 		/// The height of the current frame being rendered.
 		/// </summary>
-		public int ActiveFrameHeight { get; private set; }
+		public int ActiveFrameHeight {
+			get { return this.activeFrameHeight; }
+			private set { this.activeFrameHeight = value; }
+		}
 
+		private int croppedFrameWidth;
 		/// <summary>
 		/// The width of the current frame being rendered.
 		/// </summary>
-		public int CroppedFrameWidth { get; private set; }
+		public int CroppedFrameWidth {
+			get { return this.croppedFrameWidth; }
+			private set { this.croppedFrameWidth = value; }
+		}
 
+		private int croppedFrameHeight;
 		/// <summary>
 		/// The cropped height of the current frame being rendered.
 		/// </summary>
-		public int CroppedFrameHeight { get; private set; }
+		public int CroppedFrameHeight {
+			get { return this.croppedFrameHeight; }
+			private set { this.croppedFrameHeight = value; }
+		}
 
 		/// <summary>
 		/// Fixed 256x256 buffer to store the image as it gets rendered.
@@ -275,29 +344,29 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		private void BeginFrame() {
 
 			// Start at the top of the active display.
-			this.BeamLocation = BeamRegion.ActiveDisplay;
-			this.ScanlinesDrawn = 0;
+			this.beamLocation = BeamRegion.ActiveDisplay;
+			this.scanlinesDrawn = 0;
 
 			// Set timing profile.
-			this.RemainingScanlinesInRegion = this.VerticalResolution;
-			this.ActiveFrameHeight = this.VerticalResolution;
+			this.remainingScanlinesInRegion = this.VerticalResolution;
+			this.activeFrameHeight = this.VerticalResolution;
 
-			this.CroppedFrameWidth = this.ResizingMode == ResizingModes.Normal ? 256 : 160;
-			this.CroppedFrameHeight = this.ResizingMode == ResizingModes.Normal ? this.ActiveFrameHeight : 144;
+			this.croppedFrameWidth = this.resizingMode == ResizingModes.Normal ? 256 : 160;
+			this.croppedFrameHeight = this.resizingMode == ResizingModes.Normal ? this.activeFrameHeight : 144;
 
-			switch (this.RemainingScanlinesInRegion) {
-				case 192: this.TimingProfile = this.System == VideoSystem.Ntsc ? TimingProfiles.Ntsc192 : TimingProfiles.Pal192; break;
-				case 224: this.TimingProfile = this.System == VideoSystem.Ntsc ? TimingProfiles.Ntsc224 : TimingProfiles.Pal224; break;
-				case 240: this.TimingProfile = this.System == VideoSystem.Ntsc ? TimingProfiles.Ntsc240 : TimingProfiles.Pal240; break;
+			switch (this.remainingScanlinesInRegion) {
+				case 192: this.timingProfile = this.System == VideoSystem.Ntsc ? TimingProfiles.Ntsc192 : TimingProfiles.Pal192; break;
+				case 224: this.timingProfile = this.System == VideoSystem.Ntsc ? TimingProfiles.Ntsc224 : TimingProfiles.Pal224; break;
+				case 240: this.timingProfile = this.System == VideoSystem.Ntsc ? TimingProfiles.Ntsc240 : TimingProfiles.Pal240; break;
 			}
 
 
 			// Cache Y scroll.
-			this.YScrollAtStartOfFrame = this.Registers[9];
-			if (this.RemainingScanlinesInRegion == 192) this.YScrollAtStartOfFrame %= 224;
+			this.yScrollAtStartOfFrame = this.Registers[9];
+			if (this.remainingScanlinesInRegion == 192) this.yScrollAtStartOfFrame %= 224;
 
 			// Reset backdrop to 0.
-			this.LastBackdropColour = 0;
+			this.lastBackdropColour = 0;
 
 			// Reset the number of scanlines seen by the left and right eyes.
 			this.ActiveScanlinesLeftEye = this.ActiveScanlinesRightEye = 0;
@@ -316,17 +385,21 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// </summary>
 		private void EndFrame() {
 
-			this.LastCompleteFrameWidth = this.CroppedFrameWidth;
-			this.LastCompleteFrameHeight = this.CroppedFrameHeight;
-			this.lastCompleteFrame = new int[this.CroppedFrameWidth * this.CroppedFrameHeight];
+			this.LastCompleteFrameWidth = this.croppedFrameWidth;
+			this.LastCompleteFrameHeight = this.croppedFrameHeight;
+			
+			if (this.lastCompleteFrame == null || this.lastCompleteFrame.Length != this.croppedFrameWidth * this.croppedFrameHeight) {
+				this.lastCompleteFrame = new int[this.croppedFrameWidth * this.croppedFrameHeight];
+			}
+
 			this.LastOpenGlassesShutter = this.ActiveScanlinesLeftEye > this.ActiveScanlinesRightEye ? Emulator.GlassesShutter.Left : Emulator.GlassesShutter.Right;
 
-			switch (this.ResizingMode) {
+			switch (this.resizingMode) {
 				case ResizingModes.Normal:
 					Array.Copy(this.PixelBuffer, this.lastCompleteFrame, this.lastCompleteFrame.Length);
 					break;
 				case ResizingModes.Cropped:
-					for (int Row = 0, Source = ((256 - 160) / 2) + (128 * (this.ActiveFrameHeight - 144)), Destination = 0, Width = this.LastCompleteFrameWidth; Row < 144; ++Row, Source += 256, Destination += Width) {
+					for (int Row = 0, Source = ((256 - 160) / 2) + (128 * (this.activeFrameHeight - 144)), Destination = 0, Width = this.LastCompleteFrameWidth; Row < 144; ++Row, Source += 256, Destination += Width) {
 						Array.Copy(this.PixelBuffer, Source, this.lastCompleteFrame, Destination, Width);
 					}
 					break;
@@ -340,7 +413,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					int DestPointer = 160 * 8;
 					int MaxY = 128;
 
-					if (this.ActiveFrameHeight == 224) {
+					if (this.activeFrameHeight == 224) {
 						SrcPointer = 8 + 256 * 3;
 						DestPointer = 0;
 						MaxY = 144;
@@ -351,9 +424,9 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					for (int y = 0; y < MaxY; y += 2) {
 						for (int x = 0; x < 160; x += 2) {
 
-							if (this.ActiveFrameHeight == 224) {
+							if (this.activeFrameHeight == 224) {
 								for (int i = 0; i < 3; ++i) {
-									PixelGrid[0, i] = SrcPointer < 256 ? this.LastBackdropColour : TempPixelBuffer[SrcPointer - 256];
+									PixelGrid[0, i] = SrcPointer < 256 ? this.lastBackdropColour : TempPixelBuffer[SrcPointer - 256];
 									PixelGrid[1, i] = TempPixelBuffer[SrcPointer + 000];
 									PixelGrid[2, i] = TempPixelBuffer[SrcPointer + 256];
 									PixelGrid[3, i] = TempPixelBuffer[SrcPointer + 512];
@@ -362,8 +435,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 								}
 							} else {
 								for (int i = 0; i < 3; ++i) {
-									PixelGrid[0, i] = SrcPointer < 512 ? this.LastBackdropColour : TempPixelBuffer[SrcPointer - 512];
-									PixelGrid[1, i] = SrcPointer < 256 ? this.LastBackdropColour : TempPixelBuffer[SrcPointer - 256];
+									PixelGrid[0, i] = SrcPointer < 512 ? this.lastBackdropColour : TempPixelBuffer[SrcPointer - 512];
+									PixelGrid[1, i] = SrcPointer < 256 ? this.lastBackdropColour : TempPixelBuffer[SrcPointer - 256];
 									PixelGrid[2, i] = TempPixelBuffer[SrcPointer + 000];
 									PixelGrid[3, i] = TempPixelBuffer[SrcPointer + 256];
 									PixelGrid[4, i] = TempPixelBuffer[SrcPointer + 512];
@@ -380,7 +453,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 							}
 
 
-							if (this.ActiveFrameHeight == 224) {
+							if (this.activeFrameHeight == 224) {
 								for (int i = 0; i < 2; ++i) {
 									PixelBuffer[DestPointer + 000] = BlendThirdRgb(PixelGrid[1, i], PixelGrid[2, i], BlendHalfRgb(PixelGrid[0, i], PixelGrid[3, i]));
 									PixelBuffer[DestPointer + 160] = BlendThirdRgb(PixelGrid[2, i], PixelGrid[3, i], BlendHalfRgb(PixelGrid[1, i], PixelGrid[4, i]));
@@ -399,10 +472,10 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 						SrcPointer += 16 + 512;
 					}
 
-					if (this.ActiveFrameHeight == 192) {
+					if (this.activeFrameHeight == 192) {
 						for (int i = 0; i < 160 * 8; ++i) {
-							PixelBuffer[i] = this.LastBackdropColour;
-							PixelBuffer[i + 0x5500] = this.LastBackdropColour;
+							PixelBuffer[i] = this.lastBackdropColour;
+							PixelBuffer[i + 0x5500] = this.lastBackdropColour;
 						}
 					}
 
@@ -422,19 +495,19 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <returns>The address of the first tile in the row that corresponds to the number of scanlines rendered and the y-scroll offset.</returns>
 		private int GetNameTableOffset(int yScroll) {
 
-			int TilemapRow = (this.ScanlinesDrawn + yScroll) / 8;
+			int TilemapRow = (this.scanlinesDrawn + yScroll) / 8;
 
-			if (this.ActiveFrameHeight == 192) {
+			if (this.activeFrameHeight == 192) {
 				TilemapRow %= 28;
 			} else {
 				TilemapRow %= 32;
 			}
 
-			if (this.SupportsMirroredNameTable && (this.registers[0x2] & 0x01) == 0) {
+			if (this.supportsMirroredNameTable && (this.registers[0x2] & 0x01) == 0) {
 				TilemapRow &= 0xEF;
 			}
 
-			return (TilemapRow * 64) + (this.ActiveFrameHeight == 192 ? ((this.registers[0x2] & 0xE) * 1024) : ((this.registers[0x2] & 0xC) * 1024 + 0x700));
+			return (TilemapRow * 64) + (this.activeFrameHeight == 192 ? ((this.registers[0x2] & 0xE) * 1024) : ((this.registers[0x2] & 0xC) * 1024 + 0x700));
 		}
 
 		#endregion
@@ -447,25 +520,25 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <returns>True if the <see cref="VideoDisplayProcessor"/> has just completed rendering the active display.</returns>
 		public bool RasteriseLine() {
 
-			this.CpuCyclesAtStartOfScanline = this.Emulator.ExpectedExecutedCycles;
+			this.cpuCyclesAtStartOfScanline = this.Emulator.ExpectedExecutedCycles;
 
 			// Start by updating the vertical counter.
-			this.VerticalCounter = this.ReturnedVCounters[(int)this.TimingProfile, this.ScanlinesDrawn];
+			this.VerticalCounter = this.ReturnedVCounters[(int)this.timingProfile, this.scanlinesDrawn];
 
 			#region Rendering
 
 			bool UsingMode4 = false;
 
-			if (this.BeamLocation == BeamRegion.ActiveDisplay) {
+			if (this.beamLocation == BeamRegion.ActiveDisplay) {
 
 				// Used to keep track of foreground/background pixels (?)
 				bool[] ForegroundBackground = new bool[256];
 
 				bool amZoomed = this.ZoomSprites;
 
-				int startPixel = this.ScanlinesDrawn * 256;
+				int startPixel = this.scanlinesDrawn * 256;
 
-				int[] FixedPalette = this.FixedPaletteMode == FixedPaletteModes.MasterSystem ? this.FixedPaletteMasterSystem : this.FixedPaletteTMS9918;
+				int[] FixedPalette = this.fixedPaletteMode == FixedPaletteModes.MasterSystem ? this.FixedPaletteMasterSystem : this.FixedPaletteTMS9918;
 
 				if (!this.DisplayVisible) {
 					// Screen is off
@@ -474,16 +547,16 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 						case Mode.Graphic2:
 						case Mode.Multicolor:
 						case Mode.Text:
-							this.LastBackdropColour = FixedPalette[this.Registers[0x7] & 0xF];
+							this.lastBackdropColour = FixedPalette[this.Registers[0x7] & 0xF];
 							break;
 						default:
-							this.LastBackdropColour = this.colourRam[(Registers[0x7] & 0xF) + 16];
+							this.lastBackdropColour = this.colourRam[(Registers[0x7] & 0xF) + 16];
 							break;
 					}
-					for (int i = 0; i < 256; ++i) this.PixelBuffer[startPixel++] = this.LastBackdropColour;
+					for (int i = 0; i < 256; ++i) this.PixelBuffer[startPixel++] = this.lastBackdropColour;
 				} else {
 
-					this.LastBackdropColour = this.colourRam[(this.registers[0x7] & 0xF) + 16];
+					this.lastBackdropColour = this.colourRam[(this.registers[0x7] & 0xF) + 16];
 
 					switch (this.CurrentMode) {
 
@@ -492,7 +565,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 						case Mode.Mode4Resolution240: {
 								#region Mode 4 background layer
 
-								int NameTableOffset = GetNameTableOffset(this.YScrollAtStartOfFrame);
+								int NameTableOffset = GetNameTableOffset(this.yScrollAtStartOfFrame);
 
 								int TileNum;
 								int TileOffset;
@@ -507,22 +580,22 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 								byte UpperByte;
 
-								byte CurrentXScroll = this.InhibitScrollX && (this.ScanlinesDrawn < 16) ? (byte)0 : this.registers[0x8];
+								byte CurrentXScroll = this.InhibitScrollX && (this.scanlinesDrawn < 16) ? (byte)0 : this.registers[0x8];
 
-								int MasterTileRowOffset = ((this.ScanlinesDrawn + this.YScrollAtStartOfFrame) & 7);
+								int MasterTileRowOffset = ((this.scanlinesDrawn + this.yScrollAtStartOfFrame) & 7);
 
 								int[] Colours = new int[8];
 
 								// Clear eight leftmost pixels to overscan colour.
 								for (int i = 0; i < 8; ++i) {
-									this.PixelBuffer[startPixel + i] = this.LastBackdropColour;
+									this.PixelBuffer[startPixel + i] = this.lastBackdropColour;
 								}
 
 								for (int ScreenColumn = 0; ScreenColumn < 32; ++ScreenColumn) {
 
 									// Handle Y-scroll inhibition.
 									if (ScreenColumn == 24 && this.InhibitScrollY) {
-										MasterTileRowOffset = this.ScanlinesDrawn & 7;
+										MasterTileRowOffset = this.scanlinesDrawn & 7;
 										NameTableOffset = GetNameTableOffset(0);
 									}
 
@@ -575,12 +648,12 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 						case Mode.Graphic2: {
 								#region Graphic 1/2 background layer
 
-								this.LastBackdropColour = FixedPalette[this.Registers[0x7] & 0xF];
+								this.lastBackdropColour = FixedPalette[this.Registers[0x7] & 0xF];
 
 								int NameTableStartAddress = (this.Registers[0x2] & 0x0F) << 10;
 								int PatternGeneratorAddress = (this.Registers[0x4] & 0x04) << 11;
 
-								int CharacterOffset = (this.ScanlinesDrawn / 64) * 0x100;
+								int CharacterOffset = (this.scanlinesDrawn / 64) * 0x100;
 
 								int ColourTableAddress = (this.Registers[0x3] & 0x80) << 6;
 
@@ -594,19 +667,19 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 								int CharacterColour;
 								for (int Column = 0; Column < 32; ++Column) {
 
-									int CharacterIndex = vram[NameTableStartAddress + Column + (this.ScanlinesDrawn / 8) * 32] + CharacterOffset;
+									int CharacterIndex = vram[NameTableStartAddress + Column + (this.scanlinesDrawn / 8) * 32] + CharacterOffset;
 
-									int CharacterPixelRow = vram[CharacterIndex * 8 + (this.ScanlinesDrawn & 7) + PatternGeneratorAddress];
+									int CharacterPixelRow = vram[CharacterIndex * 8 + (this.scanlinesDrawn & 7) + PatternGeneratorAddress];
 
 
 									if (this.CurrentMode == Mode.Graphic1) {
 										CharacterColour = vram[CharacterIndex / 8 + ColourTableAddress];
 									} else {
-										CharacterColour = vram[CharacterIndex * 8 + (this.ScanlinesDrawn & 7) + ColourTableAddress];
+										CharacterColour = vram[CharacterIndex * 8 + (this.scanlinesDrawn & 7) + ColourTableAddress];
 									}
 
-									int ColourForeground = LastBackdropColour;
-									int ColourBackground = LastBackdropColour;
+									int ColourForeground = lastBackdropColour;
+									int ColourBackground = lastBackdropColour;
 
 									if ((CharacterColour & 0xF0) != 0) ColourForeground = FixedPalette[CharacterColour >> 04];
 									if ((CharacterColour & 0x0F) != 0) ColourBackground = FixedPalette[CharacterColour & 0xF];
@@ -640,8 +713,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 								int PixelPosition = startPixel + 8;
 								for (int Column = 0; Column < 40; ++Column) {
 
-									int CharacterIndex = vram[NameTableStartAddress + Column + (this.ScanlinesDrawn / 8) * 40];
-									int CharacterPixelRow = vram[CharacterIndex * 8 + (this.ScanlinesDrawn & 7) + PatternGeneratorAddress];
+									int CharacterIndex = vram[NameTableStartAddress + Column + (this.scanlinesDrawn / 8) * 40];
+									int CharacterPixelRow = vram[CharacterIndex * 8 + (this.scanlinesDrawn & 7) + PatternGeneratorAddress];
 
 
 									for (int j = 0; j < 6; ++j) {
@@ -661,8 +734,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 								int NameTableStartAddress = (this.Registers[0x2] & 0x0F) << 10;
 								int PatternGeneratorAddress = (this.Registers[0x4] & 0x04) << 11;
 
-								int Row = this.ScanlinesDrawn / 8;
-								int HalfRowOffset = (this.ScanlinesDrawn / 4) & 1;
+								int Row = this.scanlinesDrawn / 8;
+								int HalfRowOffset = (this.scanlinesDrawn / 4) & 1;
 
 								for (int Column = 0, PixelPosition = startPixel; Column < 32; ++Column) {
 
@@ -673,7 +746,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 									for (int i = 0; i < 2; ++i) {
 
-										int Colour = (ColourAttribute & 0xF0) == 0 ? this.LastBackdropColour : FixedPalette[ColourAttribute >> 4];
+										int Colour = (ColourAttribute & 0xF0) == 0 ? this.lastBackdropColour : FixedPalette[ColourAttribute >> 4];
 										ColourAttribute <<= 4;
 
 										for (int j = 0; j < 4; ++j) {
@@ -695,9 +768,9 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 					}			
 
-					if (!this.BackgroundLayerEnabled) for (int i = 0; i < 256; ++i) this.PixelBuffer[startPixel + i] = this.LastBackdropColour;
+					if (!this.backgroundLayerEnabled) for (int i = 0; i < 256; ++i) this.PixelBuffer[startPixel + i] = this.lastBackdropColour;
 
-					if (this.SpriteLayerEnabled) {
+					if (this.spriteLayerEnabled) {
 
 						switch (this.CurrentMode) {
 
@@ -717,20 +790,20 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 								bool[] spriteCollisionBuffer = new bool[256];
 								byte pixelX;
 
-								int maxSprites = this.SpritesPerScanline;
-								int maxZoomedSprites = this.ZoomedSpritesPerScanline;
+								int maxSprites = this.spritesPerScanline;
+								int maxZoomedSprites = this.zoomedSpritesPerScanline;
 
 								for (int i = 0; i < 64; ++i) {
 
 									int y = vram[SAT + i] + 1;
-									if (y == 0xD1 && this.ActiveFrameHeight == 192) break;
+									if (y == 0xD1 && this.activeFrameHeight == 192) break;
 
 									if (y >= 224) y -= 256;
 
-									if (y > this.ScanlinesDrawn || (y + sh) <= this.ScanlinesDrawn) continue;
+									if (y > this.scanlinesDrawn || (y + sh) <= this.scanlinesDrawn) continue;
 
 									if (maxSprites-- == 0) {
-										this.SpriteOverflow = true;
+										this.spriteOverflow = true;
 										break;
 									}
 
@@ -739,7 +812,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 									if (ds) n &= ~1;
 
-									int spritePtr = (n + EigthBit) * 64 + ((this.ScanlinesDrawn - y) / (amZoomed ? 2 : 1)) * 8;
+									int spritePtr = (n + EigthBit) * 64 + ((this.scanlinesDrawn - y) / (amZoomed ? 2 : 1)) * 8;
 
 									int[] colours = new int[8];
 
@@ -754,7 +827,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 											if (colours[p / 2] != 0) {
 												if (spriteCollisionBuffer[pixelX]) {
-													this.SpriteCollision = true;
+													this.spriteCollision = true;
 												} else {
 													if (!ForegroundBackground[pixelX]) {
 														spriteCollisionBuffer[pixelX] = true;
@@ -770,7 +843,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 											if (colours[p] != 0) {
 												if (spriteCollisionBuffer[pixelX]) {
-													this.SpriteCollision = true;
+													this.spriteCollision = true;
 												} else {
 													spriteCollisionBuffer[pixelX] = true;
 													if (!ForegroundBackground[pixelX]) {
@@ -798,7 +871,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 								int SpriteAttributeTable = (this.Registers[0x5] & 0x7F) * 0x80;
 								int SpritePatternGenerator = (this.Registers[0x6] & 0x07) * 0x800;
-								int SpritePerScanlineCap = this.SpritesPerScanline;
+								int SpritePerScanlineCap = this.spritesPerScanline;
 
 								bool MagMode = (this.Registers[0x1] & 0x1) != 0;
 								bool SizeMode = (this.Registers[0x1] & 0x2) != 0;
@@ -824,17 +897,17 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 									if ((SpriteFlags & 0x80) != 0) SpriteX -= 32;
 
 									// Is the sprite visible on this scanline?
-									if (SpriteY > this.ScanlinesDrawn || (SpriteY + SpriteSize) <= this.ScanlinesDrawn) continue;
+									if (SpriteY > this.scanlinesDrawn || (SpriteY + SpriteSize) <= this.scanlinesDrawn) continue;
 
 									// Check we haven't drawn too many sprites on this scanline!
 									if (SpritePerScanlineCap-- == 0) {
-										this.SpriteOverflow = true;
-										this.InvalidSpriteIndex = SpriteNum;
+										this.spriteOverflow = true;
+										this.invalidSpriteIndex = SpriteNum;
 										break;
 									}
 
 									if (SizeMode) SpriteIndex &= 0xFC;
-									int SpriteTextureCoord = this.ScanlinesDrawn - SpriteY;
+									int SpriteTextureCoord = this.scanlinesDrawn - SpriteY;
 									if (MagMode) SpriteTextureCoord /= 2;
 
 									int SpritePatternDataAddress = SpritePatternGenerator + SpriteIndex * 8 + SpriteTextureCoord;
@@ -847,7 +920,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 										// Check for collisions
 										if (SpriteCollisions[PixelOffset + 32]) {
-											this.SpriteCollision = true;
+											this.spriteCollision = true;
 										} else {
 											SpriteCollisions[PixelOffset + 32] = true;
 										}
@@ -882,7 +955,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					}
 
 					if (UsingMode4 && this.MaskColumn0) {
-						for (int i = 0; i < 8; i++) PixelBuffer[startPixel + i] = LastBackdropColour;
+						for (int i = 0; i < 8; i++) PixelBuffer[startPixel + i] = lastBackdropColour;
 					}
 
 				}
@@ -898,10 +971,10 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 			// Handle frame interrupts.
 			bool FrameInterrupted = false;
-			switch (this.ActiveFrameHeight) {
-				case 192: FrameInterrupted = this.ScanlinesDrawn == 0xC1; break;
-				case 224: FrameInterrupted = this.ScanlinesDrawn == 0xE1; break;
-				case 240: FrameInterrupted = this.ScanlinesDrawn == 0xF1; break;
+			switch (this.activeFrameHeight) {
+				case 192: FrameInterrupted = this.scanlinesDrawn == 0xC1; break;
+				case 224: FrameInterrupted = this.scanlinesDrawn == 0xE1; break;
+				case 240: FrameInterrupted = this.scanlinesDrawn == 0xF1; break;
 			}
 			if (FrameInterrupted) {
 				this.EndFrame();
@@ -909,14 +982,14 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			}
 
 			// Handle line interrupts.
-			if (this.SupportsLineInterrupts) {
-				if (this.ScanlinesDrawn <= this.ActiveFrameHeight) {
-					if (this.LineInterruptCounter-- <= 0) {
+			if (this.supportsLineInterrupts) {
+				if (this.scanlinesDrawn <= this.activeFrameHeight) {
+					if (this.lineInterruptCounter-- <= 0) {
 						this.lineInterruptPending = true;
-						this.LineInterruptCounter = this.registers[0xA];
+						this.lineInterruptCounter = this.registers[0xA];
 					}
 				} else {
-					this.LineInterruptCounter = this.registers[0xA];
+					this.lineInterruptCounter = this.registers[0xA];
 				}
 			}
 
@@ -925,19 +998,19 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			#endregion
 
 			// We've drawn yet another, got to be worth something at least.
-			++this.ScanlinesDrawn;
+			++this.scanlinesDrawn;
 
 			// Well, that was that...
-			if (--this.RemainingScanlinesInRegion == 0) {
+			if (--this.remainingScanlinesInRegion == 0) {
 
 				// Move on to the next part of the display!
-				while (this.RemainingScanlinesInRegion == 0) {
-					this.BeamLocation = (BeamRegion)(((int)this.BeamLocation + 1) % 6);
-					this.RemainingScanlinesInRegion = this.ScreenSpaceCounters[(int)this.TimingProfile, (int)this.BeamLocation];
+				while (this.remainingScanlinesInRegion == 0) {
+					this.beamLocation = (BeamRegion)(((int)this.beamLocation + 1) % 6);
+					this.remainingScanlinesInRegion = this.ScreenSpaceCounters[(int)this.timingProfile, (int)this.beamLocation];
 				}
 
 				// What are we doing now?
-				switch (this.BeamLocation) {
+				switch (this.beamLocation) {
 					case BeamRegion.ActiveDisplay:
 						// As we're about to re-enter the active display, we need to set up the relevant frame data.
 						this.BeginFrame();
@@ -946,7 +1019,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			}
 
 			// Copy the open glasses shutter value from the middle of the current frame.
-			if (this.BeamLocation == BeamRegion.ActiveDisplay/* && this.RemainingScanlinesInRegion == this.ActiveFrameHeight / 2*/) {
+			if (this.beamLocation == BeamRegion.ActiveDisplay/* && this.RemainingScanlinesInRegion == this.ActiveFrameHeight / 2*/) {
 				switch (this.Emulator.OpenGlassesShutter) {
 					case Emulator.GlassesShutter.Left:
 						++this.ActiveScanlinesLeftEye;
@@ -988,8 +1061,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 
 		#endregion
-
-
 
 	}
 }

@@ -7,12 +7,16 @@ namespace BeeDevelopment.Sega8Bit {
 	public partial class Emulator {
 
 		#region Devices
-		
+
+		private VideoDisplayProcessor video;
 		/// <summary>
 		/// Gets the <see cref="VideoDisplayProcessor"/>.
 		/// </summary>
 		[StateNotSaved()]
-		public VideoDisplayProcessor Video { get; internal set; }
+		public VideoDisplayProcessor Video {
+			get { return this.video; }
+			internal set { this.video = value; }
+		}
 
 		/// <summary>
 		/// Gets the <see cref="ProgrammableSoundGenerator"/>.
@@ -79,9 +83,9 @@ namespace BeeDevelopment.Sega8Bit {
 
 					switch (port & 0xE1) {
 						case 0xA0:
-							return this.Video.ReadData();
+							return this.video.ReadData();
 						case 0xA1:
-							return this.Video.ReadControl();
+							return this.video.ReadControl();
 						case 0xE0:
 						case 0xE1:
 							return this.ReadingColecoVisionJoysticks ? this.ColecoVisionPorts[port & 1].ReadJoystick() : this.ColecoVisionPorts[port & 1].ReadNumberPad();
@@ -94,10 +98,10 @@ namespace BeeDevelopment.Sega8Bit {
 					switch (port & 0x61) {
 						case 0x00:
 						case 0x20:
-							return this.Video.ReadData();
+							return this.video.ReadData();
 						case 0x01:
 						case 0x21:
-							return this.Video.ReadControl();
+							return this.video.ReadControl();
 						case 0x40:
 							return this.MainPPI.PortAInput;
 						case 0x41:
@@ -123,7 +127,7 @@ namespace BeeDevelopment.Sega8Bit {
 								return (byte)(
 									(this.StartButton ? 0x00 : 0x80) |
 									(this.Region == Region.Japanese ? 0x00 : 0x40) |
-									(this.Video.System == VideoDisplayProcessor.VideoSystem.Ntsc ? 0x00 : 0x20)
+									(this.video.System == VideoDisplayProcessor.VideoSystem.Ntsc ? 0x00 : 0x20)
 								);
 							case 0x01: return 0x7F;
 							case 0x02: return this.Port2;
@@ -141,16 +145,16 @@ namespace BeeDevelopment.Sega8Bit {
 						case 0x01:
 							break;
 						case 0x40: // VDP vertical retrace counter.
-							Result =  this.Video.VerticalCounter;
+							Result =  this.video.VerticalCounter;
 							break;
 						case 0x41: // VDP horizontal counter.
-							Result = this.Video.HorizontalCounter;
+							Result = this.video.HorizontalCounter;
 							break;
 						case 0x80: // VDP Data.
-							Result = this.Video.ReadData();
+							Result = this.video.ReadData();
 							break;
 						case 0x81: // VDP Control.
-							Result = this.Video.ReadControl();
+							Result = this.video.ReadControl();
 							break;
 						case 0xC0: // I/O port A.
 							Result = this.ReadSegaIOPortA();
@@ -191,9 +195,9 @@ namespace BeeDevelopment.Sega8Bit {
 							break;
 						case 0xA0:
 							if ((port & 1) == 0) {
-								this.Video.WriteData(value);
+								this.video.WriteData(value);
 							} else {
-								this.Video.WriteControl(value);
+								this.video.WriteControl(value);
 							}
 							break;
 						case 0xC0:
@@ -223,9 +227,9 @@ namespace BeeDevelopment.Sega8Bit {
 
 					if ((port & 0x40) == 0) {
 						if ((port & 0x01) == 0) {
-							this.Video.WriteData(value);
+							this.video.WriteData(value);
 						} else {
-							this.Video.WriteControl(value);
+							this.video.WriteControl(value);
 						}
 					}
 
@@ -269,7 +273,7 @@ namespace BeeDevelopment.Sega8Bit {
 								this.SegaPorts[0].WriteState(value >> 0);
 								this.SegaPorts[1].WriteState(value >> 2);
 								if (!OldTh && (this.SegaPorts[0].TH.State || this.SegaPorts[1].TH.State)) {
-									this.Video.LatchHorizontalCounter();
+									this.video.LatchHorizontalCounter();
 								}
 								break;
 
@@ -279,11 +283,11 @@ namespace BeeDevelopment.Sega8Bit {
 								break;
 
 							case 0x80: // VDP Data.
-								this.Video.WriteData(value);
+								this.video.WriteData(value);
 								break;
 
 							case 0x81: // VDP Control.
-								this.Video.WriteControl(value);
+								this.video.WriteControl(value);
 								break;
 						}
 

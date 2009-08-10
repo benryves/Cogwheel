@@ -30,7 +30,7 @@
 				(this.FrameInterruptEnable && this.frameInterruptPending);
 			
 			// Assign the state to the relevant pin.
-			switch (this.InterruptPin) {
+			switch (this.interruptPin) {
 				case InterruptPins.Maskable:
 					this.Emulator.Interrupt = InterruptPinState;
 					break;

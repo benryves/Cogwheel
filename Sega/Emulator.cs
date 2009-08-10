@@ -65,7 +65,7 @@ namespace BeeDevelopment.Sega8Bit {
 			this.Reset();
 			this.ResetMemory();
 			this.ResetPorts();
-			this.Video.Reset();
+			this.video.Reset();
 			this.Sound.Reset();
 			this.MainPPI.Reset();
 			this.DebugConsole.Reset();
@@ -82,7 +82,7 @@ namespace BeeDevelopment.Sega8Bit {
 		/// Creates an instance of the <see cref="Emulator"/> class.
 		/// </summary>
 		public Emulator() {
-			this.Video = new VideoDisplayProcessor(this);
+			this.video = new VideoDisplayProcessor(this);
 			this.Sound = new ProgrammableSoundGenerator(this);
 			this.Cheats = new MemoryCheatCollection();
 			this.MainPPI = new ProgrammablePeripheralInterface();
@@ -109,19 +109,20 @@ namespace BeeDevelopment.Sega8Bit {
 		/// </summary>
 		/// <returns>True if the last line of the active display has been rendered.</returns>
 		public bool RunScanline() {
-			this.FetchExecute(this.Video.CpuCyclesPerScanline);
-			return this.Video.RasteriseLine();
+			this.FetchExecute(this.video.CpuCyclesPerScanline);
+			return this.video.RasteriseLine();
 		}
-
 
 		/// <summary>
 		/// Runs the emulator for a compete frame.
 		/// </summary>
 		public void RunFrame() {
-			while (!this.RunScanline()) ;
+			var Video = this.video;
+			var CyclesPerScanline = Video.CpuCyclesPerScanline;
+			do {
+				this.FetchExecute(CyclesPerScanline);
+			} while (!Video.RasteriseLine());
 		}
-
-
 
 		/// <summary>
 		/// Sets the capabilities of the <see cref="Emulator"/> based on a particular hardware version.
@@ -133,7 +134,7 @@ namespace BeeDevelopment.Sega8Bit {
 			this.Family = Emulator.GetFamilyFromModel(model);
 
 			// Video:
-			this.Video.SetCapabilitiesByModel(model);
+			this.video.SetCapabilitiesByModel(model);
 
 			// Sound:
 			switch (model) {
@@ -172,7 +173,7 @@ namespace BeeDevelopment.Sega8Bit {
 
 					// 1KB RAM (massive!)
 					this.WorkRam.Memory = new Mappers.Ram1();
-
+					
 					break;
 
 				default:

@@ -244,7 +244,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// </summary>
 		private int VerticalResolution {
 			get {
-				if (!this.SupportsExtendedResolutions) {
+				if (!this.supportsExtendedResolutions) {
 					return 192;
 				} else {
 					ModeBits M = this.CurrentModeBits;
@@ -274,7 +274,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			get {
 
 				ModeBits MaskedFlags = this.CurrentModeBits;
-				if (!this.SupportsMode4) MaskedFlags &= ~ModeBits.M4;
+				if (!this.supportsMode4) MaskedFlags &= ~ModeBits.M4;
 
 				switch (MaskedFlags) {
 
@@ -298,11 +298,11 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 						return Mode.Mode4;
 
 					case ModeBits.M4 | ModeBits.M1 | ModeBits.M2:
-						return this.SupportsExtendedResolutions ?
+						return this.supportsExtendedResolutions ?
 							Mode.Mode4Resolution224 : Mode.Invalid; ;
 
 					case ModeBits.M4 | ModeBits.M1 | ModeBits.M2 | ModeBits.M3:
-						return this.SupportsExtendedResolutions ?
+						return this.supportsExtendedResolutions ?
 							Mode.Mode4 : Mode.Invalid;
 
 					default:
