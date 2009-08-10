@@ -193,18 +193,6 @@ namespace BeeDevelopment.Cogwheel.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool SeenWarningFMSound {
-            get {
-                return ((bool)(this["SeenWarningFMSound"]));
-            }
-            set {
-                this["SeenWarningFMSound"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0.3")]
         public float InputJoystickAxisThreshold {
             get {
