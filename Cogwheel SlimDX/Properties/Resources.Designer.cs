@@ -247,17 +247,7 @@ namespace BeeDevelopment.Cogwheel.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;style&gt;
-        ///a { color: #36F; text-decoration: none; }
-        ///a:hover { color: #33F; text-decoration: underline; }
-        ///td, th { padding: 2px; text-align: left; vertical-align: top; border: 1px solid #999; }
-        ///table { border-collapse: collapse; width: 100%; }
-        ///&lt;/style&gt;
-        ///&lt;p&gt;Written by &lt;a href=&quot;mailto:benryves@benryves.com&quot;&gt;Ben Ryves&lt;/a&gt; 2006-2009.&lt;/p&gt;
-        ///&lt;p style=&quot;font-weight: bold;&quot;&gt;Contributors&lt;/p&gt;
-        ///&lt;ul&gt;
-        ///	&lt;li&gt;emu2413 YM2413 emulator written by Mitsutaka Okazaki.&lt;/li&gt;
-        ///	&lt;li&gt;waveOut API wrapper written by &lt;a href=&quot;http://ww [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string containing the about box HTML content.
         /// </summary>
         internal static string Html_About {
             get {
