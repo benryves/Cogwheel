@@ -250,6 +250,16 @@ namespace BeeDevelopment.Cogwheel {
 					}
 					this.Effect.Technique = this.Effect.GetTechnique(EffectTechnique.ToString());
 				}
+				// Interleaving display modes need to fix the vertex buffer so that it's displayed as an even number of pixels on the backbuffer.
+				if (this.Vertices != null) {
+					switch (this.displayMode) {
+						case StereoscopicDisplayMode.RowInterleaved:
+						case StereoscopicDisplayMode.ColumnInterleaved:
+						case StereoscopicDisplayMode.ChequerboardInterleaved:
+							this.RewriteVertexBuffer();
+							break;
+					}
+				}
 			}
 		}
 
@@ -352,8 +362,8 @@ namespace BeeDevelopment.Cogwheel {
 		}
 
 		private void RewriteVertexBuffer() {
-			// Start at the full size:
-			float Left = -1.0f, Right = +1.0f, Top = +1.0f, Bottom = -1.0f;
+			// Start at the full position size:
+			float PL = -1.0f, PR = +1.0f, PT = +1.0f, PB = -1.0f;
 
 			// Calculate the aspect ratio of the source image and the viewport.
 			float ImageAspectRatio = (float)this.MostRecentWidth / (float)this.MostRecentHeight;
@@ -379,23 +389,49 @@ namespace BeeDevelopment.Cogwheel {
 			}
 
 			// Apply the aspect ratio correction scale factors:
-			Left *= CorrectedWidthScale; Right *= CorrectedWidthScale;
-			Top *= CorrectedHeightScale; Bottom *= CorrectedHeightScale;
+			PL *= CorrectedWidthScale; PR *= CorrectedWidthScale;
+			PT *= CorrectedHeightScale; PB *= CorrectedHeightScale;
+
+			// If we're using a row-interlaced mode, make sure the top edge of the screen is aligned to a device pixel.
+			if (this.displayMode == StereoscopicDisplayMode.RowInterleaved || this.displayMode == StereoscopicDisplayMode.ChequerboardInterleaved) {
+				float StartingPosition = this.GraphicsDevice.Viewport.Height * 0.5f - PT * this.GraphicsDevice.Viewport.Height * 0.5f;
+				float StartingPositionFix = 2.0f * (StartingPosition - (int)StartingPosition);
+				PT += StartingPositionFix / this.GraphicsDevice.Viewport.Height;
+				PB += StartingPositionFix / this.GraphicsDevice.Viewport.Height;
+			}
+
+			// If we're using a column-interlaced mode, make sure the left edge of the screen is aligned to a device pixel.
+			if (this.displayMode == StereoscopicDisplayMode.ColumnInterleaved || this.displayMode == StereoscopicDisplayMode.ChequerboardInterleaved) {
+				float StartingPosition = this.GraphicsDevice.Viewport.Width * 0.5f + PL * this.GraphicsDevice.Viewport.Width * 0.5f;
+				float StartingPositionFix = 2.0f * (StartingPosition - (int)StartingPosition);
+				PL += StartingPositionFix / this.GraphicsDevice.Viewport.Width;
+				PR += StartingPositionFix / this.GraphicsDevice.Viewport.Width;
+			}
 
 			// Create the vectors representing the corners of the screen:
-			Vector3 TL = new Vector3(Left, Top, 0.0f);
-			Vector3 TR = new Vector3(Right, Top, 0.0f);
-			Vector3 BL = new Vector3(Left, Bottom, 0.0f);
-			Vector3 BR = new Vector3(Right, Bottom, 0.0f);
+			Vector3 PTL = new Vector3(PL, PT, 0.0f);
+			Vector3 PTR = new Vector3(PR, PT, 0.0f);
+			Vector3 PBL = new Vector3(PL, PB, 0.0f);
+			Vector3 PBR = new Vector3(PR, PB, 0.0f);
+
+			// Start with the full texture size:
+			float TL = 0.0f, TR = 1.0f, TT = 0.0f, TB = 1.0f;
+
+			// Create the vectors representing the corners of the texture:
+			Vector2 TTL = new Vector2(TL, TT);
+			Vector2 TTR = new Vector2(TR, TT);
+			Vector2 TBL = new Vector2(TL, TB);
+			Vector2 TBR = new Vector2(TR, TB);
+
 			using (var VertexStream = Vertices.Lock(0, 0, LockFlags.None)) {
 				VertexStream.WriteRange(
 					new[] {
-						new VertexPositionTexture(BL, new Vector2(0.0f, 1.0f)),
-						new VertexPositionTexture(TR, new Vector2(1.0f, 0.0f)),
-						new VertexPositionTexture(BR, new Vector2(1.0f, 1.0f)),
-						new VertexPositionTexture(BL, new Vector2(0.0f, 1.0f)),
-						new VertexPositionTexture(TL, new Vector2(0.0f, 0.0f)),
-						new VertexPositionTexture(TR, new Vector2(1.0f, 0.0f)),
+						new VertexPositionTexture(PBL, TBL),
+						new VertexPositionTexture(PTR, TTR),
+						new VertexPositionTexture(PBR, TBR),
+						new VertexPositionTexture(PBL, TBL),
+						new VertexPositionTexture(PTL, TTL),
+						new VertexPositionTexture(PTR, TTR),
 					}
 				);
 				this.Vertices.Unlock();
