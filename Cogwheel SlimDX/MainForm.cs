@@ -32,10 +32,6 @@ namespace BeeDevelopment.Cogwheel {
 		private RomIdentifier Identifier;
 		protected bool Paused = false;
 
-		// Last frames (L/R):
-		private int[] LastLeftFrameData = null; private int LastLeftFrameWidth, LastLeftFrameHeight;
-		private int[] LastRightFrameData = null; private int LastRightFrameWidth, LastRightFrameHeight;
-
 		private Emulator.GlassesShutter LastEye;
 		private int FramesSinceEyeWasUpdated = 100;
 		private PixelDumper3D.StereoscopicDisplayMode ThreeDeeDisplayMode = PixelDumper3D.StereoscopicDisplayMode.MostRecentEyeOnly;
