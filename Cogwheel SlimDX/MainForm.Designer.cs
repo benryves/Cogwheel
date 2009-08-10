@@ -295,7 +295,7 @@
             this.EmulationVideoSpritesEnabledMenu});
 			this.EmulationVideoMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Television;
 			this.EmulationVideoMenu.Name = "EmulationVideoMenu";
-			this.EmulationVideoMenu.Size = new System.Drawing.Size(152, 22);
+			this.EmulationVideoMenu.Size = new System.Drawing.Size(146, 22);
 			this.EmulationVideoMenu.Text = "&Video";
 			this.EmulationVideoMenu.DropDownOpening += new System.EventHandler(this.DebugVideoMenu_DropDownOpening);
 			// 
@@ -339,7 +339,7 @@
             this.GameGenieEditMenu});
 			this.GameGenieMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(152, 22);
+			this.GameGenieMenu.Size = new System.Drawing.Size(146, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
 			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
 			// 
@@ -362,7 +362,7 @@
 			// 
 			this.SdscDebugConsoleMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Terminal;
 			this.SdscDebugConsoleMenu.Name = "SdscDebugConsoleMenu";
-			this.SdscDebugConsoleMenu.Size = new System.Drawing.Size(152, 22);
+			this.SdscDebugConsoleMenu.Size = new System.Drawing.Size(146, 22);
 			this.SdscDebugConsoleMenu.Text = "&SDSC console";
 			this.SdscDebugConsoleMenu.Click += new System.EventHandler(this.SdscDebugConsoleMenu_Click);
 			// 
@@ -649,6 +649,7 @@
 			this.MainMenuStrip = this.Menus;
 			this.MinimumSize = new System.Drawing.Size(256, 128);
 			this.Name = "MainForm";
+			this.ResizeBegin += new System.EventHandler(this.MainForm_ResizeBegin);
 			this.Resize += new System.EventHandler(this.MainForm_Resize);
 			this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
 			this.Menus.ResumeLayout(false);

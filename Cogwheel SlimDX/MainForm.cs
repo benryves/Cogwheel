@@ -309,8 +309,13 @@ namespace BeeDevelopment.Cogwheel {
 			this.RepaintVideo();
 		}
 
+		private void MainForm_ResizeBegin(object sender, EventArgs e) {
+			if (!this.SoundMuted) this.SoundBuffer.Stop();
+		}
+
 		private void MainForm_ResizeEnd(object sender, EventArgs e) {
 			this.Dumper.RecreateDevice();
+			if (!this.SoundMuted) this.StartPlayingSound();
 		}
 
 		private void ToggleFullScreenMenu_Click(object sender, EventArgs e) {
