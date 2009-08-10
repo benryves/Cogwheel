@@ -849,7 +849,7 @@ namespace BeeDevelopment.Cogwheel {
 
 		private void LinearInterpolationMenu_Click(object sender, EventArgs e) {
 			Properties.Settings.Default.OptionLinearInterpolation ^= true;
-			//this.Dumper.LinearInterpolation = Properties.Settings.Default.OptionLinearInterpolation;
+			this.Dumper.MagnificationFilter = Properties.Settings.Default.OptionLinearInterpolation ? SlimDX.Direct3D9.TextureFilter.Linear : SlimDX.Direct3D9.TextureFilter.Point;
 		}
 
 

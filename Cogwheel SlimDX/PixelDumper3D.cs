@@ -428,6 +428,11 @@ namespace BeeDevelopment.Cogwheel {
 		/// </summary>
 		public Color BackgroundColour { get; set; }
 
+		/// <summary>
+		/// Gets or sets the magnification filter.
+		/// </summary>
+		public TextureFilter MagnificationFilter { get; set; }
+
 		#endregion
 
 		#region Constructor
@@ -624,6 +629,10 @@ namespace BeeDevelopment.Cogwheel {
 				this.GraphicsDevice.VertexFormat = VertexPositionTextureTexture.Format;
 
 				this.GraphicsDevice.SetRenderState(RenderState.AlphaFunc, Compare.Greater);
+				
+				this.GraphicsDevice.SetSamplerState(0, SamplerState.MagFilter, this.MagnificationFilter);
+				this.GraphicsDevice.SetSamplerState(1, SamplerState.MagFilter, this.MagnificationFilter);
+
 				this.GraphicsDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, this.BackgroundColour, 0.0f, 0);
 
 				// Set effect parameters:
