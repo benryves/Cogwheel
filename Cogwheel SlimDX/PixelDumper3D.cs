@@ -86,7 +86,7 @@ namespace BeeDevelopment.Cogwheel {
 		/// Represents a vertex with a 3D position and 2D texture coordinate.
 		/// </summary>
 		[StructLayout(LayoutKind.Sequential)]
-		private struct VertexPositionTexture {
+		private struct VertexPositionTextureTexture {
 
 			/// <summary>
 			/// The position in 3D space of the <see cref="VertexPositionTexture"/>.
@@ -99,27 +99,34 @@ namespace BeeDevelopment.Cogwheel {
 			public Vector2 TextureCoordinate;
 
 			/// <summary>
+			/// A 2D texture coordinate of the <see cref="VertexPositionTexture"/>, with (0,0) corresponding to the top-left of the shape and (1,1) the bottom-right (regardless of the position of the texture itself).
+			/// </summary>
+			public Vector2 NormalisedTextureCoordinate;
+
+			/// <summary>
 			/// Creates an instance of a <see cref="VertexPositionTexture"/>.
 			/// </summary>
 			/// <param name="position">The position of the vertex.</param>
 			/// <param name="textureCoordinate">The texture coordinate of the vertex.</param>
-			public VertexPositionTexture(Vector3 position, Vector2 textureCoordinate) {
+			/// <param name="normalisedTextureCoordinate">The normalised texture coordinate of the vertex, with (0,0) corresponding to the top-left of the shape and (1,1) the bottom-right (regardless of the position of the texture itself).</param>
+			public VertexPositionTextureTexture(Vector3 position, Vector2 textureCoordinate, Vector2 normalisedTextureCoordinate) {
 				this.Position = position;
 				this.TextureCoordinate = textureCoordinate;
+				this.NormalisedTextureCoordinate = normalisedTextureCoordinate;
 			}
 
 			/// <summary>
 			/// Gets the size in bytes of the <see cref="VertexPositionTexture"/> structure.
 			/// </summary>
 			public static int Size {
-				get { return Marshal.SizeOf(typeof(VertexPositionTexture)); }
+				get { return Marshal.SizeOf(typeof(VertexPositionTextureTexture)); }
 			}
 
 			/// <summary>
 			/// Gets the <see cref="VertexFormat"/> of the <see cref="VertexPositionTexture"/> structure.
 			/// </summary>
 			public static VertexFormat Format {
-				get { return VertexFormat.Position | VertexFormat.Texture0; }
+				get { return VertexFormat.Position | VertexFormat.Texture0 | VertexFormat.Texture1; }
 			}
 
 			/// <summary>
@@ -130,6 +137,7 @@ namespace BeeDevelopment.Cogwheel {
 					return new VertexElement[]{
 						new VertexElement(0, 0, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Position, 0),
 						new VertexElement(0, 12, DeclarationType.Float2, DeclarationMethod.Default, DeclarationUsage.TextureCoordinate, 0),
+						new VertexElement(0, 20, DeclarationType.Float2, DeclarationMethod.Default, DeclarationUsage.TextureCoordinate, 1),
 						VertexElement.VertexDeclarationEnd,
 					};
 				}
@@ -493,9 +501,9 @@ namespace BeeDevelopment.Cogwheel {
 			this.DisplayMode = this.DisplayMode;
 
 			// Create the vertex declaration:
-			this.VertexDeclaration = new VertexDeclaration(this.GraphicsDevice, VertexPositionTexture.Elements);
+			this.VertexDeclaration = new VertexDeclaration(this.GraphicsDevice, VertexPositionTextureTexture.Elements);
 			// Create the vertex buffer:
-			this.Vertices = new VertexBuffer(this.GraphicsDevice, 6 * VertexPositionTexture.Size, Usage.WriteOnly, VertexFormat.None, Pool.Managed);
+			this.Vertices = new VertexBuffer(this.GraphicsDevice, 6 * VertexPositionTextureTexture.Size, Usage.WriteOnly, VertexFormat.None, Pool.Managed);
 			this.RewriteVertexBuffer();	
 		}
 
@@ -569,15 +577,21 @@ namespace BeeDevelopment.Cogwheel {
 			Vector2 TBL = new Vector2(TL, TB);
 			Vector2 TBR = new Vector2(TR, TB);
 
+			// Create normalised 2D vectors representing the corners of the shape:
+			Vector2 NTL = new Vector2(0.0f, 0.0f);
+			Vector2 NTR = new Vector2(1.0f, 0.0f);
+			Vector2 NBL = new Vector2(0.0f, 1.0f);
+			Vector2 NBR = new Vector2(1.0f, 1.0f);
+
 			using (var VertexStream = Vertices.Lock(0, 0, LockFlags.None)) {
 				VertexStream.WriteRange(
 					new[] {
-						new VertexPositionTexture(PBL, TBL),
-						new VertexPositionTexture(PTR, TTR),
-						new VertexPositionTexture(PBR, TBR),
-						new VertexPositionTexture(PBL, TBL),
-						new VertexPositionTexture(PTL, TTL),
-						new VertexPositionTexture(PTR, TTR),
+						new VertexPositionTextureTexture(PBL, TBL, NBL),
+						new VertexPositionTextureTexture(PTR, TTR, NTR),
+						new VertexPositionTextureTexture(PBR, TBR, NBR),
+						new VertexPositionTextureTexture(PBL, TBL, NBL),
+						new VertexPositionTextureTexture(PTL, TTL, NTL),
+						new VertexPositionTextureTexture(PTR, TTR, NTR),
 					}
 				);
 				this.Vertices.Unlock();
@@ -607,7 +621,7 @@ namespace BeeDevelopment.Cogwheel {
 			// Render:
 			this.GraphicsDevice.BeginScene();
 			{
-				this.GraphicsDevice.VertexFormat = VertexPositionTexture.Format;
+				this.GraphicsDevice.VertexFormat = VertexPositionTextureTexture.Format;
 
 				this.GraphicsDevice.SetRenderState(RenderState.AlphaFunc, Compare.Greater);
 				this.GraphicsDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, this.BackgroundColour, 0.0f, 0);
@@ -638,8 +652,8 @@ namespace BeeDevelopment.Cogwheel {
 				{
 					this.Effect.BeginPass(0);
 					{
-						this.GraphicsDevice.SetStreamSource(0, this.Vertices, 0, VertexPositionTexture.Size);
-						this.GraphicsDevice.VertexFormat = VertexPositionTexture.Format;
+						this.GraphicsDevice.SetStreamSource(0, this.Vertices, 0, VertexPositionTextureTexture.Size);
+						this.GraphicsDevice.VertexFormat = VertexPositionTextureTexture.Format;
 						this.GraphicsDevice.VertexDeclaration = this.VertexDeclaration;
 						this.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
 					}

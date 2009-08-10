@@ -11,9 +11,10 @@ uniform extern float ViewportHeight; // Height of the viewport in pixels.
 
 // Types:
 
-struct VertexPositionTexture {
+struct VertexPositionTextureTexture {
     float4 Position : POSITION0;
-    float4 Texture : TEXCOORD0;
+	float2 Texture : TEXCOORD0;
+	float2 NormalisedTexture : TEXCOORD1;
 };
 
 // Texture samplers:
@@ -32,22 +33,22 @@ sampler RightEyeSampler = sampler_state {
 
 // Vertex shaders:
 
-VertexPositionTexture VertexShaderFunction(VertexPositionTexture input) {
+VertexPositionTextureTexture VertexShaderFunction(VertexPositionTextureTexture input) {
     return input;
 }
 
 // Pixel shaders:
 
-float4 LeftEyeOnlyPixelShader(VertexPositionTexture input) : COLOR0 {
+float4 LeftEyeOnlyPixelShader(VertexPositionTextureTexture input) : COLOR0 {
 	return tex2D(LeftEyeSampler, input.Texture);
 }
 
-float4 RightEyeOnlyPixelShader(VertexPositionTexture input) : COLOR0 {
+float4 RightEyeOnlyPixelShader(VertexPositionTextureTexture input) : COLOR0 {
 	return tex2D(RightEyeSampler, input.Texture);
 }
 
-float4 RowInterleavedPixelShader(VertexPositionTexture input) : COLOR0 {
-	float row = input.Texture.y * ViewportHeight * 0.5f;
+float4 RowInterleavedPixelShader(VertexPositionTextureTexture input) : COLOR0 {
+	float row = input.NormalisedTexture.y * ViewportHeight * 0.5f;
 	if (abs(round(row) - row) < 0.1f) {
 		return tex2D(LeftEyeSampler, input.Texture);
 	} else {
@@ -55,8 +56,8 @@ float4 RowInterleavedPixelShader(VertexPositionTexture input) : COLOR0 {
 	}
 }
 
-float4 ColumnInterleavedPixelShader(VertexPositionTexture input) : COLOR0 {
-	float col = input.Texture.x * ViewportWidth * 0.5f;
+float4 ColumnInterleavedPixelShader(VertexPositionTextureTexture input) : COLOR0 {
+	float col = input.NormalisedTexture.x * ViewportWidth * 0.5f;
 	if (abs(round(col) - col) < 0.1f) {
 		return tex2D(LeftEyeSampler, input.Texture);
 	} else {
@@ -64,8 +65,8 @@ float4 ColumnInterleavedPixelShader(VertexPositionTexture input) : COLOR0 {
 	}
 }
 
-float4 ChequerboardInterleavedPixelShader(VertexPositionTexture input) : COLOR0 {
-	float pixel = (input.Texture.x * ViewportWidth + input.Texture.y * ViewportHeight) * 0.5f;
+float4 ChequerboardInterleavedPixelShader(VertexPositionTextureTexture input) : COLOR0 {
+	float pixel = (input.NormalisedTexture.x * ViewportWidth + input.NormalisedTexture.y * ViewportHeight) * 0.5f;
 	if (abs(round(pixel) - pixel) < 0.1f) {
 		return tex2D(LeftEyeSampler, input.Texture);
 	} else {
@@ -73,11 +74,11 @@ float4 ChequerboardInterleavedPixelShader(VertexPositionTexture input) : COLOR0 
 	}
 }
 
-float4 ColourAnaglyphPixelShader(VertexPositionTexture input) : COLOR0 {
+float4 ColourAnaglyphPixelShader(VertexPositionTextureTexture input) : COLOR0 {
 	return tex2D(LeftEyeSampler, input.Texture) * LeftEyeColour + tex2D(RightEyeSampler, input.Texture) * RightEyeColour;
 }
 
-float4 MonochromeAnaglyphPixelShader(VertexPositionTexture input) : COLOR0 {
+float4 MonochromeAnaglyphPixelShader(VertexPositionTextureTexture input) : COLOR0 {
 	float4 rgbToLuma = float4(0.2109375f, 0.71484375f, 0.07421875f, 0.0f);
 	return dot(rgbToLuma, tex2D(LeftEyeSampler, input.Texture)) * LeftEyeColour + dot(rgbToLuma, tex2D(RightEyeSampler, input.Texture)) * RightEyeColour;
 }
