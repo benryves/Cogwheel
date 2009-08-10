@@ -185,6 +185,16 @@ namespace BeeDevelopment.Cogwheel {
 		/// </summary>
 		private int MostRecentHeight = 1;
 
+		/// <summary>
+		/// Stores the factor used to correct the height of the textured quad and maintain the source aspect ratio.
+		/// </summary>
+		private float CorrectedHeightScale = 1.0f;
+
+		/// <summary>
+		/// Stores the factor used to correct the width of the textured quad and maintain the source aspect ratio.
+		/// </summary>
+		private float CorrectedWidthScale = 1.0f;
+
 		#endregion
 
 		#region Properties
@@ -349,27 +359,28 @@ namespace BeeDevelopment.Cogwheel {
 			float ImageAspectRatio = (float)this.MostRecentWidth / (float)this.MostRecentHeight;
 			float ViewportAspectRatio = (float)this.GraphicsDevice.Viewport.Width / (float)this.GraphicsDevice.Viewport.Height;
 
-			// If need be, adjust the two images.
+			// Calculate the aspect ratio correction scale factors:
+			this.CorrectedWidthScale = this.CorrectedHeightScale = 1.0f;
 			switch (this.scaleMode) {
 				case ScaleModes.ZoomInside:
 					if (ImageAspectRatio > ViewportAspectRatio) {
-						Top *= (ViewportAspectRatio / ImageAspectRatio);
-						Bottom *= (ViewportAspectRatio / ImageAspectRatio);
+						this.CorrectedHeightScale = (ViewportAspectRatio / ImageAspectRatio);
 					} else {
-						Left /= (ViewportAspectRatio / ImageAspectRatio);
-						Right /= (ViewportAspectRatio / ImageAspectRatio);
+						this.CorrectedWidthScale = (ImageAspectRatio / ViewportAspectRatio);
 					}
 					break;
 				case ScaleModes.ZoomOutside:
 					if (ImageAspectRatio < ViewportAspectRatio) {
-						Top *= (ViewportAspectRatio / ImageAspectRatio);
-						Bottom *= (ViewportAspectRatio / ImageAspectRatio);
+						this.CorrectedHeightScale = (ViewportAspectRatio / ImageAspectRatio);
 					} else {
-						Left /= (ViewportAspectRatio / ImageAspectRatio);
-						Right /= (ViewportAspectRatio / ImageAspectRatio);
+						this.CorrectedWidthScale = (ImageAspectRatio / ViewportAspectRatio);
 					}
 					break;
 			}
+
+			// Apply the aspect ratio correction scale factors:
+			Left *= CorrectedWidthScale; Right *= CorrectedWidthScale;
+			Top *= CorrectedHeightScale; Bottom *= CorrectedHeightScale;
 
 			// Create the vectors representing the corners of the screen:
 			Vector3 TL = new Vector3(Left, Top, 0.0f);
@@ -421,20 +432,20 @@ namespace BeeDevelopment.Cogwheel {
 				switch (this.displayMode) { 
 					case StereoscopicDisplayMode.RowInterleaved:
 						using (var ParameterHandle = this.Effect.GetParameter(null, "ViewportHeight")) {
-							this.Effect.SetValue(ParameterHandle, (float)this.GraphicsDevice.Viewport.Height);
+							this.Effect.SetValue(ParameterHandle, this.CorrectedHeightScale * this.GraphicsDevice.Viewport.Height);
 						}
 						break;
 					case StereoscopicDisplayMode.ColumnInterleaved:
 						using (var ParameterHandle = this.Effect.GetParameter(null, "ViewportWidth")) {
-							this.Effect.SetValue(ParameterHandle, (float)this.GraphicsDevice.Viewport.Width);
+							this.Effect.SetValue(ParameterHandle, this.CorrectedWidthScale * this.GraphicsDevice.Viewport.Width);
 						}
 						break;
 					case StereoscopicDisplayMode.ChequerboardInterleaved:
 						using (var ParameterHandle = this.Effect.GetParameter(null, "ViewportHeight")) {
-							this.Effect.SetValue(ParameterHandle, (float)this.GraphicsDevice.Viewport.Height);
+							this.Effect.SetValue(ParameterHandle, this.CorrectedHeightScale * this.GraphicsDevice.Viewport.Height);
 						}
 						using (var ParameterHandle = this.Effect.GetParameter(null, "ViewportWidth")) {
-							this.Effect.SetValue(ParameterHandle, (float)this.GraphicsDevice.Viewport.Width);
+							this.Effect.SetValue(ParameterHandle, this.CorrectedWidthScale * this.GraphicsDevice.Viewport.Width);
 						}
 						break;
 				}
