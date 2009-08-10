@@ -228,6 +228,7 @@ namespace BeeDevelopment.Cogwheel {
 
 			// Send the current frame to the renderer.
 			var Video = this.Emulator.Video;
+			this.Dumper.BackgroundColour = Color.FromArgb(Video.LastBackdropColour);
 			if (Video.LastCompleteFrameWidth > 0 && Video.LastCompleteFrameHeight > 0) {
 				this.Dumper.SetImage(Video.LastOpenGlassesShutter == Emulator.GlassesShutter.Left ? PixelDumper3D.Eye.Left : PixelDumper3D.Eye.Right, Video.LastCompleteFrame, Video.LastCompleteFrameWidth, Video.LastCompleteFrameHeight);
 			}

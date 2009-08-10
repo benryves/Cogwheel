@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Management;
 using System.Runtime.InteropServices;
@@ -258,6 +257,11 @@ namespace BeeDevelopment.Cogwheel {
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the background clear colour.
+		/// </summary>
+		public Color BackgroundColour { get; set; }
+
 		#endregion
 
 		#region Constructor
@@ -411,7 +415,7 @@ namespace BeeDevelopment.Cogwheel {
 			this.GraphicsDevice.BeginScene();
 			{
 				this.GraphicsDevice.VertexFormat = VertexPositionTexture.Format;
-				this.GraphicsDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, 0x000000, 0.0f, 0);
+				this.GraphicsDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, this.BackgroundColour, 0.0f, 0);
 
 				// Set effect parameters:
 				switch (this.displayMode) { 
