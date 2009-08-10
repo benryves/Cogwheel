@@ -1,9 +1,10 @@
 ﻿using System;
-using e_uint8 = System.Byte;
+using System.Diagnostics;
 using e_int16 = System.Int16;
-using e_uint16 = System.Int16;
 using e_int32 = System.Int32;
+using e_uint16 = System.Int16;
 using e_uint32 = System.UInt32;
+using e_uint8 = System.Byte;
 
 namespace BeeDevelopment.Sega8Bit.Hardware {
 
@@ -927,16 +928,21 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 		/* Convert Amp(0 to EG_HEIGHT) to Phase(0 to 4PI). */
 		static int wave2_4pi(int e) {
-			if ((SLOT_AMP_BITS - PG_BITS - 1) == 0) {
+			Debug.Assert((SLOT_AMP_BITS - PG_BITS - 1) < 0);
+			return ((e) << (1 + PG_BITS - SLOT_AMP_BITS));
+			/*if ((SLOT_AMP_BITS - PG_BITS - 1) == 0) {
 				return (e);
 			} else if ((SLOT_AMP_BITS - PG_BITS - 1) > 0) {
 				return ((e) >> (SLOT_AMP_BITS - PG_BITS - 1));
 			} else {
 				return ((e) << (1 + PG_BITS - SLOT_AMP_BITS));
-			}
+			}*/
 		}
 		/* Convert Amp(0 to EG_HEIGHT) to Phase(0 to 8PI). */
 		static int wave2_8pi(int e) {
+			Debug.Assert((SLOT_AMP_BITS - PG_BITS - 2) < 0);
+			return ((e) << (2 + PG_BITS - SLOT_AMP_BITS));
+			/*
 			if ((SLOT_AMP_BITS - PG_BITS - 2) == 0) {
 				return (e);
 			} else if ((SLOT_AMP_BITS - PG_BITS - 2) > 0) {
@@ -944,6 +950,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			} else {
 				return ((e) << (2 + PG_BITS - SLOT_AMP_BITS));
 			}
+			*/
 		}
 		/* Update AM, PM unit */
 		static void
@@ -1064,12 +1071,11 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/* CARRIOR */
 		static e_int32
 		calc_slot_car(OPLL_SLOT slot, e_int32 fm) {
-			if (slot.egout >= (DB_MUTE - 1)) {
+			if (slot.egout + 1 >= DB_MUTE) {
 				slot.output[0] = 0;
 			} else {
 				slot.output[0] = DB2LIN_TABLE[slot.sintbl[(slot.pgout + wave2_8pi(fm)) & (PG_WIDTH - 1)] + slot.egout];
 			}
-
 			slot.output[1] = (slot.output[1] + slot.output[0]) >> 1;
 			return slot.output[1];
 		}
@@ -1081,7 +1087,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 			slot.output[1] = slot.output[0];
 
-			if (slot.egout >= (DB_MUTE - 1)) {
+			if (slot.egout + 1 >= DB_MUTE) {
 				slot.output[0] = 0;
 			} else if (slot.patch.fb != 0) {
 				fm = wave2_4pi(slot.feedback) >> (int)(7 - slot.patch.fb);
@@ -1099,7 +1105,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/* TOM */
 		static e_int32
 		calc_slot_tom(OPLL_SLOT slot) {
-			if (slot.egout >= (DB_MUTE - 1))
+			if (slot.egout + 1 >= DB_MUTE)
 				return 0;
 
 			return DB2LIN_TABLE[slot.sintbl[slot.pgout] + slot.egout];
@@ -1109,7 +1115,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/* SNARE */
 		static e_int32
 		calc_slot_snare(OPLL_SLOT slot, e_uint32 noise) {
-			if (slot.egout >= (DB_MUTE - 1))
+			if (slot.egout + 1 >= DB_MUTE)
 				return 0;
 
 			if (BIT(slot.pgout, 7))
@@ -1124,8 +1130,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		static e_int32
 		calc_slot_cym(OPLL_SLOT slot, e_uint32 pgout_hh) {
 			e_uint32 dbout;
-
-			if (slot.egout >= (DB_MUTE - 1))
+			if (slot.egout + 1 >= DB_MUTE)
 				return 0;
 			else if (
 				/* the same as fmopl.c */
@@ -1147,7 +1152,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		calc_slot_hat(OPLL_SLOT slot, e_int32 pgout_cym, e_uint32 noise) {
 			e_uint32 dbout;
 
-			if (slot.egout >= (DB_MUTE - 1))
+			if (slot.egout + 1 >= DB_MUTE)
 				return 0;
 			else if (
 				/* the same as fmopl.c */
