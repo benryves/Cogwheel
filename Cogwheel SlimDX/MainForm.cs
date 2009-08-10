@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Globalization;
 using System.IO;
-using System.IO.Ports;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -524,16 +522,17 @@ namespace BeeDevelopment.Cogwheel {
 
 			RomInfo LoadingRomInfo = null;
 			try {
-				LoadingRomInfo  = this.Identifier.QuickLoadEmulator(ref Filename, this.Emulator);
+				LoadingRomInfo = this.Identifier.QuickLoadEmulator(ref Filename, this.Emulator);
 			} catch (Exception ex) {
 				MessageBox.Show(this, ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 
+			this.Dumper.RecreateDevice();
+
 			this.UpdateFormTitle(Filename);
 
 			this.AddRecentFile(filename);
-
 
 			if (LoadingRomInfo != null) {
 
@@ -639,6 +638,8 @@ namespace BeeDevelopment.Cogwheel {
 					this.Emulator.Bios.Enabled = true;
 					this.Emulator.CartridgeSlot.Enabled = false;
 				}
+
+				this.Dumper.RecreateDevice();
 
 				this.UpdateFormTitle(null);
 
