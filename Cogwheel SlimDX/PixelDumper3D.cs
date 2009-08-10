@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Management;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -11,7 +12,7 @@ using SlimDX.Direct3D9;
 namespace BeeDevelopment.Cogwheel {
 	class PixelDumper3D : IDisposable {
 
-		#region Types
+		#region Enums
 
 		/// <summary>
 		/// Represents an eye.
@@ -77,6 +78,10 @@ namespace BeeDevelopment.Cogwheel {
 			ZoomOutside,
 		}
 
+		#endregion
+
+		#region Types
+
 		/// <summary>
 		/// Represents a vertex with a 3D position and 2D texture coordinate.
 		/// </summary>
@@ -131,6 +136,149 @@ namespace BeeDevelopment.Cogwheel {
 			}
 		}
 
+		/// <summary>
+		/// Represents a texture for a particular eye.
+		/// </summary>
+		class EyeTexture : IDisposable {
+
+			#region Fields
+
+			/// <summary>
+			/// Stores a reference to the <see cref="GraphicsDevive"/> used to create the textures on.
+			/// </summary>
+			private Device GraphicsDevice;
+
+			/// <summary>
+			/// Stores a reference to the internal D3D texture.
+			/// </summary>
+			public Texture Texture;
+
+			private int imageWidth;
+			/// <summary>
+			/// Represents the width of the image data.
+			/// </summary>
+			/// <remarks>This is not necessarily the same width as the internal D3D texture.</remarks>
+			public int ImageWidth { get { return this.imageWidth; } }
+			
+			private int imageHeight;
+			/// <summary>
+			/// Represents the height of the image data.
+			/// </summary>
+			/// <remarks>This is not necessarily the same height as the internal D3D texture.</remarks>
+			public int ImageHeight { get { return this.imageHeight; } }
+
+			private int textureWidth;
+			/// <summary>
+			/// Represents the width of the texture.
+			/// </summary>
+			public int TextureWidth { get { return this.textureWidth; } }
+
+			private int textureHeight;
+			/// <summary>
+			/// Represents the height of the texture.
+			/// </summary>
+			public int TextureHeight { get { return this.textureHeight; } }
+
+			#endregion
+
+			#region Properties
+
+			private bool disposed = false;
+			/// <summary>
+			/// Gets whether the <see cref="EyeTexture"/> has been disposed yet or not.
+			/// </summary>
+			public bool Disposed {
+				get { return this.disposed; }
+			}
+
+			#endregion
+
+			#region Constructor
+
+			/// <summary>
+			/// Creates an instance of an <see cref="EyeTexture"/>.
+			/// </summary>
+			/// <param name="graphicsDevice">The <see cref="Device"/> to create the <see cref="EyeTexture"/> on.</param>
+			public EyeTexture(Device graphicsDevice) {
+				this.GraphicsDevice = graphicsDevice;
+			}
+
+			#endregion
+
+			#region Methods
+
+			/// <summary>
+			/// Update the internal image.
+			/// </summary>
+			/// <param name="data">The XRGB image data.</param>
+			/// <param name="width">The width of the image in pixels.</param>
+			/// <param name="height">The height of the image in pixels.</param>
+			public void SetImage(int[] data, int width, int height) {
+				var NeedsRecreating = false;
+				if (this.Texture == null) {
+					NeedsRecreating = true;
+				} else {
+					var CurrentTextureSize = Texture.GetLevelDescription(0);
+					if (this.imageWidth != width || this.imageHeight != height) {
+						NeedsRecreating = true;
+					}
+				}
+				// If we need to recreate the texture, do so.
+				if (NeedsRecreating) {
+					if (Texture != null) {
+						Texture.Dispose();
+						Texture = null;
+					}
+					// Copy the width/height to member fields.
+					this.imageWidth = width;
+					this.imageHeight = height;
+					// Round up the width/height to the nearest power of two.
+					this.textureWidth = 1; this.textureHeight = 1;
+					while (this.textureWidth < this.imageWidth) this.textureWidth <<= 1;
+					while (this.textureHeight < this.imageWidth) this.textureHeight <<= 1;
+					// Create a new texture instance.
+					Texture = new Texture(this.GraphicsDevice, this.textureWidth, this.textureHeight, 1, Usage.Dynamic, Format.X8R8G8B8, Pool.Default);
+				}
+				// Copy the image data to the texture.
+				using (var Data = this.Texture.LockRectangle(0, new Rectangle(0, 0, this.imageWidth, this.imageHeight), LockFlags.None).Data) {
+					if (this.imageWidth == this.textureWidth) {
+						// Widths are the same, just dump the data across (easy!)
+						Data.WriteRange(data);
+					} else {
+						// Widths are different, need a bit of additional magic here to make them fit:
+						long RowSeekOffset = 4 * (this.textureWidth - this.imageWidth);
+						for (int r = 0, s = 0; r < this.imageHeight; ++r, s += this.imageWidth) {
+							Data.WriteRange(data, s, this.imageWidth);
+							Data.Seek(RowSeekOffset, SeekOrigin.Current);
+						}
+					}
+					this.Texture.UnlockRectangle(0);
+				}
+			}
+
+			/// <summary>
+			/// Release the resources used by this <see cref="EyeTexture"/>.
+			/// </summary>
+			public void Dispose() {
+				this.Dispose(true);
+				GC.SuppressFinalize(this);
+			}
+
+			protected void Dispose(bool disposing) {
+				if (!disposed) {
+					if (disposing) {
+						if (this.Texture != null) {
+							this.Texture.Dispose();
+						}
+					}
+					this.Texture = null;
+					this.disposed = true;
+				}
+			}
+
+			#endregion
+		}
+
 		#endregion
 
 		#region Private Fields
@@ -153,7 +301,7 @@ namespace BeeDevelopment.Cogwheel {
 		/// <summary>
 		/// Stores references to the two textures (one for each eye).
 		/// </summary>
-		private Texture[] Textures;
+		private EyeTexture[] Textures;
 
 		/// <summary>
 		/// Stores the current vertex declaration.
@@ -174,16 +322,6 @@ namespace BeeDevelopment.Cogwheel {
 		/// Stores the most recently updated eye.
 		/// </summary>
 		private Eye MostRecentlyUpdatedEye;
-
-		/// <summary>
-		/// Stores the most recently written width.
-		/// </summary>
-		private int MostRecentWidth = 1;
-
-		/// <summary>
-		/// Stores the most recently written height.
-		/// </summary>
-		private int MostRecentHeight = 1;
 
 		/// <summary>
 		/// Stores the factor used to correct the height of the textured quad and maintain the source aspect ratio.
@@ -294,7 +432,7 @@ namespace BeeDevelopment.Cogwheel {
 		public PixelDumper3D(Direct3D direct3D, Control control) {
 			this.D3D = direct3D;
 			this.Control = control;
-			this.Textures = new Texture[2];
+			this.Textures = new EyeTexture[2];
 		}
 
 		#endregion
@@ -366,7 +504,9 @@ namespace BeeDevelopment.Cogwheel {
 			float PL = -1.0f, PR = +1.0f, PT = +1.0f, PB = -1.0f;
 
 			// Calculate the aspect ratio of the source image and the viewport.
-			float ImageAspectRatio = (float)this.MostRecentWidth / (float)this.MostRecentHeight;
+
+			var MostRecentlyUpdatedTexture = this.Textures[(int)this.MostRecentlyUpdatedEye];
+			float ImageAspectRatio = MostRecentlyUpdatedTexture == null ? 1.0f : (float)MostRecentlyUpdatedTexture.ImageWidth / (float)MostRecentlyUpdatedTexture.ImageHeight;
 			float ViewportAspectRatio = (float)this.GraphicsDevice.Viewport.Width / (float)this.GraphicsDevice.Viewport.Height;
 
 			// Calculate the aspect ratio correction scale factors:
@@ -417,6 +557,12 @@ namespace BeeDevelopment.Cogwheel {
 			// Start with the full texture size:
 			float TL = 0.0f, TR = 1.0f, TT = 0.0f, TB = 1.0f;
 
+			// Adjust texture coordinates to clip the image if need be:
+			if (MostRecentlyUpdatedTexture != null) {
+				TR = (float)MostRecentlyUpdatedTexture.ImageWidth / (float)MostRecentlyUpdatedTexture.TextureWidth;
+				TB = (float)MostRecentlyUpdatedTexture.ImageHeight / (float)MostRecentlyUpdatedTexture.TextureHeight;
+			}
+
 			// Create the vectors representing the corners of the texture:
 			Vector2 TTL = new Vector2(TL, TT);
 			Vector2 TTR = new Vector2(TR, TT);
@@ -462,6 +608,8 @@ namespace BeeDevelopment.Cogwheel {
 			this.GraphicsDevice.BeginScene();
 			{
 				this.GraphicsDevice.VertexFormat = VertexPositionTexture.Format;
+
+				this.GraphicsDevice.SetRenderState(RenderState.AlphaFunc, Compare.Greater);
 				this.GraphicsDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, this.BackgroundColour, 0.0f, 0);
 
 				// Set effect parameters:
@@ -526,43 +674,31 @@ namespace BeeDevelopment.Cogwheel {
 		/// <param name="height">The height of the image in pixels.</param>
 		public void SetImage(Eye eye, int[] data, int width, int height) {
 			if (this.GraphicsDevice == null) this.RecreateDevice();
-			var Texture = this.Textures[(int)eye];
-			// Do we need to recreate the texture?
-			var NeedsRecreating = false;
-			if (Texture == null) {
-				NeedsRecreating = true;
-			} else {
-				var CurrentTextureSize = Texture.GetLevelDescription(0);
-				if (CurrentTextureSize.Width != width || CurrentTextureSize.Height != height) {
-					NeedsRecreating = true;
-				}
-			}
-			// If we need to recreate the texture, do so.
-			if (NeedsRecreating) {
-				if (Texture != null) {
-					Texture.Dispose();
-					Texture = null;
-				}
-				Texture = new Texture(this.GraphicsDevice, width, height, 1, Usage.Dynamic, Format.X8R8G8B8, Pool.Default);
-				// Update the texture array.
-				this.Textures[(int)eye] = Texture;
-				// Update the effect.
-				using (var ParameterHandle = this.Effect.GetParameter(null, eye.ToString() + "Eye")) {
-					this.Effect.SetTexture(ParameterHandle, Texture);
-				}
-			}
-			// Copy the image data to the texture.
-			using (var Data = Texture.LockRectangle(0, LockFlags.Discard).Data) {
-				Data.WriteRange(data);
-				Texture.UnlockRectangle(0);
-			}
 
+			// Fetch the texture to update.
+			var Texture = this.Textures[(int)eye];
+
+			var VertexBufferNeedsRewriting = false;
+
+			// Create the texture instance if need be.
+			if (Texture == null) {
+				Texture = new EyeTexture(this.GraphicsDevice);
+				this.Textures[(int)eye] = Texture;
+				VertexBufferNeedsRewriting = true;
+			} else if (width != Texture.ImageWidth || height != Texture.ImageHeight) {
+				VertexBufferNeedsRewriting = true;
+			}
+			// Set the image.
+			Texture.SetImage(data, width, height);
+			
+			// Update the effect.
+			using (var ParameterHandle = this.Effect.GetParameter(null, eye.ToString() + "Eye")) {
+				this.Effect.SetTexture(ParameterHandle, Texture.Texture);
+			}
 
 			// Mark the most recently updated eye, width and height as such.
 			this.MostRecentlyUpdatedEye = eye;
-			if (width != this.MostRecentWidth || height != this.MostRecentHeight) {
-				this.MostRecentWidth = width;
-				this.MostRecentHeight = height;
+			if (VertexBufferNeedsRewriting) {
 				this.RewriteVertexBuffer();
 			}
 		}
