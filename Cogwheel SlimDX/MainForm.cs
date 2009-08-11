@@ -145,7 +145,6 @@ namespace BeeDevelopment.Cogwheel {
 		bool IsLiveFrame = false;
 
 		void Application_Idle(object sender, EventArgs e) {
-
 			Message msg;
 			while (!PeekMessage(out msg, IntPtr.Zero, 0, 0, 0)) {
 				if (this.WindowState == FormWindowState.Minimized) {
@@ -163,7 +162,10 @@ namespace BeeDevelopment.Cogwheel {
 								int FramesOfSoundToGenerate = 1;
 
 								// Determine how far the "write" buffer pointer is ahead of the "read" buffer pointer.
-								int WriteAheadOfPlay = this.SoundBufferPosition - this.SoundBuffer.CurrentPlayPosition;
+								int WriteAheadOfPlay = 0;
+								lock (this.SoundBuffer) {
+									WriteAheadOfPlay = this.SoundBufferPosition - this.SoundBuffer.CurrentPlayPosition;
+								}
 								while (WriteAheadOfPlay < 0) WriteAheadOfPlay += SoundBufferSize;
 
 								// If the write pointer is less than half a buffer away, we're reading faster than writing.
@@ -178,7 +180,6 @@ namespace BeeDevelopment.Cogwheel {
 
 								// Generate samples as appropriate.
 								if (FramesOfSoundToGenerate > 0) {
-
 									short[] Buffer = new short[735 * 2 * FramesOfSoundToGenerate];
 									this.Emulator.Sound.CreateSamples(Buffer);
 #if EMU2413
@@ -197,12 +198,11 @@ namespace BeeDevelopment.Cogwheel {
 											InternalSoundBuffer[this.SoundBufferPosition++] = (byte)(Buffer[i + j] >> 8);
 										}
 										if (this.SoundBufferPosition >= SoundBufferSize) this.SoundBufferPosition = 0;
-									}									
-
-									this.SoundBuffer.Write(this.InternalSoundBuffer, 0, LockFlags.EntireBuffer);
-
+									}
+									lock (this.SoundBuffer) {
+										this.SoundBuffer.Write(this.InternalSoundBuffer, 0, LockFlags.EntireBuffer);
+									}
 								}
-
 							}
 							this.Input.Poll();
 							this.Input.UpdateEmulatorState(this.Emulator);
