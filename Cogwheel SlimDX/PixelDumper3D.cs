@@ -768,20 +768,9 @@ namespace BeeDevelopment.Cogwheel {
 		/// Gets the current refresh rate.
 		/// </summary>
 		/// <returns>The current refresh rate in Hertz.</returns>
-		public static int GetCurrentRefreshRate() {
-
-			var RefreshRates = new List<int>();
-			using (var RefreshSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_VideoController")) {
-				foreach (var VideoCard in RefreshSearcher.Get()) RefreshRates.Add(Convert.ToInt32(VideoCard["CurrentRefreshRate"]));
-			}
-			var ReportedRate = RefreshRates[0];
-			// This 'orrible 'ack is to handle the problem that some refresh rates are returned incorrectly (1Hz too small).
-			var CommonRefreshRates = new[] { 43, 56, 60, 65, 70, 72, 75, 80, 85, 90, 95, 100, 120 };
-			foreach (var CommonRate in CommonRefreshRates) if (CommonRate == ReportedRate) return ReportedRate;
-			foreach (var CommonRate in CommonRefreshRates) if (CommonRate == ReportedRate + 1) return CommonRate;
-			return ReportedRate;
+		public int GetCurrentRefreshRate() {
+			return this.D3D.GetAdapterDisplayMode(0).RefreshRate;
 		}
-
 
 		#endregion
 	}

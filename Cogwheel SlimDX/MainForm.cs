@@ -139,12 +139,11 @@ namespace BeeDevelopment.Cogwheel {
 		[System.Security.SuppressUnmanagedCodeSecurity, DllImport("User32.dll", CharSet = CharSet.Auto)]
 		public static extern bool PeekMessage(out Message msg, IntPtr hWnd, UInt32 msgFilterMin, UInt32 msgFilterMax, UInt32 flags);
 
-
-		int SystemRefreshRate = PixelDumper3D.GetCurrentRefreshRate();
 		int RefreshStepper = 0;
 		bool IsLiveFrame = false;
 
 		void Application_Idle(object sender, EventArgs e) {
+			int SystemRefreshRate = this.Dumper.GetCurrentRefreshRate();
 			Message msg;
 			while (!PeekMessage(out msg, IntPtr.Zero, 0, 0, 0)) {
 				if (this.WindowState == FormWindowState.Minimized) {
