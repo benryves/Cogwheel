@@ -57,7 +57,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Option3DGlasses" Type="System.String" Scope="User">
-      <Value Profile="(Default)">MostRecentEyeOnly</Value>
+      <Value Profile="(Default)">LeftEyeOnly</Value>
     </Setting>
   </Settings>
 </SettingsFile>

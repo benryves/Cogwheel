@@ -241,7 +241,7 @@ namespace BeeDevelopment.Cogwheel.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("MostRecentEyeOnly")]
+        [global::System.Configuration.DefaultSettingValueAttribute("LeftEyeOnly")]
         public string Option3DGlasses {
             get {
                 return ((string)(this["Option3DGlasses"]));
