@@ -674,7 +674,7 @@ namespace BeeDevelopment.Cogwheel {
 			
 			// Present:
 			try {
-				this.GraphicsDevice.Present();
+				this.GraphicsDevice.Present(Present.DoNotWait);
 			} catch (Direct3D9Exception) {
 				// Did we lose the device? If so, try again.
 				if (Result.Last == ResultCode.DeviceLost) {
