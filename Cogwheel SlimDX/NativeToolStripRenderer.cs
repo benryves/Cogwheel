@@ -414,7 +414,8 @@ namespace Szotar.WindowsForms {
 					//based on whether or not it's RTL. (It doesn't need to be narrowed to an edge in LTR mode, but let's
 					//do that anyway.)
 					//Using the DisplayRectangle gets roughly the right size so that the separator is closer to the text.
-					int extraWidth = (e.ToolStrip.Width - e.ToolStrip.DisplayRectangle.Width) - e.AffectedBounds.Width;
+					Padding margins = GetThemeMargins(e.Graphics, MarginTypes.Sizing);
+					int extraWidth = (e.ToolStrip.Width - e.ToolStrip.DisplayRectangle.Width - margins.Left - margins.Right - 1) - e.AffectedBounds.Width;
 					Rectangle rect = e.AffectedBounds;
 					rect.Y += 2;
 					rect.Height -= 4;
@@ -443,41 +444,36 @@ namespace Szotar.WindowsForms {
 			}
 		}
 
-
 		//Currently the check mark looks a bit odd in most configurations because the icon isn't scaled very well.
 		//ToolStrip gets the wrong sizes for most of its items, so it could be difficult to get it to draw correctly.
 		protected override void OnRenderItemCheck(ToolStripItemImageRenderEventArgs e) {
 			if (EnsureRenderer()) {
-				Rectangle rect = e.Item.ContentRectangle;
-				rect.Width = rect.Height;
+				
 
-
+				Rectangle bgRect = e.Item.ContentRectangle;
+				bgRect.Width = bgRect.Height;
+				Rectangle checkRect = e.ImageRectangle;
+				
 				//Center the checkmark horizontally in the gutter (looks ugly, though)
 				//rect.X = (e.ToolStrip.DisplayRectangle.Left - rect.Width) / 2;
 
+				Padding margins = GetThemeMargins(e.Graphics, MarginTypes.Sizing);
 
 				//Now, mirror its position if the menu item is RTL.
 				if (e.Item.RightToLeft == RightToLeft.Yes)
-					rect = new Rectangle(e.ToolStrip.ClientSize.Width - rect.X - rect.Width, rect.Y, rect.Width, rect.Height);
-
+					bgRect = new Rectangle(e.ToolStrip.ClientSize.Width - bgRect.X - bgRect.Width, bgRect.Y, bgRect.Width, bgRect.Height);
 
 				renderer.SetParameters(MenuClass, (int)MenuParts.PopupCheckBackground, e.Item.Enabled ? (int)MenuPopupCheckBackgroundStates.Normal : (int)MenuPopupCheckBackgroundStates.Disabled);
-				renderer.DrawBackground(e.Graphics, rect);
+				renderer.DrawBackground(e.Graphics, bgRect);
 
-
-				Padding margins = GetThemeMargins(e.Graphics, MarginTypes.Sizing);
-
-
-				rect = new Rectangle(rect.X + margins.Left, rect.Y + margins.Top,
-						rect.Width - margins.Horizontal,
-						rect.Height - margins.Vertical);
-
+				checkRect.X = bgRect.X + bgRect.Width / 2 - checkRect.Width / 2;
+				checkRect.Y = bgRect.Y + bgRect.Height / 2 - checkRect.Height / 2;
 
 				//I don't think ToolStrip even supports radio box items, so no need to render them.
 				renderer.SetParameters(MenuClass, (int)MenuParts.PopupCheck, e.Item.Enabled ? (int)MenuPopupCheckStates.CheckmarkNormal : (int)MenuPopupCheckStates.CheckmarkDisabled);
 
 
-				renderer.DrawBackground(e.Graphics, rect);
+				renderer.DrawBackground(e.Graphics, checkRect);
 			} else {
 				base.OnRenderItemCheck(e);
 			}
