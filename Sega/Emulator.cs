@@ -88,7 +88,7 @@ namespace BeeDevelopment.Sega8Bit {
 			this.MainPPI = new ProgrammablePeripheralInterface();
 			this.DebugConsole = new DebugConsole(this);
 #if EMU2413
-			this.FmSound = new Emu2413();
+			this.FmSound = new Emu2413(this);
 #endif
 			
 			#region Memory

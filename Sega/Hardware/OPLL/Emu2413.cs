@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BeeDevelopment.Brazil;
 
 namespace BeeDevelopment.Sega8Bit.Hardware {
@@ -7,6 +8,12 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 	/// Emulates a YM2413 sound chip.
 	/// </summary>
 	public partial class Emu2413 {
+
+		/// <summary>
+		/// Gets the emulator that contains the <see cref="Emu2413"/>.
+		/// </summary>
+		[StateNotSaved()]
+		public Emulator Emulator { get; private set; }
 
 		private OPLL opll;
 		/// <summary>
@@ -20,15 +27,16 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// </summary>
 		/// <param name="clockRate">The clock rate of the emulated YM2413.</param>
 		/// <param name="sampleRate">The sound sample rate.</param>
-		public Emu2413(int clockSpeed, int sampleRate) {
+		public Emu2413(Emulator emulator, int clockSpeed, int sampleRate) {
+			this.Emulator = emulator;
 			this.opll = OPLL_new((uint)clockSpeed, (uint)sampleRate);
 		}
 
 		/// <summary>
 		/// Creates an instance of the <see cref="Emu2413"/> class with a 3.58MHz clock and 44.1kHz sample rate.
 		/// </summary>
-		public Emu2413()
-			: this(3579545, 44100) {
+		public Emu2413(Emulator emulator)
+			: this(emulator, 3579545, 44100) {
 		}
 
 		/// <summary>
@@ -36,6 +44,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// </summary>
 		public void Reset() {
 			OPLL_reset(this.opll);
+			this.QueuedWrites = new Queue<QueuedWrite>();
 			this.DetectionValue = 0;
 		}
 
@@ -62,10 +71,26 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// </summary>
 		/// <param name="samples">An array of <see cref="Int16"/> to store the sound samples.</param>
 		public void GenerateSamples(short[] samples) {
-			for (int i = 0; i < samples.Length; i += 2) {
-				samples[i + 0] = samples[i + 1] = calc(this.opll);
+			lock (this.Emulator) {
+				lock (this.QueuedWrites) {
+					int TotalCyclesExecuted = this.Emulator.ExpectedExecutedCycles;
+					int ElapsedCycles = TotalCyclesExecuted - this.LastCpuClocks;
+					for (int i = 0; i < samples.Length; i += 2) {
+						int CorrespondingCycle = (int)(((UInt64)i * (UInt64)ElapsedCycles) / (UInt64)samples.Length);
+						while (this.QueuedWrites.Count > 0 && (this.QueuedWrites.Peek().Time - this.LastCpuClocks) <= CorrespondingCycle) {
+							this.QueuedWrites.Dequeue().Commit();
+						}
+						samples[i + 0] = samples[i + 1] = calc(this.opll);
+					}					
+					this.FlushQueuedWrites();
+					this.LastCpuClocks = TotalCyclesExecuted;
+				}
 			}
 		}
+		/// <summary>
+		/// Stores the number of CPU clocks the last time GenerateSamples was called.
+		/// </summary>
+		private int LastCpuClocks = 0;
 
 		/// <summary>
 		/// Gets or sets a byte value to detect the chip.

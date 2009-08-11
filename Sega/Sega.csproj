@@ -56,6 +56,7 @@
     <Compile Include="Hardware\OPLL\emu2413.c.cs" />
     <Compile Include="Hardware\OPLL\Emu2413.cs" />
     <Compile Include="Hardware\OPLL\emu2413.h.cs" />
+    <Compile Include="Hardware\OPLL\QueuedWrite.cs" />
     <Compile Include="Hardware\PinDirection.cs" />
     <Compile Include="Hardware\ProgrammablePeripheralInterface\IO.cs" />
     <Compile Include="Hardware\ProgrammablePeripheralInterface\ProgrammablePeripheralInterface.cs" />

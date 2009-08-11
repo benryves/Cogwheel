@@ -296,7 +296,7 @@ namespace BeeDevelopment.Sega8Bit {
 #if EMU2413
 							case 0xF0:
 							case 0xF1:
-								if (this.FmSoundEnabled) this.FmSound.WriteToAddress(port, value);
+								if (this.FmSoundEnabled) this.FmSound.WriteQueued(port, value);
 								break;
 							case 0xF2:
 								if (this.FmSoundEnabled) this.FmSound.DetectionValue = value;
