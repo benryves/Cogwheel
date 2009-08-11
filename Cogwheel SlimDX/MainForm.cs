@@ -142,6 +142,8 @@ namespace BeeDevelopment.Cogwheel {
 		int RefreshStepper = 0;
 		bool IsLiveFrame = false;
 
+		Stopwatch FrameTime = new Stopwatch();
+
 		void Application_Idle(object sender, EventArgs e) {
 			int SystemRefreshRate = this.Dumper.GetCurrentRefreshRate();
 			Message msg;
@@ -149,8 +151,16 @@ namespace BeeDevelopment.Cogwheel {
 				if (this.WindowState == FormWindowState.Minimized) {
 					Thread.Sleep(100);
 				} else {
+					int FramesToRender= (int)(Math.Round(this.FrameTime.Elapsed.TotalSeconds * SystemRefreshRate));
+					this.FrameTime.Reset();
+					this.FrameTime.Start();
+					if (FramesToRender < 1) {
+						FramesToRender = 1;
+					} else if (FramesToRender > 5) {
+						FramesToRender = 5;
+					}
 					if (!this.Paused) {
-						RefreshStepper -= this.Emulator.Video.FrameRate;
+						RefreshStepper -= this.Emulator.Video.FrameRate * FramesToRender;
 						while (RefreshStepper <= 0) {
 							RefreshStepper += SystemRefreshRate;
 							this.Emulator.RunFrame();
@@ -205,9 +215,11 @@ namespace BeeDevelopment.Cogwheel {
 							}
 							this.Input.Poll();
 							this.Input.UpdateEmulatorState(this.Emulator);
+							this.RepaintVideo(RefreshStepper > 0);
 						}
+					} else {
+						this.RepaintVideo(true);
 					}
-					this.RepaintVideo();
 				}
 			}
 		}
@@ -216,7 +228,7 @@ namespace BeeDevelopment.Cogwheel {
 
 		#region Video Output / Window State
 
-		private void RepaintVideo() {
+		private void RepaintVideo(bool present) {
 			var BackdropColour = Color.FromArgb(unchecked((int)0xFF000000 | Emulator.Video.LastBackdropColour));
 
 			// Send the current frame to the renderer.
@@ -247,8 +259,10 @@ namespace BeeDevelopment.Cogwheel {
 			}
 
 			// Repaint.
-			this.Dumper.Render();
-			this.RenderPanel.BackColor = BackdropColour;
+			if (present) {
+				this.Dumper.Render();
+				this.RenderPanel.BackColor = BackdropColour;
+			}
 		}
 
 		FormWindowState LastWindowState = FormWindowState.Normal;
@@ -301,7 +315,7 @@ namespace BeeDevelopment.Cogwheel {
 				}
 			}
 
-			this.RepaintVideo();
+			this.RepaintVideo(true);
 		}
 
 		private void MainForm_ResizeBegin(object sender, EventArgs e) {
