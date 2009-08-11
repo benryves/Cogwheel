@@ -330,16 +330,15 @@ namespace BeeDevelopment.Cogwheel {
 			double DistanceMovedSquared = Math.Pow(e.X - LastMouseLocation.X, 2.0d) + Math.Pow(e.Y - LastMouseLocation.Y, 2.0d);
 			LastMouseLocation = e.Location;
 
-			if (DistanceMovedSquared > 64) {
-				if (this.WindowState == FormWindowState.Maximized) {
-					this.Menus.Visible = e.Y < this.Menus.ClientSize.Height;
-					this.Status.Visible = e.Y >= this.RenderPanel.ClientSize.Height - this.Status.ClientSize.Height;
-					this.ShowCursor();
-					if (!(this.Menus.Visible || this.Status.Visible)) {
-						this.CursorHider.Start();
-					} else {
-						this.CursorHider.Stop();
-					}
+			if (this.WindowState == FormWindowState.Maximized && DistanceMovedSquared > (this.CursorVisible ? 0 : 64)) {
+				this.Menus.Visible = e.Y < this.Menus.ClientSize.Height;
+				this.Status.Visible = e.Y >= this.RenderPanel.ClientSize.Height - this.Status.ClientSize.Height;
+				this.ShowCursor();
+				if (!(this.Menus.Visible || this.Status.Visible)) {
+					this.CursorHiderTicksUntilHide = 10;
+					this.CursorHider.Start();
+				} else {
+					this.CursorHider.Stop();
 				}
 			}
 		}
@@ -358,28 +357,30 @@ namespace BeeDevelopment.Cogwheel {
 		/// Shows the mouse cursor.
 		/// </summary>
 		private void ShowCursor() {
-			if (CursorVisible) return;
+			if (this.CursorVisible) return;
+			this.CursorVisible = true;
 			Cursor.Show();
-			CursorVisible = true;
 		}
 
 		/// <summary>
 		/// Hides the mouse cursor.
 		/// </summary>
 		private void HideCursor() {
-			if (!CursorVisible) return;
+			if (!this.CursorVisible) return;
+			this.CursorVisible = false;
 			Cursor.Hide();
-			CursorVisible = false;
 		}
-
 
 		/// <summary>
 		/// Hides the mouse after a delay.
 		/// </summary>
 		private void CursorHider_Tick(object sender, EventArgs e) {
-			this.HideCursor();
-			this.CursorHider.Stop();
+			if (--this.CursorHiderTicksUntilHide < 0) {
+				this.HideCursor();
+				this.CursorHider.Stop();
+			}
 		}
+		private int CursorHiderTicksUntilHide = 1;
 
 		#endregion
 
@@ -803,7 +804,8 @@ namespace BeeDevelopment.Cogwheel {
 		protected override void OnGotFocus(EventArgs e) {
 			this.Paused = false;
 			if (!this.SoundMuted) this.StartPlayingSound();
-			this.OnMouseMove(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
+			this.OnMouseMove(new MouseEventArgs(MouseButtons.None, 0, -10, +10, 0));
+			this.OnMouseMove(new MouseEventArgs(MouseButtons.None, 0, +10, -10, 0));
 			base.OnGotFocus(e);
 		}
 
