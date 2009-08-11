@@ -33,6 +33,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			lock (emulator) {
 
 				emulator.Sound.FlushQueuedWrites();
+				emulator.FmSound.FlushQueuedWrites();
 
 				IniSerialiseObject(emulator, "", "Main.ini", zipFile);
 				IniSerialiseObject(emulator.Video, "Video", "Video.ini", zipFile);
