@@ -542,6 +542,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 				if (!this.DisplayVisible) {
 					// Screen is off
+
+					// Set the backdrop colour:
 					switch (this.CurrentMode) {
 						case Mode.Graphic1:
 						case Mode.Graphic2:
@@ -553,6 +555,23 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 							this.lastBackdropColour = this.colourRam[(Registers[0x7] & 0xF) + 16];
 							break;
 					}
+
+					// "Pretend" to render sprites to set overflow (no collision, however, so preserve that flag!)
+					bool oldSpriteCollision = this.spriteCollision;
+					switch (this.CurrentMode) {
+						case Mode.Mode4:
+						case Mode.Mode4Resolution224:
+						case Mode.Mode4Resolution240:
+							this.RenderMode4Sprites(startPixel, amZoomed, ForegroundBackground);
+							break;
+						case Mode.Graphic1:
+						case Mode.Graphic2:
+						case Mode.Multicolor:
+							this.RenderTms9918Sprites(startPixel, FixedPalette);
+							break;
+					}
+					this.spriteCollision = oldSpriteCollision;
+
 					for (int i = 0; i < 256; ++i) this.PixelBuffer[startPixel++] = this.lastBackdropColour;
 				} else {
 
@@ -773,198 +792,25 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					if (this.spriteLayerEnabled) {
 
 						switch (this.CurrentMode) {
-
 							case Mode.Mode4:
 							case Mode.Mode4Resolution224:
 							case Mode.Mode4Resolution240:
-								#region Sprites
-
-								int SAT = (Registers[5] & 0x7E) * 128;
-
-								int ec = this.EarlyClock ? -8 : 0;
-
-								bool ds = this.JoinSprites;
-								int sh = (ds ? 16 : 8) * (amZoomed ? 2 : 1);
-								int EigthBit = (Registers[0x6] & 0x4) << 6;
-
-								bool[] spriteCollisionBuffer = new bool[256];
-								byte pixelX;
-
-								int maxSprites = this.spritesPerScanline;
-								int maxZoomedSprites = this.zoomedSpritesPerScanline;
-
-								for (int i = 0; i < 64; ++i) {
-
-									int y = vram[SAT + i] + 1;
-									if (y == 0xD1 && this.activeFrameHeight == 192) break;
-
-									if (y >= 224) y -= 256;
-
-									if (y > this.scanlinesDrawn || (y + sh) <= this.scanlinesDrawn) continue;
-
-									if (maxSprites-- == 0) {
-										this.spriteOverflow = true;
-										break;
-									}
-
-									int x = vram[SAT + i * 2 + 0x80] + ec;
-									int n = vram[SAT + i * 2 + 0x81];
-
-									if (ds) n &= ~1;
-
-									int spritePtr = (n + EigthBit) * 64 + ((this.scanlinesDrawn - y) / (amZoomed ? 2 : 1)) * 8;
-
-									int[] colours = new int[8];
-
-									for (int p = 0; p < 8; ++p) {
-										colours[p] = this.FastPixelColourIndex[spritePtr++];
-									}
-
-									pixelX = (byte)x;
-
-									if (amZoomed && (--maxZoomedSprites > 0)) {
-										for (int p = 0; p < 16; ++p) {
-
-											if (colours[p / 2] != 0) {
-												if (spriteCollisionBuffer[pixelX]) {
-													this.spriteCollision = true;
-												} else {
-													if (!ForegroundBackground[pixelX]) {
-														spriteCollisionBuffer[pixelX] = true;
-														PixelBuffer[startPixel + pixelX] = this.colourRam[colours[p / 2] + 16];
-													}
-												}
-											}
-											if (pixelX == 0xFF) break;
-											++pixelX;
-										}
-									} else {
-										for (int p = 0; p < 8; ++p) {
-
-											if (colours[p] != 0) {
-												if (spriteCollisionBuffer[pixelX]) {
-													this.spriteCollision = true;
-												} else {
-													spriteCollisionBuffer[pixelX] = true;
-													if (!ForegroundBackground[pixelX]) {
-														PixelBuffer[startPixel + pixelX] = this.colourRam[colours[p] + 16];
-													}
-												}
-											}
-											if (pixelX == 0xFF) break;
-											++pixelX;
-										}
-									}
-
-								}
-
-								#endregion
+								this.RenderMode4Sprites(startPixel, amZoomed, ForegroundBackground);
 								break;
-
 							case Mode.Graphic1:
 							case Mode.Graphic2:
 							case Mode.Multicolor:
-								#region Sprites
-
-								bool[] SpriteCollisions = new bool[320];
-								bool[] DrawnPixel = new bool[256];
-
-								int SpriteAttributeTable = (this.Registers[0x5] & 0x7F) * 0x80;
-								int SpritePatternGenerator = (this.Registers[0x6] & 0x07) * 0x800;
-								int SpritePerScanlineCap = this.spritesPerScanline;
-
-								bool MagMode = (this.Registers[0x1] & 0x1) != 0;
-								bool SizeMode = (this.Registers[0x1] & 0x2) != 0;
-
-								int SpriteSize = SizeMode ? (MagMode ? 32 : 16) : (MagMode ? 16 : 8);
-								int HalfSize = SpriteSize / 2 - 1;
-
-								for (int SpriteNum = 0; SpriteNum < 32; ++SpriteNum) {
-									int SpriteY = this.vram[SpriteAttributeTable++];
-									int SpriteX = this.vram[SpriteAttributeTable++];
-									int SpriteIndex = this.vram[SpriteAttributeTable++];
-									int SpriteFlags = this.vram[SpriteAttributeTable++];
-
-									if (SpriteY == 0xD0) break; // Special terminator value.
-
-									// Sprites can bleed off the top of the display:
-									if (SpriteY > 224) SpriteY -= 256;
-
-									// Sprites appear one scanline below the declared line:
-									++SpriteY;
-
-									// Handle Early Clock bit (shift sprite left 32 pixels if set).
-									if ((SpriteFlags & 0x80) != 0) SpriteX -= 32;
-
-									// Is the sprite visible on this scanline?
-									if (SpriteY > this.scanlinesDrawn || (SpriteY + SpriteSize) <= this.scanlinesDrawn) continue;
-
-									// Check we haven't drawn too many sprites on this scanline!
-									if (SpritePerScanlineCap-- == 0) {
-										this.spriteOverflow = true;
-										this.invalidSpriteIndex = SpriteNum;
-										break;
-									}
-
-									if (SizeMode) SpriteIndex &= 0xFC;
-									int SpriteTextureCoord = this.scanlinesDrawn - SpriteY;
-									if (MagMode) SpriteTextureCoord /= 2;
-
-									int SpritePatternDataAddress = SpritePatternGenerator + SpriteIndex * 8 + SpriteTextureCoord;
-									int SpritePixelRow = this.vram[SpritePatternDataAddress];
-
-									for (int x = 0; x < SpriteSize; ++x) {
-
-										// Position of the pixel on-screen.
-										int PixelOffset = x + SpriteX;
-
-										// Check for collisions
-										if (SpriteCollisions[PixelOffset + 32]) {
-											this.spriteCollision = true;
-										} else {
-											SpriteCollisions[PixelOffset + 32] = true;
-										}
-
-										if (PixelOffset >= 0 && PixelOffset < 256 && !DrawnPixel[PixelOffset]) {
-											bool PixelSet = (SpritePixelRow & 0x80) != 0;
-											if (PixelSet && (SpriteFlags & 0x0F) != 0) {
-												PixelBuffer[startPixel + PixelOffset] = FixedPalette[SpriteFlags & 0x0F];
-												DrawnPixel[PixelOffset] = true;
-											}
-										}
-
-										// Move to next pixel:
-										if (!MagMode || (x & 1) == 1) {
-											if (SizeMode && x == HalfSize) {
-												SpritePixelRow = this.vram[SpritePatternDataAddress + 16];
-											} else {
-												SpritePixelRow <<= 1;
-											}
-
-										}
-
-
-									}
-
-								}
-
-								#endregion
+								this.RenderTms9918Sprites(startPixel, FixedPalette);
 								break;
 						}
-
 					}
-
 					if (UsingMode4 && this.MaskColumn0) {
 						for (int i = 0; i < 8; i++) PixelBuffer[startPixel + i] = lastBackdropColour;
 					}
-
 				}
-
 			}
 
-
 			#endregion
-
 
 			#region Interrupts
 
@@ -1062,5 +908,177 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 		#endregion
 
+
+		/// <summary>
+		/// Render a scanline of TMS9918 sprites.
+		/// </summary>
+		/// <param name="startPixel">Offset to the starting pixel in the current row of the pixel buffer.</param>
+		/// <param name="fixedPalette">The fixed palette used to render TMS9918 sprites.</param>
+		private void RenderTms9918Sprites(int startPixel, int[] fixedPalette) {
+			bool[] SpriteCollisions = new bool[320];
+			bool[] DrawnPixel = new bool[256];
+
+			int SpriteAttributeTable = (this.Registers[0x5] & 0x7F) * 0x80;
+			int SpritePatternGenerator = (this.Registers[0x6] & 0x07) * 0x800;
+			int SpritePerScanlineCap = this.spritesPerScanline;
+
+			bool MagMode = (this.Registers[0x1] & 0x1) != 0;
+			bool SizeMode = (this.Registers[0x1] & 0x2) != 0;
+
+			int SpriteSize = SizeMode ? (MagMode ? 32 : 16) : (MagMode ? 16 : 8);
+			int HalfSize = SpriteSize / 2 - 1;
+
+			for (int SpriteNum = 0; SpriteNum < 32; ++SpriteNum) {
+				int SpriteY = this.vram[SpriteAttributeTable++];
+				int SpriteX = this.vram[SpriteAttributeTable++];
+				int SpriteIndex = this.vram[SpriteAttributeTable++];
+				int SpriteFlags = this.vram[SpriteAttributeTable++];
+
+				if (SpriteY == 0xD0) break; // Special terminator value.
+
+				// Sprites can bleed off the top of the display:
+				if (SpriteY > 224) SpriteY -= 256;
+
+				// Sprites appear one scanline below the declared line:
+				++SpriteY;
+
+				// Handle Early Clock bit (shift sprite left 32 pixels if set).
+				if ((SpriteFlags & 0x80) != 0) SpriteX -= 32;
+
+				// Is the sprite visible on this scanline?
+				if (SpriteY > this.scanlinesDrawn || (SpriteY + SpriteSize) <= this.scanlinesDrawn) continue;
+
+				// Check we haven't drawn too many sprites on this scanline!
+				if (SpritePerScanlineCap-- == 0) {
+					this.spriteOverflow = true;
+					this.invalidSpriteIndex = SpriteNum;
+					break;
+				}
+
+				if (SizeMode) SpriteIndex &= 0xFC;
+				int SpriteTextureCoord = this.scanlinesDrawn - SpriteY;
+				if (MagMode) SpriteTextureCoord /= 2;
+
+				int SpritePatternDataAddress = SpritePatternGenerator + SpriteIndex * 8 + SpriteTextureCoord;
+				int SpritePixelRow = this.vram[SpritePatternDataAddress];
+
+				for (int x = 0; x < SpriteSize; ++x) {
+
+					// Position of the pixel on-screen.
+					int PixelOffset = x + SpriteX;
+
+					// Check for collisions
+					if (SpriteCollisions[PixelOffset + 32]) {
+						this.spriteCollision = true;
+					} else {
+						SpriteCollisions[PixelOffset + 32] = true;
+					}
+
+					if (PixelOffset >= 0 && PixelOffset < 256 && !DrawnPixel[PixelOffset]) {
+						bool PixelSet = (SpritePixelRow & 0x80) != 0;
+						if (PixelSet && (SpriteFlags & 0x0F) != 0) {
+							PixelBuffer[startPixel + PixelOffset] = fixedPalette[SpriteFlags & 0x0F];
+							DrawnPixel[PixelOffset] = true;
+						}
+					}
+
+					// Move to next pixel:
+					if (!MagMode || (x & 1) == 1) {
+						if (SizeMode && x == HalfSize) {
+							SpritePixelRow = this.vram[SpritePatternDataAddress + 16];
+						} else {
+							SpritePixelRow <<= 1;
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Render a scanline of Mode 4 sprites.
+		/// </summary>
+		/// <param name="startPixel">Offset to the starting pixel in the current row of the pixel buffer.</param>
+		/// <param name="amZoomed">True to draw zoomed sprites; false to draw normal sprites.</param>
+		/// <param name="foregroundBackground">Flags to denote pixels in the scanline as being in the foreground or in the background.</param>
+		private void RenderMode4Sprites(int startPixel, bool amZoomed, bool[] foregroundBackground) {
+			int SAT = (Registers[5] & 0x7E) * 128;
+
+			int ec = this.EarlyClock ? -8 : 0;
+
+			bool ds = this.JoinSprites;
+			int sh = (ds ? 16 : 8) * (amZoomed ? 2 : 1);
+			int EigthBit = (Registers[0x6] & 0x4) << 6;
+
+			bool[] spriteCollisionBuffer = new bool[256];
+			byte pixelX;
+
+			int maxSprites = this.spritesPerScanline;
+			int maxZoomedSprites = this.zoomedSpritesPerScanline;
+
+			for (int i = 0; i < 64; ++i) {
+
+				int y = vram[SAT + i] + 1;
+				if (y == 0xD1 && this.activeFrameHeight == 192) break;
+
+				if (y >= 224) y -= 256;
+
+				if (y > this.scanlinesDrawn || (y + sh) <= this.scanlinesDrawn) continue;
+
+				if (maxSprites-- == 0) {
+					this.spriteOverflow = true;
+					break;
+				}
+
+				int x = vram[SAT + i * 2 + 0x80] + ec;
+				int n = vram[SAT + i * 2 + 0x81];
+
+				if (ds) n &= ~1;
+
+				int spritePtr = (n + EigthBit) * 64 + ((this.scanlinesDrawn - y) / (amZoomed ? 2 : 1)) * 8;
+
+				int[] colours = new int[8];
+
+				for (int p = 0; p < 8; ++p) {
+					colours[p] = this.FastPixelColourIndex[spritePtr++];
+				}
+
+				pixelX = (byte)x;
+
+				if (amZoomed && (--maxZoomedSprites > 0)) {
+					for (int p = 0; p < 16; ++p) {
+
+						if (colours[p / 2] != 0) {
+							if (spriteCollisionBuffer[pixelX]) {
+								this.spriteCollision = true;
+							} else {
+								if (!foregroundBackground[pixelX]) {
+									spriteCollisionBuffer[pixelX] = true;
+									PixelBuffer[startPixel + pixelX] = this.colourRam[colours[p / 2] + 16];
+								}
+							}
+						}
+						if (pixelX == 0xFF) break;
+						++pixelX;
+					}
+				} else {
+					for (int p = 0; p < 8; ++p) {
+
+						if (colours[p] != 0) {
+							if (spriteCollisionBuffer[pixelX]) {
+								this.spriteCollision = true;
+							} else {
+								spriteCollisionBuffer[pixelX] = true;
+								if (!foregroundBackground[pixelX]) {
+									PixelBuffer[startPixel + pixelX] = this.colourRam[colours[p] + 16];
+								}
+							}
+						}
+						if (pixelX == 0xFF) break;
+						++pixelX;
+					}
+				}
+
+			}
+		}
 	}
 }
