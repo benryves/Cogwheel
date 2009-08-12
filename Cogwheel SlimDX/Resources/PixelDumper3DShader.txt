@@ -75,12 +75,18 @@ float4 ChequerboardInterleavedPixelShader(VertexPositionTextureTexture input) : 
 }
 
 float4 ColourAnaglyphPixelShader(VertexPositionTextureTexture input) : COLOR0 {
-	return tex2D(LeftEyeSampler, input.Texture) * LeftEyeColour + tex2D(RightEyeSampler, input.Texture) * RightEyeColour;
+	float4 neutralColour = float4(1, 1, 1, 1) - (LeftEyeColour + RightEyeColour);
+	float4 leftColour = tex2D(LeftEyeSampler, input.Texture);
+	float4 rightColour = tex2D(RightEyeSampler, input.Texture);
+	return neutralColour * sqrt(leftColour * rightColour) + leftColour * LeftEyeColour + rightColour * RightEyeColour;
 }
 
 float4 MonochromeAnaglyphPixelShader(VertexPositionTextureTexture input) : COLOR0 {
 	float4 rgbToLuma = float4(0.2109375f, 0.71484375f, 0.07421875f, 0.0f);
-	return dot(rgbToLuma, tex2D(LeftEyeSampler, input.Texture)) * LeftEyeColour + dot(rgbToLuma, tex2D(RightEyeSampler, input.Texture)) * RightEyeColour;
+	float4 neutralColour = float4(1, 1, 1, 1) - (LeftEyeColour + RightEyeColour);
+	float leftIntensity = dot(rgbToLuma, tex2D(LeftEyeSampler, input.Texture));
+	float rightIntensity = dot(rgbToLuma, tex2D(RightEyeSampler, input.Texture));
+	return neutralColour * sqrt(leftIntensity * rightIntensity) + leftIntensity * LeftEyeColour + rightIntensity * RightEyeColour;
 }
 
 // Techniques:
