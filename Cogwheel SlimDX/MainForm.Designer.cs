@@ -82,6 +82,12 @@
 			this.ThreeDeeGlassesRowInterleavedMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ThreeDeeGlassesColumnInterleavedMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ThreeDeeGlassesChequerboardInterleavedMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.ThreeDeeGlassesSep3 = new System.Windows.Forms.ToolStripSeparator();
+			this.ThreeDeeGlassesAdvancedOptions = new System.Windows.Forms.ToolStripMenuItem();
+			this.ThreeDeeGlassesLeftFilterColour = new System.Windows.Forms.ToolStripMenuItem();
+			this.ThreeDeeGlassesRightFilterColour = new System.Windows.Forms.ToolStripMenuItem();
+			this.ThreeDeeGlassesAdvancedOptionsSep0 = new System.Windows.Forms.ToolStripSeparator();
+			this.ThreeDeeGlassesToggleFirstEye = new System.Windows.Forms.ToolStripMenuItem();
 			this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.AboutMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.HelpSep0 = new System.Windows.Forms.ToolStripSeparator();
@@ -93,6 +99,7 @@
 			this.OpenStateDialog = new System.Windows.Forms.OpenFileDialog();
 			this.SaveStateDialog = new System.Windows.Forms.SaveFileDialog();
 			this.CursorHider = new System.Windows.Forms.Timer(this.components);
+			this.ColourDialog = new System.Windows.Forms.ColorDialog();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -295,7 +302,7 @@
             this.EmulationVideoSpritesEnabledMenu});
 			this.EmulationVideoMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Television;
 			this.EmulationVideoMenu.Name = "EmulationVideoMenu";
-			this.EmulationVideoMenu.Size = new System.Drawing.Size(146, 22);
+			this.EmulationVideoMenu.Size = new System.Drawing.Size(152, 22);
 			this.EmulationVideoMenu.Text = "&Video";
 			this.EmulationVideoMenu.DropDownOpening += new System.EventHandler(this.DebugVideoMenu_DropDownOpening);
 			// 
@@ -339,7 +346,7 @@
             this.GameGenieEditMenu});
 			this.GameGenieMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(146, 22);
+			this.GameGenieMenu.Size = new System.Drawing.Size(152, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
 			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
 			// 
@@ -362,7 +369,7 @@
 			// 
 			this.SdscDebugConsoleMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Terminal;
 			this.SdscDebugConsoleMenu.Name = "SdscDebugConsoleMenu";
-			this.SdscDebugConsoleMenu.Size = new System.Drawing.Size(146, 22);
+			this.SdscDebugConsoleMenu.Size = new System.Drawing.Size(152, 22);
 			this.SdscDebugConsoleMenu.Text = "&SDSC console";
 			this.SdscDebugConsoleMenu.Click += new System.EventHandler(this.SdscDebugConsoleMenu_Click);
 			// 
@@ -481,7 +488,9 @@
             this.ThreeDeeGlassesSep2,
             this.ThreeDeeGlassesRowInterleavedMenu,
             this.ThreeDeeGlassesColumnInterleavedMenu,
-            this.ThreeDeeGlassesChequerboardInterleavedMenu});
+            this.ThreeDeeGlassesChequerboardInterleavedMenu,
+            this.ThreeDeeGlassesSep3,
+            this.ThreeDeeGlassesAdvancedOptions});
 			this.ThreeDeeGlassesMenu.Name = "ThreeDeeGlassesMenu";
 			this.ThreeDeeGlassesMenu.Size = new System.Drawing.Size(246, 22);
 			this.ThreeDeeGlassesMenu.Text = "&3D glasses";
@@ -566,6 +575,50 @@
 			this.ThreeDeeGlassesChequerboardInterleavedMenu.Text = "Che&querboard interleaved";
 			this.ThreeDeeGlassesChequerboardInterleavedMenu.Click += new System.EventHandler(this.ThreeDeeGlassesOption_Click);
 			// 
+			// ThreeDeeGlassesSep3
+			// 
+			this.ThreeDeeGlassesSep3.Name = "ThreeDeeGlassesSep3";
+			this.ThreeDeeGlassesSep3.Size = new System.Drawing.Size(213, 6);
+			// 
+			// ThreeDeeGlassesAdvancedOptions
+			// 
+			this.ThreeDeeGlassesAdvancedOptions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ThreeDeeGlassesLeftFilterColour,
+            this.ThreeDeeGlassesRightFilterColour,
+            this.ThreeDeeGlassesAdvancedOptionsSep0,
+            this.ThreeDeeGlassesToggleFirstEye});
+			this.ThreeDeeGlassesAdvancedOptions.Name = "ThreeDeeGlassesAdvancedOptions";
+			this.ThreeDeeGlassesAdvancedOptions.Size = new System.Drawing.Size(216, 22);
+			this.ThreeDeeGlassesAdvancedOptions.Text = "Advanced &options";
+			this.ThreeDeeGlassesAdvancedOptions.DropDownOpening += new System.EventHandler(this.ThreeDeeGlassesAdvancedOptions_DropDownOpening);
+			// 
+			// ThreeDeeGlassesLeftFilterColour
+			// 
+			this.ThreeDeeGlassesLeftFilterColour.Name = "ThreeDeeGlassesLeftFilterColour";
+			this.ThreeDeeGlassesLeftFilterColour.Size = new System.Drawing.Size(166, 22);
+			this.ThreeDeeGlassesLeftFilterColour.Text = "&Left filter colour";
+			this.ThreeDeeGlassesLeftFilterColour.Click += new System.EventHandler(this.ThreeDeeGlassesFilterColour_Click);
+			// 
+			// ThreeDeeGlassesRightFilterColour
+			// 
+			this.ThreeDeeGlassesRightFilterColour.Name = "ThreeDeeGlassesRightFilterColour";
+			this.ThreeDeeGlassesRightFilterColour.Size = new System.Drawing.Size(166, 22);
+			this.ThreeDeeGlassesRightFilterColour.Text = "&Right filter colour";
+			this.ThreeDeeGlassesRightFilterColour.Click += new System.EventHandler(this.ThreeDeeGlassesFilterColour_Click);
+			// 
+			// ThreeDeeGlassesAdvancedOptionsSep0
+			// 
+			this.ThreeDeeGlassesAdvancedOptionsSep0.Name = "ThreeDeeGlassesAdvancedOptionsSep0";
+			this.ThreeDeeGlassesAdvancedOptionsSep0.Size = new System.Drawing.Size(163, 6);
+			// 
+			// ThreeDeeGlassesToggleFirstEye
+			// 
+			this.ThreeDeeGlassesToggleFirstEye.Name = "ThreeDeeGlassesToggleFirstEye";
+			this.ThreeDeeGlassesToggleFirstEye.ShortcutKeys = System.Windows.Forms.Keys.F12;
+			this.ThreeDeeGlassesToggleFirstEye.Size = new System.Drawing.Size(166, 22);
+			this.ThreeDeeGlassesToggleFirstEye.Text = "... &eye first";
+			this.ThreeDeeGlassesToggleFirstEye.Click += new System.EventHandler(this.ThreeDeeGlassesToggleFirstEye_Click);
+			// 
 			// HelpMenu
 			// 
 			this.HelpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -634,6 +687,10 @@
 			// CursorHider
 			// 
 			this.CursorHider.Tick += new System.EventHandler(this.CursorHider_Tick);
+			// 
+			// ColourDialog
+			// 
+			this.ColourDialog.AnyColor = true;
 			// 
 			// MainForm
 			// 
@@ -732,6 +789,13 @@
 		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesRowInterleavedMenu;
 		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesColumnInterleavedMenu;
 		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesChequerboardInterleavedMenu;
+		private System.Windows.Forms.ToolStripSeparator ThreeDeeGlassesSep3;
+		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesAdvancedOptions;
+		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesLeftFilterColour;
+		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesRightFilterColour;
+		private System.Windows.Forms.ToolStripSeparator ThreeDeeGlassesAdvancedOptionsSep0;
+		private System.Windows.Forms.ToolStripMenuItem ThreeDeeGlassesToggleFirstEye;
+		private System.Windows.Forms.ColorDialog ColourDialog;
 #endif
 	}
 }

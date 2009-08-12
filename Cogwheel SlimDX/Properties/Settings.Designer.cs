@@ -250,5 +250,41 @@ namespace BeeDevelopment.Cogwheel.Properties {
                 this["Option3DGlasses"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("16711680")]
+        public int Option3DGlassesLeftFilterColour {
+            get {
+                return ((int)(this["Option3DGlassesLeftFilterColour"]));
+            }
+            set {
+                this["Option3DGlassesLeftFilterColour"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("65535")]
+        public int Option3DGlassesRightFilterColour {
+            get {
+                return ((int)(this["Option3DGlassesRightFilterColour"]));
+            }
+            set {
+                this["Option3DGlassesRightFilterColour"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Option3DGlassesLeftEyeFirst {
+            get {
+                return ((bool)(this["Option3DGlassesLeftEyeFirst"]));
+            }
+            set {
+                this["Option3DGlassesLeftEyeFirst"] = value;
+            }
+        }
     }
 }

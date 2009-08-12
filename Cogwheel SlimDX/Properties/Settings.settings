@@ -59,5 +59,14 @@
     <Setting Name="Option3DGlasses" Type="System.String" Scope="User">
       <Value Profile="(Default)">LeftEyeOnly</Value>
     </Setting>
+    <Setting Name="Option3DGlassesLeftFilterColour" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">16711680</Value>
+    </Setting>
+    <Setting Name="Option3DGlassesRightFilterColour" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">65535</Value>
+    </Setting>
+    <Setting Name="Option3DGlassesLeftEyeFirst" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
