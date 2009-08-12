@@ -253,7 +253,7 @@ namespace BeeDevelopment.Cogwheel {
 				}
 			}
 
-			if (this.FramesSinceEyeWasUpdated < 4) {
+			if (this.FramesSinceEyeWasUpdated < 4 && this.Emulator.Family == HardwareFamily.MasterSystem && this.Emulator.Video.ResizingMode == BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.ResizingModes.Normal) {
 				// If we have received a change in eye recently, enable a 3D mode.
 				if (this.Dumper.DisplayMode != this.ThreeDeeDisplayMode) this.Dumper.DisplayMode = this.ThreeDeeDisplayMode;
 			} else {
@@ -640,7 +640,7 @@ namespace BeeDevelopment.Cogwheel {
 				if (File.Exists(RomLoadDialog.CartridgeFileName)) {
 					string CartridgeName = RomLoadDialog.CartridgeFileName;
 					LoadingRomInfo = this.Identifier.QuickLoadEmulator(ref CartridgeName, this.Emulator);
-
+					
 					if (File.Exists(RomLoadDialog.CartridgePatchFileName)) {
 						try {
 							string s = RomLoadDialog.CartridgeFileName;
