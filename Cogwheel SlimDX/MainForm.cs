@@ -145,7 +145,7 @@ namespace BeeDevelopment.Cogwheel {
 		Stopwatch FrameTime = new Stopwatch();
 
 		void Application_Idle(object sender, EventArgs e) {
-			int SystemRefreshRate = this.Dumper.GetCurrentRefreshRate();
+			int SystemRefreshRate = this.Dumper.CurrentRefreshRate;
 			Message msg;
 			while (!PeekMessage(out msg, IntPtr.Zero, 0, 0, 0)) {
 				if (this.WindowState == FormWindowState.Minimized) {
@@ -316,6 +316,18 @@ namespace BeeDevelopment.Cogwheel {
 			}
 
 			this.RepaintVideo(true);
+		}
+
+		private void MainForm_Move(object sender, EventArgs e) {
+			if (this.Dumper != null) {
+				switch (this.Dumper.DisplayMode) {
+					case PixelDumper3D.StereoscopicDisplayMode.RowInterleaved:
+					case PixelDumper3D.StereoscopicDisplayMode.ColumnInterleaved:
+					case PixelDumper3D.StereoscopicDisplayMode.ChequerboardInterleaved:
+						this.Dumper.Render();
+						break;
+				}
+			}
 		}
 
 		private void MainForm_ResizeBegin(object sender, EventArgs e) {

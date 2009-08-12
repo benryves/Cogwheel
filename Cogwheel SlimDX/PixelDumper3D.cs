@@ -341,6 +341,11 @@ namespace BeeDevelopment.Cogwheel {
 		/// </summary>
 		private float CorrectedWidthScale = 1.0f;
 
+		/// <summary>
+		/// Stores the coordinates of the top-left corner of the displayed texture.
+		/// </summary>
+		private Vector2 TextureTopLeft = Vector2.Zero;
+
 		#endregion
 
 		#region Properties
@@ -433,6 +438,17 @@ namespace BeeDevelopment.Cogwheel {
 		/// </summary>
 		public TextureFilter MagnificationFilter { get; set; }
 
+		/// <summary>
+		/// Gets the current refresh rate.
+		/// </summary>
+		public int CurrentRefreshRate { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the first eye shown in interleaved modes.
+		/// </summary>
+		/// <remarks>This is the eye view shown in the first row, column or pixel when using row, column or chequerboard interleaving display modes respectively.</remarks>
+		public Eye FirstInterleavedEye { get; set; }
+
 		#endregion
 
 		#region Constructor
@@ -446,6 +462,7 @@ namespace BeeDevelopment.Cogwheel {
 			this.D3D = direct3D;
 			this.Control = control;
 			this.Textures = new EyeTexture[2];
+			this.CurrentRefreshRate = PixelDumper3D.GetCurrentRefreshRate();
 		}
 
 		#endregion
@@ -509,7 +526,9 @@ namespace BeeDevelopment.Cogwheel {
 			this.VertexDeclaration = new VertexDeclaration(this.GraphicsDevice, VertexPositionTextureTexture.Elements);
 			// Create the vertex buffer:
 			this.Vertices = new VertexBuffer(this.GraphicsDevice, 6 * VertexPositionTextureTexture.Size, Usage.WriteOnly, VertexFormat.None, Pool.Managed);
-			this.RewriteVertexBuffer();	
+			this.RewriteVertexBuffer();
+			// Update the monitor refresh rate:
+			this.CurrentRefreshRate = PixelDumper3D.GetCurrentRefreshRate();
 		}
 
 		private void RewriteVertexBuffer() {
@@ -567,6 +586,9 @@ namespace BeeDevelopment.Cogwheel {
 			Vector3 PBL = new Vector3(PL, PB, 0.0f);
 			Vector3 PBR = new Vector3(PR, PB, 0.0f);
 
+			this.TextureTopLeft.X = PL;
+			this.TextureTopLeft.Y = PT;
+
 			// Start with the full texture size:
 			float TL = 0.0f, TR = 1.0f, TT = 0.0f, TB = 1.0f;
 
@@ -608,6 +630,7 @@ namespace BeeDevelopment.Cogwheel {
 		#region Renderer
 
 		public void Render() {
+
 			// Recreate the graphics device if required:
 			if (this.GraphicsDevice == null) {
 				this.RecreateDevice();
@@ -629,14 +652,14 @@ namespace BeeDevelopment.Cogwheel {
 				this.GraphicsDevice.VertexFormat = VertexPositionTextureTexture.Format;
 
 				this.GraphicsDevice.SetRenderState(RenderState.AlphaFunc, Compare.Greater);
-				
+
 				this.GraphicsDevice.SetSamplerState(0, SamplerState.MagFilter, this.MagnificationFilter);
 				this.GraphicsDevice.SetSamplerState(1, SamplerState.MagFilter, this.MagnificationFilter);
 
 				this.GraphicsDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, this.BackgroundColour, 0.0f, 0);
 
-				// Set effect parameters:
-				switch (this.displayMode) { 
+				// Set effect width/height parameters:
+				switch (this.displayMode) {
 					case StereoscopicDisplayMode.RowInterleaved:
 						using (var ParameterHandle = this.Effect.GetParameter(null, "ViewportHeight")) {
 							this.Effect.SetValue(ParameterHandle, this.CorrectedHeightScale * this.GraphicsDevice.Viewport.Height);
@@ -655,6 +678,37 @@ namespace BeeDevelopment.Cogwheel {
 							this.Effect.SetValue(ParameterHandle, this.CorrectedWidthScale * this.GraphicsDevice.Viewport.Width);
 						}
 						break;
+				}
+
+				// Set texture eye parameters (if we need to flip):
+				{
+					bool FlipLeftRightTextures = false;
+					// If we're using an interleaved mode, ensure that the left eye 
+					switch (this.displayMode) {
+						case StereoscopicDisplayMode.RowInterleaved:
+							int RowOffset = this.Control.PointToScreen(new Point(0, (int)Math.Round(0.5f * this.GraphicsDevice.Viewport.Height * (1.0f - this.TextureTopLeft.Y)))).Y;
+							FlipLeftRightTextures = this.FirstInterleavedEye == Eye.Right ^ (RowOffset & 1) != 0;
+							break;
+						case StereoscopicDisplayMode.ColumnInterleaved:
+							int ColumnOffset = this.Control.PointToScreen(new Point((int)Math.Round(0.5f * this.GraphicsDevice.Viewport.Width * (1.0f + this.TextureTopLeft.X)), 0)).X;
+							FlipLeftRightTextures = this.FirstInterleavedEye == Eye.Right ^ (ColumnOffset & 1) != 0;
+							break;
+						case StereoscopicDisplayMode.ChequerboardInterleaved:
+							Point PixelOffset = this.Control.PointToScreen(new Point((int)Math.Round(0.5f * this.GraphicsDevice.Viewport.Width * (1.0f + this.TextureTopLeft.X)), (int)Math.Round(0.5f * this.GraphicsDevice.Viewport.Height * (1.0f - this.TextureTopLeft.Y))));
+							FlipLeftRightTextures = this.FirstInterleavedEye == Eye.Right ^ ((PixelOffset.X + PixelOffset.Y) & 1) != 0;
+							break;
+					}
+					EyeTexture LeftTexture = this.Textures[FlipLeftRightTextures ? 1 : 0], RightTexture = this.Textures[FlipLeftRightTextures ? 0 : 1];
+					if (LeftTexture != null) {
+						using (var ParameterHandle = this.Effect.GetParameter(null, "LeftEye")) {
+							this.Effect.SetTexture(ParameterHandle, LeftTexture.Texture);
+						}
+					}
+					if (RightTexture != null) {
+						using (var ParameterHandle = this.Effect.GetParameter(null, "RightEye")) {
+							this.Effect.SetTexture(ParameterHandle, RightTexture.Texture);
+						}
+					}
 				}
 
 				this.Effect.Begin();
@@ -768,8 +822,17 @@ namespace BeeDevelopment.Cogwheel {
 		/// Gets the current refresh rate.
 		/// </summary>
 		/// <returns>The current refresh rate in Hertz.</returns>
-		public int GetCurrentRefreshRate() {
-			return this.D3D.GetAdapterDisplayMode(0).RefreshRate;
+		private static int GetCurrentRefreshRate() {
+			var RefreshRates = new List<int>();
+			using (var RefreshSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_VideoController")) {
+				foreach (var VideoCard in RefreshSearcher.Get()) RefreshRates.Add(Convert.ToInt32(VideoCard["CurrentRefreshRate"]));
+			}
+			var ReportedRate = RefreshRates[0];
+			// This 'orrible 'ack is to handle the problem that some refresh rates are returned incorrectly (1Hz too small).
+			var CommonRefreshRates = new[] { 43, 56, 60, 65, 70, 72, 75, 80, 85, 90, 95, 100, 120 };
+			foreach (var CommonRate in CommonRefreshRates) if (CommonRate == ReportedRate) return ReportedRate;
+			foreach (var CommonRate in CommonRefreshRates) if (CommonRate == ReportedRate + 1) return CommonRate;
+			return ReportedRate;
 		}
 
 		#endregion

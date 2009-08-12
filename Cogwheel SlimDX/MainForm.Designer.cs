@@ -649,6 +649,7 @@
 			this.MinimumSize = new System.Drawing.Size(256, 128);
 			this.Name = "MainForm";
 			this.ResizeBegin += new System.EventHandler(this.MainForm_ResizeBegin);
+			this.Move += new System.EventHandler(this.MainForm_Move);
 			this.Resize += new System.EventHandler(this.MainForm_Resize);
 			this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
 			this.Menus.ResumeLayout(false);
