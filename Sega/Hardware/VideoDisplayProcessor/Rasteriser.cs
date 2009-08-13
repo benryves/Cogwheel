@@ -808,6 +808,21 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 						for (int i = 0; i < 8; i++) PixelBuffer[startPixel + i] = lastBackdropColour;
 					}
 				}
+			} else if (this.beamLocation == BeamRegion.TopBorder || this.beamLocation == BeamRegion.BottomBorder) {
+				bool oldSpriteOverflow = this.spriteOverflow;
+				switch (this.CurrentMode) {
+					case Mode.Mode4:
+					case Mode.Mode4Resolution224:
+					case Mode.Mode4Resolution240:
+						this.RenderMode4Sprites(255 * 256, false, new bool[256]);
+						break;
+					case Mode.Graphic1:
+					case Mode.Graphic2:
+					case Mode.Multicolor:
+						this.RenderTms9918Sprites(255 * 256, FixedPaletteMasterSystem);
+						break;
+				}
+				this.spriteOverflow = oldSpriteOverflow;
 			}
 
 			#endregion
@@ -1019,8 +1034,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 				int y = vram[SAT + i] + 1;
 				if (y == 0xD1 && this.activeFrameHeight == 192) break;
-
-				if (y >= 224) y -= 256;
 
 				if (y > this.scanlinesDrawn || (y + sh) <= this.scanlinesDrawn) continue;
 
