@@ -128,13 +128,16 @@ namespace BeeDevelopment.Sega8Bit {
 		/// Sets the capabilities of the <see cref="Emulator"/> based on a particular hardware version.
 		/// </summary>
 		/// <param name="model">The <see cref="HardwareModel"/> to base the capabilities on.</param>
-		public void SetCapabilitiesByModelAndRegion(HardwareModel model, Region region) {
+		public void SetCapabilitiesByModelAndCountry(HardwareModel model, Country country) {
+
+			// Get the region from the country:
+			this.Region = Countries.CountryToRegion(country);
 
 			// Family:
 			this.Family = Emulator.GetFamilyFromModel(model);
 
 			// Video:
-			this.video.SetCapabilitiesByModel(model);
+			this.video.SetCapabilitiesByModelAndVideoSystem(model, Countries.CountryToVideoSystem(country));
 
 			// Sound:
 			switch (model) {
@@ -157,7 +160,7 @@ namespace BeeDevelopment.Sega8Bit {
 			this.HasPauseButton = !(model == HardwareModel.GameGear || model == HardwareModel.ColecoVision);
 
 			for (int i = 0; i < 2; ++i) {
-				this.SegaPorts[i].SupportsOutput = (model == HardwareModel.MasterSystem || model == HardwareModel.MasterSystem2) && region != Region.Japanese;
+				this.SegaPorts[i].SupportsOutput = (model == HardwareModel.MasterSystem || model == HardwareModel.MasterSystem2) && this.Region != Region.Japanese;
 			}
 
 			#region Memory

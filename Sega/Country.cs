@@ -94,6 +94,25 @@ namespace BeeDevelopment.Sega8Bit {
 			}
 		}
 
+		/// <summary>
+		/// Converts a <see cref="Country"/> into its corresponding <see cref="VideoSystem"/>.
+		/// </summary>
+		/// <param name="country">The <see cref="Country"/> to convert to a <see cref="VideoSystem"/>.</param>
+		/// <returns>The converted <see cref="VideoSystem"/>.</returns>
+		/// <remarks>Countries that use SECAM (eg France) are returned as using PAL.</remarks>
+		public static Hardware.VideoDisplayProcessor.VideoSystem CountryToVideoSystem(Country country) {
+			switch (country) {
+				case Country.Brazil:
+				case Country.England:
+				case Country.France:
+				case Country.Germany:
+				case Country.Italy:
+				case Country.NewZealand:
+				case Country.Spain:
+					return Hardware.VideoDisplayProcessor.VideoSystem.Pal;
+				default:
+					return Hardware.VideoDisplayProcessor.VideoSystem.Ntsc;
+			}
+		}
 	}
-
 }

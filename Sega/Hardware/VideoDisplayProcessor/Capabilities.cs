@@ -157,7 +157,18 @@
 		/// Sets the capabilities of the <see cref="VideoDisplayProcessor"/> based on a particular hardware version.
 		/// </summary>
 		/// <param name="model">The <see cref="HardwareModel"/> to base the capabilities on.</param>
-		public void SetCapabilitiesByModel(HardwareModel model) {
+		public void SetCapabilitiesByModelAndVideoSystem(HardwareModel model, VideoSystem videoSystem) {
+
+			// Set the video system (Game Gear is only available in NTSC):
+			switch (model) {
+				case HardwareModel.GameGear:
+				case HardwareModel.GameGearMasterSystem:
+					this.System = VideoSystem.Ntsc;
+					break;
+				default:
+					this.System = videoSystem;
+					break;
+			}
 
 			// Is it a Mark III or later?
 			bool Mark3OrLater = !(model == HardwareModel.SG1000 || model == HardwareModel.SC3000 || model == HardwareModel.SF7000 || model == HardwareModel.ColecoVision);
@@ -186,6 +197,5 @@
 			this.cpuCyclesPerScanline = 228;
 
 		}
-
 	}
 }

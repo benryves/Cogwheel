@@ -172,11 +172,9 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			emulator.RemoveAllMedia();
 			emulator.ResetAll();
 
-			emulator.Region = Countries.CountryToRegion(Info != null ? Info.Country : Country.None);
-
-			emulator.SetCapabilitiesByModelAndRegion(
+			emulator.SetCapabilitiesByModelAndCountry(
 				(emulator.Region == BeeDevelopment.Sega8Bit.Region.Japanese && Model == HardwareModel.MasterSystem2) ? HardwareModel.MasterSystem : Model,
-				emulator.Region
+				Info != null ? Info.Country : Country.None
 			);
 
 			if (Info != null && Info.Type == RomInfo.RomType.Bios) {

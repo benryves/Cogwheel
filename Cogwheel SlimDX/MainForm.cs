@@ -88,6 +88,7 @@ namespace BeeDevelopment.Cogwheel {
 				FmSoundEnabled = Properties.Settings.Default.OptionEnableFMSound,
 #endif
 			};
+			this.OverrideAutomaticSettings(null);
 
 			// Load the ROM data (if required).
 			string RomDataDir = Path.Combine(Application.StartupPath, "ROM Data");
@@ -164,6 +165,8 @@ namespace BeeDevelopment.Cogwheel {
 					}
 					if (!this.Paused) {
 						RefreshStepper -= this.Emulator.Video.FrameRate * FramesToRender;
+						this.Input.Poll();
+						this.Input.UpdateEmulatorState(this.Emulator);
 						while (RefreshStepper <= 0) {
 							RefreshStepper += SystemRefreshRate;
 							this.Emulator.RunFrame();
@@ -216,8 +219,6 @@ namespace BeeDevelopment.Cogwheel {
 									}
 								}
 							}
-							this.Input.Poll();
-							this.Input.UpdateEmulatorState(this.Emulator);
 							this.RepaintVideo(RefreshStepper > 0);
 						}
 					} else {
@@ -544,10 +545,19 @@ namespace BeeDevelopment.Cogwheel {
 		/// <summary>
 		/// Override any automatic settings (eg region) with user-defined ones.
 		/// </summary>
-		private void OverrideAutomaticSettings() {
+		private void OverrideAutomaticSettings(RomInfo romInfo) {
 			if (!Properties.Settings.Default.OptionRegionAutomatic) {
 				this.Emulator.Region = Properties.Settings.Default.OptionRegionJapanese ? BeeDevelopment.Sega8Bit.Region.Japanese : BeeDevelopment.Sega8Bit.Region.Export;
 			}
+			if (!Properties.Settings.Default.OptionVideoStandardAutomatic) {
+				this.Emulator.Video.System = Properties.Settings.Default.OptionVideoStandardNtsc ? BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Ntsc : BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Pal;
+			}
+			if (romInfo != null) {
+				if (romInfo.Model == HardwareModel.GameGearMasterSystem && !Properties.Settings.Default.OptionSimulateGameGearLcdScaling) {
+					this.Emulator.Video.SetCapabilitiesByModelAndVideoSystem(HardwareModel.MasterSystem2, this.Emulator.Video.System);
+				}
+			}
+
 		}
 
 		/// <summary>
@@ -573,10 +583,6 @@ namespace BeeDevelopment.Cogwheel {
 			this.AddRecentFile(filename);
 
 			if (LoadingRomInfo != null) {
-
-				if (LoadingRomInfo.Model == HardwareModel.GameGearMasterSystem && !Properties.Settings.Default.OptionSimulateGameGearLcdScaling) {
-					this.Emulator.Video.SetCapabilitiesByModel(HardwareModel.MasterSystem2);
-				}
 
 				this.AddMessage(Properties.Resources.Icon_Information, LoadingRomInfo.Title);
 				if (!string.IsNullOrEmpty(LoadingRomInfo.Author)) this.AddMessage(Properties.Resources.Icon_User, LoadingRomInfo.Author);
@@ -623,7 +629,7 @@ namespace BeeDevelopment.Cogwheel {
 				}
 			}
 
-			this.OverrideAutomaticSettings();
+			this.OverrideAutomaticSettings(LoadingRomInfo);
 
 		}
 
@@ -671,7 +677,7 @@ namespace BeeDevelopment.Cogwheel {
 					this.Emulator.Bios.Memory = this.Identifier.CreateMapper(this.Identifier.LoadAndFixRomData(ref BiosName));
 					if (this.Emulator.Bios.Memory is Shared1KBios) {
 						((Shared1KBios)this.Emulator.Bios.Memory).SharedMapper = this.Emulator.CartridgeSlot.Memory;
-						if (Properties.Settings.Default.OptionSimulateGameGearLcdScaling) this.Emulator.Video.SetCapabilitiesByModel(HardwareModel.GameGearMasterSystem);
+						if (Properties.Settings.Default.OptionSimulateGameGearLcdScaling) this.Emulator.Video.SetCapabilitiesByModelAndVideoSystem(HardwareModel.GameGearMasterSystem, this.Emulator.Video.System);
 						this.Emulator.HasGameGearPorts = true;
 						this.Emulator.RespondsToGameGearPorts = LoadingRomInfo != null && LoadingRomInfo.Model == HardwareModel.GameGear;
 					}
@@ -679,13 +685,11 @@ namespace BeeDevelopment.Cogwheel {
 					this.Emulator.CartridgeSlot.Enabled = false;
 				}
 
-				this.OverrideAutomaticSettings();
+				this.OverrideAutomaticSettings(LoadingRomInfo);
 
 				this.Dumper.RecreateDevice();
 
 				this.UpdateFormTitle(null);
-
-
 			}
 		}
 
@@ -1188,32 +1192,6 @@ namespace BeeDevelopment.Cogwheel {
 
 		#region Emulation
 
-		private void DebugVideoMenu_DropDownOpening(object sender, EventArgs e) {
-			this.EmulationVideoBackgroundEnabledMenu.Checked = this.Emulator.Video.BackgroundLayerEnabled;
-			this.EmulationVideoSpritesEnabledMenu.Checked = this.Emulator.Video.SpriteLayerEnabled;
-			this.EmulationVideoNtscMenu.Image = this.Emulator.Video.System == BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Ntsc ? Properties.Resources.Icon_Bullet_Black : null;
-			this.EmulationVideoPalMenu.Image = this.Emulator.Video.System == BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Pal ? Properties.Resources.Icon_Bullet_Black : null;
-		}
-
-		private void BackgroundEnabledMenu_Click(object sender, EventArgs e) {
-			this.Emulator.Video.BackgroundLayerEnabled ^= true;
-		}
-
-		private void SpritesEnabledMenu_Click(object sender, EventArgs e) {
-			this.Emulator.Video.SpriteLayerEnabled ^= true;
-		}
-
-
-		private void SdscDebugConsoleMenu_Click(object sender, EventArgs e) {
-			foreach (Form F in Application.OpenForms) {
-				if (F is DebugConsole) {
-					F.BringToFront();
-					return;
-				}
-			}
-			new DebugConsole().Show(this);
-		}
-
 		#region Region Settings
 
 		private void EmulationRegionMenu_DropDownOpening(object sender, EventArgs e) {
@@ -1238,16 +1216,57 @@ namespace BeeDevelopment.Cogwheel {
 
 		#region Video Settings
 
-		private void EmulationVideoNtscMenu_Click(object sender, EventArgs e) {
-			this.Emulator.Video.System = BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Ntsc;
+		private void DebugVideoMenu_DropDownOpening(object sender, EventArgs e) {
+			this.VideoStandardAutomaticMenu.Checked = Properties.Settings.Default.OptionVideoStandardAutomatic;
+			this.VideoStandardNtscMenu.Enabled = !this.VideoStandardAutomaticMenu.Checked;
+			this.VideoStandardPalMenu.Enabled = !this.VideoStandardAutomaticMenu.Checked;
+			this.VideoStandardNtscMenu.Image = this.Emulator.Video.System == BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Ntsc ? Properties.Resources.Icon_Bullet_Black : null;
+			this.VideoStandardPalMenu.Image = this.Emulator.Video.System == BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Pal ? Properties.Resources.Icon_Bullet_Black : null;
 		}
 
-		private void EmulationVideoPalMenu_Click(object sender, EventArgs e) {
-			this.Emulator.Video.System = BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Pal;
+		private void VideoStandardAutomaticMenu_Click(object sender, EventArgs e) {
+			Properties.Settings.Default.OptionVideoStandardAutomatic ^= true;
+		}
+
+		private void VideoStandardTypeMenu_Click(object sender, EventArgs e) {
+			bool IsNtsc = sender == this.VideoStandardNtscMenu;
+			Properties.Settings.Default.OptionVideoStandardNtsc = IsNtsc;
+			this.Emulator.Video.System = IsNtsc ? BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Ntsc : BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Pal;
 		}
 
 		#endregion
 
 		#endregion
+
+		#region Debug
+		
+		private void DebugMenu_DropDownOpening(object sender, EventArgs e) {
+			this.EmulationVideoBackgroundEnabledMenu.Checked = this.Emulator.Video.BackgroundLayerEnabled;
+			this.EmulationVideoSpritesEnabledMenu.Checked = this.Emulator.Video.SpriteLayerEnabled;
+		}
+
+		private void SdscDebugConsoleMenu_Click(object sender, EventArgs e) {
+			foreach (Form F in Application.OpenForms) {
+				if (F is DebugConsole) {
+					F.BringToFront();
+					return;
+				}
+			}
+			new DebugConsole().Show(this);
+		}
+
+		private void BackgroundEnabledMenu_Click(object sender, EventArgs e) {
+			this.Emulator.Video.BackgroundLayerEnabled ^= true;
+		}
+
+		private void SpritesEnabledMenu_Click(object sender, EventArgs e) {
+			this.Emulator.Video.SpriteLayerEnabled ^= true;
+		}
+
+		#endregion
+
+
+
+	
 	}
 }

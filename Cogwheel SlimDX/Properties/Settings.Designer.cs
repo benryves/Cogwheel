@@ -310,5 +310,29 @@ namespace BeeDevelopment.Cogwheel.Properties {
                 this["OptionRegionJapanese"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool OptionVideoStandardAutomatic {
+            get {
+                return ((bool)(this["OptionVideoStandardAutomatic"]));
+            }
+            set {
+                this["OptionVideoStandardAutomatic"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool OptionVideoStandardNtsc {
+            get {
+                return ((bool)(this["OptionVideoStandardNtsc"]));
+            }
+            set {
+                this["OptionVideoStandardNtsc"] = value;
+            }
+        }
     }
 }

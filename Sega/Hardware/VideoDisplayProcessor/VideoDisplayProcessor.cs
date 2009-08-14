@@ -109,7 +109,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			this.frameInterruptPending = false;
 
 			// Reset to bog standard SMS mode.
-			this.SetCapabilitiesByModel(HardwareModel.MasterSystem2); // That'll do as a default.
+			this.SetCapabilitiesByModelAndVideoSystem(HardwareModel.MasterSystem2, VideoSystem.Ntsc); // That'll do as a default.
 
 			// Reset I/O state.
 			this.WaitingForSecond = false;
@@ -137,7 +137,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		public VideoDisplayProcessor(Emulator emulator) {
 			this.Emulator = emulator;
 			this.SetupTimingCounters(); // Not fun.
-			this.SetCapabilitiesByModel(HardwareModel.MasterSystem2);
+			this.SetCapabilitiesByModelAndVideoSystem(HardwareModel.MasterSystem2, VideoSystem.Ntsc);
 			this.Reset();
 		}
 

@@ -53,15 +53,18 @@
 			this.RegionJapaneseMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.RegionExportMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.EmulationVideoMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.EmulationVideoNtscMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.EmulationVideoPalMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.EmulationVideoSep0 = new System.Windows.Forms.ToolStripSeparator();
-			this.EmulationVideoBackgroundEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.EmulationVideoSpritesEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.VideoStandardAutomaticMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.VideoStandardSep0 = new System.Windows.Forms.ToolStripSeparator();
+			this.VideoStandardNtscMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.VideoStandardPalMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.GameGenieMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.GameGenieEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.GameGenieEditMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.SdscDebugConsoleMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+			this.EmulationVideoBackgroundEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.EmulationVideoSpritesEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.OptionsMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ControllerProfileMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ControllerProfileDefaultMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -115,7 +118,7 @@
 			this.RenderPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.RenderPanel.Location = new System.Drawing.Point(0, 24);
 			this.RenderPanel.Name = "RenderPanel";
-			this.RenderPanel.Size = new System.Drawing.Size(325, 262);
+			this.RenderPanel.Size = new System.Drawing.Size(421, 262);
 			this.RenderPanel.TabIndex = 0;
 			this.RenderPanel.DoubleClick += new System.EventHandler(this.RenderPanel_DoubleClick);
 			this.RenderPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RenderPanel_MouseMove);
@@ -126,11 +129,12 @@
             this.FileMenu,
             this.ViewMenu,
             this.EmulationMenu,
+            this.debugToolStripMenuItem,
             this.OptionsMenu,
             this.HelpMenu});
 			this.Menus.Location = new System.Drawing.Point(0, 0);
 			this.Menus.Name = "Menus";
-			this.Menus.Size = new System.Drawing.Size(325, 24);
+			this.Menus.Size = new System.Drawing.Size(421, 24);
 			this.Menus.TabIndex = 0;
 			// 
 			// FileMenu
@@ -292,8 +296,7 @@
 			this.EmulationMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.EmulationRegionMenu,
             this.EmulationVideoMenu,
-            this.GameGenieMenu,
-            this.SdscDebugConsoleMenu});
+            this.GameGenieMenu});
 			this.EmulationMenu.Name = "EmulationMenu";
 			this.EmulationMenu.Size = new System.Drawing.Size(73, 20);
 			this.EmulationMenu.Text = "&Emulation";
@@ -307,82 +310,74 @@
             this.RegionExportMenu});
 			this.EmulationRegionMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_World;
 			this.EmulationRegionMenu.Name = "EmulationRegionMenu";
-			this.EmulationRegionMenu.Size = new System.Drawing.Size(152, 22);
+			this.EmulationRegionMenu.Size = new System.Drawing.Size(153, 22);
 			this.EmulationRegionMenu.Text = "&Region";
 			this.EmulationRegionMenu.DropDownOpening += new System.EventHandler(this.EmulationRegionMenu_DropDownOpening);
 			// 
 			// RegionAutomaticMenu
 			// 
 			this.RegionAutomaticMenu.Name = "RegionAutomaticMenu";
-			this.RegionAutomaticMenu.Size = new System.Drawing.Size(152, 22);
+			this.RegionAutomaticMenu.Size = new System.Drawing.Size(130, 22);
 			this.RegionAutomaticMenu.Text = "&Automatic";
 			this.RegionAutomaticMenu.Click += new System.EventHandler(this.RegionAutomaticMenu_Click);
 			// 
 			// EmulationRegionSep0
 			// 
 			this.EmulationRegionSep0.Name = "EmulationRegionSep0";
-			this.EmulationRegionSep0.Size = new System.Drawing.Size(149, 6);
+			this.EmulationRegionSep0.Size = new System.Drawing.Size(127, 6);
 			// 
 			// RegionJapaneseMenu
 			// 
 			this.RegionJapaneseMenu.Name = "RegionJapaneseMenu";
-			this.RegionJapaneseMenu.Size = new System.Drawing.Size(152, 22);
+			this.RegionJapaneseMenu.Size = new System.Drawing.Size(130, 22);
 			this.RegionJapaneseMenu.Text = "&Japanese";
 			this.RegionJapaneseMenu.Click += new System.EventHandler(this.RegionCountry_Click);
 			// 
 			// RegionExportMenu
 			// 
 			this.RegionExportMenu.Name = "RegionExportMenu";
-			this.RegionExportMenu.Size = new System.Drawing.Size(152, 22);
+			this.RegionExportMenu.Size = new System.Drawing.Size(130, 22);
 			this.RegionExportMenu.Text = "&Export";
 			this.RegionExportMenu.Click += new System.EventHandler(this.RegionCountry_Click);
 			// 
 			// EmulationVideoMenu
 			// 
 			this.EmulationVideoMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.EmulationVideoNtscMenu,
-            this.EmulationVideoPalMenu,
-            this.EmulationVideoSep0,
-            this.EmulationVideoBackgroundEnabledMenu,
-            this.EmulationVideoSpritesEnabledMenu});
+            this.VideoStandardAutomaticMenu,
+            this.VideoStandardSep0,
+            this.VideoStandardNtscMenu,
+            this.VideoStandardPalMenu});
 			this.EmulationVideoMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Television;
 			this.EmulationVideoMenu.Name = "EmulationVideoMenu";
-			this.EmulationVideoMenu.Size = new System.Drawing.Size(152, 22);
-			this.EmulationVideoMenu.Text = "&Video";
+			this.EmulationVideoMenu.Size = new System.Drawing.Size(153, 22);
+			this.EmulationVideoMenu.Text = "&Video standard";
 			this.EmulationVideoMenu.DropDownOpening += new System.EventHandler(this.DebugVideoMenu_DropDownOpening);
 			// 
-			// EmulationVideoNtscMenu
+			// VideoStandardAutomaticMenu
 			// 
-			this.EmulationVideoNtscMenu.Name = "EmulationVideoNtscMenu";
-			this.EmulationVideoNtscMenu.Size = new System.Drawing.Size(211, 22);
-			this.EmulationVideoNtscMenu.Text = "&NTSC (60Hz)";
-			this.EmulationVideoNtscMenu.Click += new System.EventHandler(this.EmulationVideoNtscMenu_Click);
+			this.VideoStandardAutomaticMenu.Name = "VideoStandardAutomaticMenu";
+			this.VideoStandardAutomaticMenu.Size = new System.Drawing.Size(152, 22);
+			this.VideoStandardAutomaticMenu.Text = "&Automatic";
+			this.VideoStandardAutomaticMenu.Click += new System.EventHandler(this.VideoStandardAutomaticMenu_Click);
 			// 
-			// EmulationVideoPalMenu
+			// VideoStandardSep0
 			// 
-			this.EmulationVideoPalMenu.Name = "EmulationVideoPalMenu";
-			this.EmulationVideoPalMenu.Size = new System.Drawing.Size(211, 22);
-			this.EmulationVideoPalMenu.Text = "&PAL (50Hz)";
-			this.EmulationVideoPalMenu.Click += new System.EventHandler(this.EmulationVideoPalMenu_Click);
+			this.VideoStandardSep0.Name = "VideoStandardSep0";
+			this.VideoStandardSep0.Size = new System.Drawing.Size(149, 6);
 			// 
-			// EmulationVideoSep0
+			// VideoStandardNtscMenu
 			// 
-			this.EmulationVideoSep0.Name = "EmulationVideoSep0";
-			this.EmulationVideoSep0.Size = new System.Drawing.Size(208, 6);
+			this.VideoStandardNtscMenu.Name = "VideoStandardNtscMenu";
+			this.VideoStandardNtscMenu.Size = new System.Drawing.Size(152, 22);
+			this.VideoStandardNtscMenu.Text = "&NTSC (60Hz)";
+			this.VideoStandardNtscMenu.Click += new System.EventHandler(this.VideoStandardTypeMenu_Click);
 			// 
-			// EmulationVideoBackgroundEnabledMenu
+			// VideoStandardPalMenu
 			// 
-			this.EmulationVideoBackgroundEnabledMenu.Name = "EmulationVideoBackgroundEnabledMenu";
-			this.EmulationVideoBackgroundEnabledMenu.Size = new System.Drawing.Size(211, 22);
-			this.EmulationVideoBackgroundEnabledMenu.Text = "&Background layer enabled";
-			this.EmulationVideoBackgroundEnabledMenu.Click += new System.EventHandler(this.BackgroundEnabledMenu_Click);
-			// 
-			// EmulationVideoSpritesEnabledMenu
-			// 
-			this.EmulationVideoSpritesEnabledMenu.Name = "EmulationVideoSpritesEnabledMenu";
-			this.EmulationVideoSpritesEnabledMenu.Size = new System.Drawing.Size(211, 22);
-			this.EmulationVideoSpritesEnabledMenu.Text = "&Sprite layer enabled";
-			this.EmulationVideoSpritesEnabledMenu.Click += new System.EventHandler(this.SpritesEnabledMenu_Click);
+			this.VideoStandardPalMenu.Name = "VideoStandardPalMenu";
+			this.VideoStandardPalMenu.Size = new System.Drawing.Size(152, 22);
+			this.VideoStandardPalMenu.Text = "&PAL (50Hz)";
+			this.VideoStandardPalMenu.Click += new System.EventHandler(this.VideoStandardTypeMenu_Click);
 			// 
 			// GameGenieMenu
 			// 
@@ -391,7 +386,7 @@
             this.GameGenieEditMenu});
 			this.GameGenieMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(152, 22);
+			this.GameGenieMenu.Size = new System.Drawing.Size(153, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
 			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
 			// 
@@ -410,13 +405,44 @@
 			this.GameGenieEditMenu.Text = "Edit codes...";
 			this.GameGenieEditMenu.Click += new System.EventHandler(this.GameGenieEditMenu_Click);
 			// 
+			// debugToolStripMenuItem
+			// 
+			this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SdscDebugConsoleMenu,
+            this.toolStripMenuItem1,
+            this.EmulationVideoBackgroundEnabledMenu,
+            this.EmulationVideoSpritesEnabledMenu});
+			this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
+			this.debugToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
+			this.debugToolStripMenuItem.Text = "&Debug";
+			this.debugToolStripMenuItem.DropDownOpening += new System.EventHandler(this.DebugMenu_DropDownOpening);
+			// 
 			// SdscDebugConsoleMenu
 			// 
 			this.SdscDebugConsoleMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Terminal;
 			this.SdscDebugConsoleMenu.Name = "SdscDebugConsoleMenu";
-			this.SdscDebugConsoleMenu.Size = new System.Drawing.Size(152, 22);
+			this.SdscDebugConsoleMenu.Size = new System.Drawing.Size(211, 22);
 			this.SdscDebugConsoleMenu.Text = "&SDSC console";
 			this.SdscDebugConsoleMenu.Click += new System.EventHandler(this.SdscDebugConsoleMenu_Click);
+			// 
+			// toolStripMenuItem1
+			// 
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(208, 6);
+			// 
+			// EmulationVideoBackgroundEnabledMenu
+			// 
+			this.EmulationVideoBackgroundEnabledMenu.Name = "EmulationVideoBackgroundEnabledMenu";
+			this.EmulationVideoBackgroundEnabledMenu.Size = new System.Drawing.Size(211, 22);
+			this.EmulationVideoBackgroundEnabledMenu.Text = "&Background layer enabled";
+			this.EmulationVideoBackgroundEnabledMenu.Click += new System.EventHandler(this.BackgroundEnabledMenu_Click);
+			// 
+			// EmulationVideoSpritesEnabledMenu
+			// 
+			this.EmulationVideoSpritesEnabledMenu.Name = "EmulationVideoSpritesEnabledMenu";
+			this.EmulationVideoSpritesEnabledMenu.Size = new System.Drawing.Size(211, 22);
+			this.EmulationVideoSpritesEnabledMenu.Text = "&Sprite layer enabled";
+			this.EmulationVideoSpritesEnabledMenu.Click += new System.EventHandler(this.SpritesEnabledMenu_Click);
 			// 
 			// OptionsMenu
 			// 
@@ -705,7 +731,7 @@
             this.MessageStatus});
 			this.Status.Location = new System.Drawing.Point(0, 286);
 			this.Status.Name = "Status";
-			this.Status.Size = new System.Drawing.Size(325, 22);
+			this.Status.Size = new System.Drawing.Size(421, 22);
 			this.Status.SizingGrip = false;
 			this.Status.TabIndex = 0;
 			// 
@@ -741,7 +767,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(325, 308);
+			this.ClientSize = new System.Drawing.Size(421, 308);
 			this.Controls.Add(this.RenderPanel);
 			this.Controls.Add(this.Status);
 			this.Controls.Add(this.Menus);
@@ -801,8 +827,6 @@
 		private System.Windows.Forms.Timer CursorHider;
 		private System.Windows.Forms.ToolStripMenuItem EmulationMenu;
 		private System.Windows.Forms.ToolStripMenuItem EmulationVideoMenu;
-		private System.Windows.Forms.ToolStripMenuItem EmulationVideoBackgroundEnabledMenu;
-		private System.Windows.Forms.ToolStripMenuItem EmulationVideoSpritesEnabledMenu;
 		private System.Windows.Forms.ToolStripMenuItem ControllerProfileMenu;
 		private System.Windows.Forms.ToolStripMenuItem ControllerProfileDefaultMenu;
 		private System.Windows.Forms.ToolStripMenuItem ControllerProfileSC3000Menu;
@@ -811,10 +835,9 @@
 		private System.Windows.Forms.ToolStripMenuItem QuickSaveStateMenu;
 		private System.Windows.Forms.ToolStripMenuItem QuickStateSlotMenu;
 		private System.Windows.Forms.ToolStripMenuItem dummyToolStripMenuItem1;
-		private System.Windows.Forms.ToolStripMenuItem SdscDebugConsoleMenu;
-		private System.Windows.Forms.ToolStripMenuItem EmulationVideoNtscMenu;
-		private System.Windows.Forms.ToolStripMenuItem EmulationVideoPalMenu;
-		private System.Windows.Forms.ToolStripSeparator EmulationVideoSep0;
+		private System.Windows.Forms.ToolStripMenuItem VideoStandardNtscMenu;
+		private System.Windows.Forms.ToolStripMenuItem VideoStandardPalMenu;
+		private System.Windows.Forms.ToolStripSeparator VideoStandardSep0;
 		private System.Windows.Forms.ToolStripMenuItem GameGenieMenu;
 		private System.Windows.Forms.ToolStripMenuItem GameGenieEnabledMenu;
 		private System.Windows.Forms.ToolStripMenuItem GameGenieEditMenu;
@@ -846,6 +869,12 @@
 		private System.Windows.Forms.ToolStripSeparator EmulationRegionSep0;
 		private System.Windows.Forms.ToolStripMenuItem RegionJapaneseMenu;
 		private System.Windows.Forms.ToolStripMenuItem RegionExportMenu;
+		private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem SdscDebugConsoleMenu;
+		private System.Windows.Forms.ToolStripMenuItem VideoStandardAutomaticMenu;
+		private System.Windows.Forms.ToolStripMenuItem EmulationVideoBackgroundEnabledMenu;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem EmulationVideoSpritesEnabledMenu;
 #endif
 	}
 }
