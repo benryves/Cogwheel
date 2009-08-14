@@ -163,6 +163,7 @@ namespace BeeDevelopment.Cogwheel {
 					} else if (FramesToRender > 5) {
 						FramesToRender = 5;
 					}
+
 					if (!this.Paused) {
 						RefreshStepper -= this.Emulator.Video.FrameRate * FramesToRender;
 						this.Input.Poll();
@@ -189,17 +190,31 @@ namespace BeeDevelopment.Cogwheel {
 								}
 								while (WriteAheadOfPlay < 0) WriteAheadOfPlay += SoundBufferSize;
 
-								// If the write pointer is less than quarter of a buffer away, we're reading faster than writing.
-								if ((WriteAheadOfPlay / 4) < (SoundBufferSampleCount / 2) - SamplesPerFrame) {
-									Debug.WriteLine("Sound glitch (too slow) at " + DateTime.Now.TimeOfDay);
-									FramesOfSoundToGenerate += SoundBufferSampleCount / SamplesPerFrame / 4;
+								if (SoundBufferCorrectionDirection == 0) {
+									// If the write pointer is less than third of a buffer away, we're reading faster than writing.
+									if ((WriteAheadOfPlay / 4) < (SoundBufferSampleCount / 3)) {
+										Debug.WriteLine("Sound glitch (too slow) at " + DateTime.Now.TimeOfDay);
+										SoundBufferCorrectionDirection = +1;
+									}
+									// If the write pointer is over two thirds of a buffer away, we're writing faster than reading.
+									if ((WriteAheadOfPlay / 4) > ((SoundBufferSampleCount * 2) / 3)) {
+										Debug.WriteLine("Sound glitch (too fast) at " + DateTime.Now.TimeOfDay);
+										SoundBufferCorrectionDirection = -1;
+									}
+								} else if (SoundBufferCorrectionDirection > 0) {
+									// We're speeding up:
+									if ((WriteAheadOfPlay / 4) > (SoundBufferSampleCount / 2) - SamplesPerFrame) {
+										SoundBufferCorrectionDirection = 0;
+									}
+								} else if (SoundBufferCorrectionDirection < 0) {
+									// We're slowing down:
+									if ((WriteAheadOfPlay / 4) < (SoundBufferSampleCount / 2) + SamplesPerFrame) {
+										SoundBufferCorrectionDirection = 0;
+									}
 								}
+								FramesOfSoundToGenerate += SoundBufferCorrectionDirection;
 
-								// If the write pointer is over three-quarters of a buffer away, we're writing faster than reading.
-								if ((WriteAheadOfPlay / 4) > (SoundBufferSampleCount / 2) + SamplesPerFrame) {
-									Debug.WriteLine("Sound glitch (too fast) at " + DateTime.Now.TimeOfDay);
-									FramesOfSoundToGenerate -= SoundBufferSampleCount / SamplesPerFrame / 4;
-								}
+							
 
 								// Generate samples as appropriate.
 								if (FramesOfSoundToGenerate > 0) {
@@ -426,9 +441,10 @@ namespace BeeDevelopment.Cogwheel {
 
 		private SecondarySoundBuffer SoundBuffer;
 
-		private const int SoundBufferSampleCount = 4410;
+		private const int SoundBufferSampleCount = 4410 * 2;
 		private const int SoundBufferSize = SoundBufferSampleCount * 2 * 2;
 		private int SoundBufferPosition = (SoundBufferSampleCount / 2) * 2 * 2;
+		private int SoundBufferCorrectionDirection = 0;
 
 		private byte[] InternalSoundBuffer;
 
