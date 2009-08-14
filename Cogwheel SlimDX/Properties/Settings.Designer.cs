@@ -286,5 +286,29 @@ namespace BeeDevelopment.Cogwheel.Properties {
                 this["Option3DGlassesLeftEyeFirst"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool OptionRegionAutomatic {
+            get {
+                return ((bool)(this["OptionRegionAutomatic"]));
+            }
+            set {
+                this["OptionRegionAutomatic"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool OptionRegionJapanese {
+            get {
+                return ((bool)(this["OptionRegionJapanese"]));
+            }
+            set {
+                this["OptionRegionJapanese"] = value;
+            }
+        }
     }
 }

@@ -542,13 +542,21 @@ namespace BeeDevelopment.Cogwheel {
 		}
 
 		/// <summary>
+		/// Override any automatic settings (eg region) with user-defined ones.
+		/// </summary>
+		private void OverrideAutomaticSettings() {
+			if (!Properties.Settings.Default.OptionRegionAutomatic) {
+				this.Emulator.Region = Properties.Settings.Default.OptionRegionJapanese ? BeeDevelopment.Sega8Bit.Region.Japanese : BeeDevelopment.Sega8Bit.Region.Export;
+			}
+		}
+
+		/// <summary>
 		/// Quick-load a ROM.
 		/// </summary>
 		/// <param name="filename">The name of the ROM file to quick-load.</param>
 		private void QuickLoad(string filename) {
 			
 			string Filename = filename;
-
 
 			RomInfo LoadingRomInfo = null;
 			try {
@@ -615,6 +623,8 @@ namespace BeeDevelopment.Cogwheel {
 				}
 			}
 
+			this.OverrideAutomaticSettings();
+
 		}
 
 		private void QuickLoadRomMenu_Click(object sender, EventArgs e) {
@@ -668,6 +678,8 @@ namespace BeeDevelopment.Cogwheel {
 					this.Emulator.Bios.Enabled = true;
 					this.Emulator.CartridgeSlot.Enabled = false;
 				}
+
+				this.OverrideAutomaticSettings();
 
 				this.Dumper.RecreateDevice();
 
@@ -803,6 +815,64 @@ namespace BeeDevelopment.Cogwheel {
 			new ControlEditor(this.Input).ShowDialog(this);
 			this.Input.ReloadSettings();
 		}
+
+		private void SetControllerProfile_Click(object sender, EventArgs e) {
+			this.ReinitialiseInput((string)((ToolStripMenuItem)sender).Tag);
+		}
+
+		private void ControllerProfileMenu_DropDownOpening(object sender, EventArgs e) {
+			foreach (ToolStripMenuItem SubItem in this.ControllerProfileMenu.DropDownItems) {
+				SubItem.Image = (this.Input.ProfileDirectory == (string)SubItem.Tag) ? Properties.Resources.Icon_Bullet_Black : null;
+			}
+		}
+
+		#region 3D Glasses
+
+		private void ThreeDeeGlassesAdvancedOptions_DropDownOpening(object sender, EventArgs e) {
+			this.ThreeDeeGlassesToggleFirstEye.Text = (Properties.Settings.Default.Option3DGlassesLeftEyeFirst ? "Left" : "Right") + " &eye first (interleaved)";
+			// Left eye filter preview colour:
+			if (this.ThreeDeeGlassesLeftFilterColour.Image != null) this.ThreeDeeGlassesLeftFilterColour.Image.Dispose();
+			this.ThreeDeeGlassesLeftFilterColour.Image = CreateColouredPreviewIcon(Properties.Settings.Default.Option3DGlassesLeftFilterColour);
+			// Right eye filter preview colour:
+			if (this.ThreeDeeGlassesRightFilterColour.Image != null) this.ThreeDeeGlassesRightFilterColour.Image.Dispose();
+			this.ThreeDeeGlassesRightFilterColour.Image = CreateColouredPreviewIcon(Properties.Settings.Default.Option3DGlassesRightFilterColour);
+		}
+
+		private void ThreeDeeGlassesToggleFirstEye_Click(object sender, EventArgs e) {
+			this.Dumper.FirstInterleavedEye = (Properties.Settings.Default.Option3DGlassesLeftEyeFirst ^= true) ? PixelDumper3D.Eye.Left : PixelDumper3D.Eye.Right;
+		}
+
+		private Bitmap CreateColouredPreviewIcon(int colour) {
+			return CreateColouredPreviewIcon(Color.FromArgb(0xFF, Color.FromArgb(colour)));
+		}
+		private Bitmap CreateColouredPreviewIcon(Color colour) {
+			var Result = new Bitmap(16, 16, PixelFormat.Format32bppArgb);
+			using (var G = Graphics.FromImage(Result)) {
+				G.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+				G.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+				var DrawingRegion = new Rectangle(2, 2, 12, 12);
+				G.FillRectangle(Brushes.Black, DrawingRegion);
+				DrawingRegion.Inflate(-1, -1);
+				using (var B = new SolidBrush(colour)) {
+					G.FillRectangle(B, DrawingRegion);
+				}
+			}
+			return Result;
+		}
+
+		private void ThreeDeeGlassesFilterColour_Click(object sender, EventArgs e) {
+			bool IsLeftEye = sender == this.ThreeDeeGlassesLeftFilterColour;
+			this.ColourDialog.Color = Color.FromArgb(0xFF, Color.FromArgb(IsLeftEye ? Properties.Settings.Default.Option3DGlassesLeftFilterColour : Properties.Settings.Default.Option3DGlassesRightFilterColour));
+			if (this.ColourDialog.ShowDialog(this) == DialogResult.OK) {
+				if (IsLeftEye) {
+					Properties.Settings.Default.Option3DGlassesLeftFilterColour = (this.Dumper.LeftEyeColour = this.ColourDialog.Color).ToArgb();
+				} else {
+					Properties.Settings.Default.Option3DGlassesRightFilterColour = (this.Dumper.RightEyeColour = this.ColourDialog.Color).ToArgb();
+				}
+			}
+		}
+
+		#endregion
 
 		protected override void OnClosing(System.ComponentModel.CancelEventArgs e) {
 			try {
@@ -1144,6 +1214,30 @@ namespace BeeDevelopment.Cogwheel {
 			new DebugConsole().Show(this);
 		}
 
+		#region Region Settings
+
+		private void EmulationRegionMenu_DropDownOpening(object sender, EventArgs e) {
+			this.RegionAutomaticMenu.Checked = Properties.Settings.Default.OptionRegionAutomatic;
+			this.RegionJapaneseMenu.Enabled = !this.RegionAutomaticMenu.Checked;
+			this.RegionExportMenu.Enabled = !this.RegionAutomaticMenu.Checked;
+			this.RegionJapaneseMenu.Image = this.Emulator.Region == BeeDevelopment.Sega8Bit.Region.Japanese ? Properties.Resources.Icon_Bullet_Black : null;
+			this.RegionExportMenu.Image = this.Emulator.Region == BeeDevelopment.Sega8Bit.Region.Export ? Properties.Resources.Icon_Bullet_Black : null;
+		}
+
+		private void RegionAutomaticMenu_Click(object sender, EventArgs e) {
+			Properties.Settings.Default.OptionRegionAutomatic ^= true;
+		}
+
+		private void RegionCountry_Click(object sender, EventArgs e) {
+			var IsJapanese = sender == this.RegionJapaneseMenu;
+			Properties.Settings.Default.OptionRegionJapanese = IsJapanese;
+			this.Emulator.Region = IsJapanese ? BeeDevelopment.Sega8Bit.Region.Japanese : BeeDevelopment.Sega8Bit.Region.Export;
+		}
+
+		#endregion
+
+		#region Video Settings
+
 		private void EmulationVideoNtscMenu_Click(object sender, EventArgs e) {
 			this.Emulator.Video.System = BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Ntsc;
 		}
@@ -1154,58 +1248,6 @@ namespace BeeDevelopment.Cogwheel {
 
 		#endregion
 
-		private void SetControllerProfile_Click(object sender, EventArgs e) {
-			this.ReinitialiseInput((string)((ToolStripMenuItem)sender).Tag);
-		}
-
-		private void ControllerProfileMenu_DropDownOpening(object sender, EventArgs e) {
-			foreach (ToolStripMenuItem SubItem in this.ControllerProfileMenu.DropDownItems) {
-				SubItem.Image = (this.Input.ProfileDirectory == (string)SubItem.Tag) ? Properties.Resources.Icon_Bullet_Black : null;
-			}
-		}
-
-		private void ThreeDeeGlassesAdvancedOptions_DropDownOpening(object sender, EventArgs e) {
-			this.ThreeDeeGlassesToggleFirstEye.Text = (Properties.Settings.Default.Option3DGlassesLeftEyeFirst ? "Left" : "Right") + " &eye first (interleaved)";
-			// Left eye filter preview colour:
-			if (this.ThreeDeeGlassesLeftFilterColour.Image != null) this.ThreeDeeGlassesLeftFilterColour.Image.Dispose();
-			this.ThreeDeeGlassesLeftFilterColour.Image = CreateColouredPreviewIcon(Properties.Settings.Default.Option3DGlassesLeftFilterColour);
-			// Right eye filter preview colour:
-			if (this.ThreeDeeGlassesRightFilterColour.Image != null) this.ThreeDeeGlassesRightFilterColour.Image.Dispose();
-			this.ThreeDeeGlassesRightFilterColour.Image = CreateColouredPreviewIcon(Properties.Settings.Default.Option3DGlassesRightFilterColour);
-		}
-
-		private void ThreeDeeGlassesToggleFirstEye_Click(object sender, EventArgs e) {
-			this.Dumper.FirstInterleavedEye = (Properties.Settings.Default.Option3DGlassesLeftEyeFirst ^= true) ? PixelDumper3D.Eye.Left : PixelDumper3D.Eye.Right;
-		}
-
-		private Bitmap CreateColouredPreviewIcon(int colour) {
-			return CreateColouredPreviewIcon(Color.FromArgb(0xFF, Color.FromArgb(colour)));
-		}
-		private Bitmap CreateColouredPreviewIcon(Color colour) {
-			var Result = new Bitmap(16, 16, PixelFormat.Format32bppArgb);
-			using (var G = Graphics.FromImage(Result)) {
-				G.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
-				G.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-				var DrawingRegion = new Rectangle(2, 2, 12, 12);
-				G.FillRectangle(Brushes.Black, DrawingRegion);
-				DrawingRegion.Inflate(-1, -1);
-				using (var B = new SolidBrush(colour)) {
-					G.FillRectangle(B, DrawingRegion);
-				}
-			}
-			return Result;
-		}
-
-		private void ThreeDeeGlassesFilterColour_Click(object sender, EventArgs e) {
-			bool IsLeftEye = sender == this.ThreeDeeGlassesLeftFilterColour;
-			this.ColourDialog.Color = Color.FromArgb(0xFF, Color.FromArgb(IsLeftEye ? Properties.Settings.Default.Option3DGlassesLeftFilterColour : Properties.Settings.Default.Option3DGlassesRightFilterColour));
-			if (this.ColourDialog.ShowDialog(this) == DialogResult.OK) {
-				if (IsLeftEye) {
-					Properties.Settings.Default.Option3DGlassesLeftFilterColour = (this.Dumper.LeftEyeColour = this.ColourDialog.Color).ToArgb();
-				} else {
-					Properties.Settings.Default.Option3DGlassesRightFilterColour = (this.Dumper.RightEyeColour = this.ColourDialog.Color).ToArgb();
-				}
-			}
-		}
+		#endregion
 	}
 }

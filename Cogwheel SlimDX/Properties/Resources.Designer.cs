@@ -247,7 +247,17 @@ namespace BeeDevelopment.Cogwheel.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string containing the about box HTML content.
+        ///   Looks up a localized string similar to &lt;style&gt;
+        ///a { color: #36F; text-decoration: none; }
+        ///a:hover { color: #33F; text-decoration: underline; }
+        ///td, th { padding: 2px; text-align: left; vertical-align: top; border: 1px solid #999; }
+        ///table { border-collapse: collapse; width: 100%; }
+        ///&lt;/style&gt;
+        ///&lt;p&gt;Written by &lt;a href=&quot;mailto:benryves@benryves.com&quot;&gt;Ben Ryves&lt;/a&gt; 2006-2009.&lt;/p&gt;
+        ///&lt;p style=&quot;font-weight: bold;&quot;&gt;Contributors&lt;/p&gt;
+        ///&lt;ul&gt;
+        ///	&lt;li&gt;emu2413 YM2413 emulator written by Mitsutaka Okazaki.&lt;/li&gt;
+        ///	&lt;li&gt;White noise parity calculation algorithm by Dave  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Html_About {
             get {
@@ -514,6 +524,13 @@ namespace BeeDevelopment.Cogwheel.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Icon_World {
+            get {
+                object obj = ResourceManager.GetObject("Icon_World", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Icon_Wrench {
             get {
                 object obj = ResourceManager.GetObject("Icon_Wrench", resourceCulture);
@@ -556,8 +573,8 @@ namespace BeeDevelopment.Cogwheel.Properties {
         ///
         ///// Types:
         ///
-        ///struct VertexPositionTexture {
-        ///    float4 Position :  [rest of string was truncated]&quot;;.
+        ///struct VertexPositionTextureTexture {
+        ///    float4 Posi [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string PixelDumper3DShader {
             get {
