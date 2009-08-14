@@ -2517,8 +2517,9 @@ namespace BeeDevelopment.Brazil {
 							}
 							break;
 						case 0xD3: // OUT n, A
-							this.totalExecutedCycles += 11; this.pendingCycles -= 11;
+							this.totalExecutedCycles += 8; this.pendingCycles -= 8;
 							WriteHardware(ReadMemory(RegPC.Value16++), RegAF.High8);
+							this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 							break;
 						case 0xD4: // CALL NC, nn
 							TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
@@ -5115,8 +5116,9 @@ namespace BeeDevelopment.Brazil {
 									}
 									break;
 								case 0xD3: // OUT n, A
-									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
+									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
 									WriteHardware(ReadMemory(RegPC.Value16++), RegAF.High8);
+									this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 									break;
 								case 0xD4: // CALL NC, nn
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
@@ -5475,8 +5477,9 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											break;
 										case 0x41: // OUT C, B
-											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+											this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 											WriteHardware(RegBC.Low8, RegBC.High8);
+											this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 											break;
 										case 0x42: // SBC HL, BC
 											this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -5526,8 +5529,9 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											break;
 										case 0x49: // OUT C, C
-											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+											this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 											WriteHardware(RegBC.Low8, RegBC.Low8);
+											this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 											break;
 										case 0x4A: // ADC HL, BC
 											this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -5575,8 +5579,9 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											break;
 										case 0x51: // OUT C, D
-											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+											this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 											WriteHardware(RegBC.Low8, RegDE.High8);
+											this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 											break;
 										case 0x52: // SBC HL, DE
 											this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -5631,8 +5636,9 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											break;
 										case 0x59: // OUT C, E
-											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+											this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 											WriteHardware(RegBC.Low8, RegDE.Low8);
+											this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 											break;
 										case 0x5A: // ADC HL, DE
 											this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -5685,8 +5691,9 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											break;
 										case 0x61: // OUT C, H
-											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+											this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 											WriteHardware(RegBC.Low8, RegHL.High8);
+											this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 											break;
 										case 0x62: // SBC HL, HL
 											this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -5745,8 +5752,9 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											break;
 										case 0x69: // OUT C, L
-											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+											this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 											WriteHardware(RegBC.Low8, RegHL.Low8);
+											this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 											break;
 										case 0x6A: // ADC HL, HL
 											this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -5803,8 +5811,9 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											break;
 										case 0x71: // OUT C, 0
-											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+											this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 											WriteHardware(RegBC.Low8, 0);
+											this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 											break;
 										case 0x72: // SBC HL, SP
 											this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -5853,8 +5862,9 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											break;
 										case 0x79: // OUT C, A
-											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+											this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 											WriteHardware(RegBC.Low8, RegAF.High8);
+											this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 											break;
 										case 0x7A: // ADC HL, SP
 											this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -6796,8 +6806,9 @@ namespace BeeDevelopment.Brazil {
 									RegFlagN = false;
 									break;
 								case 0x41: // OUT C, B
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 									WriteHardware(RegBC.Low8, RegBC.High8);
+									this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 									break;
 								case 0x42: // SBC HL, BC
 									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -6847,8 +6858,9 @@ namespace BeeDevelopment.Brazil {
 									RegFlagN = false;
 									break;
 								case 0x49: // OUT C, C
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 									WriteHardware(RegBC.Low8, RegBC.Low8);
+									this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 									break;
 								case 0x4A: // ADC HL, BC
 									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -6896,8 +6908,9 @@ namespace BeeDevelopment.Brazil {
 									RegFlagN = false;
 									break;
 								case 0x51: // OUT C, D
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 									WriteHardware(RegBC.Low8, RegDE.High8);
+									this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 									break;
 								case 0x52: // SBC HL, DE
 									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -6952,8 +6965,9 @@ namespace BeeDevelopment.Brazil {
 									RegFlagN = false;
 									break;
 								case 0x59: // OUT C, E
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 									WriteHardware(RegBC.Low8, RegDE.Low8);
+									this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 									break;
 								case 0x5A: // ADC HL, DE
 									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -7006,8 +7020,9 @@ namespace BeeDevelopment.Brazil {
 									RegFlagN = false;
 									break;
 								case 0x61: // OUT C, H
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 									WriteHardware(RegBC.Low8, RegHL.High8);
+									this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 									break;
 								case 0x62: // SBC HL, HL
 									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -7066,8 +7081,9 @@ namespace BeeDevelopment.Brazil {
 									RegFlagN = false;
 									break;
 								case 0x69: // OUT C, L
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 									WriteHardware(RegBC.Low8, RegHL.Low8);
+									this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 									break;
 								case 0x6A: // ADC HL, HL
 									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -7124,8 +7140,9 @@ namespace BeeDevelopment.Brazil {
 									RegFlagN = false;
 									break;
 								case 0x71: // OUT C, 0
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 									WriteHardware(RegBC.Low8, 0);
+									this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 									break;
 								case 0x72: // SBC HL, SP
 									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -7174,8 +7191,9 @@ namespace BeeDevelopment.Brazil {
 									RegFlagN = false;
 									break;
 								case 0x79: // OUT C, A
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 									WriteHardware(RegBC.Low8, RegAF.High8);
+									this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 									break;
 								case 0x7A: // ADC HL, SP
 									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -10176,8 +10194,9 @@ namespace BeeDevelopment.Brazil {
 									}
 									break;
 								case 0xD3: // OUT n, A
-									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
+									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
 									WriteHardware(ReadMemory(RegPC.Value16++), RegAF.High8);
+									this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 									break;
 								case 0xD4: // CALL NC, nn
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
@@ -10536,8 +10555,9 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											break;
 										case 0x41: // OUT C, B
-											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+											this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 											WriteHardware(RegBC.Low8, RegBC.High8);
+											this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 											break;
 										case 0x42: // SBC HL, BC
 											this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -10587,8 +10607,9 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											break;
 										case 0x49: // OUT C, C
-											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+											this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 											WriteHardware(RegBC.Low8, RegBC.Low8);
+											this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 											break;
 										case 0x4A: // ADC HL, BC
 											this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -10636,8 +10657,9 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											break;
 										case 0x51: // OUT C, D
-											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+											this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 											WriteHardware(RegBC.Low8, RegDE.High8);
+											this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 											break;
 										case 0x52: // SBC HL, DE
 											this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -10692,8 +10714,9 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											break;
 										case 0x59: // OUT C, E
-											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+											this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 											WriteHardware(RegBC.Low8, RegDE.Low8);
+											this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 											break;
 										case 0x5A: // ADC HL, DE
 											this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -10746,8 +10769,9 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											break;
 										case 0x61: // OUT C, H
-											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+											this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 											WriteHardware(RegBC.Low8, RegHL.High8);
+											this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 											break;
 										case 0x62: // SBC HL, HL
 											this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -10806,8 +10830,9 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											break;
 										case 0x69: // OUT C, L
-											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+											this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 											WriteHardware(RegBC.Low8, RegHL.Low8);
+											this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 											break;
 										case 0x6A: // ADC HL, HL
 											this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -10864,8 +10889,9 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											break;
 										case 0x71: // OUT C, 0
-											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+											this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 											WriteHardware(RegBC.Low8, 0);
+											this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 											break;
 										case 0x72: // SBC HL, SP
 											this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -10914,8 +10940,9 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											break;
 										case 0x79: // OUT C, A
-											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+											this.totalExecutedCycles += 9; this.pendingCycles -= 9;
 											WriteHardware(RegBC.Low8, RegAF.High8);
+											this.totalExecutedCycles += 3; this.pendingCycles -= 3;
 											break;
 										case 0x7A: // ADC HL, SP
 											this.totalExecutedCycles += 15; this.pendingCycles -= 15;
@@ -11615,10 +11642,6 @@ namespace BeeDevelopment.Brazil {
 
 				
 			}
-		}
-
-		public void TakeCycles(int cycles) {
-			this.totalExecutedCycles += cycles; this.pendingCycles -= cycles;
 		}
 		
 	}
