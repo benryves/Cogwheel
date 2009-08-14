@@ -176,6 +176,12 @@ namespace BeeDevelopment.Cogwheel {
 								// How many frames of sound should we generate? Usually, one.
 								int FramesOfSoundToGenerate = 1;
 
+								// How many samples do we need to calculate per frame?
+								int SamplesPerFrame = 44100 / this.Emulator.Video.FrameRate;
+
+								// Offset (backwards) to align within the sound buffer when changing video refresh rates.
+								this.SoundBufferPosition -= (this.SoundBufferPosition % (SamplesPerFrame * 2 * 2));
+
 								// Determine how far the "write" buffer pointer is ahead of the "read" buffer pointer.
 								int WriteAheadOfPlay = 0;
 								lock (this.SoundBuffer) {
@@ -183,19 +189,21 @@ namespace BeeDevelopment.Cogwheel {
 								}
 								while (WriteAheadOfPlay < 0) WriteAheadOfPlay += SoundBufferSize;
 
-								// If the write pointer is less than half a buffer away, we're reading faster than writing.
-								if (WriteAheadOfPlay < 735 * 2 * 2 * ((SoundBufferSizeInFrames / 2) - 1)) {
-									FramesOfSoundToGenerate += ((SoundBufferSizeInFrames / 2) - 1);
+								// If the write pointer is less than quarter of a buffer away, we're reading faster than writing.
+								if ((WriteAheadOfPlay / 4) < (SoundBufferSampleCount / 2) - SamplesPerFrame) {
+									Debug.WriteLine("Sound glitch (too slow) at " + DateTime.Now.TimeOfDay);
+									FramesOfSoundToGenerate += SoundBufferSampleCount / SamplesPerFrame / 4;
 								}
 
-								// If the write pointer is more than half a buffer away, we're writing faster than reading.
-								if (WriteAheadOfPlay > 735 * 2 * 2 * ((SoundBufferSizeInFrames / 2) + 1)) {
-									FramesOfSoundToGenerate -= ((SoundBufferSizeInFrames / 2) - 1);
+								// If the write pointer is over three-quarters of a buffer away, we're writing faster than reading.
+								if ((WriteAheadOfPlay / 4) > (SoundBufferSampleCount / 2) + SamplesPerFrame) {
+									Debug.WriteLine("Sound glitch (too fast) at " + DateTime.Now.TimeOfDay);
+									FramesOfSoundToGenerate -= SoundBufferSampleCount / SamplesPerFrame / 4;
 								}
 
 								// Generate samples as appropriate.
 								if (FramesOfSoundToGenerate > 0) {
-									short[] Buffer = new short[735 * 2 * FramesOfSoundToGenerate];
+									short[] Buffer = new short[SamplesPerFrame * 2 * FramesOfSoundToGenerate];
 									this.Emulator.Sound.CreateSamples(Buffer);
 #if EMU2413
 									if (this.Emulator.FmSoundEnabled) {
@@ -207,8 +215,8 @@ namespace BeeDevelopment.Cogwheel {
 									}
 #endif
 									// Convert 16-bit samples to 8-bit bytes of data.
-									for (int i = 0; i < Buffer.Length; i += 735 * 2) {
-										for (int j = 0; j < 735 * 2; ++j) {
+									for (int i = 0; i < Buffer.Length; i += SamplesPerFrame * 2) {
+										for (int j = 0; j < SamplesPerFrame * 2; ++j) {
 											InternalSoundBuffer[this.SoundBufferPosition++] = (byte)Buffer[i + j];
 											InternalSoundBuffer[this.SoundBufferPosition++] = (byte)(Buffer[i + j] >> 8);
 										}
@@ -418,9 +426,9 @@ namespace BeeDevelopment.Cogwheel {
 
 		private SecondarySoundBuffer SoundBuffer;
 
-		private const int SoundBufferSizeInFrames = 8;
-		private const int SoundBufferSize = 735 * 2 * 2 * SoundBufferSizeInFrames;
-		private int SoundBufferPosition = (SoundBufferSizeInFrames / 2) * 735 * 2 * 2;
+		private const int SoundBufferSampleCount = 4410;
+		private const int SoundBufferSize = SoundBufferSampleCount * 2 * 2;
+		private int SoundBufferPosition = (SoundBufferSampleCount / 2) * 2 * 2;
 
 		private byte[] InternalSoundBuffer;
 
@@ -558,7 +566,6 @@ namespace BeeDevelopment.Cogwheel {
 					this.Emulator.Video.SetCapabilitiesByModelAndVideoSystem(HardwareModel.MasterSystem2, this.Emulator.Video.System);
 				}
 			}
-
 		}
 
 		/// <summary>
@@ -1266,8 +1273,5 @@ namespace BeeDevelopment.Cogwheel {
 
 		#endregion
 
-
-
-	
 	}
 }
