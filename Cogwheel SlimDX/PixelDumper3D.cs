@@ -243,7 +243,7 @@ namespace BeeDevelopment.Cogwheel {
 					// Round up the width/height to the nearest power of two.
 					this.textureWidth = 1; this.textureHeight = 1;
 					while (this.textureWidth < this.imageWidth) this.textureWidth <<= 1;
-					while (this.textureHeight < this.imageWidth) this.textureHeight <<= 1;
+					while (this.textureHeight < this.imageHeight) this.textureHeight <<= 1;
 					// Create a new texture instance.
 					Texture = new Texture(this.GraphicsDevice, this.textureWidth, this.textureHeight, 1, Usage.Dynamic, Format.X8R8G8B8, Pool.Default);
 				}
@@ -251,7 +251,7 @@ namespace BeeDevelopment.Cogwheel {
 				using (var Data = this.Texture.LockRectangle(0, new Rectangle(0, 0, this.imageWidth, this.imageHeight), LockFlags.None).Data) {
 					if (this.imageWidth == this.textureWidth) {
 						// Widths are the same, just dump the data across (easy!)
-						Data.WriteRange(data);
+						Data.WriteRange(data, 0, this.imageWidth * this.imageHeight);
 					} else {
 						// Widths are different, need a bit of additional magic here to make them fit:
 						long RowSeekOffset = 4 * (this.textureWidth - this.imageWidth);
@@ -307,10 +307,15 @@ namespace BeeDevelopment.Cogwheel {
 		private Control Control;
 
 		/// <summary>
-		/// Stores references to the two textures (one for each eye).
+		/// Stores references to the two screen textures (one for each eye).
 		/// </summary>
-		private EyeTexture[] Textures;
+		private EyeTexture[] ScreenTextures;
 
+		/// <summary>
+		/// Stores references to the two backdrop textures (one for each eye).
+		/// </summary>
+		private EyeTexture[] BackdropTextures;
+		
 		/// <summary>
 		/// Stores the current vertex declaration.
 		/// </summary>
@@ -466,7 +471,8 @@ namespace BeeDevelopment.Cogwheel {
 		public PixelDumper3D(Direct3D direct3D, Control control) {
 			this.D3D = direct3D;
 			this.Control = control;
-			this.Textures = new EyeTexture[2];
+			this.ScreenTextures = new EyeTexture[2];
+			this.BackdropTextures = new EyeTexture[2];
 			this.CurrentRefreshRate = PixelDumper3D.GetCurrentRefreshRate();
 		}
 
@@ -490,10 +496,16 @@ namespace BeeDevelopment.Cogwheel {
 				this.VertexDeclaration.Dispose();
 				this.VertexDeclaration = null;
 			}
-			for (int i = 0; i < this.Textures.Length; ++i) {
-				if (this.Textures[i] != null) {
-					this.Textures[i].Dispose();
-					this.Textures[i] = null;
+			for (int i = 0; i < this.ScreenTextures.Length; ++i) {
+				if (this.ScreenTextures[i] != null) {
+					this.ScreenTextures[i].Dispose();
+					this.ScreenTextures[i] = null;
+				}
+			}
+			for (int i = 0; i < this.BackdropTextures.Length; ++i) {
+				if (this.BackdropTextures[i] != null) {
+					this.BackdropTextures[i].Dispose();
+					this.BackdropTextures[i] = null;
 				}
 			}
 			if (this.Effect != null) {
@@ -547,7 +559,7 @@ namespace BeeDevelopment.Cogwheel {
 
 			// Calculate the aspect ratio of the source image and the viewport.
 
-			var MostRecentlyUpdatedTexture = this.Textures[(int)this.MostRecentlyUpdatedEye];
+			var MostRecentlyUpdatedTexture = this.ScreenTextures[(int)this.MostRecentlyUpdatedEye];
 			float ImageAspectRatio = MostRecentlyUpdatedTexture == null ? 1.0f : (float)MostRecentlyUpdatedTexture.ImageWidth / (float)MostRecentlyUpdatedTexture.ImageHeight;
 			float ViewportAspectRatio = (float)this.GraphicsDevice.Viewport.Width / (float)this.GraphicsDevice.Viewport.Height;
 
@@ -707,7 +719,7 @@ namespace BeeDevelopment.Cogwheel {
 			// Render:
 
 			this.GraphicsDevice.BeginScene();
-			{			
+			{
 
 				// Set render states:
 				this.GraphicsDevice.SetRenderState(RenderState.ZFunc, Compare.Less);
@@ -736,16 +748,12 @@ namespace BeeDevelopment.Cogwheel {
 							FlipLeftRightScreenTextures = this.FirstInterleavedEye == Eye.Right ^ ((PixelOffset.X + PixelOffset.Y) & 1) != 0;
 							break;
 					}
-					EyeTexture LeftTexture = this.Textures[FlipLeftRightScreenTextures ? 1 : 0], RightTexture = this.Textures[FlipLeftRightScreenTextures ? 0 : 1];
-					if (LeftTexture != null) {
-						using (var ParameterHandle = this.Effect.GetParameter(null, "LeftEye")) {
-							this.Effect.SetTexture(ParameterHandle, LeftTexture.Texture);
-						}
+					EyeTexture LeftTexture = this.ScreenTextures[FlipLeftRightScreenTextures ? 1 : 0], RightTexture = this.ScreenTextures[FlipLeftRightScreenTextures ? 0 : 1];
+					using (var ParameterHandle = this.Effect.GetParameter(null, "LeftEye")) {
+						this.Effect.SetTexture(ParameterHandle, LeftTexture != null ? LeftTexture.Texture : null);
 					}
-					if (RightTexture != null) {
-						using (var ParameterHandle = this.Effect.GetParameter(null, "RightEye")) {
-							this.Effect.SetTexture(ParameterHandle, RightTexture.Texture);
-						}
+					using (var ParameterHandle = this.Effect.GetParameter(null, "RightEye")) {
+						this.Effect.SetTexture(ParameterHandle, RightTexture != null ? RightTexture.Texture : null);
 					}
 				}
 
@@ -763,27 +771,24 @@ namespace BeeDevelopment.Cogwheel {
 
 						// We may need to exchange background textures (again!):
 						bool FlipLeftRightBackdropTextures = FlipLeftRightScreenTextures;
-						switch (this.displayMode) {
-							case StereoscopicDisplayMode.ColumnInterleaved:
-								int ColumnOffset = this.Control.PointToScreen(new Point(0, 0)).X;
-								FlipLeftRightBackdropTextures = this.FirstInterleavedEye == Eye.Right ^ (ColumnOffset & 1) != 0;
-								break;
-							case StereoscopicDisplayMode.ChequerboardInterleaved:
-								Point PixelOffset = this.Control.PointToScreen(new Point(0, (int)Math.Round(0.5f * this.GraphicsDevice.Viewport.Height * (1.0f - this.TextureTopLeft.Y))));
-								FlipLeftRightBackdropTextures = this.FirstInterleavedEye == Eye.Right ^ ((PixelOffset.X + PixelOffset.Y) & 1) != 0;
-								break;
-						}
-						if (FlipLeftRightBackdropTextures != FlipLeftRightScreenTextures) {
-							EyeTexture LeftTexture = this.Textures[FlipLeftRightBackdropTextures ? 1 : 0], RightTexture = this.Textures[FlipLeftRightBackdropTextures ? 0 : 1];
-							if (LeftTexture != null) {
-								using (var ParameterHandle = this.Effect.GetParameter(null, "LeftEye")) {
-									this.Effect.SetTexture(ParameterHandle, LeftTexture.Texture);
-								}
+						{
+							switch (this.displayMode) {
+								case StereoscopicDisplayMode.ColumnInterleaved:
+									int ColumnOffset = this.Control.PointToScreen(new Point(0, 0)).X;
+									FlipLeftRightBackdropTextures = this.FirstInterleavedEye == Eye.Right ^ (ColumnOffset & 1) != 0;
+									break;
+								case StereoscopicDisplayMode.ChequerboardInterleaved:
+									Point PixelOffset = this.Control.PointToScreen(new Point(0, (int)Math.Round(0.5f * this.GraphicsDevice.Viewport.Height * (1.0f - this.TextureTopLeft.Y))));
+									FlipLeftRightBackdropTextures = this.FirstInterleavedEye == Eye.Right ^ ((PixelOffset.X + PixelOffset.Y) & 1) != 0;
+									break;
 							}
-							if (RightTexture != null) {
-								using (var ParameterHandle = this.Effect.GetParameter(null, "RightEye")) {
-									this.Effect.SetTexture(ParameterHandle, RightTexture.Texture);
-								}
+
+							EyeTexture LeftTexture = this.BackdropTextures[FlipLeftRightBackdropTextures ? 1 : 0], RightTexture = this.BackdropTextures[FlipLeftRightBackdropTextures ? 0 : 1];
+							using (var ParameterHandle = this.Effect.GetParameter(null, "LeftEye")) {
+								this.Effect.SetTexture(ParameterHandle, LeftTexture != null ? LeftTexture.Texture : null);
+							}
+							using (var ParameterHandle = this.Effect.GetParameter(null, "RightEye")) {
+								this.Effect.SetTexture(ParameterHandle, RightTexture != null ? RightTexture.Texture : null);
 							}
 						}
 
@@ -815,6 +820,32 @@ namespace BeeDevelopment.Cogwheel {
 
 		#region Texture Setter
 
+		private void SetTexture(EyeTexture[] textures, Eye eye, int[] data, int width, int height) {
+			if (this.GraphicsDevice == null) this.RecreateDevice();
+
+			// Fetch the texture to update.
+			var Texture = textures[(int)eye];
+
+			var VertexBufferNeedsRewriting = false;
+
+			// Create the texture instance if need be.
+			if (Texture == null) {
+				Texture = new EyeTexture(this.GraphicsDevice);
+				textures[(int)eye] = Texture;
+				VertexBufferNeedsRewriting = true;
+			} else if (width != Texture.ImageWidth || height != Texture.ImageHeight) {
+				VertexBufferNeedsRewriting = true;
+			}
+			// Set the image.
+			Texture.SetImage(data, width, height);
+
+			// Mark the most recently updated eye, width and height as such.
+			this.MostRecentlyUpdatedEye = eye;
+			if (VertexBufferNeedsRewriting) {
+				this.RewriteVertexBuffer();
+			}
+		}
+
 		/// <summary>
 		/// Update the internal left or right eye image.
 		/// </summary>
@@ -823,34 +854,17 @@ namespace BeeDevelopment.Cogwheel {
 		/// <param name="width">The width of the image in pixels.</param>
 		/// <param name="height">The height of the image in pixels.</param>
 		public void SetImage(Eye eye, int[] data, int width, int height) {
-			if (this.GraphicsDevice == null) this.RecreateDevice();
+			this.SetTexture(this.ScreenTextures, eye, data, width, height);
+		}
 
-			// Fetch the texture to update.
-			var Texture = this.Textures[(int)eye];
-
-			var VertexBufferNeedsRewriting = false;
-
-			// Create the texture instance if need be.
-			if (Texture == null) {
-				Texture = new EyeTexture(this.GraphicsDevice);
-				this.Textures[(int)eye] = Texture;
-				VertexBufferNeedsRewriting = true;
-			} else if (width != Texture.ImageWidth || height != Texture.ImageHeight) {
-				VertexBufferNeedsRewriting = true;
-			}
-			// Set the image.
-			Texture.SetImage(data, width, height);
-			
-			// Update the effect.
-			using (var ParameterHandle = this.Effect.GetParameter(null, eye.ToString() + "Eye")) {
-				this.Effect.SetTexture(ParameterHandle, Texture.Texture);
-			}
-
-			// Mark the most recently updated eye, width and height as such.
-			this.MostRecentlyUpdatedEye = eye;
-			if (VertexBufferNeedsRewriting) {
-				this.RewriteVertexBuffer();
-			}
+		/// <summary>
+		/// Update the internal left or right eye backdrop.
+		/// </summary>
+		/// <param name="eye">The <see cref="Eye"/> that the backdrop corresponds to.</param>
+		/// <param name="data">The XRGB image data.</param>
+		/// <param name="height">The height of the backdrop in pixels.</param>
+		public void SetBackdrop(Eye eye, int[] data, int height) {
+			this.SetTexture(this.BackdropTextures, eye, data, 1, height);
 		}
 
 		#endregion
@@ -878,7 +892,7 @@ namespace BeeDevelopment.Cogwheel {
 					this.DestroyDevice();
 				}
 				// Mark fields as null.
-				for (int i = 0; i < this.Textures.Length; ++i) this.Textures[i] = null;
+				for (int i = 0; i < this.ScreenTextures.Length; ++i) this.ScreenTextures[i] = null;
 				this.BackdropVertices = null;
 				this.ScreenVertices = null;
 				this.Effect = null;

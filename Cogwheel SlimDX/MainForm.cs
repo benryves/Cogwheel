@@ -263,7 +263,9 @@ namespace BeeDevelopment.Cogwheel {
 			var Video = this.Emulator.Video;
 			this.Dumper.BackgroundColour = Color.FromArgb(Video.LastBackdropColour);
 			if (Video.LastCompleteFrameWidth > 0 && Video.LastCompleteFrameHeight > 0) {
-				this.Dumper.SetImage(Video.LastOpenGlassesShutter == Emulator.GlassesShutter.Left ? PixelDumper3D.Eye.Left : PixelDumper3D.Eye.Right, Video.LastCompleteFrame, Video.LastCompleteFrameWidth, Video.LastCompleteFrameHeight);
+				var Eye = Video.LastOpenGlassesShutter == Emulator.GlassesShutter.Left ? PixelDumper3D.Eye.Left : PixelDumper3D.Eye.Right;
+				this.Dumper.SetImage(Eye, Video.LastCompleteFrame, Video.LastCompleteFrameWidth, Video.LastCompleteFrameHeight);
+				this.Dumper.SetBackdrop(Eye, Video.LastCompleteFrame, Video.LastCompleteFrameHeight);
 			}
 
 			// Work out how recently the eye changed.
