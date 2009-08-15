@@ -316,6 +316,11 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		private int[] PixelBuffer;
 
 		/// <summary>
+		/// Fixed 256-long buffer to store the backdrop as it gets rendered.
+		/// </summary>
+		private int[] BackdropBuffer;
+
+		/// <summary>
 		/// Temporary pixel buffer used to perform Game Gear scaling.
 		/// </summary>
 		private int[] TempPixelBuffer;
@@ -380,6 +385,10 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		[StateNotSaved()]
 		public int LastCompleteFrameWidth { get; private set; }
 
+		private int[] lastCompleteBackdrop;
+		[StateNotSaved()]
+		public int[] LastCompleteBackdrop { get { return this.lastCompleteBackdrop; } }
+
 		/// <summary>
 		/// Ends a frame.
 		/// </summary>
@@ -390,6 +399,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			
 			if (this.lastCompleteFrame == null || this.lastCompleteFrame.Length != this.croppedFrameWidth * this.croppedFrameHeight) {
 				this.lastCompleteFrame = new int[this.croppedFrameWidth * this.croppedFrameHeight];
+				this.lastCompleteBackdrop = new int[this.croppedFrameHeight];
 			}
 
 			this.LastOpenGlassesShutter = this.ActiveScanlinesLeftEye > this.ActiveScanlinesRightEye ? Emulator.GlassesShutter.Left : Emulator.GlassesShutter.Right;
@@ -397,6 +407,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			switch (this.resizingMode) {
 				case ResizingModes.Normal:
 					Array.Copy(this.PixelBuffer, this.lastCompleteFrame, this.lastCompleteFrame.Length);
+					Array.Copy(this.BackdropBuffer, this.lastCompleteBackdrop, this.croppedFrameHeight);
 					break;
 				case ResizingModes.Cropped:
 					for (int Row = 0, Source = ((256 - 160) / 2) + (128 * (this.activeFrameHeight - 144)), Destination = 0, Width = this.LastCompleteFrameWidth; Row < 144; ++Row, Source += 256, Destination += Width) {
@@ -808,6 +819,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 						for (int i = 0; i < 8; i++) PixelBuffer[startPixel + i] = lastBackdropColour;
 					}
 				}
+				this.BackdropBuffer[this.scanlinesDrawn] = this.lastBackdropColour;
 			} else if (this.beamLocation == BeamRegion.TopBorder || this.beamLocation == BeamRegion.BottomBorder) {
 				bool oldSpriteOverflow = this.spriteOverflow;
 				switch (this.CurrentMode) {

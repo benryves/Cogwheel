@@ -123,6 +123,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			// Clear out the pixel buffer.
 			this.PixelBuffer = new int[256 * 256];
 			this.TempPixelBuffer = new int[256 * 256];
+			this.BackdropBuffer = new int[256];
 
 			this.spriteLayerEnabled = true;
 			this.backgroundLayerEnabled = true;

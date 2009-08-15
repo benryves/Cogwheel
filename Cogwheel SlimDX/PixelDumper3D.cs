@@ -241,7 +241,7 @@ namespace BeeDevelopment.Cogwheel {
 					this.imageWidth = width;
 					this.imageHeight = height;
 					// Round up the width/height to the nearest power of two.
-					this.textureWidth = 1; this.textureHeight = 1;
+					this.textureWidth = 8; this.textureHeight = 8;
 					while (this.textureWidth < this.imageWidth) this.textureWidth <<= 1;
 					while (this.textureHeight < this.imageHeight) this.textureHeight <<= 1;
 					// Create a new texture instance.
@@ -652,6 +652,15 @@ namespace BeeDevelopment.Cogwheel {
 			PTR = new Vector3(Math.Sign(PR), PT, 0.0f);
 			PBL = new Vector3(Math.Sign(PL), PB, 0.0f);
 			PBR = new Vector3(Math.Sign(PR), PB, 0.0f);
+			TL = 0.0f; TR = 0.0f; TT = 0.0f; TB = 1.0f;
+			MostRecentlyUpdatedTexture = this.BackdropTextures[(int)this.MostRecentlyUpdatedEye];
+			if (MostRecentlyUpdatedTexture != null) {
+				TB = (float)MostRecentlyUpdatedTexture.ImageHeight / (float)MostRecentlyUpdatedTexture.TextureHeight;
+			}
+			TTL = new Vector2(TL, TT);
+			TTR = new Vector2(TR, TT);
+			TBL = new Vector2(TL, TB);
+			TBR = new Vector2(TR, TB);
 			using (var VertexStream = BackdropVertices.Lock(0, 0, LockFlags.None)) {
 				VertexStream.WriteRange(
 					new[] {

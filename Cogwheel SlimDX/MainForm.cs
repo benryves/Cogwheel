@@ -265,7 +265,7 @@ namespace BeeDevelopment.Cogwheel {
 			if (Video.LastCompleteFrameWidth > 0 && Video.LastCompleteFrameHeight > 0) {
 				var Eye = Video.LastOpenGlassesShutter == Emulator.GlassesShutter.Left ? PixelDumper3D.Eye.Left : PixelDumper3D.Eye.Right;
 				this.Dumper.SetImage(Eye, Video.LastCompleteFrame, Video.LastCompleteFrameWidth, Video.LastCompleteFrameHeight);
-				this.Dumper.SetBackdrop(Eye, Video.LastCompleteFrame, Video.LastCompleteFrameHeight);
+				this.Dumper.SetBackdrop(Eye, Video.LastCompleteBackdrop, Video.LastCompleteFrameHeight);
 			}
 
 			// Work out how recently the eye changed.
