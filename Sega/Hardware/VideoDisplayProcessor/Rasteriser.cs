@@ -410,9 +410,11 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					Array.Copy(this.BackdropBuffer, this.lastCompleteBackdrop, this.croppedFrameHeight);
 					break;
 				case ResizingModes.Cropped:
-					for (int Row = 0, Source = ((256 - 160) / 2) + (128 * (this.activeFrameHeight - 144)), Destination = 0, Width = this.LastCompleteFrameWidth; Row < 144; ++Row, Source += 256, Destination += Width) {
+					int SourceOffset = ((256 - 160) / 2) + (128 * (this.activeFrameHeight - 144));
+					for (int Row = 0, Source = SourceOffset, Destination = 0, Width = this.LastCompleteFrameWidth; Row < 144; ++Row, Source += 256, Destination += Width) {
 						Array.Copy(this.PixelBuffer, Source, this.lastCompleteFrame, Destination, Width);
 					}
+					Array.Copy(this.BackdropBuffer, SourceOffset / 256, this.lastCompleteBackdrop, 0, this.croppedFrameHeight);
 					break;
 				case ResizingModes.Scaled:
 
@@ -423,6 +425,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					int SrcPointer = 8;
 					int DestPointer = 160 * 8;
 					int MaxY = 128;
+					int BackdropY = 0;
 
 					if (this.activeFrameHeight == 224) {
 						SrcPointer = 8 + 256 * 3;
@@ -437,7 +440,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 							if (this.activeFrameHeight == 224) {
 								for (int i = 0; i < 3; ++i) {
-									PixelGrid[0, i] = SrcPointer < 256 ? this.lastBackdropColour : TempPixelBuffer[SrcPointer - 256];
+									PixelGrid[0, i] = SrcPointer < 256 ? this.BackdropBuffer[BackdropY] : TempPixelBuffer[SrcPointer - 256];
 									PixelGrid[1, i] = TempPixelBuffer[SrcPointer + 000];
 									PixelGrid[2, i] = TempPixelBuffer[SrcPointer + 256];
 									PixelGrid[3, i] = TempPixelBuffer[SrcPointer + 512];
@@ -446,8 +449,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 								}
 							} else {
 								for (int i = 0; i < 3; ++i) {
-									PixelGrid[0, i] = SrcPointer < 512 ? this.lastBackdropColour : TempPixelBuffer[SrcPointer - 512];
-									PixelGrid[1, i] = SrcPointer < 256 ? this.lastBackdropColour : TempPixelBuffer[SrcPointer - 256];
+									PixelGrid[0, i] = SrcPointer < 512 ? this.BackdropBuffer[BackdropY + 0] : TempPixelBuffer[SrcPointer - 512];
+									PixelGrid[1, i] = SrcPointer < 256 ? this.BackdropBuffer[BackdropY + 1] : TempPixelBuffer[SrcPointer - 256];
 									PixelGrid[2, i] = TempPixelBuffer[SrcPointer + 000];
 									PixelGrid[3, i] = TempPixelBuffer[SrcPointer + 256];
 									PixelGrid[4, i] = TempPixelBuffer[SrcPointer + 512];
@@ -481,18 +484,38 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 						}
 						DestPointer += 160;
 						SrcPointer += 16 + 512;
+						BackdropY += 2;
 					}
 
 					if (this.activeFrameHeight == 192) {
 						for (int i = 0; i < 160 * 8; ++i) {
-							PixelBuffer[i] = this.lastBackdropColour;
-							PixelBuffer[i + 0x5500] = this.lastBackdropColour;
+							PixelBuffer[i] = this.BackdropBuffer[0];
+							PixelBuffer[i + 0x5500] = this.BackdropBuffer[191];
 						}
 					}
 
 					#endregion
 
 					Array.Copy(this.PixelBuffer, this.lastCompleteFrame, 160 * 144);
+
+					if (this.activeFrameHeight == 192) {
+						for (int i = 0; i < 144; ++i) {
+							if (i < 8) {
+								this.lastCompleteBackdrop[i] = this.BackdropBuffer[0];
+							} else if (i >= 136) {
+								this.lastCompleteBackdrop[i] = this.BackdropBuffer[191];
+							} else if ((i & 1) == 0) {
+								int o = ((i - 8) * 3) / 2;
+								int A = o < 2 ? this.BackdropBuffer[0] : this.BackdropBuffer[o - 2], B = o < 1 ? this.BackdropBuffer[0] : this.BackdropBuffer[o - 1], C = this.BackdropBuffer[o + 0], D = this.BackdropBuffer[o + 1];
+								this.lastCompleteBackdrop[i] = BlendThirdRgb(B, D, BlendHalfRgb(A, C));
+							} else {
+								int o = ((i - 8) * 3) / 2;
+								int A = this.BackdropBuffer[o - 1], B = this.BackdropBuffer[o + 0], C = this.BackdropBuffer[o + 1];
+								this.lastCompleteBackdrop[i] = BlendThirdRgb(A, B, C);
+							}
+						}
+					} else {
+					}
 
 					break;
 			}
