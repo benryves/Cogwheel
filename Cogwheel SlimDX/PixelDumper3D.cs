@@ -317,9 +317,14 @@ namespace BeeDevelopment.Cogwheel {
 		private VertexDeclaration VertexDeclaration;
 
 		/// <summary>
-		/// Stores the <see cref="VertexBuffer"/> that in turn stores the vertices for the full-screen quad to render.
+		/// Stores the <see cref="VertexBuffer"/> that in turn stores the vertices for the main screen quad to render.
 		/// </summary>
-		private VertexBuffer Vertices;
+		private VertexBuffer ScreenVertices;
+
+		/// <summary>
+		/// Stores the <see cref="VertexBuffer"/> that in turn stores the vertices for the backdrop quad to render.
+		/// </summary>
+		private VertexBuffer BackdropVertices;
 
 		/// <summary>
 		/// Stores the <see cref="Effect"/> that contains the various blending techniques.
@@ -402,7 +407,7 @@ namespace BeeDevelopment.Cogwheel {
 					this.Effect.Technique = this.Effect.GetTechnique(EffectTechnique.ToString());
 				}
 				// Interleaving display modes need to fix the vertex buffer so that it's displayed as an even number of pixels on the backbuffer.
-				if (this.Vertices != null) {
+				if (this.ScreenVertices != null) {
 					switch (this.displayMode) {
 						case StereoscopicDisplayMode.RowInterleaved:
 						case StereoscopicDisplayMode.ColumnInterleaved:
@@ -473,9 +478,13 @@ namespace BeeDevelopment.Cogwheel {
 		/// Destroys the current <see cref="Device"/>.
 		/// </summary>
 		private void DestroyDevice() {
-			if (this.Vertices != null) {
-				this.Vertices.Dispose();
-				this.Vertices = null;
+			if (this.BackdropVertices != null) {
+				this.BackdropVertices.Dispose();
+				this.BackdropVertices = null;
+			}
+			if (this.ScreenVertices != null) {
+				this.ScreenVertices.Dispose();
+				this.ScreenVertices = null;
 			}
 			if (this.VertexDeclaration != null) {
 				this.VertexDeclaration.Dispose();
@@ -524,8 +533,9 @@ namespace BeeDevelopment.Cogwheel {
 
 			// Create the vertex declaration:
 			this.VertexDeclaration = new VertexDeclaration(this.GraphicsDevice, VertexPositionTextureTexture.Elements);
-			// Create the vertex buffer:
-			this.Vertices = new VertexBuffer(this.GraphicsDevice, 6 * VertexPositionTextureTexture.Size, Usage.WriteOnly, VertexFormat.None, Pool.Managed);
+			// Create the vertex buffers:
+			this.ScreenVertices = new VertexBuffer(this.GraphicsDevice, 6 * VertexPositionTextureTexture.Size, Usage.WriteOnly, VertexFormat.None, Pool.Managed);
+			this.BackdropVertices = new VertexBuffer(this.GraphicsDevice, 6 * VertexPositionTextureTexture.Size, Usage.WriteOnly, VertexFormat.None, Pool.Managed);
 			this.RewriteVertexBuffer();
 			// Update the monitor refresh rate:
 			this.CurrentRefreshRate = PixelDumper3D.GetCurrentRefreshRate();
@@ -610,7 +620,8 @@ namespace BeeDevelopment.Cogwheel {
 			Vector2 NBL = new Vector2(0.0f, 1.0f);
 			Vector2 NBR = new Vector2(1.0f, 1.0f);
 
-			using (var VertexStream = Vertices.Lock(0, 0, LockFlags.None)) {
+			// Write the screen quad vertex buffer.
+			using (var VertexStream = ScreenVertices.Lock(0, 0, LockFlags.None)) {
 				VertexStream.WriteRange(
 					new[] {
 						new VertexPositionTextureTexture(PBL, TBL, NBL),
@@ -621,13 +632,55 @@ namespace BeeDevelopment.Cogwheel {
 						new VertexPositionTextureTexture(PTR, TTR, NTR),
 					}
 				);
-				this.Vertices.Unlock();
+				this.ScreenVertices.Unlock();
+			}
+
+			// Write the backdrop quad vertex buffer.
+			PTL = new Vector3(Math.Sign(PL), PT, 0.0f);
+			PTR = new Vector3(Math.Sign(PR), PT, 0.0f);
+			PBL = new Vector3(Math.Sign(PL), PB, 0.0f);
+			PBR = new Vector3(Math.Sign(PR), PB, 0.0f);
+			using (var VertexStream = BackdropVertices.Lock(0, 0, LockFlags.None)) {
+				VertexStream.WriteRange(
+					new[] {
+						new VertexPositionTextureTexture(PBL, TBL, NBL),
+						new VertexPositionTextureTexture(PTR, TTR, NTR),
+						new VertexPositionTextureTexture(PBR, TBR, NBR),
+						new VertexPositionTextureTexture(PBL, TBL, NBL),
+						new VertexPositionTextureTexture(PTL, TTL, NTL),
+						new VertexPositionTextureTexture(PTR, TTR, NTR),
+					}
+				);
+				this.BackdropVertices.Unlock();
 			}
 		}
 
 		#endregion
 
 		#region Renderer
+
+		private void SetViewportDimensionParameters(float widthScale, float heightScale) {
+			switch (this.displayMode) {
+				case StereoscopicDisplayMode.RowInterleaved:
+					using (var ParameterHandle = this.Effect.GetParameter(null, "ViewportHeight")) {
+						this.Effect.SetValue(ParameterHandle, heightScale * this.GraphicsDevice.Viewport.Height);
+					}
+					break;
+				case StereoscopicDisplayMode.ColumnInterleaved:
+					using (var ParameterHandle = this.Effect.GetParameter(null, "ViewportWidth")) {
+						this.Effect.SetValue(ParameterHandle, widthScale * this.GraphicsDevice.Viewport.Width);
+					}
+					break;
+				case StereoscopicDisplayMode.ChequerboardInterleaved:
+					using (var ParameterHandle = this.Effect.GetParameter(null, "ViewportHeight")) {
+						this.Effect.SetValue(ParameterHandle, heightScale * this.GraphicsDevice.Viewport.Height);
+					}
+					using (var ParameterHandle = this.Effect.GetParameter(null, "ViewportWidth")) {
+						this.Effect.SetValue(ParameterHandle, widthScale * this.GraphicsDevice.Viewport.Width);
+					}
+					break;
+			}
+		}
 
 		public void Render() {
 
@@ -646,59 +699,44 @@ namespace BeeDevelopment.Cogwheel {
 				this.Effect.Technique = this.Effect.GetTechnique(this.MostRecentlyUpdatedEye.ToString() + "EyeOnly");
 			}
 
+
+			// Set vertex format and declaration:
+			this.GraphicsDevice.VertexFormat = VertexPositionTextureTexture.Format;
+			this.GraphicsDevice.VertexDeclaration = this.VertexDeclaration;
+
 			// Render:
+
 			this.GraphicsDevice.BeginScene();
-			{
-				this.GraphicsDevice.VertexFormat = VertexPositionTextureTexture.Format;
+			{			
 
-				this.GraphicsDevice.SetRenderState(RenderState.AlphaFunc, Compare.Greater);
+				// Set render states:
+				this.GraphicsDevice.SetRenderState(RenderState.ZFunc, Compare.Less);
 
+				// Set sampler states:
 				this.GraphicsDevice.SetSamplerState(0, SamplerState.MagFilter, this.MagnificationFilter);
 				this.GraphicsDevice.SetSamplerState(1, SamplerState.MagFilter, this.MagnificationFilter);
 
-				this.GraphicsDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, this.displayMode == StereoscopicDisplayMode.MonochromeAnaglyph ? Color.Black : this.BackgroundColour, 0.0f, 0);
-
-				// Set effect width/height parameters:
-				switch (this.displayMode) {
-					case StereoscopicDisplayMode.RowInterleaved:
-						using (var ParameterHandle = this.Effect.GetParameter(null, "ViewportHeight")) {
-							this.Effect.SetValue(ParameterHandle, this.CorrectedHeightScale * this.GraphicsDevice.Viewport.Height);
-						}
-						break;
-					case StereoscopicDisplayMode.ColumnInterleaved:
-						using (var ParameterHandle = this.Effect.GetParameter(null, "ViewportWidth")) {
-							this.Effect.SetValue(ParameterHandle, this.CorrectedWidthScale * this.GraphicsDevice.Viewport.Width);
-						}
-						break;
-					case StereoscopicDisplayMode.ChequerboardInterleaved:
-						using (var ParameterHandle = this.Effect.GetParameter(null, "ViewportHeight")) {
-							this.Effect.SetValue(ParameterHandle, this.CorrectedHeightScale * this.GraphicsDevice.Viewport.Height);
-						}
-						using (var ParameterHandle = this.Effect.GetParameter(null, "ViewportWidth")) {
-							this.Effect.SetValue(ParameterHandle, this.CorrectedWidthScale * this.GraphicsDevice.Viewport.Width);
-						}
-						break;
-				}
+				// Clear:
+				this.GraphicsDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, this.displayMode == StereoscopicDisplayMode.MonochromeAnaglyph ? Color.Black : this.BackgroundColour, 1.0f, 0);
 
 				// Set texture eye parameters (if we need to flip):
+				bool FlipLeftRightScreenTextures = false;
 				{
-					bool FlipLeftRightTextures = false;
-					// If we're using an interleaved mode, ensure that the left eye 
 					switch (this.displayMode) {
 						case StereoscopicDisplayMode.RowInterleaved:
 							int RowOffset = this.Control.PointToScreen(new Point(0, (int)Math.Round(0.5f * this.GraphicsDevice.Viewport.Height * (1.0f - this.TextureTopLeft.Y)))).Y;
-							FlipLeftRightTextures = this.FirstInterleavedEye == Eye.Right ^ (RowOffset & 1) != 0;
+							FlipLeftRightScreenTextures = this.FirstInterleavedEye == Eye.Right ^ (RowOffset & 1) != 0;
 							break;
 						case StereoscopicDisplayMode.ColumnInterleaved:
 							int ColumnOffset = this.Control.PointToScreen(new Point((int)Math.Round(0.5f * this.GraphicsDevice.Viewport.Width * (1.0f + this.TextureTopLeft.X)), 0)).X;
-							FlipLeftRightTextures = this.FirstInterleavedEye == Eye.Right ^ (ColumnOffset & 1) != 0;
+							FlipLeftRightScreenTextures = this.FirstInterleavedEye == Eye.Right ^ (ColumnOffset & 1) != 0;
 							break;
 						case StereoscopicDisplayMode.ChequerboardInterleaved:
 							Point PixelOffset = this.Control.PointToScreen(new Point((int)Math.Round(0.5f * this.GraphicsDevice.Viewport.Width * (1.0f + this.TextureTopLeft.X)), (int)Math.Round(0.5f * this.GraphicsDevice.Viewport.Height * (1.0f - this.TextureTopLeft.Y))));
-							FlipLeftRightTextures = this.FirstInterleavedEye == Eye.Right ^ ((PixelOffset.X + PixelOffset.Y) & 1) != 0;
+							FlipLeftRightScreenTextures = this.FirstInterleavedEye == Eye.Right ^ ((PixelOffset.X + PixelOffset.Y) & 1) != 0;
 							break;
 					}
-					EyeTexture LeftTexture = this.Textures[FlipLeftRightTextures ? 1 : 0], RightTexture = this.Textures[FlipLeftRightTextures ? 0 : 1];
+					EyeTexture LeftTexture = this.Textures[FlipLeftRightScreenTextures ? 1 : 0], RightTexture = this.Textures[FlipLeftRightScreenTextures ? 0 : 1];
 					if (LeftTexture != null) {
 						using (var ParameterHandle = this.Effect.GetParameter(null, "LeftEye")) {
 							this.Effect.SetTexture(ParameterHandle, LeftTexture.Texture);
@@ -715,9 +753,44 @@ namespace BeeDevelopment.Cogwheel {
 				{
 					this.Effect.BeginPass(0);
 					{
-						this.GraphicsDevice.SetStreamSource(0, this.Vertices, 0, VertexPositionTextureTexture.Size);
-						this.GraphicsDevice.VertexFormat = VertexPositionTextureTexture.Format;
-						this.GraphicsDevice.VertexDeclaration = this.VertexDeclaration;
+
+						// Draw the main screen quad:
+						this.SetViewportDimensionParameters(this.CorrectedWidthScale, this.CorrectedHeightScale);
+						this.Effect.CommitChanges();
+						this.GraphicsDevice.SetStreamSource(0, this.ScreenVertices, 0, VertexPositionTextureTexture.Size);
+						this.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
+
+
+						// We may need to exchange background textures (again!):
+						bool FlipLeftRightBackdropTextures = FlipLeftRightScreenTextures;
+						switch (this.displayMode) {
+							case StereoscopicDisplayMode.ColumnInterleaved:
+								int ColumnOffset = this.Control.PointToScreen(new Point(0, 0)).X;
+								FlipLeftRightBackdropTextures = this.FirstInterleavedEye == Eye.Right ^ (ColumnOffset & 1) != 0;
+								break;
+							case StereoscopicDisplayMode.ChequerboardInterleaved:
+								Point PixelOffset = this.Control.PointToScreen(new Point(0, (int)Math.Round(0.5f * this.GraphicsDevice.Viewport.Height * (1.0f - this.TextureTopLeft.Y))));
+								FlipLeftRightBackdropTextures = this.FirstInterleavedEye == Eye.Right ^ ((PixelOffset.X + PixelOffset.Y) & 1) != 0;
+								break;
+						}
+						if (FlipLeftRightBackdropTextures != FlipLeftRightScreenTextures) {
+							EyeTexture LeftTexture = this.Textures[FlipLeftRightBackdropTextures ? 1 : 0], RightTexture = this.Textures[FlipLeftRightBackdropTextures ? 0 : 1];
+							if (LeftTexture != null) {
+								using (var ParameterHandle = this.Effect.GetParameter(null, "LeftEye")) {
+									this.Effect.SetTexture(ParameterHandle, LeftTexture.Texture);
+								}
+							}
+							if (RightTexture != null) {
+								using (var ParameterHandle = this.Effect.GetParameter(null, "RightEye")) {
+									this.Effect.SetTexture(ParameterHandle, RightTexture.Texture);
+								}
+							}
+						}
+
+						// Draw the backdrop quad:
+						this.SetViewportDimensionParameters(1.0f, this.CorrectedHeightScale);
+						this.Effect.CommitChanges();
+						this.GraphicsDevice.SetStreamSource(0, this.BackdropVertices, 0, VertexPositionTextureTexture.Size);
 						this.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
 					}
 					this.Effect.EndPass();
@@ -806,7 +879,8 @@ namespace BeeDevelopment.Cogwheel {
 				}
 				// Mark fields as null.
 				for (int i = 0; i < this.Textures.Length; ++i) this.Textures[i] = null;
-				this.Vertices = null;
+				this.BackdropVertices = null;
+				this.ScreenVertices = null;
 				this.Effect = null;
 				this.GraphicsDevice = null;
 				this.D3D = null;
