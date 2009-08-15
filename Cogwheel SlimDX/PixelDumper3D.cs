@@ -241,7 +241,7 @@ namespace BeeDevelopment.Cogwheel {
 					this.imageWidth = width;
 					this.imageHeight = height;
 					// Round up the width/height to the nearest power of two.
-					this.textureWidth = 8; this.textureHeight = 8;
+					this.textureWidth = 16; this.textureHeight = 16;
 					while (this.textureWidth < this.imageWidth) this.textureWidth <<= 1;
 					while (this.textureHeight < this.imageHeight) this.textureHeight <<= 1;
 					// Create a new texture instance.
@@ -315,6 +315,11 @@ namespace BeeDevelopment.Cogwheel {
 		/// Stores references to the two backdrop textures (one for each eye).
 		/// </summary>
 		private EyeTexture[] BackdropTextures;
+
+		/// <summary>
+		/// Stores references to the two fullscreen backdrop textures (one for each eye).
+		/// </summary>
+		private EyeTexture[] FullBackdropTextures;
 		
 		/// <summary>
 		/// Stores the current vertex declaration.
@@ -330,6 +335,11 @@ namespace BeeDevelopment.Cogwheel {
 		/// Stores the <see cref="VertexBuffer"/> that in turn stores the vertices for the backdrop quad to render.
 		/// </summary>
 		private VertexBuffer BackdropVertices;
+
+		/// <summary>
+		/// Stores the <see cref="VertexBuffer"/> that in turn stores the vertices for the fullscreen backdrop quad to render.
+		/// </summary>
+		private VertexBuffer FullBackdropVertices;
 
 		/// <summary>
 		/// Stores the <see cref="Effect"/> that contains the various blending techniques.
@@ -473,6 +483,7 @@ namespace BeeDevelopment.Cogwheel {
 			this.Control = control;
 			this.ScreenTextures = new EyeTexture[2];
 			this.BackdropTextures = new EyeTexture[2];
+			this.FullBackdropTextures = new EyeTexture[2];
 			this.CurrentRefreshRate = PixelDumper3D.GetCurrentRefreshRate();
 		}
 
@@ -484,6 +495,10 @@ namespace BeeDevelopment.Cogwheel {
 		/// Destroys the current <see cref="Device"/>.
 		/// </summary>
 		private void DestroyDevice() {
+			if (this.FullBackdropVertices != null) {
+				this.FullBackdropVertices.Dispose();
+				this.FullBackdropVertices = null;
+			}
 			if (this.BackdropVertices != null) {
 				this.BackdropVertices.Dispose();
 				this.BackdropVertices = null;
@@ -506,6 +521,12 @@ namespace BeeDevelopment.Cogwheel {
 				if (this.BackdropTextures[i] != null) {
 					this.BackdropTextures[i].Dispose();
 					this.BackdropTextures[i] = null;
+				}
+			}
+			for (int i = 0; i < this.FullBackdropTextures.Length; ++i) {
+				if (this.FullBackdropTextures[i] != null) {
+					this.FullBackdropTextures[i].Dispose();
+					this.FullBackdropTextures[i] = null;
 				}
 			}
 			if (this.Effect != null) {
@@ -548,6 +569,7 @@ namespace BeeDevelopment.Cogwheel {
 			// Create the vertex buffers:
 			this.ScreenVertices = new VertexBuffer(this.GraphicsDevice, 6 * VertexPositionTextureTexture.Size, Usage.WriteOnly, VertexFormat.None, Pool.Managed);
 			this.BackdropVertices = new VertexBuffer(this.GraphicsDevice, 6 * VertexPositionTextureTexture.Size, Usage.WriteOnly, VertexFormat.None, Pool.Managed);
+			this.FullBackdropVertices = new VertexBuffer(this.GraphicsDevice, 6 * VertexPositionTextureTexture.Size, Usage.WriteOnly, VertexFormat.None, Pool.Managed);
 			this.RewriteVertexBuffer();
 			// Update the monitor refresh rate:
 			this.CurrentRefreshRate = PixelDumper3D.GetCurrentRefreshRate();
@@ -673,6 +695,33 @@ namespace BeeDevelopment.Cogwheel {
 					}
 				);
 				this.BackdropVertices.Unlock();
+			}
+			// Write the fullscreen backdrop quad vertex buffer.
+			PTL = new Vector3(Math.Sign(PL), Math.Sign(PT), 0.0f);
+			PTR = new Vector3(Math.Sign(PR), Math.Sign(PT), 0.0f);
+			PBL = new Vector3(Math.Sign(PL), Math.Sign(PB), 0.0f);
+			PBR = new Vector3(Math.Sign(PR), Math.Sign(PB), 0.0f);
+			TL = 0.0f; TR = 0.0f; TT = 0.0f; TB = 1.0f;
+			MostRecentlyUpdatedTexture = this.FullBackdropTextures[(int)this.MostRecentlyUpdatedEye];
+			if (MostRecentlyUpdatedTexture != null) {
+				TB = (float)MostRecentlyUpdatedTexture.ImageHeight / (float)MostRecentlyUpdatedTexture.TextureHeight;
+			}
+			TTL = new Vector2(TL, TT);
+			TTR = new Vector2(TR, TT);
+			TBL = new Vector2(TL, TB);
+			TBR = new Vector2(TR, TB);
+			using (var VertexStream = FullBackdropVertices.Lock(0, 0, LockFlags.None)) {
+				VertexStream.WriteRange(
+					new[] {
+						new VertexPositionTextureTexture(PBL, TBL, NBL),
+						new VertexPositionTextureTexture(PTR, TTR, NTR),
+						new VertexPositionTextureTexture(PBR, TBR, NBR),
+						new VertexPositionTextureTexture(PBL, TBL, NBL),
+						new VertexPositionTextureTexture(PTL, TTL, NTL),
+						new VertexPositionTextureTexture(PTR, TTR, NTR),
+					}
+				);
+				this.FullBackdropVertices.Unlock();
 			}
 		}
 
@@ -806,6 +855,37 @@ namespace BeeDevelopment.Cogwheel {
 						this.Effect.CommitChanges();
 						this.GraphicsDevice.SetStreamSource(0, this.BackdropVertices, 0, VertexPositionTextureTexture.Size);
 						this.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
+
+						// We may need to exchange background textures (again!):
+						bool FlipLeftRightFullBackdropTextures = FlipLeftRightScreenTextures;
+						{
+							switch (this.displayMode) {
+								case StereoscopicDisplayMode.RowInterleaved:
+									int RowOffset = this.Control.PointToScreen(new Point(0, 0)).Y;
+									FlipLeftRightFullBackdropTextures = this.FirstInterleavedEye == Eye.Right ^ (RowOffset & 1) != 0;
+									break;
+								case StereoscopicDisplayMode.ChequerboardInterleaved:
+									Point PixelOffset = this.Control.PointToScreen(new Point(0, 0));
+									FlipLeftRightFullBackdropTextures = this.FirstInterleavedEye == Eye.Right ^ ((PixelOffset.X + PixelOffset.Y) & 1) != 0;
+									break;
+							}
+
+							EyeTexture LeftTexture = this.FullBackdropTextures[FlipLeftRightBackdropTextures ? 1 : 0], RightTexture = this.FullBackdropTextures[FlipLeftRightBackdropTextures ? 0 : 1];
+							using (var ParameterHandle = this.Effect.GetParameter(null, "LeftEye")) {
+								this.Effect.SetTexture(ParameterHandle, LeftTexture != null ? LeftTexture.Texture : null);
+							}
+							using (var ParameterHandle = this.Effect.GetParameter(null, "RightEye")) {
+								this.Effect.SetTexture(ParameterHandle, RightTexture != null ? RightTexture.Texture : null);
+							}
+						}
+
+						// Draw the full backdrop quad:
+						this.GraphicsDevice.SetSamplerState(0, SamplerState.MagFilter, TextureFilter.Point);
+						this.GraphicsDevice.SetSamplerState(1, SamplerState.MagFilter, TextureFilter.Point);
+						this.SetViewportDimensionParameters(1.0f, 1.0f);
+						this.Effect.CommitChanges();
+						this.GraphicsDevice.SetStreamSource(0, this.FullBackdropVertices, 0, VertexPositionTextureTexture.Size);
+						this.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
 					}
 					this.Effect.EndPass();
 				}
@@ -874,6 +954,7 @@ namespace BeeDevelopment.Cogwheel {
 		/// <param name="height">The height of the backdrop in pixels.</param>
 		public void SetBackdrop(Eye eye, int[] data, int height) {
 			this.SetTexture(this.BackdropTextures, eye, data, 1, height);
+			this.SetTexture(this.FullBackdropTextures, eye, new int[] { data[0], data[height - 1] }, 1, 2);
 		}
 
 		#endregion
