@@ -656,7 +656,7 @@ namespace BeeDevelopment.Cogwheel {
 				this.GraphicsDevice.SetSamplerState(0, SamplerState.MagFilter, this.MagnificationFilter);
 				this.GraphicsDevice.SetSamplerState(1, SamplerState.MagFilter, this.MagnificationFilter);
 
-				this.GraphicsDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, this.BackgroundColour, 0.0f, 0);
+				this.GraphicsDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, this.displayMode == StereoscopicDisplayMode.MonochromeAnaglyph ? Color.Black : this.BackgroundColour, 0.0f, 0);
 
 				// Set effect width/height parameters:
 				switch (this.displayMode) {
