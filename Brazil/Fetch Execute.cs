@@ -1984,7 +1984,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x86: // RES 0, (HL)
 									WriteMemory(RegHL.Value16, (byte)(ReadMemory(RegHL.Value16) & unchecked((byte)~0x01)));
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
 									break;
 								case 0x87: // RES 0, A
 									RegAF.High8 &= unchecked((byte)~0x01);
@@ -2016,7 +2016,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x8E: // RES 1, (HL)
 									WriteMemory(RegHL.Value16, (byte)(ReadMemory(RegHL.Value16) & unchecked((byte)~0x02)));
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
 									break;
 								case 0x8F: // RES 1, A
 									RegAF.High8 &= unchecked((byte)~0x02);
@@ -2048,7 +2048,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x96: // RES 2, (HL)
 									WriteMemory(RegHL.Value16, (byte)(ReadMemory(RegHL.Value16) & unchecked((byte)~0x04)));
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
 									break;
 								case 0x97: // RES 2, A
 									RegAF.High8 &= unchecked((byte)~0x04);
@@ -2080,7 +2080,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x9E: // RES 3, (HL)
 									WriteMemory(RegHL.Value16, (byte)(ReadMemory(RegHL.Value16) & unchecked((byte)~0x08)));
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
 									break;
 								case 0x9F: // RES 3, A
 									RegAF.High8 &= unchecked((byte)~0x08);
@@ -2112,7 +2112,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xA6: // RES 4, (HL)
 									WriteMemory(RegHL.Value16, (byte)(ReadMemory(RegHL.Value16) & unchecked((byte)~0x10)));
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
 									break;
 								case 0xA7: // RES 4, A
 									RegAF.High8 &= unchecked((byte)~0x10);
@@ -2144,7 +2144,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xAE: // RES 5, (HL)
 									WriteMemory(RegHL.Value16, (byte)(ReadMemory(RegHL.Value16) & unchecked((byte)~0x20)));
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
 									break;
 								case 0xAF: // RES 5, A
 									RegAF.High8 &= unchecked((byte)~0x20);
@@ -2176,7 +2176,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xB6: // RES 6, (HL)
 									WriteMemory(RegHL.Value16, (byte)(ReadMemory(RegHL.Value16) & unchecked((byte)~0x40)));
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
 									break;
 								case 0xB7: // RES 6, A
 									RegAF.High8 &= unchecked((byte)~0x40);
@@ -2208,7 +2208,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xBE: // RES 7, (HL)
 									WriteMemory(RegHL.Value16, (byte)(ReadMemory(RegHL.Value16) & unchecked((byte)~0x80)));
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
 									break;
 								case 0xBF: // RES 7, A
 									RegAF.High8 &= unchecked((byte)~0x80);
@@ -2240,7 +2240,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xC6: // SET 0, (HL)
 									WriteMemory(RegHL.Value16, (byte)(ReadMemory(RegHL.Value16) | unchecked((byte)0x01)));
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
 									break;
 								case 0xC7: // SET 0, A
 									RegAF.High8 |= unchecked((byte)0x01);
@@ -2272,7 +2272,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xCE: // SET 1, (HL)
 									WriteMemory(RegHL.Value16, (byte)(ReadMemory(RegHL.Value16) | unchecked((byte)0x02)));
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
 									break;
 								case 0xCF: // SET 1, A
 									RegAF.High8 |= unchecked((byte)0x02);
@@ -2304,7 +2304,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xD6: // SET 2, (HL)
 									WriteMemory(RegHL.Value16, (byte)(ReadMemory(RegHL.Value16) | unchecked((byte)0x04)));
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
 									break;
 								case 0xD7: // SET 2, A
 									RegAF.High8 |= unchecked((byte)0x04);
@@ -2336,7 +2336,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xDE: // SET 3, (HL)
 									WriteMemory(RegHL.Value16, (byte)(ReadMemory(RegHL.Value16) | unchecked((byte)0x08)));
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
 									break;
 								case 0xDF: // SET 3, A
 									RegAF.High8 |= unchecked((byte)0x08);
@@ -2368,7 +2368,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xE6: // SET 4, (HL)
 									WriteMemory(RegHL.Value16, (byte)(ReadMemory(RegHL.Value16) | unchecked((byte)0x10)));
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
 									break;
 								case 0xE7: // SET 4, A
 									RegAF.High8 |= unchecked((byte)0x10);
@@ -2400,7 +2400,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xEE: // SET 5, (HL)
 									WriteMemory(RegHL.Value16, (byte)(ReadMemory(RegHL.Value16) | unchecked((byte)0x20)));
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
 									break;
 								case 0xEF: // SET 5, A
 									RegAF.High8 |= unchecked((byte)0x20);
@@ -2432,7 +2432,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xF6: // SET 6, (HL)
 									WriteMemory(RegHL.Value16, (byte)(ReadMemory(RegHL.Value16) | unchecked((byte)0x40)));
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
 									break;
 								case 0xF7: // SET 6, A
 									RegAF.High8 |= unchecked((byte)0x40);
@@ -2464,7 +2464,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xFE: // SET 7, (HL)
 									WriteMemory(RegHL.Value16, (byte)(ReadMemory(RegHL.Value16) | unchecked((byte)0x80)));
-									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
+									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
 									break;
 								case 0xFF: // SET 7, A
 									RegAF.High8 |= unchecked((byte)0x80);
