@@ -102,6 +102,7 @@ namespace BeeDevelopment.Sega8Bit {
 			#endregion
 
 			this.ResetAll();
+			this.SetCapabilitiesByModelAndCountry(HardwareModel.Default, Country.None);
 		}
 
 		/// <summary>
