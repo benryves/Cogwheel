@@ -2486,6 +2486,7 @@ namespace BeeDevelopment.Brazil {
 							TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = TUS;
+							this.totalExecutedCycles += 17; this.pendingCycles -= 17;
 							break;
 						case 0xCE: // ADC A, n
 							RegAF.Value16 = TableALU[1, RegAF.High8, ReadMemory(RegPC.Value16++), RegFlagC ? 1 : 0];
@@ -5083,6 +5084,7 @@ namespace BeeDevelopment.Brazil {
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
+									this.totalExecutedCycles += 17; this.pendingCycles -= 17;
 									break;
 								case 0xCE: // ADC A, n
 									RegAF.Value16 = TableALU[1, RegAF.High8, ReadMemory(RegPC.Value16++), RegFlagC ? 1 : 0];
@@ -10159,6 +10161,7 @@ namespace BeeDevelopment.Brazil {
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
+									this.totalExecutedCycles += 17; this.pendingCycles -= 17;
 									break;
 								case 0xCE: // ADC A, n
 									RegAF.Value16 = TableALU[1, RegAF.High8, ReadMemory(RegPC.Value16++), RegFlagC ? 1 : 0];
