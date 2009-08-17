@@ -11621,22 +11621,19 @@ namespace BeeDevelopment.Brazil {
 							this.totalExecutedCycles += 13; this.pendingCycles -= 13;
 							break;
 						case 1:
-							this.totalExecutedCycles += 13; this.pendingCycles -= 13;
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = 0x38;
+							this.totalExecutedCycles += 13; this.pendingCycles -= 13;
 							break;
 						case 2:
-							this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 							TUS = (ushort)(RegI * 256 + 0);
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Low8 = ReadMemory(TUS++); RegPC.High8 = ReadMemory(TUS);
+							this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 							break;
 					}
 				}
-
-				
 			}
 		}
-		
 	}
 }
