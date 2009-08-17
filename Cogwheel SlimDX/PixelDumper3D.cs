@@ -870,7 +870,7 @@ namespace BeeDevelopment.Cogwheel {
 									break;
 							}
 
-							EyeTexture LeftTexture = this.FullBackdropTextures[FlipLeftRightBackdropTextures ? 1 : 0], RightTexture = this.FullBackdropTextures[FlipLeftRightBackdropTextures ? 0 : 1];
+							EyeTexture LeftTexture = this.FullBackdropTextures[FlipLeftRightFullBackdropTextures ? 1 : 0], RightTexture = this.FullBackdropTextures[FlipLeftRightFullBackdropTextures ? 0 : 1];
 							using (var ParameterHandle = this.Effect.GetParameter(null, "LeftEye")) {
 								this.Effect.SetTexture(ParameterHandle, LeftTexture != null ? LeftTexture.Texture : null);
 							}
