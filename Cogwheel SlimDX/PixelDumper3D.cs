@@ -241,7 +241,7 @@ namespace BeeDevelopment.Cogwheel {
 					this.imageWidth = width;
 					this.imageHeight = height;
 					// Round up the width/height to the nearest power of two.
-					this.textureWidth = 16; this.textureHeight = 16;
+					this.textureWidth = 32; this.textureHeight = 32;
 					while (this.textureWidth < this.imageWidth) this.textureWidth <<= 1;
 					while (this.textureHeight < this.imageHeight) this.textureHeight <<= 1;
 					// Create a new texture instance.
@@ -697,14 +697,14 @@ namespace BeeDevelopment.Cogwheel {
 				this.BackdropVertices.Unlock();
 			}
 			// Write the fullscreen backdrop quad vertex buffer.
-			PTL = new Vector3(Math.Sign(PL), Math.Sign(PT), 0.0f);
-			PTR = new Vector3(Math.Sign(PR), Math.Sign(PT), 0.0f);
-			PBL = new Vector3(Math.Sign(PL), Math.Sign(PB), 0.0f);
-			PBR = new Vector3(Math.Sign(PR), Math.Sign(PB), 0.0f);
+			PTL = new Vector3(-1.0f, +1.0f, 0.0f);
+			PTR = new Vector3(+1.0f, +1.0f, 0.0f);
+			PBL = new Vector3(-1.0f, -1.0f, 0.0f);
+			PBR = new Vector3(+1.0f, -1.0f, 0.0f);
 			TL = 0.0f; TR = 0.0f; TT = 0.0f; TB = 1.0f;
 			MostRecentlyUpdatedTexture = this.FullBackdropTextures[(int)this.MostRecentlyUpdatedEye];
 			if (MostRecentlyUpdatedTexture != null) {
-				TB = (float)MostRecentlyUpdatedTexture.ImageHeight / (float)MostRecentlyUpdatedTexture.TextureHeight;
+				TB = (float)(MostRecentlyUpdatedTexture.ImageHeight - 0.01f) / (float)MostRecentlyUpdatedTexture.TextureHeight;
 			}
 			TTL = new Vector2(TL, TT);
 			TTR = new Vector2(TR, TT);
@@ -787,7 +787,7 @@ namespace BeeDevelopment.Cogwheel {
 				this.GraphicsDevice.SetSamplerState(1, SamplerState.MagFilter, this.MagnificationFilter);
 
 				// Clear:
-				this.GraphicsDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, this.displayMode == StereoscopicDisplayMode.MonochromeAnaglyph ? Color.Black : this.BackgroundColour, 1.0f, 0);
+				this.GraphicsDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.Magenta, 1.0f, 0);
 
 				// Set texture eye parameters (if we need to flip):
 				bool FlipLeftRightScreenTextures = false;
