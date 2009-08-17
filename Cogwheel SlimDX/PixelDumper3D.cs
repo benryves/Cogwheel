@@ -620,8 +620,8 @@ namespace BeeDevelopment.Cogwheel {
 			if (this.displayMode == StereoscopicDisplayMode.ColumnInterleaved || this.displayMode == StereoscopicDisplayMode.ChequerboardInterleaved) {
 				float StartingPosition = this.GraphicsDevice.Viewport.Width * 0.5f + PL * this.GraphicsDevice.Viewport.Width * 0.5f;
 				float StartingPositionFix = 2.0f * (StartingPosition - (int)StartingPosition);
-				PL += StartingPositionFix / this.GraphicsDevice.Viewport.Width;
-				PR += StartingPositionFix / this.GraphicsDevice.Viewport.Width;
+				PL -= StartingPositionFix / this.GraphicsDevice.Viewport.Width;
+				PR -= StartingPositionFix / this.GraphicsDevice.Viewport.Width;
 			}
 
 			// Create the vectors representing the corners of the screen:
