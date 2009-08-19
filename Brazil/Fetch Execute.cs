@@ -3186,7 +3186,7 @@ namespace BeeDevelopment.Brazil {
 								case 0x86: // ADD A, (IX+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
 									RegAF.Value16 = TableALU[0, RegAF.High8, ReadMemory((ushort)(RegIX.Value16 + Displacement)), 0];
-									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
+									this.totalExecutedCycles += 16; this.pendingCycles -= 16;
 									break;
 								case 0x87: // ADD A, A
 									RegAF.Value16 = TableALU[0, RegAF.High8, RegAF.High8, 0];
@@ -8431,7 +8431,7 @@ namespace BeeDevelopment.Brazil {
 								case 0x86: // ADD A, (IY+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
 									RegAF.Value16 = TableALU[0, RegAF.High8, ReadMemory((ushort)(RegIY.Value16 + Displacement)), 0];
-									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
+									this.totalExecutedCycles += 16; this.pendingCycles -= 16;
 									break;
 								case 0x87: // ADD A, A
 									RegAF.Value16 = TableALU[0, RegAF.High8, RegAF.High8, 0];
