@@ -6,6 +6,7 @@ using BeeDevelopment.Sega8Bit.Mappers;
 using FileEx = System.IO.FileEx;
 #else
 using FileEx = System.IO.File;
+using BeeDevelopment.Sega8Bit.Hardware;
 #endif
 
 namespace BeeDevelopment.Sega8Bit.Utility {
@@ -197,8 +198,13 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 #endif
 					} catch { }
 				}
-
 			}
+
+			// Fix for Codemasters games:
+			if (emulator.CartridgeSlot.Memory is Codemasters && (Info == null || (Info.Country == Country.None && Info.Model != HardwareModel.GameGear && Info.Model != HardwareModel.GameGearMasterSystem))) {
+				emulator.Video.System = VideoDisplayProcessor.VideoSystem.Pal;
+			}
+	
 			return Info;
 
 		}
