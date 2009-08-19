@@ -241,8 +241,8 @@ namespace BeeDevelopment.Cogwheel {
 										this.SoundBuffer.Write(this.InternalSoundBuffer, 0, LockFlags.EntireBuffer);
 									}
 								}
-								this.RepaintVideo(false);
 							}
+							this.RepaintVideo(false);
 						}
 						this.Dumper.Render();
 					} else {
