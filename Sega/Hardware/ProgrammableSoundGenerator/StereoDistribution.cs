@@ -102,6 +102,25 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 		#endregion
 
+		#region Events
+
+		/// <summary>
+		/// An event that is triggered when a stereo distribution data has been written to the <see cref="ProgrammableSoundGenerator"/>.
+		/// </summary>
+		public event EventHandler<DataWrittenEventArgs> StereoDistributionDataWritten;
+		
+		/// <summary>
+		/// An event that is triggered when a stereo distribution data has been written to the <see cref="ProgrammableSoundGenerator"/>.
+		/// </summary>
+		/// <param name="e">The data that was written.</param>
+		protected virtual void OnStereoDistributionDataWritten(DataWrittenEventArgs e) {
+			if (this.StereoDistributionDataWritten != null) {
+				this.StereoDistributionDataWritten(this, e);
+			}
+		}
+
+		#endregion
+
 		#region Public Methods
 
 		/// <summary>
@@ -119,6 +138,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <param name="value">The value to write to the port.</param>
 		/// <remarks>The writes are committed by the <see cref="CreateSamples"/> method.</remarks>
 		public void WriteStereoDistributionQueued(byte value) {
+			this.OnStereoDistributionDataWritten(new DataWrittenEventArgs(value));
 			this.QueuedWrites.Enqueue(new QueuedWrite(this) {
 				Time = this.Emulator.ExpectedExecutedCycles,
 				Value = value,

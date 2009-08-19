@@ -4,6 +4,25 @@ using BeeDevelopment.Brazil;
 
 namespace BeeDevelopment.Sega8Bit.Hardware {
 	public partial class ProgrammableSoundGenerator {
+		
+		#region Events
+
+		/// <summary>
+		/// An event that is triggered when data has been written to the <see cref="ProgrammableSoundGenerator"/>.
+		/// </summary>
+		public event EventHandler<DataWrittenEventArgs> DataWritten;
+
+		/// <summary>
+		/// An event that is triggered when data has been written to the <see cref="ProgrammableSoundGenerator"/>.
+		/// </summary>
+		/// <param name="e">The data that was written.</param>
+		protected virtual void OnDataWritten(DataWrittenEventArgs e) {
+			if (this.DataWritten != null) {
+				this.DataWritten(this, e);
+			}
+		}
+
+		#endregion
 
 		/// <summary>
 		/// Specifies the destination of a queued write.
@@ -71,6 +90,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <param name="value">The control byte to write.</param>
 		/// <remarks>The writes are committed by the <see cref="CreateSamples"/> method.</remarks>
 		public void WriteQueued(byte value) {
+			this.OnDataWritten(new DataWrittenEventArgs(value));
 			this.QueuedWrites.Enqueue(new QueuedWrite(this) {
 				Time = this.Emulator.ExpectedExecutedCycles, 
 				Value = value, 
