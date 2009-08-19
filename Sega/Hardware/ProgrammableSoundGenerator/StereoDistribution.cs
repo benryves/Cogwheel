@@ -7,7 +7,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <summary>
 		/// Stores the stereo distribution value.
 		/// </summary>
-		private byte StereoDistribution;
+		internal byte stereoDistribution;
 
 		[Flags()]
 		private enum StereoDistributionChannels : byte {
@@ -32,7 +32,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <param name="channel">The channel to get the state of.</param>
 		/// <returns>True if the channel is enabled; false if it is disabled.</returns>
 		private bool GetStereoChannel(StereoDistributionChannels channel) {
-			return (this.StereoDistribution & (byte)channel) != 0;
+			return (this.stereoDistribution & (byte)channel) != 0;
 		}
 
 		/// <summary>
@@ -42,9 +42,9 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <param name="value">True to enable the channel; false to disable it.</param>
 		private void SetStereoChannel(StereoDistributionChannels channel, bool value) {
 			if (value) {
-				this.StereoDistribution |= (byte)channel;
+				this.stereoDistribution |= (byte)channel;
 			} else {
-				this.StereoDistribution &= (byte)~channel;
+				this.stereoDistribution &= (byte)~channel;
 			}
 		}
 
@@ -128,7 +128,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// </summary>
 		/// <param name="value">The value to write to the port.</param>
 		public void WriteStereoDistributionImmediate(byte value) {
-			this.StereoDistribution = value;
+			this.stereoDistribution = value;
 		}
 
 

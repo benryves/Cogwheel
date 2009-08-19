@@ -2,8 +2,8 @@
 namespace BeeDevelopment.Sega8Bit.Hardware {
 	public partial class ProgrammableSoundGenerator {
 
-		private ushort[] toneRegisters;
-		private byte[] volumeRegisters;
+		internal ushort[] toneRegisters;
+		internal byte[] volumeRegisters;
 
 		/// <summary>Gets or sets the value of tone register 0.</summary>
 		public ushort ToneRegister0 {

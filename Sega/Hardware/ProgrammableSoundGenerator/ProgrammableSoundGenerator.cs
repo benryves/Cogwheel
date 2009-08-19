@@ -70,7 +70,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <param name="emulator">The emulator that contains the <see cref="ProgrammableSoundGenerator"/>.</param>
 		public ProgrammableSoundGenerator(Emulator emulator) {
 			this.Emulator = emulator;
-			this.clockSpeed = 3579545 / 16;
+			this.clockSpeed = this.Emulator.ClockSpeed / 16;
 			this.ShiftRegisterWidth = 16;
 			this.tappedBits = 0x9;
 			this.Reset();
@@ -92,7 +92,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 			this.countDown = new int[4];
 			this.levels = new int[] { 1, 1, 1, 1 };
 			this.shiftRegister = (ushort)(1 << (this.ShiftRegisterWidth - 1));
-			this.StereoDistribution = 0xFF;
+			this.stereoDistribution = 0xFF;
 		}
 
 		/// <summary>

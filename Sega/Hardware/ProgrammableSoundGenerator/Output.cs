@@ -129,7 +129,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 							if (SampleCount[c] != 0) Level = (double)SampleTotal[c] / (double)SampleCount[c];
 							double ScaledValue = Level * LogarithmicScale[this.volumeRegisters[c]];
 							for (int StereoChannel = 0; StereoChannel < 2; ++StereoChannel) {
-								if ((this.StereoDistribution & (1 << (c + 4 * (1 - StereoChannel)))) != 0) Mixer[StereoChannel] += ScaledValue;
+								if ((this.stereoDistribution & (1 << (c + 4 * (1 - StereoChannel)))) != 0) Mixer[StereoChannel] += ScaledValue;
 							}
 						}
 
