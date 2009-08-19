@@ -89,13 +89,17 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			this.TotalSamples = 0;
 			this.Writer = new BinaryWriter(this.stream, Encoding.Unicode);
 			this.RecordingFm = this.emulator.FmSoundEnabled;
+			this.InitialClockRate = this.emulator.ClockSpeed;
+			this.WrittenPsgPreinitialisation = false;
+			this.WrittenFmPreinitialisation = false;
+			this.FmAdr = this.emulator.FmSound.Opll.Adr;
 			// Write VGM header:
 			this.stream.Seek(0, SeekOrigin.Begin);
 			this.Writer.Write(Encoding.ASCII.GetBytes("Vgm "));                   // Identification.
 			this.Writer.Write((int)0);                                            // EOF offset (unpopulated).
 			this.Writer.Write((int)0x150);                                        // Version 1.50
-			this.Writer.Write((int)this.emulator.ClockSpeed);                     // PSG clock speed.
-			this.Writer.Write((int)(RecordingFm ? this.emulator.ClockSpeed : 0)); // YM2413 clock speed.
+			this.Writer.Write((int)0);                                            // PSG clock speed.
+			this.Writer.Write((int)0);                                            // YM2413 clock speed.
 			this.Writer.Write((int)0);                                            // GD3 offset.
 			this.Writer.Write((int)0);                                            // Total number of samples.
 			this.Writer.Write((int)0);                                            // Loop offset.
@@ -107,27 +111,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			this.Writer.Write((int)0);                                            // YM2612 clock speed.
 			this.Writer.Write((int)0);                                            // YM2151 clock speed.
 			this.Writer.Write((int)0xC);                                          // VGM data offset.
-			this.Writer.Write(new byte[0x40 - this.stream.Position]);             // Padding to 0x40.
-			
-			// Write PSG pre-initialisation:
-			for (int i = 0; i < 4; ++i) {
-				this.Writer.Write((byte)VgmCommand.Psg);
-				this.Writer.Write((byte)(0x80 | (i << 5) | 0x10 | (this.emulator.Sound.volumeRegisters[i] & 0x0F)));
-				this.Writer.Write((byte)(0x80 | (i << 5) | 0x00 | (this.emulator.Sound.toneRegisters[i] & 0x0F)));
-				this.Writer.Write((byte)((this.emulator.Sound.toneRegisters[i] >> 4) & 0x3F));
-			}
-			this.Writer.Write((byte)VgmCommand.PsgStereoDistribution);
-			this.Writer.Write((byte)this.emulator.Sound.stereoDistribution);
-
-			// Write OPLL pre-initialisation:
-			if (this.RecordingFm) {
-				for (int i = 0; i < this.emulator.FmSound.Opll.reg.Length; ++i) {
-					this.Writer.Write((byte)VgmCommand.YM2413);
-					this.Writer.Write((byte)i);
-					this.Writer.Write((byte)this.emulator.FmSound.Opll.reg[i]);
-				}
-			}
-			this.FmAdr = this.emulator.FmSound.Opll.Adr;
+			this.Writer.Write(new byte[0x40 - this.stream.Position]);             // Padding to 0x40.			
 		}
 
 		/// <summary>
@@ -140,6 +124,14 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			long EndPosition = this.stream.Position;
 			this.stream.Seek(0x04, SeekOrigin.Begin);
 			this.Writer.Write((int)(EndPosition - 4));
+			if (this.WrittenPsgPreinitialisation) {
+				this.stream.Seek(0x0C, SeekOrigin.Begin);
+				this.Writer.Write((int)this.InitialClockRate);
+			}
+			if (this.WrittenFmPreinitialisation) {
+				this.stream.Seek(0x10, SeekOrigin.Begin);
+				this.Writer.Write((int)this.InitialClockRate);
+			}
 			this.stream.Seek(0x18, SeekOrigin.Begin);
 			this.Writer.Write(this.TotalSamples);
 			this.Writer = null;
@@ -153,19 +145,55 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 		private int TotalSamples = 0;
 		private bool RecordingFm = false;
 		private uint FmAdr = 0;
+		private int InitialClockRate = 0;
+
+		private bool WrittenPsgPreinitialisation;
+		private bool WrittenFmPreinitialisation;
+
+		private void WritePsgPreinitialisation() {
+			for (int i = 0; i < 4; ++i) {
+				this.Writer.Write((byte)VgmCommand.Psg);
+				this.Writer.Write((byte)(0x80 | (i << 5) | 0x10 | (this.emulator.Sound.volumeRegisters[i] & 0x0F)));
+				this.Writer.Write((byte)(0x80 | (i << 5) | 0x00 | (this.emulator.Sound.toneRegisters[i] & 0x0F)));
+				this.Writer.Write((byte)((this.emulator.Sound.toneRegisters[i] >> 4) & 0x3F));
+			}
+			this.Writer.Write((byte)VgmCommand.PsgStereoDistribution);
+			this.Writer.Write((byte)this.emulator.Sound.stereoDistribution);
+			this.WrittenPsgPreinitialisation = true;
+		}
+
+		private void WriteFmPreinitialisation() {
+			if (this.RecordingFm) {
+				for (int i = 0; i < this.emulator.FmSound.Opll.reg.Length; ++i) {
+					this.Writer.Write((byte)VgmCommand.YM2413);
+					this.Writer.Write((byte)i);
+					this.Writer.Write((byte)this.emulator.FmSound.Opll.reg[i]);
+				}
+			}
+			this.WrittenFmPreinitialisation = true;
+		}
 
 		private void Sound_StereoDistributionDataWritten(object sender, DataWrittenEventArgs e) {
 			if (this.Writer == null) return;
+			if (!this.WrittenPsgPreinitialisation) {
+				this.WritePsgPreinitialisation();
+			}
 			this.Write(VgmCommand.PsgStereoDistribution, e.Data);
 		}
 
 		private void Sound_DataWritten(object sender, DataWrittenEventArgs e) {
 			if (this.Writer == null) return;
+			if (!this.WrittenPsgPreinitialisation) {
+				this.WritePsgPreinitialisation();
+			}
 			this.Write(VgmCommand.Psg, e.Data);
 		}
 
 		private void FmSound_DataWritten(object sender, DataWrittenEventArgs e) {
 			if (this.Writer == null) return;
+			if (!this.WrittenFmPreinitialisation) {
+				this.WriteFmPreinitialisation();
+			}
 			if ((e.Address & 0x01) == 0) {
 				this.FmAdr = e.Data;
 			} else {
@@ -180,7 +208,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 				this.LastExecutedCycles = EmulatedCycles;
 			}
 			int ElapsedCycles = EmulatedCycles - this.LastExecutedCycles.Value;
-			int ElapsedSamples = (int)(((long)ElapsedCycles * (long)SampleRate) / this.emulator.ClockSpeed);
+			int ElapsedSamples = (int)(((long)ElapsedCycles * (long)SampleRate) / this.InitialClockRate);
 			this.TotalSamples += ElapsedSamples;
 			if (ElapsedSamples > 0) {
 				// There has been a time delay; we can write some more samples.
@@ -202,7 +230,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 					}
 				}
 			}
-			this.LastExecutedCycles += (int)(((long)ElapsedSamples * (long)this.emulator.ClockSpeed) / SampleRate);
+			this.LastExecutedCycles += (int)(((long)ElapsedSamples * (long)this.InitialClockRate) / SampleRate);
 			// Now we need to write the command!
 			this.Writer.Write((byte)command);
 		}
@@ -218,9 +246,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			this.Writer.Write(value2);
 		}
 		
-		#endregion
-
-		
+		#endregion	
 
 	}
 }
