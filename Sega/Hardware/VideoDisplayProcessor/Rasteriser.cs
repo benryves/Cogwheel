@@ -823,20 +823,17 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 
 					if (!this.backgroundLayerEnabled) for (int i = 0; i < 256; ++i) this.PixelBuffer[startPixel + i] = this.lastBackdropColour;
 
-					if (this.spriteLayerEnabled) {
-
-						switch (this.CurrentMode) {
-							case Mode.Mode4:
-							case Mode.Mode4Resolution224:
-							case Mode.Mode4Resolution240:
-								this.RenderMode4Sprites(startPixel, amZoomed, ForegroundBackground);
-								break;
-							case Mode.Graphic1:
-							case Mode.Graphic2:
-							case Mode.Multicolor:
-								this.RenderTms9918Sprites(startPixel, FixedPalette);
-								break;
-						}
+					switch (this.CurrentMode) {
+						case Mode.Mode4:
+						case Mode.Mode4Resolution224:
+						case Mode.Mode4Resolution240:
+							this.RenderMode4Sprites(startPixel, amZoomed, ForegroundBackground);
+							break;
+						case Mode.Graphic1:
+						case Mode.Graphic2:
+						case Mode.Multicolor:
+							this.RenderTms9918Sprites(startPixel, FixedPalette);
+							break;
 					}
 					if (UsingMode4 && this.MaskColumn0) {
 						for (int i = 0; i < 8; i++) PixelBuffer[startPixel + i] = lastBackdropColour;
@@ -1027,7 +1024,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 					if (PixelOffset >= 0 && PixelOffset < 256 && !DrawnPixel[PixelOffset]) {
 						bool PixelSet = (SpritePixelRow & 0x80) != 0;
 						if (PixelSet && (SpriteFlags & 0x0F) != 0) {
-							PixelBuffer[startPixel + PixelOffset] = fixedPalette[SpriteFlags & 0x0F];
+							if (this.spriteLayerEnabled) PixelBuffer[startPixel + PixelOffset] = fixedPalette[SpriteFlags & 0x0F];
 							DrawnPixel[PixelOffset] = true;
 						}
 					}
@@ -1101,7 +1098,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 							} else {
 								if (!foregroundBackground[pixelX]) {
 									spriteCollisionBuffer[pixelX] = true;
-									PixelBuffer[startPixel + pixelX] = this.colourRam[colours[p / 2] + 16];
+									if (this.spriteLayerEnabled) PixelBuffer[startPixel + pixelX] = this.colourRam[colours[p / 2] + 16];
 								}
 							}
 						}
@@ -1117,7 +1114,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 							} else {
 								spriteCollisionBuffer[pixelX] = true;
 								if (!foregroundBackground[pixelX]) {
-									PixelBuffer[startPixel + pixelX] = this.colourRam[colours[p] + 16];
+									if (this.spriteLayerEnabled) PixelBuffer[startPixel + pixelX] = this.colourRam[colours[p] + 16];
 								}
 							}
 						}
