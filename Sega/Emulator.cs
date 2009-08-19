@@ -22,6 +22,15 @@ namespace BeeDevelopment.Sega8Bit {
 		/// </summary>
 		public HardwareFamily Family { get; set; }
 
+		/// <summary>
+		/// Gets the clock rate of the emulator's Z80 CPU in Hertz.
+		/// </summary>
+		public int ClockSpeed {
+			get {
+				return this.video.System == VideoDisplayProcessor.VideoSystem.Ntsc ? 3579545 : 3546895;
+			}
+		}
+
 		#endregion
 
 		#region Public Methods
