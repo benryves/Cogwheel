@@ -108,6 +108,9 @@
 			this.SaveStateDialog = new System.Windows.Forms.SaveFileDialog();
 			this.CursorHider = new System.Windows.Forms.Timer(this.components);
 			this.ColourDialog = new System.Windows.Forms.ColorDialog();
+			this.StartStopRecordingVgmMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.FileSep4 = new System.Windows.Forms.ToolStripSeparator();
+			this.SaveVgmDialog = new System.Windows.Forms.SaveFileDialog();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -152,10 +155,13 @@
             this.FileSep1,
             this.RecentRomsMenu,
             this.FileSep2,
+            this.StartStopRecordingVgmMenu,
+            this.FileSep4,
             this.ExitMenu});
 			this.FileMenu.Name = "FileMenu";
 			this.FileMenu.Size = new System.Drawing.Size(37, 20);
 			this.FileMenu.Text = "&File";
+			this.FileMenu.DropDownOpening += new System.EventHandler(this.FileMenu_DropDownOpening);
 			// 
 			// QuickLoadRomMenu
 			// 
@@ -248,7 +254,7 @@
 			// dummyToolStripMenuItem
 			// 
 			this.dummyToolStripMenuItem.Name = "dummyToolStripMenuItem";
-			this.dummyToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+			this.dummyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.dummyToolStripMenuItem.Text = "&Dummy";
 			// 
 			// FileSep2
@@ -356,26 +362,26 @@
 			// VideoStandardAutomaticMenu
 			// 
 			this.VideoStandardAutomaticMenu.Name = "VideoStandardAutomaticMenu";
-			this.VideoStandardAutomaticMenu.Size = new System.Drawing.Size(152, 22);
+			this.VideoStandardAutomaticMenu.Size = new System.Drawing.Size(141, 22);
 			this.VideoStandardAutomaticMenu.Text = "&Automatic";
 			this.VideoStandardAutomaticMenu.Click += new System.EventHandler(this.VideoStandardAutomaticMenu_Click);
 			// 
 			// VideoStandardSep0
 			// 
 			this.VideoStandardSep0.Name = "VideoStandardSep0";
-			this.VideoStandardSep0.Size = new System.Drawing.Size(149, 6);
+			this.VideoStandardSep0.Size = new System.Drawing.Size(138, 6);
 			// 
 			// VideoStandardNtscMenu
 			// 
 			this.VideoStandardNtscMenu.Name = "VideoStandardNtscMenu";
-			this.VideoStandardNtscMenu.Size = new System.Drawing.Size(152, 22);
+			this.VideoStandardNtscMenu.Size = new System.Drawing.Size(141, 22);
 			this.VideoStandardNtscMenu.Text = "&NTSC (60Hz)";
 			this.VideoStandardNtscMenu.Click += new System.EventHandler(this.VideoStandardTypeMenu_Click);
 			// 
 			// VideoStandardPalMenu
 			// 
 			this.VideoStandardPalMenu.Name = "VideoStandardPalMenu";
-			this.VideoStandardPalMenu.Size = new System.Drawing.Size(152, 22);
+			this.VideoStandardPalMenu.Size = new System.Drawing.Size(141, 22);
 			this.VideoStandardPalMenu.Text = "&PAL (50Hz)";
 			this.VideoStandardPalMenu.Click += new System.EventHandler(this.VideoStandardTypeMenu_Click);
 			// 
@@ -394,14 +400,14 @@
 			// 
 			this.GameGenieEnabledMenu.CheckOnClick = true;
 			this.GameGenieEnabledMenu.Name = "GameGenieEnabledMenu";
-			this.GameGenieEnabledMenu.Size = new System.Drawing.Size(152, 22);
+			this.GameGenieEnabledMenu.Size = new System.Drawing.Size(137, 22);
 			this.GameGenieEnabledMenu.Text = "&Enabled";
 			this.GameGenieEnabledMenu.Click += new System.EventHandler(this.GameGenieEnabledMenu_Click);
 			// 
 			// GameGenieEditMenu
 			// 
 			this.GameGenieEditMenu.Name = "GameGenieEditMenu";
-			this.GameGenieEditMenu.Size = new System.Drawing.Size(152, 22);
+			this.GameGenieEditMenu.Size = new System.Drawing.Size(137, 22);
 			this.GameGenieEditMenu.Text = "Edit codes...";
 			this.GameGenieEditMenu.Click += new System.EventHandler(this.GameGenieEditMenu_Click);
 			// 
@@ -763,6 +769,23 @@
 			// 
 			this.ColourDialog.AnyColor = true;
 			// 
+			// StartStopRecordingVgmMenu
+			// 
+			this.StartStopRecordingVgmMenu.Name = "StartStopRecordingVgmMenu";
+			this.StartStopRecordingVgmMenu.Size = new System.Drawing.Size(213, 22);
+			this.StartStopRecordingVgmMenu.Text = "Start/stop recording VGM";
+			this.StartStopRecordingVgmMenu.Click += new System.EventHandler(this.StartStopRecordingVgmMenu_Click);
+			// 
+			// FileSep4
+			// 
+			this.FileSep4.Name = "FileSep4";
+			this.FileSep4.Size = new System.Drawing.Size(210, 6);
+			// 
+			// SaveVgmDialog
+			// 
+			this.SaveVgmDialog.Filter = "Compressed VGM file (*.vgz)|*.vgz|Uncompressed VGM file (*.vgm)|*.vgm|All files (" +
+				"*.*)|*.*";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -875,6 +898,9 @@
 		private System.Windows.Forms.ToolStripMenuItem EmulationVideoBackgroundEnabledMenu;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem EmulationVideoSpritesEnabledMenu;
+		private System.Windows.Forms.ToolStripMenuItem StartStopRecordingVgmMenu;
+		private System.Windows.Forms.ToolStripSeparator FileSep4;
+		private System.Windows.Forms.SaveFileDialog SaveVgmDialog;
 #endif
 	}
 }

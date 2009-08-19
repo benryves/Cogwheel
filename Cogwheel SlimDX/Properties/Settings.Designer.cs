@@ -334,5 +334,17 @@ namespace BeeDevelopment.Cogwheel.Properties {
                 this["OptionVideoStandardNtsc"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StoredPathVgm {
+            get {
+                return ((string)(this["StoredPathVgm"]));
+            }
+            set {
+                this["StoredPathVgm"] = value;
+            }
+        }
     }
 }

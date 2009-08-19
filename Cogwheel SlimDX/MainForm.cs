@@ -14,6 +14,7 @@ using BeeDevelopment.Zip;
 using SlimDX;
 using SlimDX.DirectSound;
 using SlimDX.Multimedia;
+using System.IO.Compression;
 
 namespace BeeDevelopment.Cogwheel {
 	public partial class MainForm : Form {
@@ -552,6 +553,10 @@ namespace BeeDevelopment.Cogwheel {
 		#endregion
 
 		#region ROM Loading
+
+		private void FileMenu_DropDownOpening(object sender, EventArgs e) {
+			this.StartStopRecordingVgmMenu.Text = this.Recorder == null ? "Start recording &VGM..." : "Stop recording &VGM";
+		}
 
 		private void UpdateFormTitle(string filename) {
 			string Name = "";
@@ -1287,6 +1292,48 @@ namespace BeeDevelopment.Cogwheel {
 
 		private void SpritesEnabledMenu_Click(object sender, EventArgs e) {
 			this.Emulator.Video.SpriteLayerEnabled ^= true;
+		}
+
+		#endregion
+
+		#region VGM Recording
+
+		private VgmRecorder Recorder = null;
+		private bool CompressVgm = false;
+
+		private void StartStopRecordingVgmMenu_Click(object sender, EventArgs e) {
+			if (this.Recorder == null) {
+				if (!string.IsNullOrEmpty(Properties.Settings.Default.StoredPathVgm) && Directory.Exists(Properties.Settings.Default.StoredPathVgm)) {
+					this.SaveVgmDialog.InitialDirectory = Properties.Settings.Default.StoredPathVgm;
+				} else {
+					this.SaveVgmDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+				}
+				if (this.SaveVgmDialog.ShowDialog(this) == DialogResult.OK) {
+					try {
+						this.CompressVgm = this.SaveVgmDialog.FileName.ToLowerInvariant().EndsWith("gz");
+						this.Recorder = new VgmRecorder(File.Create(this.SaveVgmDialog.FileName), this.Emulator);
+						this.Recorder.Start();
+						Properties.Settings.Default.StoredPathVgm = Path.GetDirectoryName(this.SaveVgmDialog.FileName);
+					} catch (Exception ex) {
+						MessageBox.Show(this, "Could not start recording: " + ex.Message, "Start recording VGM");
+					}
+				}
+			} else {
+				// Stop recording.
+				this.Recorder.Stop();
+				// Do we need to compress the file?
+				if (CompressVgm) {
+					this.Recorder.Stream.Seek(0, SeekOrigin.Begin);
+					byte[] UncompressedData = new byte[this.Recorder.Stream.Length];
+					this.Recorder.Stream.Read(UncompressedData, 0, UncompressedData.Length);
+					this.Recorder.Stream.SetLength(0);
+					using (var gz = new GZipStream(this.Recorder.Stream, CompressionMode.Compress)) {
+						gz.Write(UncompressedData, 0, UncompressedData.Length);
+					}
+				}
+				this.Recorder.Stream.Dispose();
+				this.Recorder = null;
+			}
 		}
 
 		#endregion
