@@ -73,8 +73,8 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			this.emulator = emulator;
 			this.emulator.Sound.DataWritten += new EventHandler<DataWrittenEventArgs>(Sound_DataWritten);
 			this.emulator.Sound.StereoDistributionDataWritten += new EventHandler<DataWrittenEventArgs>(Sound_StereoDistributionDataWritten);
+			this.emulator.FmSound.DataWritten += new EventHandler<DataWrittenEventArgs>(FmSound_DataWritten);
 		}
-
 
 		#endregion
 
@@ -88,25 +88,26 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			this.LastExecutedCycles = null;
 			this.TotalSamples = 0;
 			this.Writer = new BinaryWriter(this.stream, Encoding.Unicode);
+			this.RecordingFm = this.emulator.FmSoundEnabled;
 			// Write VGM header:
 			this.stream.Seek(0, SeekOrigin.Begin);
-			this.Writer.Write(Encoding.ASCII.GetBytes("Vgm "));              // Identification.
-			this.Writer.Write((int)0);                                       // EOF offset (unpopulated).
-			this.Writer.Write((int)0x150);                                   // Version 1.50
-			this.Writer.Write((int)this.emulator.ClockSpeed);                // PSG clock speed.
-			this.Writer.Write((int)0);                                       // YM2413 clock speed.
-			this.Writer.Write((int)0);                                       // GD3 offset.
-			this.Writer.Write((int)0);                                       // Total number of samples.
-			this.Writer.Write((int)0);                                       // Loop offset.
-			this.Writer.Write((int)0);                                       // Loop number of samples.
-			this.Writer.Write((int)0);                                       // Rate scaling.
-			this.Writer.Write((ushort)this.emulator.Sound.TappedBits);       // LFSR tapped bits.
-			this.Writer.Write((byte)this.emulator.Sound.ShiftRegisterWidth); // LFSR width.
-			this.Writer.Write((byte)0);                                      // (Reserved).
-			this.Writer.Write((int)0);                                       // YM2612 clock speed.
-			this.Writer.Write((int)0);                                       // YM2151 clock speed.
-			this.Writer.Write((int)0xC);                                     // VGM data offset.
-			this.Writer.Write(new byte[0x40 - this.stream.Position]);        // Padding to 0x40.
+			this.Writer.Write(Encoding.ASCII.GetBytes("Vgm "));                   // Identification.
+			this.Writer.Write((int)0);                                            // EOF offset (unpopulated).
+			this.Writer.Write((int)0x150);                                        // Version 1.50
+			this.Writer.Write((int)this.emulator.ClockSpeed);                     // PSG clock speed.
+			this.Writer.Write((int)(RecordingFm ? this.emulator.ClockSpeed : 0)); // YM2413 clock speed.
+			this.Writer.Write((int)0);                                            // GD3 offset.
+			this.Writer.Write((int)0);                                            // Total number of samples.
+			this.Writer.Write((int)0);                                            // Loop offset.
+			this.Writer.Write((int)0);                                            // Loop number of samples.
+			this.Writer.Write((int)0);                                            // Rate scaling.
+			this.Writer.Write((ushort)this.emulator.Sound.TappedBits);            // LFSR tapped bits.
+			this.Writer.Write((byte)this.emulator.Sound.ShiftRegisterWidth);      // LFSR width.
+			this.Writer.Write((byte)0);                                           // (Reserved).
+			this.Writer.Write((int)0);                                            // YM2612 clock speed.
+			this.Writer.Write((int)0);                                            // YM2151 clock speed.
+			this.Writer.Write((int)0xC);                                          // VGM data offset.
+			this.Writer.Write(new byte[0x40 - this.stream.Position]);             // Padding to 0x40.
 			
 			// Write PSG pre-initialisation:
 			for (int i = 0; i < 4; ++i) {
@@ -117,6 +118,16 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			}
 			this.Writer.Write((byte)VgmCommand.PsgStereoDistribution);
 			this.Writer.Write((byte)this.emulator.Sound.stereoDistribution);
+
+			// Write OPLL pre-initialisation:
+			if (this.RecordingFm) {
+				for (int i = 0; i < this.emulator.FmSound.Opll.reg.Length; ++i) {
+					this.Writer.Write((byte)VgmCommand.YM2413);
+					this.Writer.Write((byte)i);
+					this.Writer.Write((byte)this.emulator.FmSound.Opll.reg[i]);
+				}
+			}
+			this.FmAdr = this.emulator.FmSound.Opll.Adr;
 		}
 
 		/// <summary>
@@ -136,8 +147,12 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 
 		#endregion
 
+		#region Recording
+
 		private int? LastExecutedCycles;
 		private int TotalSamples = 0;
+		private bool RecordingFm = false;
+		private uint FmAdr = 0;
 
 		private void Sound_StereoDistributionDataWritten(object sender, DataWrittenEventArgs e) {
 			if (this.Writer == null) return;
@@ -147,6 +162,15 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 		private void Sound_DataWritten(object sender, DataWrittenEventArgs e) {
 			if (this.Writer == null) return;
 			this.Write(VgmCommand.Psg, e.Data);
+		}
+
+		private void FmSound_DataWritten(object sender, DataWrittenEventArgs e) {
+			if (this.Writer == null) return;
+			if ((e.Address & 0x01) == 0) {
+				this.FmAdr = e.Data;
+			} else {
+				this.Write(VgmCommand.YM2413, (byte)this.FmAdr, e.Data);
+			}
 		}
 
 		private void Write(VgmCommand command) {
@@ -170,7 +194,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 						this.Writer.Write((byte)VgmCommand.WaitSamples);
 						this.Writer.Write((ushort)0xFFFF);
 						ElapsedSamplesToWrite -= 0xFFFF;
-						
+
 					}
 					if (ElapsedSamplesToWrite > 0) {
 						this.Writer.Write((byte)VgmCommand.WaitSamples);
@@ -182,7 +206,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			// Now we need to write the command!
 			this.Writer.Write((byte)command);
 		}
-		
+
 		private void Write(VgmCommand command, byte value) {
 			this.Write(command);
 			this.Writer.Write(value);
@@ -193,6 +217,10 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			this.Writer.Write(value1);
 			this.Writer.Write(value2);
 		}
+		
+		#endregion
+
+		
 
 	}
 }

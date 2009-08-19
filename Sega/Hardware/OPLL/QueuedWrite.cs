@@ -1,7 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BeeDevelopment.Sega8Bit.Hardware {
 	public partial class Emu2413 {
+
+		#region Events
+
+		/// <summary>
+		/// An event that is triggered when data has been written to the <see cref="Emu2413"/>.
+		/// </summary>
+		public event EventHandler<DataWrittenEventArgs> DataWritten;
+
+		/// <summary>
+		/// An event that is triggered when data has been written to the <see cref="Emu2413"/>.
+		/// </summary>
+		/// <param name="e">The data that was written.</param>
+		protected virtual void OnDataWritten(DataWrittenEventArgs e) {
+			if (this.DataWritten != null) {
+				this.DataWritten(this, e);
+			}
+		}
+
+		#endregion
 
 		/// <summary>
 		/// Represents a queued hardware write.
@@ -50,6 +70,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <param name="value">The control byte to write.</param>
 		/// <remarks>The writes are committed by the <see cref="CreateSamples"/> method.</remarks>
 		public void WriteQueued(int address, byte value) {
+			this.OnDataWritten(new DataWrittenEventArgs(address, value));
 			this.QueuedWrites.Enqueue(new QueuedWrite(this) {
 				Time = this.Emulator.ExpectedExecutedCycles, 
 				Address = address,

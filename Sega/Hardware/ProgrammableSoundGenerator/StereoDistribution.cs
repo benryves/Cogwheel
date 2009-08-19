@@ -138,7 +138,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <param name="value">The value to write to the port.</param>
 		/// <remarks>The writes are committed by the <see cref="CreateSamples"/> method.</remarks>
 		public void WriteStereoDistributionQueued(byte value) {
-			this.OnStereoDistributionDataWritten(new DataWrittenEventArgs(value));
+			this.OnStereoDistributionDataWritten(new DataWrittenEventArgs(0x06, value));
 			this.QueuedWrites.Enqueue(new QueuedWrite(this) {
 				Time = this.Emulator.ExpectedExecutedCycles,
 				Value = value,

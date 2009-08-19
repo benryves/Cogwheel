@@ -910,6 +910,9 @@ namespace BeeDevelopment.Cogwheel {
 		#endregion
 
 		protected override void OnClosing(System.ComponentModel.CancelEventArgs e) {
+			if (this.Recorder != null) {
+				this.StartStopRecordingVgmMenu.PerformClick();
+			}
 			try {
 				Properties.Settings.Default.Save();
 			} catch (Exception ex) {

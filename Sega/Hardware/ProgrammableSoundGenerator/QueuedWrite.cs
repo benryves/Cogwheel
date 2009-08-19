@@ -90,7 +90,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// <param name="value">The control byte to write.</param>
 		/// <remarks>The writes are committed by the <see cref="CreateSamples"/> method.</remarks>
 		public void WriteQueued(byte value) {
-			this.OnDataWritten(new DataWrittenEventArgs(value));
+			this.OnDataWritten(new DataWrittenEventArgs(0x7E, value));
 			this.QueuedWrites.Enqueue(new QueuedWrite(this) {
 				Time = this.Emulator.ExpectedExecutedCycles, 
 				Value = value, 
