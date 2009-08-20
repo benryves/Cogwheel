@@ -29,19 +29,18 @@ Source: "..\Cogwheel SlimDX\bin\Release\Cogwheel Interface.exe"; DestDir: "{app}
 Source: "..\Cogwheel SlimDX\bin\Release\Cogwheel Interface.exe.config"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
 Source: "..\Cogwheel SlimDX\bin\Release\Sega.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
 Source: "..\Cogwheel SlimDX\bin\Release\Brazil.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
-Source: "..\Cogwheel SlimDX\bin\Release\SlimDX.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
 Source: "..\State Thumbnailer\bin\Release\CogStateThumbnailer.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
 
 ; ROM Data:
-Source: "..\Cogwheel SlimDX\bin\Release\ROM Data\Master System.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
-Source: "..\Cogwheel SlimDX\bin\Release\ROM Data\Game Gear.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
-Source: "..\Cogwheel SlimDX\bin\Release\ROM Data\SG-1000.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
-Source: "..\Cogwheel SlimDX\bin\Release\ROM Data\SC-3000.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
-Source: "..\Cogwheel SlimDX\bin\Release\ROM Data\SF-7000.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
-Source: "..\Cogwheel SlimDX\bin\Release\ROM Data\ColecoVision.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
+Source: "Dependencies\ROM Data\Master System.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
+Source: "Dependencies\ROM Data\Game Gear.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
+Source: "Dependencies\ROM Data\SG-1000.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
+Source: "Dependencies\ROM Data\SC-3000.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
+Source: "Dependencies\ROM Data\SF-7000.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
+Source: "Dependencies\ROM Data\ColecoVision.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
 
 ; VGM Player stub:
-Source: "..\Cogwheel SlimDX\bin\Release\vgmplayer.stub"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
+Source: "Dependencies\vgmplayer.stub"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
 
 [Registry]
 ; Register .cogstate file type:

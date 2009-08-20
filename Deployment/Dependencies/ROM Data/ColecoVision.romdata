@@ -1,0 +1,349 @@
+!ColecoVision
+!.rom.col
+
+C575A831	 	2010 - The Graphic Action Game
+E2986DC2	D	Adamcon 17 demo	Guy Foster and Daniel Bienvenue 16/7/2005
+164C8C26	 	Adam's Musicbox Demo
+6CD063AA	D	Adventurium3
+7C66ABA6	D	Air Battle	Daniel Bienvenu v0.4
+9CC3FABC	 	Alcazar - The Forgotten Fortress
+4FFB4E8C	 	Alphabet Zoo
+78A738AF	 	Amazing Bumpman
+AF01E7DD	D	Amazing Snake [beta 4]	Serge-Eric Tremblay
+5BA1A6C8	D	Amazing Snake [beta 5]	Serge-Eric Tremblay
+7DA41B23	D	Amazing Snake [beta A]	Serge-Eric Tremblay
+2863ABB3	D	Amazing Snake [beta B]	Serge-Eric Tremblay
+275C800E	 	Antarctic Adventure [A]
+A66E5ED1	 	Antarctic Adventure [B]
+275A7013	 	Aquattack [A]	#
+947437EC	 	Aquattack [B]	# = one of these is slightly bad, redump needed
+ADFA09E2	 	Artillery Duel
+4359A3E5	 	BC's Quest for Tires
+D07D5E97	B	BC's Quest for Tires (bad byte)	3FFE=FF
+9EBE5D98	 	BC's Quest for Tires II - Grog's Revenge (24k)
+CA7FE4CE	 	BC's Quest for Tires II - Grog's Revenge (32k)	8KB over (still alt. version)
+0EA6A6FC	V	BC's Quest for Tires II - Grog's Revenge (32k) (bad dump)
+2E8E9D42	 	Beamrider
+1BA0688F	D	Bejeweled	Daniel Bienvenu
+DA29C284	 	Blockade Runner
+1796DE5E	 	Boulder Dash
+6E5C4B11	H	Boulder Dash [50 lives]	Boulder Dash
+5933AC18	H	Boulder Dash [9 lives]	Boulder Dash
+829C967D	 	Brain Strainers
+B05FB3EC	D	Breakout	Daniel Bienvenu
+8FD90A28	D	Breakout Paddle Demo	Daniel Bienvenu
+2E63D09E	V	Buck Rogers - Planet Of Zoom (bad dump A)
+1BAF661E	V	Buck Rogers - Planet Of Zoom (bad dump B)
+2762850B	 	Buck Rogers Supergame (Adam)
+002B22D4	 	Bump 'N' Jump	4KB over
+EB498F97	 	Bump 'N' Jump (Mattel)
+91346341	 	BurgerTime
+E5C5EA20	 	BurgerTime (Mattel)
+C74766D8	D	BUSTin-Out Demo	Daniel Bienvenu v0.5
+EDCA3A1F	D	BUSTin-Out Volume 0	Daniel Bienvenu
+97B601A2	D	BUSTin-Out Volume 1	Daniel Bienvenu
+E12CCC1E	D	BUSTin-Out Volume 2	Daniel Bienvenu
+C3A925AF	D	BUSTin-Out Volume 3	Daniel Bienvenu
+F9D56307	 	Cabbage Patch Kids - Adventures in the Park [A]
+BEACBFF5	 	Cabbage Patch Kids - Adventures in the Park [B]
+0C25AD84	 	Cabbage Patch Kids Picture Show
+72ACEAC7	 	Campaign '84
+32BFF3F3	 	Carnival
+D568C4C5	B	Carnival (3 bad bytes)	2000=DF&3FFE=4E&3FFF=4F
+17EDBFD4	 	Centipede
+E7A1FF9F	 	Choplifter [A]	#
+030E0D48	 	Choplifter [B]	#
+A23A566C	D	Christmas Demo 2001	Daniel Bienvenu
+73E96E53	 	Chuck Norris - Super Kicks
+39BB16FC	I	ColecoVision BIOS (different font)
+66CDA476	I	ColecoVision BIOS (no title delay)
+3AA93EF3	I	ColecoVision BIOS (original)
+71AE16ED	V	ColecoVision BIOS (original) (8KB header)
+95051633	D	ColecoVision Noise Generator	Marcel de Kogel
+DDAFB16F	 	Congo Bongo
+14D6CED6	 	Cosmic Avenger [A]	#
+39D4215B	 	Cosmic Avenger [B]	#
+7C2C7C41	 	Cosmic Crisis
+AC4C6AB6	B	Cosmic Crisis (bad byte)	3FFF=FF
+3A581CAE	O	Cosmic Crisis (2x overdump)	4000
+43933306	D	Cosmo Challenge	Marcel de Kogel
+D93A7DC2	D	Cosmo Fighter 2	Marcel de Kogel
+901C8512	D	Cosmo Fighter 3 [A]	Marcel de Kogel
+B4B9301F	D	Cosmo Fighter 3 [B]	Red Bullet Software/Marcel de Kogel
+7BA2F186	D	Cosmo Trainer	Marcel de Kogel
+55EE8840	D	Cosmo Trainer & Cosmo Challenge	Marcel de Kogel
+A89FD194	H	CV Beast Wars	Gorf by Grimlick
+8FDDD276	D	CVDRUM	E-Mancanics http://cvdrum.atariage.com
+5ED78B7D	D	CVDRUM Demo	E-Mancanics http://cvdrum.atariage.com
+07C68567	D	Dacman [v0.1]	Daniel Bienvenu
+62CFDB1F	D	Dacman [v0.5]	Daniel Bienvenu
+22F8A86B	D	Dacman [v0.6]	Daniel Bienvenu
+02DD4C68	D	Dacman [v0.7]	Daniel Bienvenu
+CDC4A7CC	D	Dacman [v0.8]	Daniel Bienvenu
+C20FBF76	D	Dacman [v0.9]	Daniel Bienvenu
+A67F0339	D	Dacman [v1.1]	Daniel Bienvenu
+E829EF78	D	Dacman [v1.2]	Daniel Bienvenu
+5E4B3E68	D	Dacman [v1.2b]	Daniel Bienvenu
+3EE7A705	D	Dacman [v1.3]	Daniel Bienvenu
+9A46EF8D	D	Dacman [v1.3 final]	Daniel Bienvenu
+C75FAD5A	 	Dam Busters (The)
+BFF86A98	 	Dance Fantasy
+FF4964B1	D	Death Race
+614BB621	V	Decathlon (bad dump)
+FFD16997	 	Defender
+B3B3F3FE	D	Demon2	Yannick Proulx
+56C358A6	 	Destructor
+54FA098A	D	Diamond Dash (4KB)
+836DCCAF	D	Diamond Dash (8KB)
+03B4FA44	O	Dig Dug [Proto] (2 bytes too large)	6000
+1FE02BBC	O	Dig Dug [Proto] (f)	6000
+85E747A1	F	Dig Dug [Proto] (h) (f)	H128
+1038E0A1	 	Dig Dug [Proto]
+3C77198C	 	Donkey Kong (16k)
+94C4CD4A	 	Donkey Kong (24k) (Adam)
+9C2D2EE5	V	Donkey Kong (24k) (Adam) (corrupted)
+FD11508D	 	Donkey Kong Jr
+C52FFA82	D	Double Breakout [A]	Daniel Bienvenu
+1229E811	D	Double Breakout [B]	Daniel Bienvenu
+109699E2	 	Dr. Seuss's Fix-Up The Mix-Up Puzzler
+DCB8F9E8	 	DragonFire
+4025AC94	 	Dukes of Hazzard (The)
+3678AB6F	 	Escape From The Mind Master [Proto]
+DFF01CF7	 	Evolution
+8D1B3636	D	Explosion	Daniel Bienvenu
+EC9DFB07	 	Facemaker
+448FED54	V	Facemaker (bad dump)
+1BED9C5B	 	Fall Guy [Proto]	4KB over
+9EB58823	 	Fathom
+7E97A22E	 	Flipper Slipper
+65BBBCB4	 	Fortune Builder
+964DB3BC	 	Fraction Fever
+8615C6E8	 	Frantic Freddy
+BF1CCF04	 	Frenzy! [A]	4KB over (repeated last 4KB)
+960616AF	 	Frenzy! [B]	4KB over
+798002A2	 	Frogger
+32B95BE0	O	Frogger (4KB overdump)	3000
+04405423	 	Frogger II - ThreeDeep!
+EFF35A70	 	From Out Of The Jungle
+9C551386	 	Frontline [A]
+08990B8F	 	Frontline [B]	8KB over
+3F18BA6C	 	Galaxian [A]	4KB over
+987BC7AC	 	Galaxian [B]	12KB over
+6A7A162A	 	Galaxian [C]	#
+518F84E8	 	Galaxian [D]	#
+7831F3D9	D	Gamepack 1	Daniel Bienvenu
+B1215C7A	D	Gamepack 2	Daniel Bienvenu
+0726B64D	 	Gateway to Apshai
+FF46BECC	 	Gorf
+074EA085	B	Gorf (two bad bytes)	3FFE=11&3FFF=D0
+F2CAC67C	 	Gust Buster
+B4EF0F1F	 	Gyruss
+685AB9B5	 	H.E.R.O.
+527AE3AC	D	Happy Halloween	Daniel Bienvenu
+6F2E2D84	 	Heist (The) [A]
+866849D1	 	Heist (The) [B]	8KB over plus differences
+2787516D	 	Illusions
+C9893041	B	Illusions (bad byte)	3FFF=FD
+CC43EBF7	 	It's Only Rock 'N' Roll
+3004A253	 	James Bond	4KB over
+BA0434F1	H	JBulman Junior	Jumpman Junior by Daniel Bienvenu
+52228000	 	Joust [Proto]
+A5511418	 	Juke Box
+060C69E8	 	Jumpman Junior [A]	#
+9528949A	 	Jumpman Junior [B]	#
+E8858484	 	Jungle Hunt
+8C7B7803	 	Ken Uston Blackjack-Poker
+1F5F8571	B	Ken Uston Blackjack-Poker (bad byte)	3FFE=FF
+819A06E5	D	Kevtris [A]	Kevin Horton
+4E8DFC3C	D	Kevtris [B]	Kevin Horton
+FAD8D414	 	Keystone Kapers
+D905C94B	D	Kill Barney in Tokyo	Daniel Bienvenu
+58F10C63	D	Killer Instinct	Daniel Bienvenu
+2C3097B8	 	Lady Bug
+43478ADF	D	Le Chateau du Dragon	Daniel Bienvenu
+1641044F	V	Learning With Leeper (bad dump)
+918F12C0	 	Linking Logic
+C28D7062	 	Logic Levels
+6A2D637B	 	Looping
+472F8CF6	B	Looping (bad byte)	3FFF=00
+FC95B302	 	M.A.S.H. [Proto]
+7D084C42	D	Matrix Demo	Daniel Bienvenu
+BAB520EA	 	Memory Manor
+861C9825	O	Memory Manor (2x overdump)	2000
+E180DCAB	D	Mermaid	Daniel Bienvenu, artwork by Mermaid
+3BEFFC06	 	Meteoric Shower	8KB over
+A838C819	H	Miner 2049er [49 lives]	Miner 2049er
+223C4926	H	Miner 2049er [7 lives]	Miner 2049er
+71D1BD4D	 	Miner 2049er [A]
+B24F10FD	 	Miner 2049er [B]
+26FD822A	 	Monkey Academy [A]	8KB over
+D1E8DF85	 	Monkey Academy [B]	alternate version
+F06592BF	 	Monkey Academy [C]	4KB over
+0BD9D073	 	Montezuma's Revenge
+90007079	 	Moon Patrol [Proto]	8KB over
+8A303F5A	 	Moonsweeper [A]	#
+C521BCAD	 	Moonsweeper [B]	#
+935EBE62	 	Motocross Racer [A]	#
+0F4D800A	 	Motocross Racer [B]	#
+D8D73246	 	Mountain King
+C173BBEC	B	Mountain King (bad byte)	2BC8=00
+DE47C29F	 	Mousetrap
+FD8B79B3	O	Mousetrap (4KB overdump)	3000
+461AB6AD	 	Mr Do! [A]	#
+D53E4BDF	 	Mr Do! [B]	#
+546F2C54	 	Mr Do's Castle	4KB over
+EF7E9562	O	Mr Do's Castle (4KB overdump)	3000
+DFFD8CB4	D	Ms. Space Fury	Daniel Bienvenu
+0F3D9216	D	Music - Vol. 1	Daniel Bienvenu
+9C059A51	D	NIM	Daniel Bienvenu
+9B8F6DAD	V	NIM (corrupted)	Homebrew by Daniel Bienvenu - replace all occurences of $0D0A with $0A to fix
+3AF1B5F7	 	Nova Blast	4KB over
+EA06F585	H	Nova Blast [no bumper screen]	Nova Blast; 4KB overdump
+6AF8B439	 	Number Bumper
+ADD10242	 	Oil's Well
+D2256B6C	B	Oil's Well (two bad bytes)	3FFE=07&3FFF=10
+640F483B	D	Old Skool Demo 01	Guy Foster 30/5/2005
+9921ECB5	 	Omega Race
+17C77C3A	 	One on One
+A40A07E8	 	Pac-Man [Proto]
+1C7C99D8	O	Pac-Man [Proto] (f)	4000
+BE659955	F	Pac-Man [Proto] (h) (f)	H128
+0528457A	D	Pac-Man Collection Demo [non playable] [A]
+3D5B9D88	D	Pac-Man Collection Demo [non playable] [B]
+CFD41A7A	D	Pac-Man Collection Music Demo [A]
+A7B81956	D	Pac-Man Collection Music Demo [B]
+913BB176	D	Pac-Man Collection Music Demo [C]
+53B85E20	 	Pepper II
+3F84CC6C	D	Pere Noel	Daniel Bienvenu
+851A455F	 	Pitfall II - Lost Caverns
+D4F180DF	 	Pitfall!	Still has numerous glitches...
+312AE55A	B	Pitfall! (bad dump)	3FFE=08&3FFF=00
+81BE4F55	 	Pitstop [A]	#
+1E455299	B	Pitstop [A] (two bad bytes)	26A7=10&3FFF=22
+E627FCF0	 	Pitstop [B]	#
+A095454D	 	Popeye
+3EF1D0EE	B	Popeye (bad byte)	3FFF=F8
+46FC1C00	 	Porky's [Proto]
+CAA61D8D	 	Power Lords - Quest for Volcan [Proto]
+5A8FD4D1	H	Predacon Target Practice	Carnival by Grimlick
+137D6C4C	D	Purple Dinosaur Massacre	John Dondzila
+532F61BA	 	Q-bert [A]	#
+13F06ADC	 	Q-bert [B]	#
+D3BD33E3	H	Q-bert [hack]	Q-bert; speech bubble changed
+E45496D3	 	Q-bert II
+2D32B1F0	 	Quest for Quintana Roo
+EEC81C42	B	Quest for Quintana Roo (bad byte)	3431=00
+BBEF9E8F	D	Reversi	Daniel Bienvenu
+FE897F9C	V	River Raid (bad dump)
+0EB45D6E	 	Robin Hood [A]	#
+CDB8D3CF	 	Robin Hood [B]	#
+3CACA004	 	Roc 'N Rope
+522B59B9	 	Rock N Bolt [A]	#
+AF49A0C3	 	Rock N Bolt [B]	#
+046F4B70	 	Rocky Super-Action Boxing	4KB over
+E4585C0A	 	Rolloverture
+C5F69A1B	 	Sammy Lightfoot [A]	#
+3563286B	 	Sammy Lightfoot [B]	#
+FE5F4602	 	Sector Alpha [A]	corrupt graphics - 14KB over
+8A46E5FA	 	Sector Alpha [B]	corrupt graphics - 24KB over
+BA14A83A	 	Sector Alpha [C]
+74057241	 	Sewer Sam
+DD76775D	 	Sir Lancelot
+B37D48BD	 	Skiing
+54D54968	D	Sky Jaguar	Opcode Games (http://www.opcodegames.com)
+D0F24AD8	 	Sky Jaguar	Opcode Games (http://www.opcodegames.com)
+53D2651C	 	Slither
+5CDB00D3	O	Slither (8KB overdump)	4000
+27F5C0AD	 	Slurpy
+8871E9FD	V	Slurpy (bad dump)
+97640EE1	D	Smash (8KB)
+DB66B53B	D	Smash (4KB)
+97C0382D	 	Smurf Paint 'n Play Workshop
+42850379	 	Smurf Rescue
+D1A1FE0B	B	Smurf Rescue (bad byte)	3FFE=FF
+DD7A0E3B	D	Sonic Music Box	Daniel Beinvenu
+0B619934	D	Sound FX - Vol. 1	Daniel Bienvenu
+040E3A9C	D	Sound FX - Vol. 2	Daniel Bienvenu
+9E1BEA35	D	Space Caverns	Scott Huggins
+DF8DE30F	 	Space Fury [A]
+567BE2B0	 	Space Fury [B]	bad dump
+5191BBA9	D	Space Invaders Collection Demo	Eduardo Mello (OpCode Software) (http://www.geocities.com/vgbelloq/)
+B09F48C6	D	Space Invaders Collection	Eduardo Mello (Opcode Games) (http://www.opcodegames.com)
+AF9B178C	D	Space Invasion	John Dondzila
+1328D5C4	D	Space Invasion Demo	John Dondzila
+5BDF2997	 	Space Panic
+D5B4C25F	D	Spectank	Daniel Bienvenu
+3564E134	 	Spectron
+36478923	 	Spy Hunter
+0B8DB61E	B	Spy Hunter (two bad bytes)	3FFF=5F&7FFF=FF
+6C82E0CC	 	Squish 'Em Sam!
+F7F18E6F	D	Star Fortress	John Dondzila
+AFF42AA9	 	Star Trek - Strategic Operations Simulator	8KB over (32-24)
+B8EA7B19	V	Star Trek - Strategic Operations Simulator (bad - last 8KB missing)
+0E75B3BF	 	Star Wars - The Arcade Game
+1D91535E	H	Star Wars Episode One Racer	Bump'n Jump by Grimlick
+156BE018	D	Starry Nights Demo	Guy Foster 30/5/2005
+6BD2E060	D	Starry Nights 3 Demo	Guy Foster 11/2004
+153AC4EF	 	Steamroller [Proto]
+1D9082FB	 	Strike It! [A]	1KB over (10-9)
+D247A1C8	 	Strike It! [B]	7KB over (16-9)
+2F9DEBF9	D	Stubby!	Yannick Proulx
+26C348DF	D	Stubby! [no bumper screen]	Yannick Proulx
+83EC4F49	D	St-Valentine	Daniel Bienvenu
+52961076	D	St-Valentine [no alien]	Daniel Bienvenu
+509267F8	 	Subroc [A]	4KB over (24-20)
+2ECC2C3B	 	Subroc [B]	12KB over (32-20)
+62619DC0	 	Super Action Football [A]
+B00EFD22	 	Super Action Football [B]
+ACAC69DD	 	Super Action Soccer
+F84622D2	V	Super Cobra (bad dump A)
+6CB5CB8F	V	Super Cobra (bad dump B)
+EB6CB4D8	 	Super Controller Tester	13KB over (16-3)
+8093B672	 	Super Cross Force [A]	4KB over (?)
+6C4ED807	 	Super Cross Force [B]	4KB over (?)
+EF25AF90	 	Super DK!
+C2E7F0E0	 	Super DK! (Adam)	8KB over
+AC985105	V	Super DK! (Adam) (corrupted)
+038D4E15	D	Super Pong
+8627300A	 	Super Sketch
+97217677	 	Super-Action Baseball [A]
+E1B8EB25	 	Super-Action Baseball [B]	bad dump (last 4KB repeated)
+7F0BAA89	 	Tank Wars
+8AFD7DB2	 	Tapper
+6EAB5D44	B	Tapper (bad byte)	3FFF=A0
+C8BC1950	 	Telly Turtle
+2F2DF2AC	D	Tenchi Muyo Demo
+48FF87CF	 	Test Cartridge
+BC3B9F78	H	The Heist [49 lives]	The Heist
+B0F5DCB4	H	The Heist [7 lives]	The Heist
+1593F7DF	 	Threshold
+9F22CD12	D	Tic Tac Toe [A]	Norman Nithman
+969D77C8	D	Tic Tac Toe [B]	Norman Nithman
+B3A1EACB	 	Time Pilot
+1E14397E	 	Tomarc the Barbarian
+3FA0CDCB	B	Tomarc the Barbarian (bad byte)	3FFF=CB
+C1D5A702	 	Tournament Tennis
+4DEFCDFA	 	Tunnels & Trolls (Adam) (Demo)
+6CA80B63	 	Turbo
+0408F58C	 	Tutankham
+10CC33A3	O	Tutankham (4KB overdump)	3000
+FDD52CA0	 	Up 'N Down
+3DA70B52	H	Vampire	Venture
+8E5A4AA3	 	Venture
+1D7EB7D1	B	Venture (bad byte)	3FFE=FF
+5F20BF49	 	Victory	5KB over (24-19)
+A9177B20	 	Video Hustler [Proto]
+74BF0C6B	D	Vision-8 (no games)	Marcel de Kogel; it's a Chip-8 emulator but you have to add games for it to work.
+6E0150C1	 	War Games
+261B7D56	 	War Room (24k)
+308A949B	 	War Room (32k)	8KB over (32-24)
+04EEEF44	 	Wing War
+EAA5F606	D	Winky Trap	JFD
+2BF54674	D	Witch
+B9BA2BB6	 	Wizard of Id's Wizmath
+F7A29C01	 	Word Feud
+9F49BED8	O	Word Feud (2x overdump)	2000
+997AD8DE	 	Yolk's on You (The) [Proto]	4KB over (?)
+8CB0891A	 	Zaxxon
+1F947468	B	Zaxxon (bad byte)	5FFE=FF
+6E523E50	 	Zenji	4KB over (?)

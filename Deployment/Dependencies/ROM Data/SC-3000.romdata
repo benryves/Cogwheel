@@ -1,0 +1,62 @@
+!SC-3000
+!.sc
+
+22F4F92A	 	Nihonshi Nenpyou (JP)
+F691F9C7	 	Sega Basic Level II (JP)
+5D9F11CA	 	Sega Basic Level III
+155FD01F	B	Sega Basic Level III (bad byte)	0=c3
+2EC28526	 	Sega Music Editor (JP)
+622010E1	 	Sega Music Editor
+B67EA1C4	B	Sega Music Editor (bad byte)	0=c3
+6A96978D	 	Tanoshii Sansuu (ES 6th - Vol 2) (JP)
+
+954B0A49	D	SC-3000 Keyboard and I-O Test	Charles MacDonald; v1.00
+
+
+0E21E6CF	E	Astro Flash (JP) (change extension to sms)	sms
+EA0F2691	E	Bomb Jack (change extension to sg)	sg
+0B4BCA74	E	Border Line (change extension to sg)	sg
+D37BDA49	E	Chack'n Pop (change extension to sg)	sg
+62B21E31	E	Champion Billards (change extension to sg)	sg
+11DB4B1D	E	Championship Lode Runner [B] (change extension to sg)	sg
+A2C45B61	E	Exerion (change extension to sg)	sg
+732B7180	E	Choplifter (change extension to sg)	sg
+DC4383CC	E	Congo Bongo (change extension to sg)	sg
+346556B9	E	Doki Doki Penguin Land (change extension to sg)	sg
+288940CB	E	Drol (change extension to sg)	sg
+7CE06FCE	E	F-16 Fighting Falcon (JP) (change extension to sms)	sms
+DABCC054	E	Ghost House (JP) (change extension to sms)	sms
+1898F274	E	Girl's Garden (change extension to sg)	sg
+0D159ED0	E	Golgo 13 (change extension to sg)	sg
+C1E699DB	E	Great Baseball (JP) (change extension to sms)	sms
+61FA9EA0	E	Guzzler (change extension to sg)	sg
+4587DE6E	E	H.E.R.O. (change extension to sg)	sg
+A627D440	E	Hustle Chumy (change extension to sg)	sg
+BA09A0FD	E	Hyper Sports (change extension to sg)	sg
+90160849	E	James Bond 007 (change extension to sg)	sg
+72542786	E	Monaco GP [B] (change extension to sg)	sg
+09196FC5	E	N-Sub [B] (change extension to sg)	sg
+3B912408	E	Ninja Princess (change extension to sg)	sg
+F4F78B76	E	Orguss (change extension to sg)	sg
+30C52E5E	E	Pacar (change extension to sg)	sg
+DB6404BA	E	Pop Flamer (change extension to sg)	sg
+77DB4704	E	Q-Bert (change extension to sg)	sg
+49E9718B	E	Safari Hunting (change extension to sg)	sg
+619DD066	E	Safari Race [B] (change extension to sg)	sg
+87B9ECB8	E	Satellite 7 (JP) (change extension to sms)	sms
+8EFC77BC	E	Sega Flipper (change extension to sg)	sg
+981E36C1	E	Sega Galaga (change extension to sg)	sg
+A7B1DA17	E	Sega Logo v1.0e (change extension to sf7)	sf7
+BCD91D78	E	Seishyun Scandal (JP) [B] (change extension to sms)	sms
+54D5BEC3	E	Sindbad Mystery [B] (change extension to sg)	sg
+922C5468	E	Souko Ban (change extension to sg)	sg
+6AD5CB3D	E	Space Invaders (change extension to sg)	sg
+A71BC542	E	Spy vs Spy (JP) (change extension to sms)	sms
+7F25DECA	E	Star Jacker (new) (change extension to sg)	sg
+1AE94122	E	Star Jacker (old) (change extension to sg)	sg
+084CC13E	E	Super Tank (change extension to sg)	sg
+9DFA67EE	E	Teddy Boy Blues (JP) (change extension to sms)	sms
+E2FD5201	E	Yamato (change extension to sg)	sg
+BC5D20DF	E	Zippy Race (change extension to sg)	sg
+
+D76810B8	I	SF-7000 Initial Program Loader ROM

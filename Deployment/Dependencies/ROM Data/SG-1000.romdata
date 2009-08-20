@@ -1,0 +1,113 @@
+!SG-1000/OMV
+!.sg.mv.omv
+
+26ECD094	 	Black Onyx, The (JP)
+D8A87095	 	Bank Panic
+EA0F2691	 	Bomb Jack
+0B4BCA74	 	Borderline
+BE7ED0EB	 	C_So! (JP)
+092F29D6	 	Castle, The (JP)
+D37BDA49	 	Chack'n Pop
+5970A12B	 	Champion Baseball
+62B21E31	 	Champion Billiards
+f8b2ac1d	 	Champion Boxing [card] (JP)
+26f947d1	 	Champion Boxing [cart] (JP)
+868419B5	 	Champion Golf [A]
+BDC05652	 	Champion Ice Hockey (JP)
+10cdebce	 	Champion Kendou (JP)
+372FE6BC	 	Champion Pro Wrestling
+6F39719E	 	Champion Soccer (JP)
+7c663316	 	Champion Tennis
+11DB4B1D	 	Championship Lode Runner
+8201b53d	V	Championship Lode Runner (2 bad bytes)
+732B7180	 	Choplifter
+FF435469	 	Choplifter [Proto]
+DC4383CC	 	Congo Bongo [A]	Last 8KB filled with 00
+B09E2E6D	 	Congo Bongo [B]	Last 8KB filled with FF
+346556B9	 	Doki Doki Penguin Land
+FDC095BC	 	Doki Doki Penguin Land (HK)
+AC7F95B4	V	Doki Doki Penguin Land (bad dump)
+99C3DE21	 	Dragon Wang [A]
+60F30138	 	Dragon Wang [B]
+288940CB	 	Drol
+5AF8F69D	 	Elevator Action (JP)
+A2C45B61	 	Exerion
+BD24D27B	 	Flicky (JP)
+D4C8C6D7	B	Flicky (JP) (3 bad bytes)	3437=FF&3439=FF&343B=FF
+1898F274	 	Girl's Garden (JP)
+0D159ED0	 	Golgo 13
+191FFE0A	 	GP World [A]
+15A754A3	 	Gulkave
+61FA9EA0	 	Guzzler (JP)
+9BE3C6BD	 	Hang On II
+4587DE6E	 	H.E.R.O. (JP)
+C9D1AE7D	 	Home Mahjong [V0] (JP)
+E7E0F0E3	 	Home Mahjong [V1] (JP)
+A627D440	 	Hustle Chumy
+BA09A0FD	 	Hyper Sports (Konami no)
+90160849	 	James Bond 007 (JP)
+00ED3970	 	Lode Runner
+6D909857	 	Mahjong (JP)
+72542786	 	Monaco GP
+3B912408	 	Ninja Princess
+09196FC5	 	N-Sub [1988]
+F4F78B76	 	Orguss
+AF4F14BC	 	Othello (JP)
+30C52E5E	 	Pacar
+326587E1	 	Pachinko (JP)
+FD7CB50A	 	Pachinko II
+37FCA2EB	 	Pitfall II [A]
+3DB74761	 	Pitfall II [B]
+DB6404BA	 	Pop Flamer
+77DB4704	 	Q-Bert
+0FFDD03D	 	Rock n' Bolt
+49E9718B	 	Safari Hunting
+619DD066	 	Safari Race [B]
+8EFC77BC	 	Sega Flipper
+981E36C1	 	Sega Galaga
+545FC9BB	 	Serizawa Hachidan no Tsumeshogi (JP)
+5A917E06	 	Shinnyushain Tooru Kun (Konami no) (JP)
+01932DF9	 	Sindbad Mystery
+54D5BEC3	B	Sindbad Mystery (bad byte)	0=F3
+922C5468	 	Soukoban (JP)
+6AD5CB3D	 	Space Invaders
+BBD87D8F	 	Space Mountain	Othello MultiVision
+B8B58B30	 	Space Slalom
+B846B52A	 	Star Force
+1AE94122	 	Star Jacker [v0] (JP)
+7F25DECA	 	Star Jacker [v1]
+3FE59505	 	Star Jacker [v2]
+084CC13E	 	Super Tank (JP)
+DD4A661B	 	Terebi Oekaki (JP)
+160535C5	 	Wonder Boy [A]
+E2FD5201	 	Yamato
+905467E4	 	Zaxxon
+BC5D20DF	 	Zippy Race
+093830D8	 	Zoom 909 (JP)
+
+DDA01774	D	FudeBrowser - BRMSX	Ricardo Bittencourt
+4A696389	D	FudeBrowser - BRSMS	Ricardo Bittencourt
+697925EC	D	FudeBrowser - Chrissy M Picture	Newo
+DE6CC6E6	D	FudeBrowser - ExpoSALT logo	Ricardo Bittencourt
+DDA0619B	D	FudeBrowser - Goatse Picture	Newo
+C9A6217A	D	FudeBrowser - How do they do that with HTML	Ricardo Bittencourt
+4F95660E	D	FudeBrowser - Jiraiya	Ricardo Bittencourt
+2AEF0693	D	FudeBrowser - Never	Ricardo Bittencourt
+0F8A5A2A	D	FudeBrowser - Newo	Newo
+6FBE54B1	D	FudeBrowser - Sandy Style Picture	Newo
+16695BA9	D	FudeBrowser - Shurato	Ricardo Bittencourt
+BD8F3126	D	FudeBrowser - SG-1000 & SC-3000 Information Database	Ricardo Bittencourt
+280876DC	D	Fudebrowser - SkyBaby's SMSList	SkyBaby
+5D9AA9A7	D	FudeBrowser - Winnie Cooper [3 pictures]	Ricardo Bittencourt
+C2FEE1E4	D	FudeBrowser - Winnie Cooper [1 picture]	Ricardo Bittencourt
+F40FA5D6	D	Music Station	Ricardo Bittencourt
+56ABC493	D	Omikuji	Maechiko
+B1CBEC5A	D	S_sniper	Maechiko
+
+D3639E45	E	Elite Gaiden 0.1 (change extension to sms)	sms
+22F4F92A	E	Nihonshi Nenpyou (JP) (change extension to sc)	sc
+5C01ADF9	E	Hang On (JP) (change extension to sms)	sms
+071B045E	E	Hang On (change extension to sms)	sms
+5D08E823	E	Fushigi no Oshiro Pit Pot (JP) (change extension to sms)	sms
+323F357F	E	Loretta no Shouzou (JP) (change extension to sms)	sms
+6A96978D	E	Tanoshii Sansuu (ES 6th - Vol 2) (JP) (change extension to sc)	sc
