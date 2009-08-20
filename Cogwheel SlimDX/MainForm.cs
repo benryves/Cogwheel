@@ -1408,9 +1408,9 @@ namespace BeeDevelopment.Cogwheel {
 					this.QuickLoad(TempFileName, false);
 					int VgmVersion = BitConverter.ToInt32(SourceVgm, 0x08);
 					// Do we have a rate setting?
-					/*if (VgmVersion >= 0x101) {
+					if (VgmVersion >= 0x101) {
 						this.Emulator.Video.System = BitConverter.ToInt32(SourceVgm, 0x24) == 50 ? BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Pal : BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Ntsc;
-					}*/
+					}
 					// Do we have periodic noise settings?
 					if (VgmVersion >= 0x110) {
 						short TappedBits = BitConverter.ToInt16(SourceVgm, 0x28);
