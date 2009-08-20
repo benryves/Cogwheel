@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using BeeDevelopment.Sega8Bit;
@@ -1368,6 +1368,8 @@ namespace BeeDevelopment.Cogwheel {
 				this.OpenVgmDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
 			}
 			if (this.OpenVgmDialog.ShowDialog(this) == DialogResult.OK) {
+
+				// Load (and decompress) the VGM.
 				byte[] SourceVgm = new byte[0];
 				try {
 					using (var SourceVgmStream = new GZipStream(File.OpenRead(this.OpenVgmDialog.FileName), CompressionMode.Decompress)) {
@@ -1385,6 +1387,14 @@ namespace BeeDevelopment.Cogwheel {
 					MessageBox.Show(this, "Could not open VGM: " + ex.Message, "Play VGM");
 					return;
 				}
+
+				// Check it's a valid VGM file.
+				if (SourceVgm.Length < 64 || Encoding.ASCII.GetString(SourceVgm, 0, 4) != "Vgm ") {
+					MessageBox.Show(this, Path.GetFileName(this.OpenVgmDialog.FileName) + " is not a valid VGM file.", "Play VGM", MessageBoxButtons.OK);
+					return;
+				}
+
+				// Create a temporary file made from the VGM file appended to the VGM player stub:
 				string TempFileName = null;
 				while (TempFileName == null || File.Exists(TempFileName)) {
 					TempFileName = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), "sms"));
@@ -1394,7 +1404,21 @@ namespace BeeDevelopment.Cogwheel {
 						TempVgmPlayer.Write(VgmPlayerStub);
 						TempVgmPlayer.Write(SourceVgm);
 					}
+					// Load the ROM:
 					this.QuickLoad(TempFileName, false);
+					int VgmVersion = BitConverter.ToInt32(SourceVgm, 0x08);
+					// Do we have a rate setting?
+					/*if (VgmVersion >= 0x101) {
+						this.Emulator.Video.System = BitConverter.ToInt32(SourceVgm, 0x24) == 50 ? BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Pal : BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Ntsc;
+					}*/
+					// Do we have periodic noise settings?
+					if (VgmVersion >= 0x110) {
+						short TappedBits = BitConverter.ToInt16(SourceVgm, 0x28);
+						if (TappedBits != 0) this.Emulator.Sound.TappedBits = TappedBits;
+						byte ShiftRegisterWidth = SourceVgm[0x2A];
+						if (ShiftRegisterWidth != 0) this.Emulator.Sound.ShiftRegisterWidth = ShiftRegisterWidth;
+					}
+					this.OverrideAutomaticSettings(null);
 					Properties.Settings.Default.StoredPathVgm = Path.GetDirectoryName(this.OpenVgmDialog.FileName);
 				} finally {
 					File.Delete(TempFileName);
