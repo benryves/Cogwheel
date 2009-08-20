@@ -30,7 +30,6 @@ Source: "..\Cogwheel SlimDX\bin\Release\Cogwheel Interface.exe.config"; DestDir:
 Source: "..\Cogwheel SlimDX\bin\Release\Sega.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
 Source: "..\Cogwheel SlimDX\bin\Release\Brazil.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
 Source: "..\Cogwheel SlimDX\bin\Release\SlimDX.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
-Source: "..\Cogwheel SlimDX\bin\Release\emu2413.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
 Source: "..\State Thumbnailer\bin\Release\CogStateThumbnailer.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
 
 ; ROM Data:
@@ -40,6 +39,9 @@ Source: "..\Cogwheel SlimDX\bin\Release\ROM Data\SG-1000.romdata"; DestDir: "{ap
 Source: "..\Cogwheel SlimDX\bin\Release\ROM Data\SC-3000.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
 Source: "..\Cogwheel SlimDX\bin\Release\ROM Data\SF-7000.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
 Source: "..\Cogwheel SlimDX\bin\Release\ROM Data\ColecoVision.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
+
+; VGM Player stub:
+Source: "..\Cogwheel SlimDX\bin\Release\vgmplayer.stub"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
 
 [Registry]
 ; Register .cogstate file type:
@@ -51,8 +53,8 @@ Root: HKCR; Subkey: "Cogwheel.SaveState\shellex\{{e357fccd-a995-4576-b01f-234630
 
 
 [Components]
-Name: "Cogwheel"; Description: "Cogwheel Emulator"; Types: full compact custom; Flags: fixed;
-Name: "RomData"; Description: "ROM Data Files"; Types: full custom;
+Name: "Cogwheel"; Description: "Cogwheel emulator"; Types: full compact custom; Flags: fixed;
+Name: "RomData"; Description: "ROM data files"; Types: full custom;
 
 [INI]
 Filename: "{app}\Cogwheel Website.url"; Section: "InternetShortcut"; Key: "URL"; String: "http://www.bee-dev.com/?go=cogwheel";
