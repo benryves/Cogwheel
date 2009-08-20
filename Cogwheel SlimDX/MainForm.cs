@@ -121,14 +121,7 @@ namespace BeeDevelopment.Cogwheel {
 			// Parse command-line arguments.
 			if (arguments.Length == 1 && File.Exists(arguments[0])) {
 				try {
-					switch (Path.GetExtension(arguments[0]).ToLowerInvariant()) {
-						case ".cogstate":
-							this.LoadState(arguments[0]);
-							break;
-						default:
-							this.QuickLoad(arguments[0]);
-							break;
-					}
+					this.QuickLoad(arguments[0]);
 				} catch { }
 			}
 		}
@@ -593,10 +586,29 @@ namespace BeeDevelopment.Cogwheel {
 		}
 
 		/// <summary>
+		/// Quick-load "something" (ROM, VGM, save state etc).
+		/// </summary>
+		/// <param name="filename"></param>
+		private void QuickLoad(string filename) {
+			switch (Path.GetExtension(filename).ToLowerInvariant()) {
+				case ".cogstate":
+					this.LoadState(filename);
+					break;
+				case ".vgm":
+				case ".vgz":
+					this.LoadVgm(filename);
+					break;
+				default:
+					this.QuickLoadRom(filename);
+					break;
+			}
+		}
+
+		/// <summary>
 		/// Quick-load a ROM.
 		/// </summary>
 		/// <param name="filename">The name of the ROM file to quick-load.</param>
-		private void QuickLoad(string filename) {
+		private void QuickLoadRom(string filename) {
 			this.QuickLoad(filename, true);
 		}
 
@@ -682,7 +694,7 @@ namespace BeeDevelopment.Cogwheel {
 			}
 			if (this.OpenRomDialog.ShowDialog(this) == DialogResult.OK) {
 				Properties.Settings.Default.StoredPathQuickLoad = Path.GetDirectoryName(this.OpenRomDialog.FileName);
-				this.QuickLoad(this.OpenRomDialog.FileName);
+				this.QuickLoadRom(this.OpenRomDialog.FileName);
 			}
 		}
 
@@ -1178,6 +1190,73 @@ namespace BeeDevelopment.Cogwheel {
 			}
 		}
 
+		private bool LoadVgm(string filename) {
+			// Grab the VGM player stub:
+			var StubName = Path.Combine(Application.StartupPath, "vgmplayer.stub");
+			if (!File.Exists(StubName)) {
+				if (MessageBox.Show(this, "To play VGM files you will need to extract vgmplayer.stub from Maxim's VGM Player into Cogwheel's installation directory." + Environment.NewLine + "Would you like to visit Maxim's VGM Player page to download the software?", "Play VGM", MessageBoxButtons.YesNo) == DialogResult.Yes) {
+					this.GoToUrl(Properties.Settings.Default.UrlVgmPlayerStub);
+				}
+				return false;
+			}
+			byte[] VgmPlayerStub = File.ReadAllBytes(StubName);
+
+			// Load (and decompress) the VGM.
+			byte[] SourceVgm = new byte[0];
+			try {
+				using (var SourceVgmStream = new GZipStream(File.OpenRead(filename), CompressionMode.Decompress)) {
+					using (var Reader = new BinaryReader(SourceVgmStream)) {
+						var DecompressedData = new List<byte>(1024);
+						byte[] Chunk = null;
+						do {
+							Chunk = Reader.ReadBytes(1024);
+							DecompressedData.AddRange(Chunk);
+						} while (Chunk.Length > 0);
+						SourceVgm = DecompressedData.ToArray();
+					}
+				}
+			} catch (Exception ex) {
+				MessageBox.Show(this, "Could not open VGM: " + ex.Message, "Play VGM");
+				return false;
+			}
+
+			// Check it's a valid VGM file.
+			if (SourceVgm.Length < 64 || Encoding.ASCII.GetString(SourceVgm, 0, 4) != "Vgm ") {
+				MessageBox.Show(this, Path.GetFileName(this.OpenVgmDialog.FileName) + " is not a valid VGM file.", "Play VGM", MessageBoxButtons.OK);
+				return false;
+			}
+
+			// Create a temporary file made from the VGM file appended to the VGM player stub:
+			string TempFileName = null;
+			while (TempFileName == null || File.Exists(TempFileName)) {
+				TempFileName = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), "sms"));
+			}
+			try {
+				using (var TempVgmPlayer = new BinaryWriter(File.Create(TempFileName))) {
+					TempVgmPlayer.Write(VgmPlayerStub);
+					TempVgmPlayer.Write(SourceVgm);
+				}
+				// Load the ROM:
+				this.QuickLoad(TempFileName, false);
+				int VgmVersion = BitConverter.ToInt32(SourceVgm, 0x08);
+				// Do we have a rate setting?
+				if (VgmVersion >= 0x101) {
+					this.Emulator.Video.System = BitConverter.ToInt32(SourceVgm, 0x24) == 50 ? BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Pal : BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Ntsc;
+				}
+				// Do we have periodic noise settings?
+				if (VgmVersion >= 0x110) {
+					short TappedBits = BitConverter.ToInt16(SourceVgm, 0x28);
+					if (TappedBits != 0) this.Emulator.Sound.TappedBits = TappedBits;
+					byte ShiftRegisterWidth = SourceVgm[0x2A];
+					if (ShiftRegisterWidth != 0) this.Emulator.Sound.ShiftRegisterWidth = ShiftRegisterWidth;
+				}
+				this.OverrideAutomaticSettings(null);
+				return true;
+			} finally {
+				File.Delete(TempFileName);
+			}
+		}
+
 		#endregion
 
 		#region Recent Items
@@ -1227,7 +1306,7 @@ namespace BeeDevelopment.Cogwheel {
 			} else {
 				int i = 1;
 				foreach (var RecentFile in RecentFiles) {
-					this.RecentRomsMenu.DropDownItems.Add(new ToolStripMenuItem("&" + (i++) + " " + Path.GetFileNameWithoutExtension(RecentFile), null, (RecentFileMenu, e2) => this.QuickLoad(((ToolStripMenuItem)RecentFileMenu).Tag.ToString())) { Tag = RecentFile });
+					this.RecentRomsMenu.DropDownItems.Add(new ToolStripMenuItem("&" + (i++) + " " + Path.GetFileNameWithoutExtension(RecentFile), null, (RecentFileMenu, e2) => this.QuickLoadRom(((ToolStripMenuItem)RecentFileMenu).Tag.ToString())) { Tag = RecentFile });
 				}
 			}
 
@@ -1353,14 +1432,7 @@ namespace BeeDevelopment.Cogwheel {
 
 
 		private void PlayVgmMenu_Click(object sender, EventArgs e) {
-			var StubName = Path.Combine(Application.StartupPath, "vgmplayer.stub");
-			if (!File.Exists(StubName)) {
-				if (MessageBox.Show(this, "To play VGM files you will need to extract vgmplayer.stub from Maxim's VGM Player into Cogwheel's installation directory." + Environment.NewLine + "Would you like to visit Maxim's VGM Player page to download the software?", "Play VGM", MessageBoxButtons.YesNo) == DialogResult.Yes) {
-					this.GoToUrl(Properties.Settings.Default.UrlVgmPlayerStub);
-				}
-				return;
-			}
-			byte[] VgmPlayerStub = File.ReadAllBytes(StubName);
+			
 
 			if (!string.IsNullOrEmpty(Properties.Settings.Default.StoredPathVgm) && Directory.Exists(Properties.Settings.Default.StoredPathVgm)) {
 				this.OpenVgmDialog.InitialDirectory = Properties.Settings.Default.StoredPathVgm;
@@ -1368,60 +1440,8 @@ namespace BeeDevelopment.Cogwheel {
 				this.OpenVgmDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
 			}
 			if (this.OpenVgmDialog.ShowDialog(this) == DialogResult.OK) {
-
-				// Load (and decompress) the VGM.
-				byte[] SourceVgm = new byte[0];
-				try {
-					using (var SourceVgmStream = new GZipStream(File.OpenRead(this.OpenVgmDialog.FileName), CompressionMode.Decompress)) {
-						using (var Reader = new BinaryReader(SourceVgmStream)) {
-							var DecompressedData = new List<byte>(1024);
-							byte[] Chunk = null;
-							do {
-								Chunk = Reader.ReadBytes(1024);
-								DecompressedData.AddRange(Chunk);
-							} while (Chunk.Length > 0);
-							SourceVgm = DecompressedData.ToArray();
-						}
-					}
-				} catch (Exception ex) {
-					MessageBox.Show(this, "Could not open VGM: " + ex.Message, "Play VGM");
-					return;
-				}
-
-				// Check it's a valid VGM file.
-				if (SourceVgm.Length < 64 || Encoding.ASCII.GetString(SourceVgm, 0, 4) != "Vgm ") {
-					MessageBox.Show(this, Path.GetFileName(this.OpenVgmDialog.FileName) + " is not a valid VGM file.", "Play VGM", MessageBoxButtons.OK);
-					return;
-				}
-
-				// Create a temporary file made from the VGM file appended to the VGM player stub:
-				string TempFileName = null;
-				while (TempFileName == null || File.Exists(TempFileName)) {
-					TempFileName = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), "sms"));
-				}
-				try {
-					using (var TempVgmPlayer = new BinaryWriter(File.Create(TempFileName))) {
-						TempVgmPlayer.Write(VgmPlayerStub);
-						TempVgmPlayer.Write(SourceVgm);
-					}
-					// Load the ROM:
-					this.QuickLoad(TempFileName, false);
-					int VgmVersion = BitConverter.ToInt32(SourceVgm, 0x08);
-					// Do we have a rate setting?
-					if (VgmVersion >= 0x101) {
-						this.Emulator.Video.System = BitConverter.ToInt32(SourceVgm, 0x24) == 50 ? BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Pal : BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Ntsc;
-					}
-					// Do we have periodic noise settings?
-					if (VgmVersion >= 0x110) {
-						short TappedBits = BitConverter.ToInt16(SourceVgm, 0x28);
-						if (TappedBits != 0) this.Emulator.Sound.TappedBits = TappedBits;
-						byte ShiftRegisterWidth = SourceVgm[0x2A];
-						if (ShiftRegisterWidth != 0) this.Emulator.Sound.ShiftRegisterWidth = ShiftRegisterWidth;
-					}
-					this.OverrideAutomaticSettings(null);
+				if (this.LoadVgm(this.OpenVgmDialog.FileName)) {
 					Properties.Settings.Default.StoredPathVgm = Path.GetDirectoryName(this.OpenVgmDialog.FileName);
-				} finally {
-					File.Delete(TempFileName);
 				}
 			}
 		}
