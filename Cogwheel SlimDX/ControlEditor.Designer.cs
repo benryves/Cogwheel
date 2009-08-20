@@ -312,6 +312,7 @@
 			this.keyButton37.TabIndex = 18;
 			this.keyButton37.Text = "None";
 			this.keyButton37.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton37.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton37.UseVisualStyleBackColor = true;
 			this.keyButton37.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -332,6 +333,7 @@
 			this.keyButton38.TabIndex = 20;
 			this.keyButton38.Text = "None";
 			this.keyButton38.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton38.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton38.UseVisualStyleBackColor = true;
 			this.keyButton38.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -352,6 +354,7 @@
 			this.keyButton39.TabIndex = 19;
 			this.keyButton39.Text = "None";
 			this.keyButton39.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton39.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton39.UseVisualStyleBackColor = true;
 			this.keyButton39.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -372,6 +375,7 @@
 			this.keyButton33.TabIndex = 27;
 			this.keyButton33.Text = "None";
 			this.keyButton33.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton33.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton33.UseVisualStyleBackColor = true;
 			this.keyButton33.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -392,6 +396,7 @@
 			this.keyButton34.TabIndex = 28;
 			this.keyButton34.Text = "None";
 			this.keyButton34.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton34.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton34.UseVisualStyleBackColor = true;
 			this.keyButton34.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -412,6 +417,7 @@
 			this.keyButton35.TabIndex = 29;
 			this.keyButton35.Text = "None";
 			this.keyButton35.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton35.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton35.UseVisualStyleBackColor = true;
 			this.keyButton35.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -432,6 +438,7 @@
 			this.keyButton36.TabIndex = 30;
 			this.keyButton36.Text = "None";
 			this.keyButton36.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton36.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton36.UseVisualStyleBackColor = true;
 			this.keyButton36.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -492,6 +499,7 @@
 			this.keyButton30.TabIndex = 24;
 			this.keyButton30.Text = "None";
 			this.keyButton30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton30.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton30.UseVisualStyleBackColor = true;
 			this.keyButton30.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -542,6 +550,7 @@
 			this.keyButton31.TabIndex = 25;
 			this.keyButton31.Text = "None";
 			this.keyButton31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton31.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton31.UseVisualStyleBackColor = true;
 			this.keyButton31.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -562,6 +571,7 @@
 			this.keyButton32.TabIndex = 26;
 			this.keyButton32.Text = "None";
 			this.keyButton32.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton32.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton32.UseVisualStyleBackColor = true;
 			this.keyButton32.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -659,6 +669,7 @@
 			this.keyButton25.TabIndex = 6;
 			this.keyButton25.Text = "None";
 			this.keyButton25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton25.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton25.UseVisualStyleBackColor = true;
 			this.keyButton25.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -719,6 +730,7 @@
 			this.keyButton28.TabIndex = 9;
 			this.keyButton28.Text = "None";
 			this.keyButton28.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton28.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton28.UseVisualStyleBackColor = true;
 			this.keyButton28.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -739,6 +751,7 @@
 			this.keyButton27.TabIndex = 8;
 			this.keyButton27.Text = "None";
 			this.keyButton27.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton27.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton27.UseVisualStyleBackColor = true;
 			this.keyButton27.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -759,6 +772,7 @@
 			this.keyButton29.TabIndex = 10;
 			this.keyButton29.Text = "None";
 			this.keyButton29.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton29.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton29.UseVisualStyleBackColor = true;
 			this.keyButton29.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -779,6 +793,7 @@
 			this.keyButton26.TabIndex = 7;
 			this.keyButton26.Text = "None";
 			this.keyButton26.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton26.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton26.UseVisualStyleBackColor = true;
 			this.keyButton26.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -819,6 +834,7 @@
 			this.keyButton42.TabIndex = 10;
 			this.keyButton42.Text = "None";
 			this.keyButton42.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton42.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton42.UseVisualStyleBackColor = true;
 			this.keyButton42.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -839,6 +855,7 @@
 			this.keyButton43.TabIndex = 10;
 			this.keyButton43.Text = "None";
 			this.keyButton43.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton43.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton43.UseVisualStyleBackColor = true;
 			this.keyButton43.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -869,6 +886,7 @@
 			this.keyButton44.TabIndex = 10;
 			this.keyButton44.Text = "None";
 			this.keyButton44.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton44.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton44.UseVisualStyleBackColor = true;
 			this.keyButton44.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1007,6 +1025,7 @@
 			this.Player1TL.TabIndex = 6;
 			this.Player1TL.Text = "None";
 			this.Player1TL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.Player1TL.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.Player1TL.UseVisualStyleBackColor = true;
 			this.Player1TL.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1027,6 +1046,7 @@
 			this.Player1TR.TabIndex = 7;
 			this.Player1TR.Text = "None";
 			this.Player1TR.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.Player1TR.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.Player1TR.UseVisualStyleBackColor = true;
 			this.Player1TR.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1047,6 +1067,7 @@
 			this.Player1Up.TabIndex = 8;
 			this.Player1Up.Text = "None";
 			this.Player1Up.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.Player1Up.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.Player1Up.UseVisualStyleBackColor = true;
 			this.Player1Up.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1067,6 +1088,7 @@
 			this.Player1Down.TabIndex = 9;
 			this.Player1Down.Text = "None";
 			this.Player1Down.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.Player1Down.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.Player1Down.UseVisualStyleBackColor = true;
 			this.Player1Down.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1087,6 +1109,7 @@
 			this.Player1Left.TabIndex = 10;
 			this.Player1Left.Text = "None";
 			this.Player1Left.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.Player1Left.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.Player1Left.UseVisualStyleBackColor = true;
 			this.Player1Left.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1107,6 +1130,7 @@
 			this.Player1Right.TabIndex = 12;
 			this.Player1Right.Text = "None";
 			this.Player1Right.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.Player1Right.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.Player1Right.UseVisualStyleBackColor = true;
 			this.Player1Right.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1127,6 +1151,7 @@
 			this.Player2TL.TabIndex = 11;
 			this.Player2TL.Text = "None";
 			this.Player2TL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.Player2TL.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.Player2TL.UseVisualStyleBackColor = true;
 			this.Player2TL.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1147,6 +1172,7 @@
 			this.Player2TR.TabIndex = 13;
 			this.Player2TR.Text = "None";
 			this.Player2TR.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.Player2TR.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.Player2TR.UseVisualStyleBackColor = true;
 			this.Player2TR.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1167,6 +1193,7 @@
 			this.Player2Up.TabIndex = 14;
 			this.Player2Up.Text = "None";
 			this.Player2Up.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.Player2Up.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.Player2Up.UseVisualStyleBackColor = true;
 			this.Player2Up.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1187,6 +1214,7 @@
 			this.Player2Down.TabIndex = 15;
 			this.Player2Down.Text = "None";
 			this.Player2Down.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.Player2Down.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.Player2Down.UseVisualStyleBackColor = true;
 			this.Player2Down.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1207,6 +1235,7 @@
 			this.Player2Left.TabIndex = 16;
 			this.Player2Left.Text = "None";
 			this.Player2Left.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.Player2Left.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.Player2Left.UseVisualStyleBackColor = true;
 			this.Player2Left.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1227,6 +1256,7 @@
 			this.Player2Right.TabIndex = 17;
 			this.Player2Right.Text = "None";
 			this.Player2Right.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.Player2Right.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.Player2Right.UseVisualStyleBackColor = true;
 			this.Player2Right.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1309,6 +1339,7 @@
 			this.ConsolePause.TabIndex = 18;
 			this.ConsolePause.Text = "None";
 			this.ConsolePause.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.ConsolePause.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.ConsolePause.UseVisualStyleBackColor = true;
 			this.ConsolePause.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1329,6 +1360,7 @@
 			this.ConsoleReset.TabIndex = 20;
 			this.ConsoleReset.Text = "None";
 			this.ConsoleReset.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.ConsoleReset.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.ConsoleReset.UseVisualStyleBackColor = true;
 			this.ConsoleReset.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1349,6 +1381,7 @@
 			this.ConsoleStart.TabIndex = 19;
 			this.ConsoleStart.Text = "None";
 			this.ConsoleStart.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.ConsoleStart.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.ConsoleStart.UseVisualStyleBackColor = true;
 			this.ConsoleStart.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1461,6 +1494,7 @@
 			this.keyButton23.TabIndex = 37;
 			this.keyButton23.Text = "None";
 			this.keyButton23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton23.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton23.UseVisualStyleBackColor = true;
 			this.keyButton23.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1481,6 +1515,7 @@
 			this.keyButton24.TabIndex = 38;
 			this.keyButton24.Text = "None";
 			this.keyButton24.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton24.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton24.UseVisualStyleBackColor = true;
 			this.keyButton24.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1561,6 +1596,7 @@
 			this.keyButton1.TabIndex = 6;
 			this.keyButton1.Text = "None";
 			this.keyButton1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton1.UseVisualStyleBackColor = true;
 			this.keyButton1.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1581,6 +1617,7 @@
 			this.keyButton2.TabIndex = 7;
 			this.keyButton2.Text = "None";
 			this.keyButton2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton2.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton2.UseVisualStyleBackColor = true;
 			this.keyButton2.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1601,6 +1638,7 @@
 			this.keyButton3.TabIndex = 8;
 			this.keyButton3.Text = "None";
 			this.keyButton3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton3.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton3.UseVisualStyleBackColor = true;
 			this.keyButton3.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1621,6 +1659,7 @@
 			this.keyButton4.TabIndex = 9;
 			this.keyButton4.Text = "None";
 			this.keyButton4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton4.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton4.UseVisualStyleBackColor = true;
 			this.keyButton4.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1641,6 +1680,7 @@
 			this.keyButton5.TabIndex = 10;
 			this.keyButton5.Text = "None";
 			this.keyButton5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton5.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton5.UseVisualStyleBackColor = true;
 			this.keyButton5.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1661,6 +1701,7 @@
 			this.keyButton6.TabIndex = 12;
 			this.keyButton6.Text = "None";
 			this.keyButton6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton6.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton6.UseVisualStyleBackColor = true;
 			this.keyButton6.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1681,6 +1722,7 @@
 			this.keyButton7.TabIndex = 11;
 			this.keyButton7.Text = "None";
 			this.keyButton7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton7.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton7.UseVisualStyleBackColor = true;
 			this.keyButton7.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1701,6 +1743,7 @@
 			this.keyButton8.TabIndex = 13;
 			this.keyButton8.Text = "None";
 			this.keyButton8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton8.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton8.UseVisualStyleBackColor = true;
 			this.keyButton8.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1721,6 +1764,7 @@
 			this.keyButton9.TabIndex = 14;
 			this.keyButton9.Text = "None";
 			this.keyButton9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton9.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton9.UseVisualStyleBackColor = true;
 			this.keyButton9.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1741,6 +1785,7 @@
 			this.keyButton10.TabIndex = 15;
 			this.keyButton10.Text = "None";
 			this.keyButton10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton10.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton10.UseVisualStyleBackColor = true;
 			this.keyButton10.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1761,6 +1806,7 @@
 			this.keyButton11.TabIndex = 16;
 			this.keyButton11.Text = "None";
 			this.keyButton11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton11.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton11.UseVisualStyleBackColor = true;
 			this.keyButton11.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1781,6 +1827,7 @@
 			this.keyButton12.TabIndex = 17;
 			this.keyButton12.Text = "None";
 			this.keyButton12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton12.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton12.UseVisualStyleBackColor = true;
 			this.keyButton12.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1811,6 +1858,7 @@
 			this.keyButton13.TabIndex = 22;
 			this.keyButton13.Text = "None";
 			this.keyButton13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton13.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton13.UseVisualStyleBackColor = true;
 			this.keyButton13.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1831,6 +1879,7 @@
 			this.keyButton14.TabIndex = 23;
 			this.keyButton14.Text = "None";
 			this.keyButton14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton14.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton14.UseVisualStyleBackColor = true;
 			this.keyButton14.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1861,6 +1910,7 @@
 			this.keyButton15.TabIndex = 25;
 			this.keyButton15.Text = "None";
 			this.keyButton15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton15.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton15.UseVisualStyleBackColor = true;
 			this.keyButton15.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1881,6 +1931,7 @@
 			this.keyButton16.TabIndex = 26;
 			this.keyButton16.Text = "None";
 			this.keyButton16.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton16.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton16.UseVisualStyleBackColor = true;
 			this.keyButton16.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1911,6 +1962,7 @@
 			this.keyButton17.TabIndex = 28;
 			this.keyButton17.Text = "None";
 			this.keyButton17.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton17.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton17.UseVisualStyleBackColor = true;
 			this.keyButton17.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1931,6 +1983,7 @@
 			this.keyButton18.TabIndex = 29;
 			this.keyButton18.Text = "None";
 			this.keyButton18.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton18.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton18.UseVisualStyleBackColor = true;
 			this.keyButton18.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1961,6 +2014,7 @@
 			this.keyButton19.TabIndex = 31;
 			this.keyButton19.Text = "None";
 			this.keyButton19.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton19.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton19.UseVisualStyleBackColor = true;
 			this.keyButton19.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -1981,6 +2035,7 @@
 			this.keyButton20.TabIndex = 32;
 			this.keyButton20.Text = "None";
 			this.keyButton20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton20.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton20.UseVisualStyleBackColor = true;
 			this.keyButton20.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -2011,6 +2066,7 @@
 			this.keyButton21.TabIndex = 34;
 			this.keyButton21.Text = "None";
 			this.keyButton21.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton21.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton21.UseVisualStyleBackColor = true;
 			this.keyButton21.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 
@@ -2031,6 +2087,7 @@
 			this.keyButton22.TabIndex = 35;
 			this.keyButton22.Text = "None";
 			this.keyButton22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.keyButton22.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.keyButton22.UseVisualStyleBackColor = true;
 			this.keyButton22.XInputTrigger = BeeDevelopment.Cogwheel.XInputSource.InputTrigger.None;
 			// 

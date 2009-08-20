@@ -90,9 +90,9 @@ namespace BeeDevelopment.Cogwheel {
 				};
 			}
 
-			this.ControllerEditing.Items.Add(new ComboBoxItem(){ Name = "Standard Controls", Tag = this.StandardConfigurationPanel });
-			this.ControllerEditing.Items.Add(new ComboBoxItem() { Name = "ColecoVision Number Pads", Tag = this.ColecoVisionConfigurationPanel });
-			this.ControllerEditing.Items.Add(new ComboBoxItem() { Name = "SC-3000 Keyboard", Tag = this.KeyboardConfigurationPanel });
+			this.ControllerEditing.Items.Add(new ComboBoxItem(){ Name = "Standard controls", Tag = this.StandardConfigurationPanel });
+			this.ControllerEditing.Items.Add(new ComboBoxItem() { Name = "ColecoVision number pads", Tag = this.ColecoVisionConfigurationPanel });
+			this.ControllerEditing.Items.Add(new ComboBoxItem() { Name = "SC-3000 keyboard", Tag = this.KeyboardConfigurationPanel });
 
 			this.ControllerEditing.SelectedItem = this.ControllerEditing.Items[0];
 
