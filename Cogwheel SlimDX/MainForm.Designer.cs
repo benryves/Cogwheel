@@ -113,6 +113,11 @@
 			this.ColourDialog = new System.Windows.Forms.ColorDialog();
 			this.SaveVgmDialog = new System.Windows.Forms.SaveFileDialog();
 			this.OpenVgmDialog = new System.Windows.Forms.OpenFileDialog();
+			this.HelpSep1 = new System.Windows.Forms.ToolStripSeparator();
+			this.WebsiteCogwheel = new System.Windows.Forms.ToolStripMenuItem();
+			this.WebsiteVgmPlayer = new System.Windows.Forms.ToolStripMenuItem();
+			this.WebsiteSmsPower = new System.Windows.Forms.ToolStripMenuItem();
+			this.WebsiteSmsChecker = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -727,6 +732,11 @@
 			this.HelpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AboutMenu,
             this.HelpSep0,
+            this.WebsiteCogwheel,
+            this.WebsiteVgmPlayer,
+            this.WebsiteSmsChecker,
+            this.WebsiteSmsPower,
+            this.HelpSep1,
             this.BugReportMenu});
 			this.HelpMenu.Name = "HelpMenu";
 			this.HelpMenu.Size = new System.Drawing.Size(44, 20);
@@ -736,20 +746,20 @@
 			// 
 			this.AboutMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Information;
 			this.AboutMenu.Name = "AboutMenu";
-			this.AboutMenu.Size = new System.Drawing.Size(142, 22);
+			this.AboutMenu.Size = new System.Drawing.Size(186, 22);
 			this.AboutMenu.Text = "&About";
 			this.AboutMenu.Click += new System.EventHandler(this.AboutMenu_Click);
 			// 
 			// HelpSep0
 			// 
 			this.HelpSep0.Name = "HelpSep0";
-			this.HelpSep0.Size = new System.Drawing.Size(139, 6);
+			this.HelpSep0.Size = new System.Drawing.Size(183, 6);
 			// 
 			// BugReportMenu
 			// 
 			this.BugReportMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Bug;
 			this.BugReportMenu.Name = "BugReportMenu";
-			this.BugReportMenu.Size = new System.Drawing.Size(142, 22);
+			this.BugReportMenu.Size = new System.Drawing.Size(186, 22);
 			this.BugReportMenu.Text = "&Report a bug";
 			this.BugReportMenu.Click += new System.EventHandler(this.BugReportMenu_Click);
 			// 
@@ -803,6 +813,43 @@
 			// OpenVgmDialog
 			// 
 			this.OpenVgmDialog.Filter = "VGM files (*.vgm;*.vgz)|*.vgm;*.vgz|All files (*.*)|*.*";
+			// 
+			// HelpSep1
+			// 
+			this.HelpSep1.Name = "HelpSep1";
+			this.HelpSep1.Size = new System.Drawing.Size(183, 6);
+			// 
+			// WebsiteCogwheel
+			// 
+			this.WebsiteCogwheel.Name = "WebsiteCogwheel";
+			this.WebsiteCogwheel.Size = new System.Drawing.Size(186, 22);
+			this.WebsiteCogwheel.Tag = "http://www.bee-dev.com/?go=cogwheel";
+			this.WebsiteCogwheel.Text = "Cogwheel website";
+			this.WebsiteCogwheel.Click += new System.EventHandler(this.Website_Click);
+			// 
+			// WebsiteVgmPlayer
+			// 
+			this.WebsiteVgmPlayer.Name = "WebsiteVgmPlayer";
+			this.WebsiteVgmPlayer.Size = new System.Drawing.Size(186, 22);
+			this.WebsiteVgmPlayer.Tag = "http://www.smspower.org/maxim/smssoftware/vgmplayer.html";
+			this.WebsiteVgmPlayer.Text = "VGM Player website";
+			this.WebsiteVgmPlayer.Click += new System.EventHandler(this.Website_Click);
+			// 
+			// WebsiteSmsPower
+			// 
+			this.WebsiteSmsPower.Name = "WebsiteSmsPower";
+			this.WebsiteSmsPower.Size = new System.Drawing.Size(186, 22);
+			this.WebsiteSmsPower.Tag = "http://www.smspower.org/";
+			this.WebsiteSmsPower.Text = "SMS Power! website";
+			this.WebsiteSmsPower.Click += new System.EventHandler(this.Website_Click);
+			// 
+			// WebsiteSmsChecker
+			// 
+			this.WebsiteSmsChecker.Name = "WebsiteSmsChecker";
+			this.WebsiteSmsChecker.Size = new System.Drawing.Size(186, 22);
+			this.WebsiteSmsChecker.Tag = "http://www.smspower.org/maxim/smschecker/";
+			this.WebsiteSmsChecker.Text = "SMS Checker website";
+			this.WebsiteSmsChecker.Click += new System.EventHandler(this.Website_Click);
 			// 
 			// MainForm
 			// 
@@ -921,6 +968,11 @@
 		private System.Windows.Forms.SaveFileDialog SaveVgmDialog;
 		private System.Windows.Forms.ToolStripMenuItem PlayVgmMenu;
 		private System.Windows.Forms.OpenFileDialog OpenVgmDialog;
+		private System.Windows.Forms.ToolStripMenuItem WebsiteCogwheel;
+		private System.Windows.Forms.ToolStripMenuItem WebsiteVgmPlayer;
+		private System.Windows.Forms.ToolStripSeparator HelpSep1;
+		private System.Windows.Forms.ToolStripMenuItem WebsiteSmsPower;
+		private System.Windows.Forms.ToolStripMenuItem WebsiteSmsChecker;
 #endif
 	}
 }

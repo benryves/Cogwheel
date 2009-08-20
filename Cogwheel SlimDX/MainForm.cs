@@ -989,6 +989,16 @@ namespace BeeDevelopment.Cogwheel {
 			GoToUrl(Properties.Settings.Default.UrlBugReport);
 		}
 
+		private void Website_Click(object sender, EventArgs e) {
+			var LinkItem = sender as ToolStripMenuItem;
+			if (LinkItem != null) {
+				var Url = LinkItem.Tag as string;
+				if (!string.IsNullOrEmpty(Url)) {
+					this.GoToUrl(Url);
+				}
+			}
+		}
+
 		#endregion
 
 		#region Options
