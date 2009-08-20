@@ -42,6 +42,9 @@
 			this.RecentRomsMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.dummyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.FileSep2 = new System.Windows.Forms.ToolStripSeparator();
+			this.PlayVgmMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.StartStopRecordingVgmMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.FileSep4 = new System.Windows.Forms.ToolStripSeparator();
 			this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ViewMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.CopyScreenshotMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -108,9 +111,8 @@
 			this.SaveStateDialog = new System.Windows.Forms.SaveFileDialog();
 			this.CursorHider = new System.Windows.Forms.Timer(this.components);
 			this.ColourDialog = new System.Windows.Forms.ColorDialog();
-			this.StartStopRecordingVgmMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.FileSep4 = new System.Windows.Forms.ToolStripSeparator();
 			this.SaveVgmDialog = new System.Windows.Forms.SaveFileDialog();
+			this.OpenVgmDialog = new System.Windows.Forms.OpenFileDialog();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -155,6 +157,7 @@
             this.FileSep1,
             this.RecentRomsMenu,
             this.FileSep2,
+            this.PlayVgmMenu,
             this.StartStopRecordingVgmMenu,
             this.FileSep4,
             this.ExitMenu});
@@ -254,13 +257,33 @@
 			// dummyToolStripMenuItem
 			// 
 			this.dummyToolStripMenuItem.Name = "dummyToolStripMenuItem";
-			this.dummyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.dummyToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
 			this.dummyToolStripMenuItem.Text = "&Dummy";
 			// 
 			// FileSep2
 			// 
 			this.FileSep2.Name = "FileSep2";
 			this.FileSep2.Size = new System.Drawing.Size(210, 6);
+			// 
+			// PlayVgmMenu
+			// 
+			this.PlayVgmMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Music;
+			this.PlayVgmMenu.Name = "PlayVgmMenu";
+			this.PlayVgmMenu.Size = new System.Drawing.Size(213, 22);
+			this.PlayVgmMenu.Text = "Play VGM...";
+			this.PlayVgmMenu.Click += new System.EventHandler(this.PlayVgmMenu_Click);
+			// 
+			// StartStopRecordingVgmMenu
+			// 
+			this.StartStopRecordingVgmMenu.Name = "StartStopRecordingVgmMenu";
+			this.StartStopRecordingVgmMenu.Size = new System.Drawing.Size(213, 22);
+			this.StartStopRecordingVgmMenu.Text = "Start/stop recording VGM";
+			this.StartStopRecordingVgmMenu.Click += new System.EventHandler(this.StartStopRecordingVgmMenu_Click);
+			// 
+			// FileSep4
+			// 
+			this.FileSep4.Name = "FileSep4";
+			this.FileSep4.Size = new System.Drawing.Size(210, 6);
 			// 
 			// ExitMenu
 			// 
@@ -769,22 +792,14 @@
 			// 
 			this.ColourDialog.AnyColor = true;
 			// 
-			// StartStopRecordingVgmMenu
-			// 
-			this.StartStopRecordingVgmMenu.Name = "StartStopRecordingVgmMenu";
-			this.StartStopRecordingVgmMenu.Size = new System.Drawing.Size(213, 22);
-			this.StartStopRecordingVgmMenu.Text = "Start/stop recording VGM";
-			this.StartStopRecordingVgmMenu.Click += new System.EventHandler(this.StartStopRecordingVgmMenu_Click);
-			// 
-			// FileSep4
-			// 
-			this.FileSep4.Name = "FileSep4";
-			this.FileSep4.Size = new System.Drawing.Size(210, 6);
-			// 
 			// SaveVgmDialog
 			// 
 			this.SaveVgmDialog.Filter = "Compressed VGM file (*.vgz)|*.vgz|Uncompressed VGM file (*.vgm)|*.vgm|All files (" +
 				"*.*)|*.*";
+			// 
+			// OpenVgmDialog
+			// 
+			this.OpenVgmDialog.Filter = "VGM files (*.vgm;*.vgz)|*.vgm;*.vgz|All files (*.*)|*.*";
 			// 
 			// MainForm
 			// 
@@ -901,6 +916,8 @@
 		private System.Windows.Forms.ToolStripMenuItem StartStopRecordingVgmMenu;
 		private System.Windows.Forms.ToolStripSeparator FileSep4;
 		private System.Windows.Forms.SaveFileDialog SaveVgmDialog;
+		private System.Windows.Forms.ToolStripMenuItem PlayVgmMenu;
+		private System.Windows.Forms.OpenFileDialog OpenVgmDialog;
 #endif
 	}
 }

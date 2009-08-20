@@ -233,6 +233,8 @@
     <None Include="Resources\bullet_black.png" />
     <None Include="Resources\Config_DefaultJoystickMapping.txt" />
     <Content Include="Resources\Config_DefaultKeyMapping.txt" />
+    <None Include="Resources\music.png" />
+    <None Include="Resources\vgmplayer.stub" />
     <None Include="Resources\world.png" />
     <None Include="Resources\PixelDumper3DShader.txt" />
     <None Include="Resources\xinput.png" />

@@ -346,5 +346,17 @@ namespace BeeDevelopment.Cogwheel.Properties {
                 this["StoredPathVgm"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://www.smspower.org/maxim/smssoftware/vgmplayer.html")]
+        public string UrlVgmPlayerStub {
+            get {
+                return ((string)(this["UrlVgmPlayerStub"]));
+            }
+            set {
+                this["UrlVgmPlayerStub"] = value;
+            }
+        }
     }
 }

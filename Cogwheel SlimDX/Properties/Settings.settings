@@ -83,5 +83,8 @@
     <Setting Name="StoredPathVgm" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="UrlVgmPlayerStub" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://www.smspower.org/maxim/smssoftware/vgmplayer.html</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

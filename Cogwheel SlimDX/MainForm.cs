@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -14,7 +16,6 @@ using BeeDevelopment.Zip;
 using SlimDX;
 using SlimDX.DirectSound;
 using SlimDX.Multimedia;
-using System.IO.Compression;
 
 namespace BeeDevelopment.Cogwheel {
 	public partial class MainForm : Form {
@@ -596,6 +597,15 @@ namespace BeeDevelopment.Cogwheel {
 		/// </summary>
 		/// <param name="filename">The name of the ROM file to quick-load.</param>
 		private void QuickLoad(string filename) {
+			this.QuickLoad(filename, true);
+		}
+
+		/// <summary>
+		/// Quick-load a ROM.
+		/// </summary>
+		/// <param name="filename">The name of the ROM file to quick-load.</param>
+		/// <param name="addToRecentFileList">True (default) to add to the MRU, false to skip it.</param>
+		private void QuickLoad(string filename, bool addToRecentFileList) {
 			
 			string Filename = filename;
 
@@ -611,7 +621,9 @@ namespace BeeDevelopment.Cogwheel {
 
 			this.UpdateFormTitle(Filename);
 
-			this.AddRecentFile(filename);
+			if (addToRecentFileList) {
+				this.AddRecentFile(filename);
+			}
 
 			if (LoadingRomInfo != null) {
 
@@ -1299,7 +1311,7 @@ namespace BeeDevelopment.Cogwheel {
 
 		#endregion
 
-		#region VGM Recording
+		#region VGM Recording/Playback
 
 		private VgmRecorder Recorder = null;
 		private bool CompressVgm = false;
@@ -1339,7 +1351,58 @@ namespace BeeDevelopment.Cogwheel {
 			}
 		}
 
+
+		private void PlayVgmMenu_Click(object sender, EventArgs e) {
+			var StubName = Path.Combine(Application.StartupPath, "vgmplayer.stub");
+			if (!File.Exists(StubName)) {
+				if (MessageBox.Show(this, "To play VGM files you will need to extract vgmplayer.stub from Maxim's VGM Player into Cogwheel's installation directory." + Environment.NewLine + "Would you like to visit Maxim's VGM Player page to download the software?", "Play VGM", MessageBoxButtons.YesNo) == DialogResult.Yes) {
+					this.GoToUrl(Properties.Settings.Default.UrlVgmPlayerStub);
+				}
+				return;
+			}
+			byte[] VgmPlayerStub = File.ReadAllBytes(StubName);
+
+			if (!string.IsNullOrEmpty(Properties.Settings.Default.StoredPathVgm) && Directory.Exists(Properties.Settings.Default.StoredPathVgm)) {
+				this.OpenVgmDialog.InitialDirectory = Properties.Settings.Default.StoredPathVgm;
+			} else {
+				this.OpenVgmDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+			}
+			if (this.OpenVgmDialog.ShowDialog(this) == DialogResult.OK) {
+				byte[] SourceVgm = new byte[0];
+				try {
+					using (var SourceVgmStream = new GZipStream(File.OpenRead(this.OpenVgmDialog.FileName), CompressionMode.Decompress)) {
+						using (var Reader = new BinaryReader(SourceVgmStream)) {
+							var DecompressedData = new List<byte>(1024);
+							byte[] Chunk = null;
+							do {
+								Chunk = Reader.ReadBytes(1024);
+								DecompressedData.AddRange(Chunk);
+							} while (Chunk.Length > 0);
+							SourceVgm = DecompressedData.ToArray();
+						}
+					}
+				} catch (Exception ex) {
+					MessageBox.Show(this, "Could not open VGM: " + ex.Message, "Play VGM");
+					return;
+				}
+				string TempFileName = null;
+				while (TempFileName == null || File.Exists(TempFileName)) {
+					TempFileName = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), "sms"));
+				}
+				try {
+					using (var TempVgmPlayer = new BinaryWriter(File.Create(TempFileName))) {
+						TempVgmPlayer.Write(VgmPlayerStub);
+						TempVgmPlayer.Write(SourceVgm);
+					}
+					this.QuickLoad(TempFileName, false);
+				} finally {
+					File.Delete(TempFileName);
+				}
+			}
+		}
+
 		#endregion
+
 
 	}
 }

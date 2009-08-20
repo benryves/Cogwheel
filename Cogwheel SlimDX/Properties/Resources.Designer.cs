@@ -405,6 +405,13 @@ namespace BeeDevelopment.Cogwheel.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Icon_Music {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Music", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Icon_PovE {
             get {
                 object obj = ResourceManager.GetObject("Icon_PovE", resourceCulture);
