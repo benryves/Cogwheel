@@ -1428,6 +1428,26 @@ namespace BeeDevelopment.Cogwheel {
 
 		#endregion
 
+		#region Drag-and-Drop
+
+		private void RenderPanel_DragDrop(object sender, DragEventArgs e) {
+			string[] DropData;
+			if (e.Data.GetDataPresent(DataFormats.FileDrop) && (DropData = (e.Data.GetData(DataFormats.FileDrop) as string[])) != null && DropData.Length == 1) {
+				this.QuickLoad(DropData[0]);
+				this.Focus();
+				this.WindowState = FormWindowState.Normal;
+				this.BringToFront();
+			}
+		}
+
+		private void RenderPanel_DragOver(object sender, DragEventArgs e) {
+			string[] DropData;
+			if (e.Data.GetDataPresent(DataFormats.FileDrop) && (DropData = (e.Data.GetData(DataFormats.FileDrop) as string[])) != null && DropData.Length == 1) {
+				e.Effect = DragDropEffects.Copy;
+			}
+		}
+
+		#endregion
 
 	}
 }

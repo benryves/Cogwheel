@@ -119,6 +119,7 @@
 			// 
 			// RenderPanel
 			// 
+			this.RenderPanel.AllowDrop = true;
 			this.RenderPanel.BackColor = System.Drawing.Color.Black;
 			this.RenderPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.RenderPanel.Location = new System.Drawing.Point(0, 24);
@@ -126,7 +127,9 @@
 			this.RenderPanel.Size = new System.Drawing.Size(421, 262);
 			this.RenderPanel.TabIndex = 0;
 			this.RenderPanel.DoubleClick += new System.EventHandler(this.RenderPanel_DoubleClick);
+			this.RenderPanel.DragOver += new System.Windows.Forms.DragEventHandler(this.RenderPanel_DragOver);
 			this.RenderPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RenderPanel_MouseMove);
+			this.RenderPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.RenderPanel_DragDrop);
 			// 
 			// Menus
 			// 
