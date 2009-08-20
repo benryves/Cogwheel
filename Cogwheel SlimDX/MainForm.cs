@@ -1395,6 +1395,7 @@ namespace BeeDevelopment.Cogwheel {
 						TempVgmPlayer.Write(SourceVgm);
 					}
 					this.QuickLoad(TempFileName, false);
+					Properties.Settings.Default.StoredPathVgm = Path.GetDirectoryName(this.OpenVgmDialog.FileName);
 				} finally {
 					File.Delete(TempFileName);
 				}
