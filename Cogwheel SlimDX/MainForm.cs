@@ -1261,6 +1261,8 @@ namespace BeeDevelopment.Cogwheel {
 					if (ShiftRegisterWidth != 0) this.Emulator.Sound.ShiftRegisterWidth = ShiftRegisterWidth;
 				}
 				this.OverrideAutomaticSettings(null);
+				// Ensure we have an SMS2 VDP, as we need the extended resolution support.
+				this.Emulator.Video.SetCapabilitiesByModelAndVideoSystem(HardwareModel.MasterSystem2, this.Emulator.Video.System);
 				return true;
 			} finally {
 				File.Delete(TempFileName);
