@@ -93,6 +93,21 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainForm.Input.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Loaders.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.RenderLoop.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Sound.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.State.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="NativeToolStripRenderer.cs" />
     <Compile Include="PixelDumper3D.cs" />
     <Compile Include="PowerStrip.cs" />
