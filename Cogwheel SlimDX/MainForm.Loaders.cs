@@ -51,7 +51,7 @@ namespace BeeDevelopment.Cogwheel {
 		/// </summary>
 		/// <param name="filename">The name of the ROM file to quick-load.</param>
 		private void QuickLoadRom(string filename) {
-			this.QuickLoad(filename, true);
+			this.QuickLoadRom(filename, true);
 		}
 
 		/// <summary>
@@ -59,7 +59,7 @@ namespace BeeDevelopment.Cogwheel {
 		/// </summary>
 		/// <param name="filename">The name of the ROM file to quick-load.</param>
 		/// <param name="addToRecentFileList">True (default) to add to the MRU, false to skip it.</param>
-		private void QuickLoad(string filename, bool addToRecentFileList) {
+		private void QuickLoadRom(string filename, bool addToRecentFileList) {
 
 			string Filename = filename;
 
@@ -126,6 +126,9 @@ namespace BeeDevelopment.Cogwheel {
 				}
 			}
 
+			// Load the SRAM.
+			this.LoadRam();
+
 			this.OverrideAutomaticSettings(LoadingRomInfo);
 
 		}
@@ -177,7 +180,7 @@ namespace BeeDevelopment.Cogwheel {
 					TempVgmPlayer.Write(SourceVgm);
 				}
 				// Load the ROM:
-				this.QuickLoad(TempFileName, false);
+				this.QuickLoadRom(TempFileName, false);
 				int VgmVersion = BitConverter.ToInt32(SourceVgm, 0x08);
 				// Do we have a rate setting?
 				if (VgmVersion >= 0x101) {

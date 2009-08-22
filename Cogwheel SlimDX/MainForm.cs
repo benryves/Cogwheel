@@ -308,6 +308,9 @@ namespace BeeDevelopment.Cogwheel {
 			}
 			if (this.OpenRomDialog.ShowDialog(this) == DialogResult.OK) {
 				Properties.Settings.Default.StoredPathQuickLoad = Path.GetDirectoryName(this.OpenRomDialog.FileName);
+				// Save the old SRAM first.
+				this.SaveRam();
+				// Load the ROM.
 				this.QuickLoadRom(this.OpenRomDialog.FileName);
 			}
 		}
@@ -316,6 +319,8 @@ namespace BeeDevelopment.Cogwheel {
 			var RomLoadDialog = new AdvancedRomLoadDialog();
 			if (RomLoadDialog.ShowDialog(this) == DialogResult.OK) {
 
+				// Save the old SRAM first.
+				this.SaveRam();
 
 				this.Emulator.RemoveAllMedia();
 				this.Emulator.ResetAll();
@@ -354,6 +359,7 @@ namespace BeeDevelopment.Cogwheel {
 					this.Emulator.CartridgeSlot.Enabled = false;
 				}
 
+				this.LoadRam();
 				this.OverrideAutomaticSettings(LoadingRomInfo);
 
 				this.Dumper.RecreateDevice();
@@ -548,6 +554,7 @@ namespace BeeDevelopment.Cogwheel {
 		#endregion
 
 		protected override void OnClosing(System.ComponentModel.CancelEventArgs e) {
+			this.SaveRam();
 			if (this.Recorder != null) {
 				this.StartStopRecordingVgmMenu.PerformClick();
 			}
@@ -683,8 +690,6 @@ namespace BeeDevelopment.Cogwheel {
 
 		#region State Saving
 
-	
-
 		private void QuickStateSlotMenu_DropDownOpening(object sender, EventArgs e) {
 			this.QuickStateSlotMenu.DropDownItems.Clear();
 			for (int i = 0; i < 10; ++i) {
@@ -731,6 +736,8 @@ namespace BeeDevelopment.Cogwheel {
 
 			if (this.OpenStateDialog.ShowDialog(this) == DialogResult.OK) {
 				try {
+					// Store the old RAM.
+					this.SaveRam();
 					Properties.Settings.Default.StoredPathState = Path.GetDirectoryName(this.OpenStateDialog.FileName);
 					this.LoadState(this.OpenStateDialog.FileName);
 				} catch (Exception ex) {
@@ -788,7 +795,16 @@ namespace BeeDevelopment.Cogwheel {
 			} else {
 				int i = 1;
 				foreach (var RecentFile in RecentFiles) {
-					this.RecentRomsMenu.DropDownItems.Add(new ToolStripMenuItem("&" + (i++) + " " + Path.GetFileNameWithoutExtension(RecentFile), null, (RecentFileMenu, e2) => this.QuickLoadRom(((ToolStripMenuItem)RecentFileMenu).Tag.ToString())) { Tag = RecentFile });
+					this.RecentRomsMenu.DropDownItems.Add(
+						new ToolStripMenuItem(
+							"&" + (i++) + " " + Path.GetFileNameWithoutExtension(RecentFile),
+							null,
+							(RecentFileMenu, e2) => {
+								this.SaveRam();
+								this.QuickLoadRom(((ToolStripMenuItem)RecentFileMenu).Tag.ToString());
+							}
+						) { Tag = RecentFile }
+					);
 				}
 			}
 
@@ -914,7 +930,6 @@ namespace BeeDevelopment.Cogwheel {
 
 
 		private void PlayVgmMenu_Click(object sender, EventArgs e) {
-			
 
 			if (!string.IsNullOrEmpty(Properties.Settings.Default.StoredPathVgm) && Directory.Exists(Properties.Settings.Default.StoredPathVgm)) {
 				this.OpenVgmDialog.InitialDirectory = Properties.Settings.Default.StoredPathVgm;
@@ -922,6 +937,8 @@ namespace BeeDevelopment.Cogwheel {
 				this.OpenVgmDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
 			}
 			if (this.OpenVgmDialog.ShowDialog(this) == DialogResult.OK) {
+				// Save the old SRAM first.
+				this.SaveRam();
 				if (this.LoadVgm(this.OpenVgmDialog.FileName)) {
 					Properties.Settings.Default.StoredPathVgm = Path.GetDirectoryName(this.OpenVgmDialog.FileName);
 				}
@@ -935,6 +952,7 @@ namespace BeeDevelopment.Cogwheel {
 		private void RenderPanel_DragDrop(object sender, DragEventArgs e) {
 			string[] DropData;
 			if (e.Data.GetDataPresent(DataFormats.FileDrop) && (DropData = (e.Data.GetData(DataFormats.FileDrop) as string[])) != null && DropData.Length == 1) {
+				this.SaveRam();
 				this.QuickLoad(DropData[0]);
 				this.Focus();
 				this.WindowState = FormWindowState.Normal;
