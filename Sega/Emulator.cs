@@ -25,6 +25,7 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <summary>
 		/// Gets the clock rate of the emulator's Z80 CPU in Hertz.
 		/// </summary>
+		[StateNotSaved()]
 		public int ClockSpeed {
 			get {
 				return this.video.System == VideoDisplayProcessor.VideoSystem.Ntsc ? 3579545 : 3546895;

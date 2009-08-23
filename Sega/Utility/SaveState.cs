@@ -224,6 +224,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 
 					var Property = Result.GetType().GetProperty(Parameter[0]);
 					if (Property == null) continue; // No matching property found, but no matter.
+					if (!Property.CanWrite) continue; // No setter, but no matter.
 
 					ZipFileEntry DumpedData = null;
 					if (Parameter[1].StartsWith("Dump(") && Parameter[1].EndsWith(")")) {
