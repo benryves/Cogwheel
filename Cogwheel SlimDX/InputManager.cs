@@ -475,11 +475,8 @@ namespace BeeDevelopment.Cogwheel {
 						var SubComponents = C.Split('.');
 						return new KeyValuePair<int, InputButton>(int.Parse(SubComponents[0]), (InputButton)Enum.Parse(typeof(InputButton), SubComponents[1]));
 					});
-					if (KeyTargets != null && KeyTargets.Length != 0) {
-						if (this.KeyMapping.ContainsKey(MappedKey)) {
-							this.KeyMapping.Remove(MappedKey);
-						}
-						this.KeyMapping.Add(MappedKey, KeyTargets);
+					foreach (var item in KeyTargets) {
+						this.SetTrigger(item.Key, item.Value, MappedKey);
 					}
 				} catch { }
 
