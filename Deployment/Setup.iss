@@ -25,11 +25,11 @@ WizardSmallImageFile=WizardSmallImageFile.bmp
 
 [Files]
 ; Main executables:
-Source: "..\Cogwheel SlimDX\bin\Release\Cogwheel Interface.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
-Source: "..\Cogwheel SlimDX\bin\Release\Cogwheel Interface.exe.config"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
-Source: "..\Cogwheel SlimDX\bin\Release\Sega.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
-Source: "..\Cogwheel SlimDX\bin\Release\Brazil.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
-Source: "..\State Thumbnailer\bin\Release\CogStateThumbnailer.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
+Source: "..\Cogwheel SlimDX\bin\x86\Release\Cogwheel Interface.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
+Source: "..\Cogwheel SlimDX\bin\x86\Release\Cogwheel Interface.exe.config"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
+Source: "..\Cogwheel SlimDX\bin\x86\Release\Sega.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
+Source: "..\Cogwheel SlimDX\bin\x86\Release\Brazil.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
+Source: "..\State Thumbnailer\bin\x86\Release\CogStateThumbnailer.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: "Cogwheel";
 
 ; ROM Data:
 Source: "Dependencies\ROM Data\Master System.romdata"; DestDir: "{app}\ROM Data"; Flags: ignoreversion; Components: "RomData";
