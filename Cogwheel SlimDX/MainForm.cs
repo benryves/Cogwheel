@@ -362,6 +362,8 @@ namespace BeeDevelopment.Cogwheel {
 				this.LoadRam();
 				this.OverrideAutomaticSettings(LoadingRomInfo);
 
+				this.WarnAboutColecoRom();
+
 				this.Dumper.RecreateDevice();
 
 				this.UpdateFormTitle(null);

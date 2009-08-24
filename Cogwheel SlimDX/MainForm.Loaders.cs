@@ -11,6 +11,15 @@ namespace BeeDevelopment.Cogwheel {
 	public partial class MainForm {
 
 		/// <summary>
+		///  Display a warning dialog if the ColecoVision BIOS ROM is not present.
+		/// </summary>
+		private void WarnAboutColecoRom() {
+			if (this.Emulator.Family == HardwareFamily.ColecoVision && !File.Exists(Path.Combine(Application.StartupPath, "COLECO.ROM"))) {
+				MessageBox.Show(this, "ColecoVision emulation requires a copy of the ColecoVision BIOS ROM." + Environment.NewLine +  "Please copy COLECO.ROM to the application's installation directory.", "ColecoVision", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			}
+		}
+
+		/// <summary>
 		/// Override any automatic settings (eg region) with user-defined ones.
 		/// </summary>
 		private void OverrideAutomaticSettings(RomInfo romInfo) {
@@ -130,6 +139,8 @@ namespace BeeDevelopment.Cogwheel {
 			this.LoadRam();
 
 			this.OverrideAutomaticSettings(LoadingRomInfo);
+
+			this.WarnAboutColecoRom();
 
 		}
 
