@@ -102,7 +102,6 @@ namespace BeeDevelopment.Sega8Bit {
 		/// <remarks>Countries that use SECAM (eg France) are returned as using PAL.</remarks>
 		public static Hardware.VideoDisplayProcessor.VideoSystem CountryToVideoSystem(Country country) {
 			switch (country) {
-				case Country.Brazil:
 				case Country.England:
 				case Country.France:
 				case Country.Germany:
