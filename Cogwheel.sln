@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "State Thumbnailer", "State 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Z80 Tester", "Z80 Tester\Z80 Tester.csproj", "{0DFE4A00-43B9-412B-81DD-B82848518D94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SGC Player", "SGC Player\SGC Player.csproj", "{D4B58609-868A-4F99-8500-092A28377CE3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,14 @@ Global
 		{0DFE4A00-43B9-412B-81DD-B82848518D94}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0DFE4A00-43B9-412B-81DD-B82848518D94}.Release|x86.ActiveCfg = Release|x86
 		{0DFE4A00-43B9-412B-81DD-B82848518D94}.Release|x86.Build.0 = Release|x86
+		{D4B58609-868A-4F99-8500-092A28377CE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4B58609-868A-4F99-8500-092A28377CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4B58609-868A-4F99-8500-092A28377CE3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D4B58609-868A-4F99-8500-092A28377CE3}.Debug|x86.Build.0 = Debug|Any CPU
+		{D4B58609-868A-4F99-8500-092A28377CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4B58609-868A-4F99-8500-092A28377CE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4B58609-868A-4F99-8500-092A28377CE3}.Release|x86.ActiveCfg = Release|x86
+		{D4B58609-868A-4F99-8500-092A28377CE3}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
