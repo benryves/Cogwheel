@@ -261,11 +261,13 @@ namespace BeeDevelopment.Sega8Bit {
 						switch (port & 0xC1) {
 
 							case 0x00: // Memory controller.
-								this.ExpansionSlot.Enabled = (value & 0x80) == 0;
-								this.CartridgeSlot.Enabled = (value & 0x40) == 0;
-								this.CardSlot.Enabled = (value & 0x20) == 0;
-								this.WorkRam.Enabled = (value & 0x10) == 0;
-								this.Bios.Enabled = (value & 0x08) == 0;
+								if ((this.Region != Region.Japanese) || ((port & 0xFF) == 0x3E)) { // Hacky fix for Super Tetris; see http://www.smspower.org/forums/viewtopic.php?t=12123
+									this.ExpansionSlot.Enabled = (value & 0x80) == 0;
+									this.CartridgeSlot.Enabled = (value & 0x40) == 0;
+									this.CardSlot.Enabled = (value & 0x20) == 0;
+									this.WorkRam.Enabled = (value & 0x10) == 0;
+									this.Bios.Enabled = (value & 0x08) == 0;
+								}
 								break;
 
 							case 0x01: // I/O port (controller ports) control.
