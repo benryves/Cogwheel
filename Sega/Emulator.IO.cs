@@ -150,9 +150,14 @@ namespace BeeDevelopment.Sega8Bit {
 							return this.FloppyDiskController.ReadData();
 						case 0xE4:
 							if (this.FloppyDiskController.Int) {
-								this.SecondaryPPI.PortAInput |= 0x01;
+								this.SecondaryPPI.PortAInput |= (byte)(1 << 0);
 							} else {
-								this.SecondaryPPI.PortAInput &= unchecked((byte)~0x01);
+								this.SecondaryPPI.PortAInput &= unchecked((byte)(~(1 << 0)));
+							}
+							if (this.FloppyDiskController.Index) {
+								this.SecondaryPPI.PortAInput |= (byte)(1 << 2);
+							} else {
+								this.SecondaryPPI.PortAInput &= unchecked((byte)(~(1 << 2)));
 							}
 							return this.SecondaryPPI.ReadPortA();
 						case 0xE5:
