@@ -52,8 +52,9 @@ namespace BeeDevelopment.Sega8Bit {
 				case HardwareModel.ColecoVision:
 					return HardwareFamily.ColecoVision;
 				case HardwareModel.SC3000:
-				case HardwareModel.SF7000:
 					return HardwareFamily.SC3000;
+				case HardwareModel.SF7000:
+					return HardwareFamily.SF7000;
 				default:
 					return HardwareFamily.Default;
 			}
@@ -78,7 +79,9 @@ namespace BeeDevelopment.Sega8Bit {
 			this.video.Reset();
 			this.Sound.Reset();
 			this.MainPPI.Reset();
+			this.SecondaryPPI.Reset();
 			this.DebugConsole.Reset();
+			this.FloppyDiskController.Reset();
 #if EMU2413
 			this.FmSound.Reset();
 #endif
@@ -96,7 +99,9 @@ namespace BeeDevelopment.Sega8Bit {
 			this.Sound = new ProgrammableSoundGenerator(this);
 			this.Cheats = new MemoryCheatCollection();
 			this.MainPPI = new ProgrammablePeripheralInterface();
+			this.SecondaryPPI = new ProgrammablePeripheralInterface();
 			this.DebugConsole = new DebugConsole(this);
+			this.FloppyDiskController = new FloppyDiskController();
 #if EMU2413
 			this.FmSound = new Emu2413(this);
 #endif
@@ -154,6 +159,7 @@ namespace BeeDevelopment.Sega8Bit {
 			switch (model) {
 				case HardwareModel.SG1000:
 				case HardwareModel.SC3000:
+				case HardwareModel.SF7000:
 					this.Sound.SetNoiseByPreset(ProgrammableSoundGenerator.NoisePresets.SC3000);
 					break;
 				case HardwareModel.ColecoVision:
@@ -188,6 +194,18 @@ namespace BeeDevelopment.Sega8Bit {
 					// 1KB RAM (massive!)
 					this.WorkRam.Memory = new Mappers.Ram1();
 					
+					break;
+
+				case HardwareFamily.SF7000:
+
+					this.Bios.Accessibility = MemoryDevice.AccessibilityMode.Optional;
+					this.ExpansionSlot.Accessibility = MemoryDevice.AccessibilityMode.Never;
+					this.WorkRam.Accessibility = MemoryDevice.AccessibilityMode.Always;
+					this.CartridgeSlot.Accessibility = MemoryDevice.AccessibilityMode.Never;
+					this.CardSlot.Accessibility = MemoryDevice.AccessibilityMode.Never;
+
+					this.WorkRam.Memory = new Mappers.Ram64();
+
 					break;
 
 				default:

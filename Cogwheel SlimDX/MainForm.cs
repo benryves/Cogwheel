@@ -362,7 +362,7 @@ namespace BeeDevelopment.Cogwheel {
 				this.LoadRam();
 				this.OverrideAutomaticSettings(LoadingRomInfo);
 
-				this.WarnAboutColecoRom();
+				this.WarnAboutBiosRom();
 
 				this.Dumper.RecreateDevice();
 

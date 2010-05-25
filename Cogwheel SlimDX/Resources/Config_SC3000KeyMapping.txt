@@ -61,9 +61,7 @@ Oem8=>0.KeyboardYen
 
 ; General function keys:
 Enter=>0.KeyboardCarriageReturn
-Back=>0.KeyboardInsDel
 Delete=>0.KeyboardInsDel
-Insert=>0.KeyboardInsDel
 Home=>0.KeyboardHomeClr
 Pause=>0.KeyboardBreak
 Apps=>0.KeyboardEngDiers

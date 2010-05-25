@@ -102,13 +102,15 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			return this.GetRomInfo(data, null);
 		}
 
+
 		/// <summary>
 		/// Creates an <see cref="IMemoryMapper"/> instance from a ROM dump.
 		/// </summary>
 		/// <param name="data">The data to create the <see cref="IMemoryMapper"/> instance from.</param>
+		/// <param name="filename">Optional filename. The extension is used to identify the hardware model if ROM data can't be found.</param>
 		/// <returns>An <see cref="IMemoryMapper"/> with ROM dump data loaded.</returns>
 		/// <remarks>This method will attempt to guess the correct mapper to use.</remarks>
-		public IMemoryMapper CreateMapper(byte[] data) {
+		public IMemoryMapper CreateMapper(byte[] data, string filename = null) {
 
 			IMemoryMapper Result = null;
 
@@ -121,12 +123,15 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			}
 
 
-			RomInfo TryIdentifyHardware = this.GetRomInfo(data);
+			RomInfo TryIdentifyHardware = this.GetRomInfo(data, filename);
 			if (TryIdentifyHardware != null) {
 				switch (TryIdentifyHardware.Model) {
 					case HardwareModel.SG1000:
 					case HardwareModel.SC3000:
 						Result = new Ram64();
+						break;
+					case HardwareModel.SF7000:
+						Result = new FloppyDisk();
 						break;
 					case HardwareModel.GameGear:
 					case HardwareModel.GameGearMasterSystem:
@@ -183,21 +188,31 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 				emulator.Bios.Enabled = true;
 				emulator.CartridgeSlot.Enabled = false;
 			} else {
-				emulator.CartridgeSlot.Memory = this.CreateMapper(Data);
+				emulator.CartridgeSlot.Memory = this.CreateMapper(Data, romFileName);
 				emulator.Bios.Enabled = false;
 				emulator.CartridgeSlot.Enabled = true;
 
+#if !SILVERLIGHT
 				if (Model == HardwareModel.ColecoVision) {
 					try {
-#if !SILVERLIGHT
 						string ColecoBiosRomPath = Path.Combine(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName), "COLECO.ROM");
 						if (File.Exists(ColecoBiosRomPath)) {
 							emulator.Bios.Memory = new Rom8();
 							emulator.Bios.Memory.Load(FileEx.ReadAllBytes(ColecoBiosRomPath));
+							emulator.Bios.Enabled = true;
 						}
-#endif
+					} catch { }
+				} else if (Model == HardwareModel.SF7000) {
+					try {
+						string SF7000BiosRomPath = Path.Combine(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName), "SF7000.ROM");
+						if (File.Exists(SF7000BiosRomPath)) {
+							emulator.Bios.Memory = new Rom8();
+							emulator.Bios.Memory.Load(FileEx.ReadAllBytes(SF7000BiosRomPath));
+							emulator.Bios.Enabled = true;
+						}
 					} catch { }
 				}
+#endif
 			}
 
 			// Fix for Codemasters games:

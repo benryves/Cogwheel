@@ -65,6 +65,10 @@ namespace BeeDevelopment.Sega8Bit {
 					}
 					break;
 
+				case HardwareFamily.SF7000: // SF-7000 memory map.
+					this.WorkRam.Write(address, value);
+					break;
+
 				default: // Sega (default) memory map.
 					// Writes to RAM.
 					if (address >= 0xC000) this.WorkRam.Write(address, value);
@@ -98,6 +102,15 @@ namespace BeeDevelopment.Sega8Bit {
 						return this.CartridgeSlot.Read(address);
 					}
 					break;
+
+				case HardwareFamily.SF7000: // SF-7000 memory map.
+					if (address < 0x4000 && this.Bios.IsAccessible) {
+						return this.Bios.Read(address);
+					} else {
+						return this.WorkRam.Read(address);
+					}
+					break;
+
 				default: // Sega (default) memory map.
 					// Reads from RAM.
 					if (address >= 0xC000) {

@@ -35,6 +35,8 @@ namespace BeeDevelopment.Sega8Bit {
 		Default,
 		/// <summary>Sega SC-3000 and compatible consoles.</summary>
 		SC3000,
+		/// <summary>Sega SF-7000 and compatible consoles.</summary>
+		SF7000,
 		/// <summary>Sega Master System and compatible consoles.</summary>
 		MasterSystem,
 		/// <summary>The Coleco Industries ColecoVision.</summary>

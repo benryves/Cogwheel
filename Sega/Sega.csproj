@@ -10,12 +10,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BeeDevelopment.Sega8Bit</RootNamespace>
     <AssemblyName>Sega</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -74,6 +75,7 @@
     <Compile Include="Hardware\Controllers\SC3000Keyboard.cs" />
     <Compile Include="Hardware\Controllers\SegaControllerPort.cs" />
     <Compile Include="Hardware\DebugConsole.cs" />
+    <Compile Include="Hardware\FloppyDiskController\FloppyDiskController.cs" />
     <Compile Include="Hardware\OPLL\emu2413.c.cs" />
     <Compile Include="Hardware\OPLL\Emu2413.cs" />
     <Compile Include="Hardware\OPLL\emu2413.h.cs" />
@@ -88,6 +90,7 @@
     <Compile Include="Hardware\ProgrammableSoundGenerator\Registers.cs" />
     <Compile Include="Hardware\ProgrammableSoundGenerator\ProgrammableSoundGenerator.cs" />
     <Compile Include="Mappers\FlatMemory.cs" />
+    <Compile Include="Mappers\FloppyDisk.cs" />
     <Compile Include="Mappers\Shared1KBios.cs" />
     <Compile Include="Mappers\IMemoryMapper.cs" />
     <Compile Include="MemoryCheat.cs" />

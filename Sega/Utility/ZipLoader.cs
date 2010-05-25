@@ -47,6 +47,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 									case ".sms":
 									case ".sc":
 									case ".sg":
+									case ".sf7":
 									case ".rom":
 									case ".mv":
 									case ".omv":

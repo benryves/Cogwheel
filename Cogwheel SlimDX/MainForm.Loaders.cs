@@ -11,11 +11,13 @@ namespace BeeDevelopment.Cogwheel {
 	public partial class MainForm {
 
 		/// <summary>
-		///  Display a warning dialog if the ColecoVision BIOS ROM is not present.
+		///  Display a warning dialog if the ColecoVision BIOS or SF-7000 IPL ROM is not present.
 		/// </summary>
-		private void WarnAboutColecoRom() {
+		private void WarnAboutBiosRom() {
 			if (this.Emulator.Family == HardwareFamily.ColecoVision && !File.Exists(Path.Combine(Application.StartupPath, "COLECO.ROM"))) {
 				MessageBox.Show(this, "ColecoVision emulation requires a copy of the ColecoVision BIOS ROM." + Environment.NewLine +  "Please copy COLECO.ROM to the application's installation directory.", "ColecoVision", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			} else if (this.Emulator.Family == HardwareFamily.SF7000 && !File.Exists(Path.Combine(Application.StartupPath, "SF7000.ROM"))) {
+				MessageBox.Show(this, "SF-7000 emulation requires a copy of the SF-7000 IPL ROM." + Environment.NewLine + "Please copy SF7000.ROM to the application's installation directory.", "SF-7000", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 		}
 
@@ -140,7 +142,7 @@ namespace BeeDevelopment.Cogwheel {
 
 			this.OverrideAutomaticSettings(LoadingRomInfo);
 
-			this.WarnAboutColecoRom();
+			this.WarnAboutBiosRom();
 
 		}
 

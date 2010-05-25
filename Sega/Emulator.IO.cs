@@ -3,6 +3,7 @@
  */
 using BeeDevelopment.Brazil;
 using BeeDevelopment.Sega8Bit.Hardware;
+using System;
 namespace BeeDevelopment.Sega8Bit {
 	public partial class Emulator {
 
@@ -35,16 +36,29 @@ namespace BeeDevelopment.Sega8Bit {
 		public bool RespondsToGameGearPorts { get; set; }
 
 		/// <summary>
-		/// Gets the <see cref="ProgrammablePeripheralInterface"/> used by the emulator.
+		/// Gets the primary <see cref="ProgrammablePeripheralInterface"/> used by the emulator in SC-3000 and SF-7000 mode.
 		/// </summary>
 		[StateNotSaved()]
 		public ProgrammablePeripheralInterface MainPPI { get; internal set; }
+
+		/// <summary>
+		/// Gets the secondary <see cref="ProgrammablePeripheralInterface"/> used by the emulator in SF-7000 mode.
+		/// </summary>
+		[StateNotSaved()]
+		public ProgrammablePeripheralInterface SecondaryPPI { get; private set; }
 
 		/// <summary>
 		/// Gets the <see cref="DebugConsole"/> used by the emulator.
 		/// </summary>
 		[StateNotSaved()]
 		public DebugConsole DebugConsole { get; private set; }
+
+
+		/// <summary>
+		/// Gets the <see cref="FloppyDiskController"/> used by the emulator in SF-7000 mode.
+		/// </summary>
+		[StateNotSaved()]
+		public FloppyDiskController FloppyDiskController { get; private set; }
 
 #if EMU2413
 
@@ -103,9 +117,9 @@ namespace BeeDevelopment.Sega8Bit {
 						case 0x21:
 							return this.video.ReadControl();
 						case 0x40:
-							return this.MainPPI.PortAInput;
+							return this.MainPPI.ReadPortA();
 						case 0x41:
-							return this.MainPPI.PortBInput;
+							return this.MainPPI.ReadPortB();
 						case 0x80:
 							//TODO: "Instruction referenced by R".
 							break;
@@ -114,6 +128,46 @@ namespace BeeDevelopment.Sega8Bit {
 
 
 					break;
+
+				case HardwareFamily.SF7000:
+
+					//TODO: Port mirroring.
+
+					switch (port & 0xFF) {
+						case 0xBE:
+							return this.video.ReadData();
+						case 0xBF:
+							return this.video.ReadControl();
+						case 0xDC:
+							return this.MainPPI.ReadPortA();
+						case 0xDD:
+							return this.MainPPI.ReadPortB();
+						case 0xDE:
+							return this.MainPPI.ReadPortC();
+						case 0xE0:
+							return this.FloppyDiskController.ReadStatus();
+						case 0xE1:
+							return this.FloppyDiskController.ReadData();
+						case 0xE4:
+							if (this.FloppyDiskController.Int) {
+								this.SecondaryPPI.PortAInput |= 0x01;
+							} else {
+								this.SecondaryPPI.PortAInput &= unchecked((byte)~0x01);
+							}
+							return this.SecondaryPPI.ReadPortA();
+						case 0xE5:
+							return this.SecondaryPPI.ReadPortB();
+						case 0xE6:
+							return this.SecondaryPPI.ReadPortC();
+						case 0xE8:
+							throw new NotImplementedException("USARTD");
+						case 0xE9:
+							throw new NotImplementedException("USARTC");
+						default:
+							throw new NotImplementedException(string.Format("? io[{0:X2}]", port & 0xFF));
+					}
+					break;
+
 
 
 				default: // Master System (default) I/O map.
@@ -178,7 +232,7 @@ namespace BeeDevelopment.Sega8Bit {
 		
 			return 0xFF;
 		}
-
+		
 		/// <summary>
 		/// Writes a byte to a hardware device.
 		/// </summary>
@@ -217,9 +271,9 @@ namespace BeeDevelopment.Sega8Bit {
 
 					if ((port & 0x20) == 0) {
 						switch (port & 0x3) {
-							case 0: this.MainPPI.PortAOutput = value; break;
-							case 1: this.MainPPI.PortBOutput = value; break;
-							case 2: this.MainPPI.PortCOutput = value; break;
+							case 0: this.MainPPI.WritePortA(value); break;
+							case 1: this.MainPPI.WritePortB(value); break;
+							case 2: this.MainPPI.WritePortC(value); break;
 							case 3: this.MainPPI.WriteControl(value); break;
 						}
 						this.Keyboard.UpdateState();
@@ -243,6 +297,68 @@ namespace BeeDevelopment.Sega8Bit {
 
 					break;
 				
+				case HardwareFamily.SF7000:
+
+					//TODO: Port mirroring.
+
+					switch (port & 0xFF) {
+						case 0x7F:
+							this.Sound.WriteQueued(value);
+							break;
+						case 0xBE:
+							this.video.WriteData(value);
+							break;
+						case 0xBF:
+							this.video.WriteControl(value);
+							break;
+						case 0xDC:
+							this.MainPPI.PortAOutput = value;
+							this.Keyboard.UpdateState();
+							break;
+						case 0xDD:
+							this.MainPPI.PortBOutput = value;
+							this.Keyboard.UpdateState();
+							break;
+						case 0xDE:
+							this.MainPPI.PortCOutput = value;
+							this.Keyboard.UpdateState();
+							break;
+						case 0xDF:
+							this.MainPPI.WriteControl(value);
+							this.Keyboard.UpdateState();
+							break;
+						case 0xE1:
+							this.FloppyDiskController.WriteData(value);
+							break;
+						case 0xE4:
+							this.SecondaryPPI.WritePortA(value);
+							break;
+						case 0xE5:
+							this.SecondaryPPI.WritePortB(value);
+							break;
+						case 0xE6:
+							this.SecondaryPPI.WritePortC(value);
+							this.Bios.Enabled = (this.SecondaryPPI.PortCOutput & (1 << 6)) == 0;
+							break;
+						case 0xE7:
+							this.SecondaryPPI.WriteControl(value);
+							this.Bios.Enabled = (this.SecondaryPPI.PortCOutput & (1 << 6)) == 0;
+							break;
+						case 0xE8:
+							throw new NotImplementedException("USARTD");
+						case 0xE9:
+							throw new NotImplementedException("USARTC");
+						case 0xFC:
+							this.DebugConsole.WriteControl(value);
+							break;
+						case 0xFD:
+							this.DebugConsole.WriteData(value);
+							break;
+						default:
+							throw new NotImplementedException(string.Format("io[{0:X2}]={1:X2}", port & 0xFF, value));
+					}
+					break;
+
 				default: // Master System (default) I/O map.
 					
 					if (this.HasGameGearPorts && (port & 0xFF) < 7) {
