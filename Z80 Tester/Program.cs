@@ -38,10 +38,10 @@ namespace BeeDevelopment.Z80Tester {
 			// Load tester into memory.
 			switch (strength) {
 				case Strength.Documented:
-					Array.Copy(Properties.Resources.ZexDoc, 0, this.Memory, 0x100, Properties.Resources.ZexDoc.Length);
+					Array.Copy(Properties.Resources.zexdoc, 0, this.Memory, 0x100, Properties.Resources.zexdoc.Length);
 					break;
 				case Strength.All:
-					Array.Copy(Properties.Resources.ZexAll, 0, this.Memory, 0x100, Properties.Resources.ZexAll.Length);
+					Array.Copy(Properties.Resources.zexall, 0, this.Memory, 0x100, Properties.Resources.zexall.Length);
 					break;
 			}
 

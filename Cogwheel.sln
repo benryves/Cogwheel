@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual C# Express 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brazil", "Brazil\Brazil.csproj", "{325F86DA-222E-470F-A4F6-B04A3179FB2A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cogwheel SlimDX", "Cogwheel SlimDX\Cogwheel SlimDX.csproj", "{BA61BC42-6CB2-4913-B29A-D18D1C38113A}"
