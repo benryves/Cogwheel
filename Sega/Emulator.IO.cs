@@ -145,7 +145,7 @@ namespace BeeDevelopment.Sega8Bit {
 						case 0xDE:
 							return this.MainPPI.ReadPortC();
 						case 0xE0:
-							return this.FloppyDiskController.ReadStatus();
+							return (byte)this.FloppyDiskController.ReadStatus();
 						case 0xE1:
 							return this.FloppyDiskController.ReadData();
 						case 0xE4:
