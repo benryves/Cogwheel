@@ -276,10 +276,6 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 				}
 			}
 
-			if (this.FullName.ToUpperInvariant().Contains("[SMS-GG]")) {
-				this.Model = HardwareModel.GameGearMasterSystem;
-			}
-
 			if (!string.IsNullOrEmpty(this.CorrectedExtension)) {
 				switch (this.CorrectedExtension.ToLowerInvariant()) {
 					case "sms":
@@ -296,6 +292,10 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 						this.Model = HardwareModel.SC3000;
 						break;
 				}
+			}
+
+			if (this.FullName.ToUpperInvariant().Contains("[SMS-GG]")) {
+				this.Model = HardwareModel.GameGearMasterSystem;
 			}
 
 		}
