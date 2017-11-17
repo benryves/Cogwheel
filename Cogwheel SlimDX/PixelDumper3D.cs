@@ -640,6 +640,10 @@ namespace BeeDevelopment.Cogwheel {
 			if (MostRecentlyUpdatedTexture != null) {
 				TR = (float)MostRecentlyUpdatedTexture.ImageWidth / (float)MostRecentlyUpdatedTexture.TextureWidth;
 				TB = (float)MostRecentlyUpdatedTexture.ImageHeight / (float)MostRecentlyUpdatedTexture.TextureHeight;
+
+				Vector2 TOF = new Vector2(0.5f / (float)MostRecentlyUpdatedTexture.TextureWidth, 0.5f / (float)MostRecentlyUpdatedTexture.TextureHeight);
+				TL += TOF.X; TR -= TOF.X;
+				TT += TOF.Y; TB -= TOF.Y;
 			}
 
 			// Create the vectors representing the corners of the texture:
@@ -678,6 +682,11 @@ namespace BeeDevelopment.Cogwheel {
 			MostRecentlyUpdatedTexture = this.BackdropTextures[(int)this.MostRecentlyUpdatedEye];
 			if (MostRecentlyUpdatedTexture != null) {
 				TB = (float)MostRecentlyUpdatedTexture.ImageHeight / (float)MostRecentlyUpdatedTexture.TextureHeight;
+
+				Vector2 TOF = new Vector2(0.5f / (float)MostRecentlyUpdatedTexture.TextureWidth, 0.5f / (float)MostRecentlyUpdatedTexture.TextureHeight);
+				TL += TOF.X; TR -= TOF.X;
+				TT += TOF.Y; TB -= TOF.Y;
+
 			}
 			TTL = new Vector2(TL, TT);
 			TTR = new Vector2(TR, TT);
@@ -706,6 +715,10 @@ namespace BeeDevelopment.Cogwheel {
 			MostRecentlyUpdatedTexture = this.FullBackdropTextures[(int)this.MostRecentlyUpdatedEye];
 			if (MostRecentlyUpdatedTexture != null) {
 				TB = (float)(MostRecentlyUpdatedTexture.ImageHeight - 0.01f) / (float)MostRecentlyUpdatedTexture.TextureHeight;
+
+				Vector2 TOF = new Vector2(0.5f / (float)MostRecentlyUpdatedTexture.TextureWidth, 0.5f / (float)MostRecentlyUpdatedTexture.TextureHeight);
+				TL += TOF.X; TR -= TOF.X;
+				TT += TOF.Y; TB -= TOF.Y;
 			}
 			TTL = new Vector2(TL, TT);
 			TTR = new Vector2(TR, TT);
