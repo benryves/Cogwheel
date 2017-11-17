@@ -241,7 +241,7 @@ namespace BeeDevelopment.Cogwheel {
 					this.imageWidth = width;
 					this.imageHeight = height;
 					// Round up the width/height to the nearest power of two.
-					this.textureWidth = 32; this.textureHeight = 32;
+					this.textureWidth = 128; this.textureHeight = 256;
 					while (this.textureWidth < this.imageWidth) this.textureWidth <<= 1;
 					while (this.textureHeight < this.imageHeight) this.textureHeight <<= 1;
 					// Create a new texture instance.
@@ -696,6 +696,7 @@ namespace BeeDevelopment.Cogwheel {
 				);
 				this.BackdropVertices.Unlock();
 			}
+
 			// Write the fullscreen backdrop quad vertex buffer.
 			PTL = new Vector3(-1.0f, +1.0f, 0.0f);
 			PTR = new Vector3(+1.0f, +1.0f, 0.0f);
