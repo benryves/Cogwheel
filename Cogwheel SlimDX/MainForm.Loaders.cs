@@ -171,6 +171,13 @@ namespace BeeDevelopment.Cogwheel {
 						SourceVgm = DecompressedData.ToArray();
 					}
 				}
+			} catch (InvalidDataException) {
+				try {
+					SourceVgm = File.ReadAllBytes(filename);
+				} catch (Exception ex) {
+					MessageBox.Show(this, "Could not open VGM: " + ex.Message, "Play VGM");
+					return false;
+				}
 			} catch (Exception ex) {
 				MessageBox.Show(this, "Could not open VGM: " + ex.Message, "Play VGM");
 				return false;
