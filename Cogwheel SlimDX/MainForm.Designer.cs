@@ -66,6 +66,7 @@
 			this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.SdscDebugConsoleMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.SerialTerminalConsoleMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.PasteKeyboardMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.EmulationVideoBackgroundEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.EmulationVideoSpritesEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -119,7 +120,6 @@
 			this.ColourDialog = new System.Windows.Forms.ColorDialog();
 			this.SaveVgmDialog = new System.Windows.Forms.SaveFileDialog();
 			this.OpenVgmDialog = new System.Windows.Forms.OpenFileDialog();
-			this.PasteKeyboardMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -349,7 +349,7 @@
             this.RegionExportMenu});
 			this.EmulationRegionMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_World;
 			this.EmulationRegionMenu.Name = "EmulationRegionMenu";
-			this.EmulationRegionMenu.Size = new System.Drawing.Size(180, 22);
+			this.EmulationRegionMenu.Size = new System.Drawing.Size(153, 22);
 			this.EmulationRegionMenu.Text = "&Region";
 			this.EmulationRegionMenu.DropDownOpening += new System.EventHandler(this.EmulationRegionMenu_DropDownOpening);
 			// 
@@ -388,7 +388,7 @@
             this.VideoStandardPalMenu});
 			this.EmulationVideoMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Television;
 			this.EmulationVideoMenu.Name = "EmulationVideoMenu";
-			this.EmulationVideoMenu.Size = new System.Drawing.Size(180, 22);
+			this.EmulationVideoMenu.Size = new System.Drawing.Size(153, 22);
 			this.EmulationVideoMenu.Text = "&Video standard";
 			this.EmulationVideoMenu.DropDownOpening += new System.EventHandler(this.DebugVideoMenu_DropDownOpening);
 			// 
@@ -425,7 +425,7 @@
             this.GameGenieEditMenu});
 			this.GameGenieMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(180, 22);
+			this.GameGenieMenu.Size = new System.Drawing.Size(153, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
 			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
 			// 
@@ -472,6 +472,14 @@
 			this.SerialTerminalConsoleMenu.Size = new System.Drawing.Size(211, 22);
 			this.SerialTerminalConsoleMenu.Text = "Serial &terminal";
 			this.SerialTerminalConsoleMenu.Click += new System.EventHandler(this.SerialTerminalConsoleMenu_Click);
+			// 
+			// PasteKeyboardMenu
+			// 
+			this.PasteKeyboardMenu.Name = "PasteKeyboardMenu";
+			this.PasteKeyboardMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+			this.PasteKeyboardMenu.Size = new System.Drawing.Size(211, 22);
+			this.PasteKeyboardMenu.Text = "&Paste keyboard";
+			this.PasteKeyboardMenu.Click += new System.EventHandler(this.PasteKeyboardMenu_Click);
 			// 
 			// toolStripMenuItem1
 			// 
@@ -524,14 +532,14 @@
 			// ControllerProfileDefaultMenu
 			// 
 			this.ControllerProfileDefaultMenu.Name = "ControllerProfileDefaultMenu";
-			this.ControllerProfileDefaultMenu.Size = new System.Drawing.Size(180, 22);
+			this.ControllerProfileDefaultMenu.Size = new System.Drawing.Size(169, 22);
 			this.ControllerProfileDefaultMenu.Text = "&Default";
 			this.ControllerProfileDefaultMenu.Click += new System.EventHandler(this.SetControllerProfile_Click);
 			// 
 			// ControllerProfileSC3000Menu
 			// 
 			this.ControllerProfileSC3000Menu.Name = "ControllerProfileSC3000Menu";
-			this.ControllerProfileSC3000Menu.Size = new System.Drawing.Size(180, 22);
+			this.ControllerProfileSC3000Menu.Size = new System.Drawing.Size(169, 22);
 			this.ControllerProfileSC3000Menu.Tag = "SC3000Keyboard";
 			this.ControllerProfileSC3000Menu.Text = "&SC-3000 keyboard";
 			this.ControllerProfileSC3000Menu.Click += new System.EventHandler(this.SetControllerProfile_Click);
@@ -861,14 +869,6 @@
 			// OpenVgmDialog
 			// 
 			this.OpenVgmDialog.Filter = "VGM files (*.vgm;*.vgz)|*.vgm;*.vgz|All files (*.*)|*.*";
-			// 
-			// PasteKeyboardMenu
-			// 
-			this.PasteKeyboardMenu.Name = "PasteKeyboardMenu";
-			this.PasteKeyboardMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-			this.PasteKeyboardMenu.Size = new System.Drawing.Size(211, 22);
-			this.PasteKeyboardMenu.Text = "&Paste keyboard";
-			this.PasteKeyboardMenu.Click += new System.EventHandler(this.PasteKeyboardMenu_Click);
 			// 
 			// MainForm
 			// 
