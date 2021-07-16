@@ -367,7 +367,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 			}
 		}
 
-		private void EnqueueScancode(uint scancode, bool pressed) {
+		public void EnqueueScancode(uint scancode, bool pressed) {
 			var Sequence = new List<byte>();
 			if (!pressed) Sequence.Add(0xF0);
 			Sequence.Add((byte)scancode);
@@ -378,20 +378,30 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 
 		#region Public Methods
 
+		public void PressKey(uint scancode) {
+			if (scancode == 0 || PressedScanCodes.ContainsKey(scancode)) {
+				return;
+			} else {
+				PressedScanCodes.Add(scancode, new KeyTimeRecord() { TimePressed = this.Ticks });
+			}
+			this.EnqueueScancode(scancode, true);
+		}
+
 		/// <summary>
 		/// Simulates pressing a key on the emulated keyboard.
 		/// </summary>
 		/// <param name="key">The <see cref="Keys"/> that has been pressed.</param>
 		public void PressKey(SC3000Keyboard.Keys key) {
-			var Translated = ToScanCode(key);
-			if (Translated != 0) {
-				if (PressedScanCodes.ContainsKey(Translated)) {
-					return;
-				} else {
-					PressedScanCodes.Add(Translated, new KeyTimeRecord() { TimePressed = this.Ticks });
-				}
-				this.EnqueueScancode(Translated, true);
+			PressKey(ToScanCode(key));
+		}
+
+		public void ReleaseKey(uint scancode) {
+			if (scancode == 0 || !PressedScanCodes.ContainsKey(scancode)) {
+				return;
+			} else {
+				PressedScanCodes.Remove(scancode);
 			}
+			this.EnqueueScancode(scancode, false);
 		}
 
 		/// <summary>
@@ -399,15 +409,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 		/// </summary>
 		/// <param name="key">The <see cref="Keys"/> that has been released.</param>
 		public void ReleaseKey(SC3000Keyboard.Keys key) {
-			var Translated = ToScanCode(key);
-			if (Translated != 0) {
-				if (!PressedScanCodes.ContainsKey(Translated)) {
-					return;
-				} else {
-					PressedScanCodes.Remove(Translated);
-				}
-				this.EnqueueScancode(Translated, false);
-			}
+			ReleaseKey(ToScanCode(key));
 		}
 
 		public void ReleaseAllKeys() {
@@ -571,7 +573,14 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 			} else {
 				this.keyboard.ReleaseKey(key);
 			}
+		}
 
+		public void SetKeyState(uint scancode, bool pressed) {
+			if (pressed) {
+				this.keyboard.PressKey(scancode);
+			} else {
+				this.keyboard.ReleaseKey(scancode);
+			}
 		}
 
 		/// <summary>
@@ -615,6 +624,22 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 		}
 		public void Type(string s) {
 			this.keyboard.Type(s);
+		}
+
+		public void PressKey(SC3000Keyboard.Keys key) {
+			this.keyboard.PressKey(key);
+		}
+
+		public void ReleaseKey(SC3000Keyboard.Keys key) {
+			this.keyboard.ReleaseKey(key);
+		}
+
+		public void PressKey(uint scancode) {
+			this.keyboard.PressKey(scancode);
+		}
+
+		public void ReleaseKey(uint scancode) {
+			this.keyboard.ReleaseKey(scancode);
 		}
 
 		public void ClearBufferedData() {

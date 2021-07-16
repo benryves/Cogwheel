@@ -1,0 +1,1 @@
+; Empty mapping, as all PS/2 keyboard keys should be mapped directly to scancodes.

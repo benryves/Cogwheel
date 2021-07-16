@@ -144,8 +144,12 @@ namespace BeeDevelopment.Cogwheel {
 
 			this.WarnAboutBiosRom();
 
-			if (this.Emulator.HasPS2Keyboard || this.Emulator.Family == HardwareFamily.SC3000 || this.Emulator.Family == HardwareFamily.SF7000) {
+			if (this.Emulator.Family == HardwareFamily.SC3000 || this.Emulator.Family == HardwareFamily.SF7000) {
 				this.ReinitialiseInput("SC3000Keyboard");
+			} else if (this.Emulator.HasPS2Keyboard) {
+				this.ReinitialiseInput("PS2Keyboard");
+			} else {
+				this.ReinitialiseInput(null);
 			}
 		}
 

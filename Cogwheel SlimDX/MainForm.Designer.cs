@@ -74,6 +74,7 @@
 			this.ControllerProfileMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ControllerProfileDefaultMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ControllerProfileSC3000Menu = new System.Windows.Forms.ToolStripMenuItem();
+			this.ControllerProfilePS2KeyboardMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.CustomiseControlsMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.OptionsSep0 = new System.Windows.Forms.ToolStripSeparator();
 			this.EnableSoundMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -120,6 +121,7 @@
 			this.ColourDialog = new System.Windows.Forms.ColorDialog();
 			this.SaveVgmDialog = new System.Windows.Forms.SaveFileDialog();
 			this.OpenVgmDialog = new System.Windows.Forms.OpenFileDialog();
+			this.ControllerProfileMenuSep0 = new System.Windows.Forms.ToolStripSeparator();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -523,7 +525,9 @@
 			// 
 			this.ControllerProfileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ControllerProfileDefaultMenu,
-            this.ControllerProfileSC3000Menu});
+            this.ControllerProfileMenuSep0,
+            this.ControllerProfileSC3000Menu,
+            this.ControllerProfilePS2KeyboardMenu});
 			this.ControllerProfileMenu.Name = "ControllerProfileMenu";
 			this.ControllerProfileMenu.Size = new System.Drawing.Size(246, 22);
 			this.ControllerProfileMenu.Text = "Controller &profile";
@@ -532,17 +536,25 @@
 			// ControllerProfileDefaultMenu
 			// 
 			this.ControllerProfileDefaultMenu.Name = "ControllerProfileDefaultMenu";
-			this.ControllerProfileDefaultMenu.Size = new System.Drawing.Size(169, 22);
+			this.ControllerProfileDefaultMenu.Size = new System.Drawing.Size(180, 22);
 			this.ControllerProfileDefaultMenu.Text = "&Default";
 			this.ControllerProfileDefaultMenu.Click += new System.EventHandler(this.SetControllerProfile_Click);
 			// 
 			// ControllerProfileSC3000Menu
 			// 
 			this.ControllerProfileSC3000Menu.Name = "ControllerProfileSC3000Menu";
-			this.ControllerProfileSC3000Menu.Size = new System.Drawing.Size(169, 22);
+			this.ControllerProfileSC3000Menu.Size = new System.Drawing.Size(180, 22);
 			this.ControllerProfileSC3000Menu.Tag = "SC3000Keyboard";
 			this.ControllerProfileSC3000Menu.Text = "&SC-3000 keyboard";
 			this.ControllerProfileSC3000Menu.Click += new System.EventHandler(this.SetControllerProfile_Click);
+			// 
+			// ControllerProfilePS2KeyboardMenu
+			// 
+			this.ControllerProfilePS2KeyboardMenu.Name = "ControllerProfilePS2KeyboardMenu";
+			this.ControllerProfilePS2KeyboardMenu.Size = new System.Drawing.Size(180, 22);
+			this.ControllerProfilePS2KeyboardMenu.Tag = "PS2Keyboard";
+			this.ControllerProfilePS2KeyboardMenu.Text = "&PS/2 keyboard";
+			this.ControllerProfilePS2KeyboardMenu.Click += new System.EventHandler(this.SetControllerProfile_Click);
 			// 
 			// CustomiseControlsMenu
 			// 
@@ -870,6 +882,11 @@
 			// 
 			this.OpenVgmDialog.Filter = "VGM files (*.vgm;*.vgz)|*.vgm;*.vgz|All files (*.*)|*.*";
 			// 
+			// ControllerProfileMenuSep0
+			// 
+			this.ControllerProfileMenuSep0.Name = "ControllerProfileMenuSep0";
+			this.ControllerProfileMenuSep0.Size = new System.Drawing.Size(177, 6);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -994,6 +1011,8 @@
 		private System.Windows.Forms.ToolStripMenuItem WebsiteSmsChecker;
 		private System.Windows.Forms.ToolStripMenuItem SerialTerminalConsoleMenu;
 		private System.Windows.Forms.ToolStripMenuItem PasteKeyboardMenu;
+		private System.Windows.Forms.ToolStripMenuItem ControllerProfilePS2KeyboardMenu;
+		private System.Windows.Forms.ToolStripSeparator ControllerProfileMenuSep0;
 #endif
 	}
 }

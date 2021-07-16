@@ -503,10 +503,14 @@ namespace BeeDevelopment.Cogwheel {
 		}
 
 		private void ControllerProfileMenu_DropDownOpening(object sender, EventArgs e) {
-			foreach (ToolStripMenuItem SubItem in this.ControllerProfileMenu.DropDownItems) {
-				SubItem.Image = (this.Input.ProfileDirectory == (string)SubItem.Tag) ? Properties.Resources.Icon_Bullet_Black : null;
+			foreach (ToolStripItem SubItem in this.ControllerProfileMenu.DropDownItems) {
+				var SubMenuItem = SubItem as ToolStripMenuItem;
+				if (SubMenuItem != null) {
+					SubMenuItem.Image = (this.Input.ProfileDirectory == (string)SubMenuItem.Tag) ? Properties.Resources.Icon_Bullet_Black : null;
+				}
 			}
-			this.ControllerProfileSC3000Menu.Text = this.Emulator.HasPS2Keyboard ? "PS/2 Keyboard" : "SC-3000 keyboard";
+			this.ControllerProfileSC3000Menu.Enabled = this.Emulator.Family == HardwareFamily.SC3000 || this.Emulator.Family == HardwareFamily.SF7000;
+			this.ControllerProfilePS2KeyboardMenu.Enabled = this.Emulator.HasPS2Keyboard;
 		}
 
 		#region 3D Glasses

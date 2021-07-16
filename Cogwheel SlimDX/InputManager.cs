@@ -6,6 +6,7 @@ using BeeDevelopment.Sega8Bit;
 using BeeDevelopment.Sega8Bit.Hardware.Controllers;
 using BeeDevelopment.Cogwheel.JoystickInput;
 using SlimDX.XInput;
+using System.Runtime.InteropServices;
 
 namespace BeeDevelopment.Cogwheel {
 
@@ -206,6 +207,12 @@ namespace BeeDevelopment.Cogwheel {
 		/// <returns>True if the button is pressed; false otherwise.</returns>
 		bool GetButtonState(int controllerIndex, InputButton button);
 
+		/// <summary>
+		/// Gets the state of all scancodes that a keyboard can generate.
+		/// </summary>
+		/// <returns><c>null</c> if the controller doesn't return scancodes, a dictionary mapping scancode values to their corresponding pressed state if the keyboard can report raw scancodes.</returns>
+		Dictionary<uint, bool> GetScancodeStates();
+
 		/// <summary>Release all held keys.</summary>
 		void ReleaseAll();
 
@@ -261,6 +268,26 @@ namespace BeeDevelopment.Cogwheel {
 			return false;
 		}
 
+		public Dictionary<uint, bool> GetScancodeStates() {
+			Dictionary<uint, bool> scancodeStates = null;
+			foreach (var Source in Sources) {
+				var sourceScancodeStates = Source.GetScancodeStates();
+				if (sourceScancodeStates != null) {
+					if (scancodeStates == null) {
+						scancodeStates = sourceScancodeStates;
+					} else {
+						foreach (var newScancode in sourceScancodeStates) {
+							bool oldValue;
+							if (scancodeStates.TryGetValue(newScancode.Key, out oldValue)) {
+								scancodeStates.Remove(newScancode.Key);
+							}
+							scancodeStates.Add(newScancode.Key, oldValue || newScancode.Value);
+						}
+					}
+				}
+			}
+			return scancodeStates;
+		}
 
 		/// <summary>
 		/// Updates the input state of an <see cref="Emulator"/> instance.
@@ -331,8 +358,11 @@ namespace BeeDevelopment.Cogwheel {
 
 				emulator.SC3000Keyboard.UpdateState();
 			} else if (emulator.HasPS2Keyboard) {
-				foreach (SC3000Keyboard.Keys Key in Enum.GetValues(typeof(SC3000Keyboard.Keys))) {
-					emulator.PS2Keyboard.SetKeyState(Key, this.GetButtonState(0, KeyboardToInputButton(Key)));
+				var o = this.GetScancodeStates();
+				if (o != null) {
+					foreach (var item in o) {
+						emulator.PS2Keyboard.SetKeyState(item.Key, item.Value);
+					}
 				}
 				emulator.PS2Keyboard.UpdateState();
 			}
@@ -430,6 +460,7 @@ namespace BeeDevelopment.Cogwheel {
 
 		protected Dictionary<T, KeyValuePair<int, InputButton>[]> KeyMapping;
 		protected Dictionary<InputButton, bool>[] CurrentStates;
+		protected Dictionary<uint, bool> CurrentScancodeStates;
 
 		public virtual void Poll() { }
 
@@ -510,8 +541,13 @@ namespace BeeDevelopment.Cogwheel {
 			return this.CurrentStates[controllerIndex].TryGetValue(button, out Result) ? Result : false;
 		}
 
+		public Dictionary<uint, bool> GetScancodeStates() {
+			return this.CurrentScancodeStates;
+		}
+
 		public void ReleaseAll() {
 			this.CurrentStates = new Dictionary<InputButton, bool>[2];
+			this.CurrentScancodeStates = null;
 			for (int Player = 0; Player < 2; ++Player) {
 				this.CurrentStates[Player] = new Dictionary<InputButton, bool>();
 				foreach (InputButton Button in Enum.GetValues(typeof(InputButton))) {
@@ -575,10 +611,34 @@ namespace BeeDevelopment.Cogwheel {
 
 	#region Keyboard
 
+	static class KeyboardExtensions {
+
+		const uint MAPVK_VK_TO_VSC = 0;
+		const uint MAPVK_VSC_TO_VK = 1;
+		const uint MAPVK_VK_TO_CHAR = 2;
+		const uint MAPVK_VSC_TO_VK_EX = 3;
+		const uint MAPVK_VK_TO_VSC_EX = 4;
+
+		[DllImport("user32.dll")]
+		public static extern uint MapVirtualKey(uint uCode, uint uMapType);
+
+		public static uint ToScanCode(Keys key) {
+			var Table = new byte[] { 0, 118, 22, 30, 38, 37, 46, 54, 61, 62, 70, 69, 78, 85, 102, 13, 21, 29, 36, 45, 44, 53, 60, 67, 68, 77, 84, 91, 90, 20, 28, 27, 35, 43, 52, 51, 59, 66, 75, 76, 82, 14, 18, 93, 26, 34, 33, 42, 50, 49, 58, 65, 73, 74, 89, 124, 17, 41, 88, 5, 6, 4, 12, 3, 11, 2, 131, 10, 1, 9, 119, 126, 108, 117, 125, 123, 107, 115, 116, 121, 105, 114, 122, 112, 113, 127, 132, 96, 97, 120, 7, 15, 23, 31, 39, 47, 55, 63, 71, 79, 86, 94, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 87, 111, 19, 25, 57, 81, 83, 92, 95, 98, 99, 100, 101, 103, 104, 106, 109, 110, 128, 129, 130, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 0, 255 };
+			uint Result = MapVirtualKey((uint)key, MAPVK_VK_TO_VSC);
+			return Table[Result & 0xFF];
+		}
+	}
+
 	/// <summary>
 	/// Retrieves input from a keyboard.
 	/// </summary>
 	public class KeyboardInputSource : TriggeredInputSource<Keys> {
+
+		#region Public Properties
+
+		public bool SendsRawScancodes { get; set; }
+
+		#endregion
 
 		#region Public Methods
 
@@ -588,7 +648,11 @@ namespace BeeDevelopment.Cogwheel {
 		/// <param name="key">The key to check.</param>
 		/// <returns>True if the key is a valid input key; false otherwise.</returns>
 		public bool IsInputKey(Keys key) {
-			return this.KeyMapping.ContainsKey(key);
+			if (SendsRawScancodes) {
+				return true;
+			} else {
+				return this.KeyMapping.ContainsKey(key);
+			}
 		}
 
 		public void KeyChange(KeyEventArgs key, bool state) {
@@ -597,14 +661,32 @@ namespace BeeDevelopment.Cogwheel {
 				foreach (var MappedButton in MappedButtons) {
 					this.CurrentStates[MappedButton.Key][MappedButton.Value] = state;
 				}
+			} else if (this.SendsRawScancodes) {
+				uint scancode = KeyboardExtensions.ToScanCode(key.KeyCode);
+				if (scancode != 0) {
+					if (CurrentScancodeStates == null) {
+						CurrentScancodeStates = new Dictionary<uint, bool>();
+					} else if (CurrentScancodeStates.ContainsKey(scancode)) {
+						CurrentScancodeStates.Remove(scancode);
+					}
+					CurrentScancodeStates.Add(scancode, state);
+				}
 			}
+
 		}
 
 		public override string DefaultSettingsFile {
 			get {
-				return !string.IsNullOrEmpty(this.Manager.ProfileDirectory) && Path.GetFileName(this.Manager.ProfileDirectory).Contains("3000")
-					? Properties.Resources.Config_SC3000KeyMapping
-					: Properties.Resources.Config_DefaultKeyMapping;
+				this.SendsRawScancodes = false;
+				if (!string.IsNullOrEmpty(this.Manager.ProfileDirectory)) {
+					if (Path.GetFileName(this.Manager.ProfileDirectory).Contains("3000")) {
+						return Properties.Resources.Config_SC3000KeyMapping;
+					} else if (Path.GetFileName(this.Manager.ProfileDirectory).Contains("PS2")) {
+						this.SendsRawScancodes = true;
+						return Properties.Resources.Config_PS2KeyMapping;
+					}
+				}
+				return Properties.Resources.Config_DefaultKeyMapping;
 			}
 		}
 

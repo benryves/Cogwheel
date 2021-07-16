@@ -272,6 +272,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cog.ico" />
+    <None Include="Resources\Config_PS2KeyMapping.txt" />
+    <None Include="Resources\Config_SC3000KeyMapping1.txt" />
     <None Include="Resources\arrow_down.png" />
     <None Include="Resources\arrow_left.png" />
     <None Include="Resources\arrow_right.png" />
