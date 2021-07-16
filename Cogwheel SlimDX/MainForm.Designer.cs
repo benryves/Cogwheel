@@ -65,6 +65,7 @@
 			this.GameGenieEditMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.SdscDebugConsoleMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.SerialTerminalConsoleMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.EmulationVideoBackgroundEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.EmulationVideoSpritesEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -102,6 +103,11 @@
 			this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.AboutMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.HelpSep0 = new System.Windows.Forms.ToolStripSeparator();
+			this.WebsiteCogwheel = new System.Windows.Forms.ToolStripMenuItem();
+			this.WebsiteVgmPlayer = new System.Windows.Forms.ToolStripMenuItem();
+			this.WebsiteSmsChecker = new System.Windows.Forms.ToolStripMenuItem();
+			this.WebsiteSmsPower = new System.Windows.Forms.ToolStripMenuItem();
+			this.HelpSep1 = new System.Windows.Forms.ToolStripSeparator();
 			this.BugReportMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.OpenRomDialog = new System.Windows.Forms.OpenFileDialog();
 			this.Status = new System.Windows.Forms.StatusStrip();
@@ -113,11 +119,7 @@
 			this.ColourDialog = new System.Windows.Forms.ColorDialog();
 			this.SaveVgmDialog = new System.Windows.Forms.SaveFileDialog();
 			this.OpenVgmDialog = new System.Windows.Forms.OpenFileDialog();
-			this.HelpSep1 = new System.Windows.Forms.ToolStripSeparator();
-			this.WebsiteCogwheel = new System.Windows.Forms.ToolStripMenuItem();
-			this.WebsiteVgmPlayer = new System.Windows.Forms.ToolStripMenuItem();
-			this.WebsiteSmsPower = new System.Windows.Forms.ToolStripMenuItem();
-			this.WebsiteSmsChecker = new System.Windows.Forms.ToolStripMenuItem();
+			this.PasteKeyboardMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -131,10 +133,10 @@
 			this.RenderPanel.Name = "RenderPanel";
 			this.RenderPanel.Size = new System.Drawing.Size(421, 262);
 			this.RenderPanel.TabIndex = 0;
-			this.RenderPanel.DoubleClick += new System.EventHandler(this.RenderPanel_DoubleClick);
-			this.RenderPanel.DragOver += new System.Windows.Forms.DragEventHandler(this.RenderPanel_DragOver);
-			this.RenderPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RenderPanel_MouseMove);
 			this.RenderPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.RenderPanel_DragDrop);
+			this.RenderPanel.DragOver += new System.Windows.Forms.DragEventHandler(this.RenderPanel_DragOver);
+			this.RenderPanel.DoubleClick += new System.EventHandler(this.RenderPanel_DoubleClick);
+			this.RenderPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RenderPanel_MouseMove);
 			// 
 			// Menus
 			// 
@@ -347,7 +349,7 @@
             this.RegionExportMenu});
 			this.EmulationRegionMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_World;
 			this.EmulationRegionMenu.Name = "EmulationRegionMenu";
-			this.EmulationRegionMenu.Size = new System.Drawing.Size(153, 22);
+			this.EmulationRegionMenu.Size = new System.Drawing.Size(180, 22);
 			this.EmulationRegionMenu.Text = "&Region";
 			this.EmulationRegionMenu.DropDownOpening += new System.EventHandler(this.EmulationRegionMenu_DropDownOpening);
 			// 
@@ -386,33 +388,33 @@
             this.VideoStandardPalMenu});
 			this.EmulationVideoMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Television;
 			this.EmulationVideoMenu.Name = "EmulationVideoMenu";
-			this.EmulationVideoMenu.Size = new System.Drawing.Size(153, 22);
+			this.EmulationVideoMenu.Size = new System.Drawing.Size(180, 22);
 			this.EmulationVideoMenu.Text = "&Video standard";
 			this.EmulationVideoMenu.DropDownOpening += new System.EventHandler(this.DebugVideoMenu_DropDownOpening);
 			// 
 			// VideoStandardAutomaticMenu
 			// 
 			this.VideoStandardAutomaticMenu.Name = "VideoStandardAutomaticMenu";
-			this.VideoStandardAutomaticMenu.Size = new System.Drawing.Size(141, 22);
+			this.VideoStandardAutomaticMenu.Size = new System.Drawing.Size(140, 22);
 			this.VideoStandardAutomaticMenu.Text = "&Automatic";
 			this.VideoStandardAutomaticMenu.Click += new System.EventHandler(this.VideoStandardAutomaticMenu_Click);
 			// 
 			// VideoStandardSep0
 			// 
 			this.VideoStandardSep0.Name = "VideoStandardSep0";
-			this.VideoStandardSep0.Size = new System.Drawing.Size(138, 6);
+			this.VideoStandardSep0.Size = new System.Drawing.Size(137, 6);
 			// 
 			// VideoStandardNtscMenu
 			// 
 			this.VideoStandardNtscMenu.Name = "VideoStandardNtscMenu";
-			this.VideoStandardNtscMenu.Size = new System.Drawing.Size(141, 22);
+			this.VideoStandardNtscMenu.Size = new System.Drawing.Size(140, 22);
 			this.VideoStandardNtscMenu.Text = "&NTSC (60Hz)";
 			this.VideoStandardNtscMenu.Click += new System.EventHandler(this.VideoStandardTypeMenu_Click);
 			// 
 			// VideoStandardPalMenu
 			// 
 			this.VideoStandardPalMenu.Name = "VideoStandardPalMenu";
-			this.VideoStandardPalMenu.Size = new System.Drawing.Size(141, 22);
+			this.VideoStandardPalMenu.Size = new System.Drawing.Size(140, 22);
 			this.VideoStandardPalMenu.Text = "&PAL (50Hz)";
 			this.VideoStandardPalMenu.Click += new System.EventHandler(this.VideoStandardTypeMenu_Click);
 			// 
@@ -423,7 +425,7 @@
             this.GameGenieEditMenu});
 			this.GameGenieMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(153, 22);
+			this.GameGenieMenu.Size = new System.Drawing.Size(180, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
 			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
 			// 
@@ -446,6 +448,8 @@
 			// 
 			this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SdscDebugConsoleMenu,
+            this.SerialTerminalConsoleMenu,
+            this.PasteKeyboardMenu,
             this.toolStripMenuItem1,
             this.EmulationVideoBackgroundEnabledMenu,
             this.EmulationVideoSpritesEnabledMenu});
@@ -461,6 +465,13 @@
 			this.SdscDebugConsoleMenu.Size = new System.Drawing.Size(211, 22);
 			this.SdscDebugConsoleMenu.Text = "&SDSC console";
 			this.SdscDebugConsoleMenu.Click += new System.EventHandler(this.SdscDebugConsoleMenu_Click);
+			// 
+			// SerialTerminalConsoleMenu
+			// 
+			this.SerialTerminalConsoleMenu.Name = "SerialTerminalConsoleMenu";
+			this.SerialTerminalConsoleMenu.Size = new System.Drawing.Size(211, 22);
+			this.SerialTerminalConsoleMenu.Text = "Serial &terminal";
+			this.SerialTerminalConsoleMenu.Click += new System.EventHandler(this.SerialTerminalConsoleMenu_Click);
 			// 
 			// toolStripMenuItem1
 			// 
@@ -513,14 +524,14 @@
 			// ControllerProfileDefaultMenu
 			// 
 			this.ControllerProfileDefaultMenu.Name = "ControllerProfileDefaultMenu";
-			this.ControllerProfileDefaultMenu.Size = new System.Drawing.Size(169, 22);
+			this.ControllerProfileDefaultMenu.Size = new System.Drawing.Size(180, 22);
 			this.ControllerProfileDefaultMenu.Text = "&Default";
 			this.ControllerProfileDefaultMenu.Click += new System.EventHandler(this.SetControllerProfile_Click);
 			// 
 			// ControllerProfileSC3000Menu
 			// 
 			this.ControllerProfileSC3000Menu.Name = "ControllerProfileSC3000Menu";
-			this.ControllerProfileSC3000Menu.Size = new System.Drawing.Size(169, 22);
+			this.ControllerProfileSC3000Menu.Size = new System.Drawing.Size(180, 22);
 			this.ControllerProfileSC3000Menu.Tag = "SC3000Keyboard";
 			this.ControllerProfileSC3000Menu.Text = "&SC-3000 keyboard";
 			this.ControllerProfileSC3000Menu.Click += new System.EventHandler(this.SetControllerProfile_Click);
@@ -755,6 +766,43 @@
 			this.HelpSep0.Name = "HelpSep0";
 			this.HelpSep0.Size = new System.Drawing.Size(183, 6);
 			// 
+			// WebsiteCogwheel
+			// 
+			this.WebsiteCogwheel.Name = "WebsiteCogwheel";
+			this.WebsiteCogwheel.Size = new System.Drawing.Size(186, 22);
+			this.WebsiteCogwheel.Tag = "http://www.bee-dev.com/?go=cogwheel";
+			this.WebsiteCogwheel.Text = "Cogwheel website";
+			this.WebsiteCogwheel.Click += new System.EventHandler(this.Website_Click);
+			// 
+			// WebsiteVgmPlayer
+			// 
+			this.WebsiteVgmPlayer.Name = "WebsiteVgmPlayer";
+			this.WebsiteVgmPlayer.Size = new System.Drawing.Size(186, 22);
+			this.WebsiteVgmPlayer.Tag = "http://www.smspower.org/maxim/smssoftware/vgmplayer.html";
+			this.WebsiteVgmPlayer.Text = "VGM Player website";
+			this.WebsiteVgmPlayer.Click += new System.EventHandler(this.Website_Click);
+			// 
+			// WebsiteSmsChecker
+			// 
+			this.WebsiteSmsChecker.Name = "WebsiteSmsChecker";
+			this.WebsiteSmsChecker.Size = new System.Drawing.Size(186, 22);
+			this.WebsiteSmsChecker.Tag = "http://www.smspower.org/maxim/smschecker/";
+			this.WebsiteSmsChecker.Text = "SMS Checker website";
+			this.WebsiteSmsChecker.Click += new System.EventHandler(this.Website_Click);
+			// 
+			// WebsiteSmsPower
+			// 
+			this.WebsiteSmsPower.Name = "WebsiteSmsPower";
+			this.WebsiteSmsPower.Size = new System.Drawing.Size(186, 22);
+			this.WebsiteSmsPower.Tag = "http://www.smspower.org/";
+			this.WebsiteSmsPower.Text = "SMS Power! website";
+			this.WebsiteSmsPower.Click += new System.EventHandler(this.Website_Click);
+			// 
+			// HelpSep1
+			// 
+			this.HelpSep1.Name = "HelpSep1";
+			this.HelpSep1.Size = new System.Drawing.Size(183, 6);
+			// 
 			// BugReportMenu
 			// 
 			this.BugReportMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Bug;
@@ -808,48 +856,19 @@
 			// SaveVgmDialog
 			// 
 			this.SaveVgmDialog.Filter = "Compressed VGM file (*.vgz)|*.vgz|Uncompressed VGM file (*.vgm)|*.vgm|All files (" +
-				"*.*)|*.*";
+    "*.*)|*.*";
 			// 
 			// OpenVgmDialog
 			// 
 			this.OpenVgmDialog.Filter = "VGM files (*.vgm;*.vgz)|*.vgm;*.vgz|All files (*.*)|*.*";
 			// 
-			// HelpSep1
+			// PasteKeyboardMenu
 			// 
-			this.HelpSep1.Name = "HelpSep1";
-			this.HelpSep1.Size = new System.Drawing.Size(183, 6);
-			// 
-			// WebsiteCogwheel
-			// 
-			this.WebsiteCogwheel.Name = "WebsiteCogwheel";
-			this.WebsiteCogwheel.Size = new System.Drawing.Size(186, 22);
-			this.WebsiteCogwheel.Tag = "http://www.bee-dev.com/?go=cogwheel";
-			this.WebsiteCogwheel.Text = "Cogwheel website";
-			this.WebsiteCogwheel.Click += new System.EventHandler(this.Website_Click);
-			// 
-			// WebsiteVgmPlayer
-			// 
-			this.WebsiteVgmPlayer.Name = "WebsiteVgmPlayer";
-			this.WebsiteVgmPlayer.Size = new System.Drawing.Size(186, 22);
-			this.WebsiteVgmPlayer.Tag = "http://www.smspower.org/maxim/smssoftware/vgmplayer.html";
-			this.WebsiteVgmPlayer.Text = "VGM Player website";
-			this.WebsiteVgmPlayer.Click += new System.EventHandler(this.Website_Click);
-			// 
-			// WebsiteSmsPower
-			// 
-			this.WebsiteSmsPower.Name = "WebsiteSmsPower";
-			this.WebsiteSmsPower.Size = new System.Drawing.Size(186, 22);
-			this.WebsiteSmsPower.Tag = "http://www.smspower.org/";
-			this.WebsiteSmsPower.Text = "SMS Power! website";
-			this.WebsiteSmsPower.Click += new System.EventHandler(this.Website_Click);
-			// 
-			// WebsiteSmsChecker
-			// 
-			this.WebsiteSmsChecker.Name = "WebsiteSmsChecker";
-			this.WebsiteSmsChecker.Size = new System.Drawing.Size(186, 22);
-			this.WebsiteSmsChecker.Tag = "http://www.smspower.org/maxim/smschecker/";
-			this.WebsiteSmsChecker.Text = "SMS Checker website";
-			this.WebsiteSmsChecker.Click += new System.EventHandler(this.Website_Click);
+			this.PasteKeyboardMenu.Name = "PasteKeyboardMenu";
+			this.PasteKeyboardMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+			this.PasteKeyboardMenu.Size = new System.Drawing.Size(211, 22);
+			this.PasteKeyboardMenu.Text = "&Paste keyboard";
+			this.PasteKeyboardMenu.Click += new System.EventHandler(this.PasteKeyboardMenu_Click);
 			// 
 			// MainForm
 			// 
@@ -865,9 +884,9 @@
 			this.MinimumSize = new System.Drawing.Size(256, 128);
 			this.Name = "MainForm";
 			this.ResizeBegin += new System.EventHandler(this.MainForm_ResizeBegin);
+			this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
 			this.Move += new System.EventHandler(this.MainForm_Move);
 			this.Resize += new System.EventHandler(this.MainForm_Resize);
-			this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
 			this.Menus.ResumeLayout(false);
 			this.Menus.PerformLayout();
 			this.Status.ResumeLayout(false);
@@ -973,6 +992,8 @@
 		private System.Windows.Forms.ToolStripSeparator HelpSep1;
 		private System.Windows.Forms.ToolStripMenuItem WebsiteSmsPower;
 		private System.Windows.Forms.ToolStripMenuItem WebsiteSmsChecker;
+		private System.Windows.Forms.ToolStripMenuItem SerialTerminalConsoleMenu;
+		private System.Windows.Forms.ToolStripMenuItem PasteKeyboardMenu;
 #endif
 	}
 }

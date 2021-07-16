@@ -172,6 +172,7 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 			var Data = LoadAndFixRomData(ref romFileName, out Info);
 
 			Model = RomIdentifier.GetModelFromExtension(Path.GetExtension(romFileName));
+			if (Model == HardwareModel.MasterSystemComputer) emulator.Region = Region.Export;
 
 			if (Info != null) Model = Info.Model;
 
@@ -274,6 +275,8 @@ namespace BeeDevelopment.Sega8Bit.Utility {
 				case "rom":
 				case "col":
 					return HardwareModel.ColecoVision;
+				case "smsc":
+					return HardwareModel.MasterSystemComputer;
 			}
 			return HardwareModel.Default; // No idea!
 		}

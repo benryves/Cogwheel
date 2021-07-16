@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using BeeDevelopment.Brazil;
 using BeeDevelopment.Sega8Bit.Hardware;
 
@@ -125,18 +126,36 @@ namespace BeeDevelopment.Sega8Bit {
 		/// </summary>
 		/// <returns>True if the last line of the active display has been rendered.</returns>
 		public bool RunScanline() {
+			Debug.WriteLine("Emulator.RunScaline()");
 			this.FetchExecute(this.video.CpuCyclesPerScanline);
+			this.SerialPort.UpdateState();
+
+			if (this.HasPS2Keyboard) this.PS2Keyboard.Tick();
+			if (this.HasSerialPort) this.SerialPort.UpdateState();
+
 			return this.video.RasteriseLine();
 		}
 
 		/// <summary>
-		/// Runs the emulator for a compete frame.
+		/// Runs the emulator for a complete frame.
 		/// </summary>
 		public void RunFrame() {
 			var Video = this.video;
 			var CyclesPerScanline = Video.CpuCyclesPerScanline;
 			do {
-				this.FetchExecute(CyclesPerScanline);
+
+				if (this.HasSerialPort) {
+					for (int i = 0; i < 2; ++i) {
+						this.FetchExecute(CyclesPerScanline / 2);
+						this.SerialPort.UpdateState();
+					}
+				} else {
+					this.FetchExecute(CyclesPerScanline);
+				}
+
+				if (this.HasPS2Keyboard) this.PS2Keyboard.Tick();
+
+
 			} while (!Video.RasteriseLine());
 		}
 
@@ -173,11 +192,13 @@ namespace BeeDevelopment.Sega8Bit {
 			this.HasGameGearPorts = (model == HardwareModel.GameGear || model == HardwareModel.GameGearMasterSystem);
 			this.RespondsToGameGearPorts = (model == HardwareModel.GameGear);
 			this.HasStartButton = (model == HardwareModel.GameGear);
-			this.HasResetButton = (model == HardwareModel.MasterSystem || model == HardwareModel.MasterSystem2);
+			this.HasResetButton = (model == HardwareModel.MasterSystem || model == HardwareModel.MasterSystem2 || model == HardwareModel.MasterSystemComputer);
 			this.HasPauseButton = !(model == HardwareModel.GameGear || model == HardwareModel.ColecoVision);
 
+			this.HasPS2Keyboard = this.HasSerialPort = (model == HardwareModel.MasterSystemComputer);
+
 			for (int i = 0; i < 2; ++i) {
-				this.SegaPorts[i].SupportsOutput = (model == HardwareModel.MasterSystem || model == HardwareModel.MasterSystem2) && this.Region != Region.Japanese;
+				this.SegaPorts[i].SupportsOutput = (model == HardwareModel.MasterSystem || model == HardwareModel.MasterSystem2 || model == HardwareModel.MasterSystemComputer) && this.Region != Region.Japanese;
 			}
 
 			#region Memory

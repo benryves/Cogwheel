@@ -326,10 +326,15 @@ namespace BeeDevelopment.Cogwheel {
 			if (emulator.Family == HardwareFamily.SC3000) {
 
 				foreach (SC3000Keyboard.Keys Key in Enum.GetValues(typeof(SC3000Keyboard.Keys))) {
-					emulator.Keyboard.SetKeyState(Key, this.GetButtonState(0, KeyboardToInputButton(Key)));	
+					emulator.SC3000Keyboard.SetKeyState(Key, this.GetButtonState(0, KeyboardToInputButton(Key)));	
 				}
 
-				emulator.Keyboard.UpdateState();
+				emulator.SC3000Keyboard.UpdateState();
+			} else if (emulator.HasPS2Keyboard) {
+				foreach (SC3000Keyboard.Keys Key in Enum.GetValues(typeof(SC3000Keyboard.Keys))) {
+					emulator.PS2Keyboard.SetKeyState(Key, this.GetButtonState(0, KeyboardToInputButton(Key)));
+				}
+				emulator.PS2Keyboard.UpdateState();
 			}
 
 		}

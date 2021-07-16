@@ -24,6 +24,8 @@ namespace BeeDevelopment.Sega8Bit {
 		GameGearMasterSystem,
 		/// <summary>Represents the ColecoVision.</summary>
 		ColecoVision,
+		/// <summary>Represents the Sega Master System being used as a computer (with keyboard and serial port).</summary>
+		MasterSystemComputer,
 	}
 
 	/// <summary>

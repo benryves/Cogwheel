@@ -6,6 +6,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 using BeeDevelopment.Sega8Bit;
 using BeeDevelopment.Sega8Bit.Mappers;
@@ -124,7 +125,7 @@ namespace BeeDevelopment.Cogwheel {
 			this.DisposeSound();
 			if (this.Dumper != null) this.Dumper.Dispose();
 		}
-		
+
 		#endregion
 
 		#region Window State
@@ -135,7 +136,7 @@ namespace BeeDevelopment.Cogwheel {
 		private bool TogglingFullScreen = false;
 		private void MainForm_Resize(object sender, EventArgs e) {
 
-			
+
 			if (this.WindowState == FormWindowState.Maximized || this.LastWindowState == FormWindowState.Maximized) {
 				this.Dumper.RecreateDevice();
 				this.LastWindowState = this.WindowState;
@@ -146,7 +147,7 @@ namespace BeeDevelopment.Cogwheel {
 				if (this.WindowState == FormWindowState.Normal && this.FormBorderStyle == FormBorderStyle.Sizable) {
 					this.LastClientSize = this.ClientSize;
 				}
-	
+
 				if (this.WindowState == FormWindowState.Maximized && this.FormBorderStyle == FormBorderStyle.Sizable) {
 					this.TogglingFullScreen = true;
 					this.FormBorderStyle = FormBorderStyle.None;
@@ -288,7 +289,7 @@ namespace BeeDevelopment.Cogwheel {
 
 		private void UpdateFormTitle(string filename) {
 			string Name = "";
-			
+
 			RomInfo Info = null;
 
 			if (this.Emulator.Bios.Memory != null) Info = this.Identifier.GetRomInfo(this.Emulator.Bios.Memory.Crc32);
@@ -330,7 +331,7 @@ namespace BeeDevelopment.Cogwheel {
 				if (File.Exists(RomLoadDialog.CartridgeFileName)) {
 					string CartridgeName = RomLoadDialog.CartridgeFileName;
 					LoadingRomInfo = this.Identifier.QuickLoadEmulator(ref CartridgeName, this.Emulator);
-					
+
 					if (File.Exists(RomLoadDialog.CartridgePatchFileName)) {
 						try {
 							string s = RomLoadDialog.CartridgeFileName;
@@ -370,7 +371,7 @@ namespace BeeDevelopment.Cogwheel {
 			}
 		}
 
-		#endregion		
+		#endregion
 
 		#region Screenshot
 
@@ -505,6 +506,7 @@ namespace BeeDevelopment.Cogwheel {
 			foreach (ToolStripMenuItem SubItem in this.ControllerProfileMenu.DropDownItems) {
 				SubItem.Image = (this.Input.ProfileDirectory == (string)SubItem.Tag) ? Properties.Resources.Icon_Bullet_Black : null;
 			}
+			this.ControllerProfileSC3000Menu.Text = this.Emulator.HasPS2Keyboard ? "PS/2 Keyboard" : "SC-3000 keyboard";
 		}
 
 		#region 3D Glasses
@@ -573,8 +575,9 @@ namespace BeeDevelopment.Cogwheel {
 		#region Focus
 
 		protected override void OnLostFocus(EventArgs e) {
+			return;
 			foreach (Form F in Application.OpenForms) {
-				if (F is DebugConsole && F.Focused) return;
+				if ((F is DebugConsole || F is SerialTerminal) && F.Focused) return;
 			}
 			this.Paused = true;
 			if (!this.SoundMuted) this.SoundBuffer.Stop();
@@ -731,7 +734,7 @@ namespace BeeDevelopment.Cogwheel {
 		}
 
 		private void LoadStateMenu_Click(object sender, EventArgs e) {
-			
+
 			if (!string.IsNullOrEmpty(Properties.Settings.Default.StoredPathState) && Directory.Exists(Properties.Settings.Default.StoredPathState)) {
 				this.OpenStateDialog.InitialDirectory = Properties.Settings.Default.StoredPathState;
 			}
@@ -780,7 +783,7 @@ namespace BeeDevelopment.Cogwheel {
 
 		private void SaveRecentItemsToSettings() {
 			var MRUEntries = new string[this.RecentFiles.Count];
-			this.RecentFiles.CopyTo(MRUEntries,0);
+			this.RecentFiles.CopyTo(MRUEntries, 0);
 			Properties.Settings.Default.StoredPathMRU = string.Join("|", MRUEntries);
 		}
 
@@ -810,7 +813,7 @@ namespace BeeDevelopment.Cogwheel {
 				}
 			}
 
-			
+
 		}
 
 		#endregion
@@ -864,10 +867,12 @@ namespace BeeDevelopment.Cogwheel {
 		#endregion
 
 		#region Debug
-		
+
 		private void DebugMenu_DropDownOpening(object sender, EventArgs e) {
 			this.EmulationVideoBackgroundEnabledMenu.Checked = this.Emulator.Video.BackgroundLayerEnabled;
 			this.EmulationVideoSpritesEnabledMenu.Checked = this.Emulator.Video.SpriteLayerEnabled;
+			this.SerialTerminalConsoleMenu.Visible = this.SerialTerminalConsoleMenu.Enabled = this.Emulator.HasSerialPort;
+			this.PasteKeyboardMenu.Visible = this.PasteKeyboardMenu.Enabled = this.Emulator.HasPS2Keyboard;
 		}
 
 		private void SdscDebugConsoleMenu_Click(object sender, EventArgs e) {
@@ -880,6 +885,55 @@ namespace BeeDevelopment.Cogwheel {
 			new DebugConsole().Show(this);
 		}
 
+		private void SerialTerminalConsoleMenu_Click(object sender, EventArgs e) {
+			foreach (Form F in Application.OpenForms) {
+				if (F is SerialTerminal) {
+					F.BringToFront();
+					return;
+				}
+			}
+			new SerialTerminal().Show(this);
+		}
+
+
+		private void PasteKeyboardMenu_Click(object sender, EventArgs e) {
+			this.Emulator.PS2Keyboard.Type(Clipboard.GetText(TextDataFormat.Text));
+
+			var startTime = DateTime.Now;
+			var lastSafetyCheck = startTime;
+			var lastBufferedDataCount = this.Emulator.PS2Keyboard.BufferedDataCount;
+			int sleeps = 0;
+			int sleepTimeout = 5;
+
+			while (this.Emulator.PS2Keyboard.HasBufferedData) {
+				this.Emulator.RunFrame();
+				if ((DateTime.Now - lastSafetyCheck).TotalSeconds > 1) {
+					var currentBufferedDataCount = this.Emulator.PS2Keyboard.BufferedDataCount;
+					if (sleeps >= sleepTimeout) {
+						if (MessageBox.Show(this, "This paste operation is taking a very long time." + Environment.NewLine + "Would you like to cancel?", "Paste", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes) {
+							this.AddMessage(Properties.Resources.Icon_Keyboard, "Paste cancelled.");
+							break;
+						}
+						lastSafetyCheck = DateTime.Now;
+						sleeps = 0;
+						sleepTimeout = 10;
+					} else if (currentBufferedDataCount < lastBufferedDataCount) {
+						lastBufferedDataCount = currentBufferedDataCount;
+						lastSafetyCheck = DateTime.Now;
+						++sleeps;
+						Application.DoEvents();
+					} else {
+						this.AddMessage(Properties.Resources.Icon_Keyboard, "Paste cancelled as console not responding to keyboard.");
+						break;
+					}
+				}
+			}
+
+			if (!this.Emulator.PS2Keyboard.HasBufferedData) {
+			}
+
+			this.Emulator.PS2Keyboard.ClearBufferedData();
+		}
 		private void BackgroundEnabledMenu_Click(object sender, EventArgs e) {
 			this.Emulator.Video.BackgroundLayerEnabled ^= true;
 		}
@@ -887,6 +941,8 @@ namespace BeeDevelopment.Cogwheel {
 		private void SpritesEnabledMenu_Click(object sender, EventArgs e) {
 			this.Emulator.Video.SpriteLayerEnabled ^= true;
 		}
+
+
 
 		#endregion
 

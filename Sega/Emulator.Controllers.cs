@@ -19,10 +19,22 @@ namespace BeeDevelopment.Sega8Bit {
 		public ColecoVisionControllerPort[] ColecoVisionPorts { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="SC3000Keyboard"/> connected to the console.
+		/// Gets the <see cref="Hardware.Controllers.SC3000Keyboard"/> connected to the console.
 		/// </summary>
 		[StateNotSaved()]
-		public SC3000Keyboard Keyboard { get; private set; }
+		public SC3000Keyboard SC3000Keyboard { get; private set; }
+
+		/// <summary>
+		/// Gets the <see cref="Hardware.Controllers.PS2Keyboard"/> connected to the console.
+		/// </summary>
+		[StateNotSaved()]
+		public PS2Keyboard PS2Keyboard { get; private set; }
+
+		/// <summary>
+		/// Gets the <see cref="Hardware.Controllers.SerialPort"/> connected to the console.
+		/// </summary>
+		[StateNotSaved()]
+		public SerialPort SerialPort { get; private set; }
 
 		/// <summary>
 		/// Resets the controller ports to their default state.
@@ -36,7 +48,9 @@ namespace BeeDevelopment.Sega8Bit {
 				new ColecoVisionControllerPort(),
 				new ColecoVisionControllerPort()
 			};
-			this.Keyboard = new SC3000Keyboard(this);
+			this.SC3000Keyboard = new SC3000Keyboard(this);
+			this.PS2Keyboard = new PS2Keyboard(this);
+			this.SerialPort = new SerialPort(this);
 			this.ReadingColecoVisionJoysticks = false;
 			this.ResetButton = false;
 		}
@@ -46,6 +60,10 @@ namespace BeeDevelopment.Sega8Bit {
 		/// </summary>
 		/// <returns>The state of I/O port A.</returns>
 		private byte ReadSegaIOPortA() {
+
+			if (this.HasPS2Keyboard) this.PS2Keyboard.UpdateState();
+			if (this.HasSerialPort) this.SerialPort.UpdateState();
+
 			return (byte)(
 				(this.SegaPorts[0].Up.State ? 0x01 : 0x00) |
 				(this.SegaPorts[0].Down.State ? 0x02 : 0x00) |
@@ -63,6 +81,10 @@ namespace BeeDevelopment.Sega8Bit {
 		/// </summary>
 		/// <returns>The state of I/O port B.</returns>
 		private byte ReadSegaIOPortB() {
+
+			if (this.HasPS2Keyboard) this.PS2Keyboard.UpdateState();
+			if (this.HasSerialPort) this.SerialPort.UpdateState();
+
 			return (byte)(
 				(this.SegaPorts[1].Left.State ? 0x01 : 0x00) |
 				(this.SegaPorts[1].Right.State ? 0x02 : 0x00) |

@@ -36,6 +36,16 @@ namespace BeeDevelopment.Sega8Bit {
 		public bool RespondsToGameGearPorts { get; set; }
 
 		/// <summary>
+		/// Gets or sets whether the emulator reponds to the PS/2 keyboard.
+		/// </summary>
+		public bool HasPS2Keyboard { get; set; }
+
+		/// <summary>
+		/// Gets or sets whether the emulator reponds serial port.
+		/// </summary>
+		public bool HasSerialPort { get; set; }
+
+		/// <summary>
 		/// Gets the primary <see cref="ProgrammablePeripheralInterface"/> used by the emulator in SC-3000 and SF-7000 mode.
 		/// </summary>
 		[StateNotSaved()]
@@ -281,7 +291,7 @@ namespace BeeDevelopment.Sega8Bit {
 							case 2: this.MainPPI.WritePortC(value); break;
 							case 3: this.MainPPI.WriteControl(value); break;
 						}
-						this.Keyboard.UpdateState();
+						this.SC3000Keyboard.UpdateState();
 					}
 
 					if ((port & 0x40) == 0) {
@@ -318,19 +328,19 @@ namespace BeeDevelopment.Sega8Bit {
 							break;
 						case 0xDC:
 							this.MainPPI.PortAOutput = value;
-							this.Keyboard.UpdateState();
+							this.SC3000Keyboard.UpdateState();
 							break;
 						case 0xDD:
 							this.MainPPI.PortBOutput = value;
-							this.Keyboard.UpdateState();
+							this.SC3000Keyboard.UpdateState();
 							break;
 						case 0xDE:
 							this.MainPPI.PortCOutput = value;
-							this.Keyboard.UpdateState();
+							this.SC3000Keyboard.UpdateState();
 							break;
 						case 0xDF:
 							this.MainPPI.WriteControl(value);
-							this.Keyboard.UpdateState();
+							this.SC3000Keyboard.UpdateState();
 							break;
 						case 0xE1:
 							this.FloppyDiskController.WriteData(value);
@@ -398,6 +408,9 @@ namespace BeeDevelopment.Sega8Bit {
 								if (!OldTh && (this.SegaPorts[0].TH.State || this.SegaPorts[1].TH.State)) {
 									this.video.LatchHorizontalCounter();
 								}
+
+								if (this.HasPS2Keyboard) this.PS2Keyboard.UpdateState();
+								if (this.HasSerialPort) this.SerialPort.UpdateState();
 								break;
 
 							case 0x40: // PSG.
