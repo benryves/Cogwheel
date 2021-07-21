@@ -55,6 +55,18 @@ namespace BeeDevelopment.Cogwheel {
 		int RefreshStepper = 0;
 		bool IsLiveFrame = false;
 
+		int speedMultiplier = 1;
+		public int SpeedMultiplier {
+			get { return this.speedMultiplier; }
+			set {
+				if (value >= 1 && value <= 32) {
+					this.speedMultiplier = value;
+				} else {
+					throw new ArgumentOutOfRangeException("value", "Speed multiplier must be between 1 and 32");
+				}
+			}
+		}
+
 		Stopwatch FrameTime = new Stopwatch();
 
 		void Application_Idle(object sender, EventArgs e) {
@@ -72,6 +84,8 @@ namespace BeeDevelopment.Cogwheel {
 					} else if (FramesToRender > 5) {
 						FramesToRender = 5;
 					}
+
+					FramesToRender *= speedMultiplier;
 
 					if (!this.Paused) {
 						RefreshStepper -= this.Emulator.Video.FrameRate * FramesToRender;

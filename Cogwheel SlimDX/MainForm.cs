@@ -106,6 +106,16 @@ namespace BeeDevelopment.Cogwheel {
 			// Load MRU list.
 			this.LoadRecentItemsFromSettings();
 
+			// Populate speed menu.
+			for (int speed = 1; speed <= 8; speed *= 2) {
+				var SpeedMenuItem = new ToolStripMenuItem {
+					Text = string.Format("{0}x", speed),
+					Tag = speed,
+				};
+				SpeedMenuItem.Click += SpeedMenuItem_Click;
+				this.EmulationSpeedMenu.DropDownItems.Add(SpeedMenuItem);
+			}
+
 			// Attach render loop handler.
 			Application.Idle += new EventHandler(Application_Idle);
 			this.Disposed += new EventHandler(MainForm_Disposed);
@@ -864,6 +874,27 @@ namespace BeeDevelopment.Cogwheel {
 			bool IsNtsc = sender == this.VideoStandardNtscMenu;
 			Properties.Settings.Default.OptionVideoStandardNtsc = IsNtsc;
 			this.Emulator.Video.System = IsNtsc ? BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Ntsc : BeeDevelopment.Sega8Bit.Hardware.VideoDisplayProcessor.VideoSystem.Pal;
+		}
+
+		#endregion
+
+		#region Speed Settings
+
+		private void SpeedMenuItem_Click(object sender, EventArgs e) {
+			var speedToolStripItem = sender as ToolStripItem;
+			if (speedToolStripItem == null) return;
+			var speed = speedToolStripItem.Tag;
+			if (speed == null) return;
+			this.SpeedMultiplier = (int)speed;
+		}
+
+		private void EmulationSpeedMenu_DropDownOpening(object sender, EventArgs e) {
+			foreach (var item in EmulationSpeedMenu.DropDownItems) {
+				var speedToolStripItem = item as ToolStripMenuItem;
+				if (speedToolStripItem != null) {
+					speedToolStripItem.Image = (speedToolStripItem.Tag != null && (int)speedToolStripItem.Tag == this.speedMultiplier) ? Properties.Resources.Icon_Bullet_Black : null;
+				}
+			}
 		}
 
 		#endregion

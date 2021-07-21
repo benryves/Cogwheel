@@ -73,6 +73,7 @@
 			this.OptionsMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ControllerProfileMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ControllerProfileDefaultMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.ControllerProfileMenuSep0 = new System.Windows.Forms.ToolStripSeparator();
 			this.ControllerProfileSC3000Menu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ControllerProfilePS2KeyboardMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.CustomiseControlsMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -121,7 +122,8 @@
 			this.ColourDialog = new System.Windows.Forms.ColorDialog();
 			this.SaveVgmDialog = new System.Windows.Forms.SaveFileDialog();
 			this.OpenVgmDialog = new System.Windows.Forms.OpenFileDialog();
-			this.ControllerProfileMenuSep0 = new System.Windows.Forms.ToolStripSeparator();
+			this.EmulationSep0 = new System.Windows.Forms.ToolStripSeparator();
+			this.EmulationSpeedMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -337,7 +339,9 @@
 			this.EmulationMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.EmulationRegionMenu,
             this.EmulationVideoMenu,
-            this.GameGenieMenu});
+            this.GameGenieMenu,
+            this.EmulationSep0,
+            this.EmulationSpeedMenu});
 			this.EmulationMenu.Name = "EmulationMenu";
 			this.EmulationMenu.Size = new System.Drawing.Size(73, 20);
 			this.EmulationMenu.Text = "&Emulation";
@@ -351,33 +355,33 @@
             this.RegionExportMenu});
 			this.EmulationRegionMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_World;
 			this.EmulationRegionMenu.Name = "EmulationRegionMenu";
-			this.EmulationRegionMenu.Size = new System.Drawing.Size(153, 22);
+			this.EmulationRegionMenu.Size = new System.Drawing.Size(180, 22);
 			this.EmulationRegionMenu.Text = "&Region";
 			this.EmulationRegionMenu.DropDownOpening += new System.EventHandler(this.EmulationRegionMenu_DropDownOpening);
 			// 
 			// RegionAutomaticMenu
 			// 
 			this.RegionAutomaticMenu.Name = "RegionAutomaticMenu";
-			this.RegionAutomaticMenu.Size = new System.Drawing.Size(130, 22);
+			this.RegionAutomaticMenu.Size = new System.Drawing.Size(180, 22);
 			this.RegionAutomaticMenu.Text = "&Automatic";
 			this.RegionAutomaticMenu.Click += new System.EventHandler(this.RegionAutomaticMenu_Click);
 			// 
 			// EmulationRegionSep0
 			// 
 			this.EmulationRegionSep0.Name = "EmulationRegionSep0";
-			this.EmulationRegionSep0.Size = new System.Drawing.Size(127, 6);
+			this.EmulationRegionSep0.Size = new System.Drawing.Size(177, 6);
 			// 
 			// RegionJapaneseMenu
 			// 
 			this.RegionJapaneseMenu.Name = "RegionJapaneseMenu";
-			this.RegionJapaneseMenu.Size = new System.Drawing.Size(130, 22);
+			this.RegionJapaneseMenu.Size = new System.Drawing.Size(180, 22);
 			this.RegionJapaneseMenu.Text = "&Japanese";
 			this.RegionJapaneseMenu.Click += new System.EventHandler(this.RegionCountry_Click);
 			// 
 			// RegionExportMenu
 			// 
 			this.RegionExportMenu.Name = "RegionExportMenu";
-			this.RegionExportMenu.Size = new System.Drawing.Size(130, 22);
+			this.RegionExportMenu.Size = new System.Drawing.Size(180, 22);
 			this.RegionExportMenu.Text = "&Export";
 			this.RegionExportMenu.Click += new System.EventHandler(this.RegionCountry_Click);
 			// 
@@ -390,33 +394,33 @@
             this.VideoStandardPalMenu});
 			this.EmulationVideoMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Television;
 			this.EmulationVideoMenu.Name = "EmulationVideoMenu";
-			this.EmulationVideoMenu.Size = new System.Drawing.Size(153, 22);
+			this.EmulationVideoMenu.Size = new System.Drawing.Size(180, 22);
 			this.EmulationVideoMenu.Text = "&Video standard";
 			this.EmulationVideoMenu.DropDownOpening += new System.EventHandler(this.DebugVideoMenu_DropDownOpening);
 			// 
 			// VideoStandardAutomaticMenu
 			// 
 			this.VideoStandardAutomaticMenu.Name = "VideoStandardAutomaticMenu";
-			this.VideoStandardAutomaticMenu.Size = new System.Drawing.Size(140, 22);
+			this.VideoStandardAutomaticMenu.Size = new System.Drawing.Size(180, 22);
 			this.VideoStandardAutomaticMenu.Text = "&Automatic";
 			this.VideoStandardAutomaticMenu.Click += new System.EventHandler(this.VideoStandardAutomaticMenu_Click);
 			// 
 			// VideoStandardSep0
 			// 
 			this.VideoStandardSep0.Name = "VideoStandardSep0";
-			this.VideoStandardSep0.Size = new System.Drawing.Size(137, 6);
+			this.VideoStandardSep0.Size = new System.Drawing.Size(177, 6);
 			// 
 			// VideoStandardNtscMenu
 			// 
 			this.VideoStandardNtscMenu.Name = "VideoStandardNtscMenu";
-			this.VideoStandardNtscMenu.Size = new System.Drawing.Size(140, 22);
+			this.VideoStandardNtscMenu.Size = new System.Drawing.Size(180, 22);
 			this.VideoStandardNtscMenu.Text = "&NTSC (60Hz)";
 			this.VideoStandardNtscMenu.Click += new System.EventHandler(this.VideoStandardTypeMenu_Click);
 			// 
 			// VideoStandardPalMenu
 			// 
 			this.VideoStandardPalMenu.Name = "VideoStandardPalMenu";
-			this.VideoStandardPalMenu.Size = new System.Drawing.Size(140, 22);
+			this.VideoStandardPalMenu.Size = new System.Drawing.Size(180, 22);
 			this.VideoStandardPalMenu.Text = "&PAL (50Hz)";
 			this.VideoStandardPalMenu.Click += new System.EventHandler(this.VideoStandardTypeMenu_Click);
 			// 
@@ -427,7 +431,7 @@
             this.GameGenieEditMenu});
 			this.GameGenieMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(153, 22);
+			this.GameGenieMenu.Size = new System.Drawing.Size(180, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
 			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
 			// 
@@ -435,14 +439,14 @@
 			// 
 			this.GameGenieEnabledMenu.CheckOnClick = true;
 			this.GameGenieEnabledMenu.Name = "GameGenieEnabledMenu";
-			this.GameGenieEnabledMenu.Size = new System.Drawing.Size(137, 22);
+			this.GameGenieEnabledMenu.Size = new System.Drawing.Size(180, 22);
 			this.GameGenieEnabledMenu.Text = "&Enabled";
 			this.GameGenieEnabledMenu.Click += new System.EventHandler(this.GameGenieEnabledMenu_Click);
 			// 
 			// GameGenieEditMenu
 			// 
 			this.GameGenieEditMenu.Name = "GameGenieEditMenu";
-			this.GameGenieEditMenu.Size = new System.Drawing.Size(137, 22);
+			this.GameGenieEditMenu.Size = new System.Drawing.Size(180, 22);
 			this.GameGenieEditMenu.Text = "Edit codes...";
 			this.GameGenieEditMenu.Click += new System.EventHandler(this.GameGenieEditMenu_Click);
 			// 
@@ -536,14 +540,19 @@
 			// ControllerProfileDefaultMenu
 			// 
 			this.ControllerProfileDefaultMenu.Name = "ControllerProfileDefaultMenu";
-			this.ControllerProfileDefaultMenu.Size = new System.Drawing.Size(180, 22);
+			this.ControllerProfileDefaultMenu.Size = new System.Drawing.Size(169, 22);
 			this.ControllerProfileDefaultMenu.Text = "&Default";
 			this.ControllerProfileDefaultMenu.Click += new System.EventHandler(this.SetControllerProfile_Click);
+			// 
+			// ControllerProfileMenuSep0
+			// 
+			this.ControllerProfileMenuSep0.Name = "ControllerProfileMenuSep0";
+			this.ControllerProfileMenuSep0.Size = new System.Drawing.Size(166, 6);
 			// 
 			// ControllerProfileSC3000Menu
 			// 
 			this.ControllerProfileSC3000Menu.Name = "ControllerProfileSC3000Menu";
-			this.ControllerProfileSC3000Menu.Size = new System.Drawing.Size(180, 22);
+			this.ControllerProfileSC3000Menu.Size = new System.Drawing.Size(169, 22);
 			this.ControllerProfileSC3000Menu.Tag = "SC3000Keyboard";
 			this.ControllerProfileSC3000Menu.Text = "&SC-3000 keyboard";
 			this.ControllerProfileSC3000Menu.Click += new System.EventHandler(this.SetControllerProfile_Click);
@@ -551,7 +560,7 @@
 			// ControllerProfilePS2KeyboardMenu
 			// 
 			this.ControllerProfilePS2KeyboardMenu.Name = "ControllerProfilePS2KeyboardMenu";
-			this.ControllerProfilePS2KeyboardMenu.Size = new System.Drawing.Size(180, 22);
+			this.ControllerProfilePS2KeyboardMenu.Size = new System.Drawing.Size(169, 22);
 			this.ControllerProfilePS2KeyboardMenu.Tag = "PS2Keyboard";
 			this.ControllerProfilePS2KeyboardMenu.Text = "&PS/2 keyboard";
 			this.ControllerProfilePS2KeyboardMenu.Click += new System.EventHandler(this.SetControllerProfile_Click);
@@ -882,10 +891,17 @@
 			// 
 			this.OpenVgmDialog.Filter = "VGM files (*.vgm;*.vgz)|*.vgm;*.vgz|All files (*.*)|*.*";
 			// 
-			// ControllerProfileMenuSep0
+			// EmulationSep0
 			// 
-			this.ControllerProfileMenuSep0.Name = "ControllerProfileMenuSep0";
-			this.ControllerProfileMenuSep0.Size = new System.Drawing.Size(177, 6);
+			this.EmulationSep0.Name = "EmulationSep0";
+			this.EmulationSep0.Size = new System.Drawing.Size(177, 6);
+			// 
+			// EmulationSpeedMenu
+			// 
+			this.EmulationSpeedMenu.Name = "EmulationSpeedMenu";
+			this.EmulationSpeedMenu.Size = new System.Drawing.Size(180, 22);
+			this.EmulationSpeedMenu.Text = "&Speed";
+			this.EmulationSpeedMenu.DropDownOpening += new System.EventHandler(this.EmulationSpeedMenu_DropDownOpening);
 			// 
 			// MainForm
 			// 
@@ -1013,6 +1029,8 @@
 		private System.Windows.Forms.ToolStripMenuItem PasteKeyboardMenu;
 		private System.Windows.Forms.ToolStripMenuItem ControllerProfilePS2KeyboardMenu;
 		private System.Windows.Forms.ToolStripSeparator ControllerProfileMenuSep0;
+		private System.Windows.Forms.ToolStripSeparator EmulationSep0;
+		private System.Windows.Forms.ToolStripMenuItem EmulationSpeedMenu;
 #endif
 	}
 }
