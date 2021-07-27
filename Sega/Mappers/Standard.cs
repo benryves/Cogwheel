@@ -10,6 +10,8 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 	[Serializable()]
 	public class Standard : IMemoryMapper {
 
+		const int saveRamSize = 16 * 1024;
+
 		#region Private Fields
 
 		/// <summary>
@@ -43,7 +45,6 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		public byte[] Ram {
 			get { return this.cartridgeRam; }
 			set {
-				if (value == null || value.Length != this.cartridgeRam.Length) throw new InvalidOperationException();
 				this.cartridgeRam = value;
 			}
 		}
@@ -112,9 +113,10 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 						return this.MemoryModel[0][address & 0x3FFF];
 					}
 				case 0x4000:
-					return this.MemoryModel[1][address & 0x3FFF];
 				case 0x8000:
-					return this.MemoryModel[2][address & 0x3FFF];
+					var memory = this.MemoryModel[address / 0x4000];
+					if (memory == null) return 0xFF;
+					return memory[address % memory.Length];
 				default:
 					return 0xFF;
 			}
@@ -152,8 +154,10 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 				}
 			}
 
-			if (this.RamEnabled && (address & 0xC000) == 0x8000) {
-				this.cartridgeRam[address & 0x3FFF] = value;
+			if ((address & 0xC000) == 0x8000) {
+				if (this.RamEnabled && this.cartridgeRam != null) {
+					this.cartridgeRam[address % this.cartridgeRam.Length] = value;
+				}
 			}
 
 		}
@@ -168,7 +172,7 @@ namespace BeeDevelopment.Sega8Bit.Mappers {
 		public virtual void Reset() {
 
 			// Clear cartridge RAM.
-			this.cartridgeRam = new byte[0x4000];
+			this.cartridgeRam = new byte[saveRamSize];
 
 			// Write default mapper values.
 			this.WriteMemory(0xFFFC, 0);
