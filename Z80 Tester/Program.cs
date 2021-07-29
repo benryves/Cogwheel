@@ -56,14 +56,35 @@ namespace BeeDevelopment.Z80Tester {
 			this.Memory[address] = value;
 		}
 
+		string lastOutputLine = "";
+		public bool TestsComplete { get; set; }
+
+		private void WriteChar(char c) {
+			Console.Write(c);
+			lastOutputLine += c;
+			if (lastOutputLine.EndsWith("\r") || lastOutputLine.EndsWith("\n")) {
+				lastOutputLine = "";
+			} else if (lastOutputLine.EndsWith("Tests complete")) {
+				TestsComplete = true;
+				this.Memory[0] = 0xF3; // DI
+				this.Memory[1] = 0x76; // HALT
+				this.Memory[2] = 0x3C; // JP
+				this.Memory[3] = 0x00;
+				this.Memory[4] = 0x00;
+				this.RegisterPC = 0;
+			}
+		}
+
 		public override void WriteHardware(ushort port, byte value) {
 			if ((port & 0xFF) == 0xCB) {
 				switch (this.RegisterC) {
 					case 2:
-						Console.Write((char)this.RegisterE);
+						WriteChar((char)this.RegisterE);
 						break;
 					case 9:
-						for (int i = this.RegisterDE; this.Memory[i] != '$'; ++i) Console.Write((char)this.Memory[i]);
+						for (int i = this.RegisterDE; this.Memory[i] != '$'; ++i) {
+							WriteChar((char)this.Memory[i]);
+						}
 						break;
 				}
 			} else {
@@ -75,7 +96,8 @@ namespace BeeDevelopment.Z80Tester {
 
 	class Program {
 		static void Main(string[] args) {
-			Z80A TestMachine = null;
+			Console.Title = "Z80 Tester";
+			Tester TestMachine = null;
 			while (TestMachine == null) {
 				if (args.Length < 1) {
 					Console.Write("Select mode (All/Documented): ");
@@ -93,13 +115,22 @@ namespace BeeDevelopment.Z80Tester {
 						break;
 				}
 			}
-			const int CyclesPerLoop = 10000000;
+			const int CyclesPerLoop = 100000000;
 			DateTime LastCycle = DateTime.Now;
-			while (!(Console.KeyAvailable && Console.ReadKey().Key == ConsoleKey.Escape)) {
+			while (!(Console.KeyAvailable && Console.ReadKey(false).Key == ConsoleKey.Escape)) {
 				TestMachine.FetchExecute(CyclesPerLoop);
 				var ThisCycle = DateTime.Now;
 				Console.Title = string.Format("Running at ~{0:N2} MHz", (CyclesPerLoop / 1000d) / (ThisCycle - LastCycle).TotalMilliseconds);
 				LastCycle = ThisCycle;
+				if (TestMachine.TestsComplete) {
+					break;
+				}
+			}
+			Console.Title = "Z80 Tester";
+			if (TestMachine.TestsComplete) {
+				Console.WriteLine();
+				Console.WriteLine("Press any key to exit.");
+				Console.ReadKey(false);
 			}
 		}
 	}
