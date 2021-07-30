@@ -106,6 +106,8 @@ namespace BeeDevelopment.Brazil {
 		private RegisterPair RegSP; // SP (stack pointer)
 		private RegisterPair RegPC; // PC (program counter)
 
+		private RegisterPair RegMemPtr; // Internal undocumented register, affects flags 3 and 5 in BIT (HL)/BIT (IX+d)/BIT (IY+d) instructions.
+
 		#endregion
 
 

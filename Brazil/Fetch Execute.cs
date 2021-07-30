@@ -53,11 +53,13 @@ namespace BeeDevelopment.Brazil {
 							this.totalExecutedCycles += 4; this.pendingCycles -= 4;
 							break;
 						case 0x01: // LD BC, nn
-							RegBC.Value16 = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
+							RegBC.Value16 = TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 							this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 							break;
 						case 0x02: // LD (BC), A
 							WriteMemory(RegBC.Value16, RegAF.High8);
+							RegMemPtr.Low8 = (byte)(RegBC.Value16 + 1);
+							RegMemPtr.High8 = RegAF.High8;
 							this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 							break;
 						case 0x03: // INC BC
@@ -85,6 +87,7 @@ namespace BeeDevelopment.Brazil {
 							this.totalExecutedCycles += 4; this.pendingCycles -= 4;
 							break;
 						case 0x09: // ADD HL, BC
+							RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 							TI1 = (short)RegHL.Value16; TI2 = (short)RegBC.Value16; TIR = TI1 + TI2;
 							TUS = (ushort)TIR;
 							RegFlagH = ((TI1 & 0xFFF) + (TI2 & 0xFFF)) > 0xFFF;
@@ -97,6 +100,7 @@ namespace BeeDevelopment.Brazil {
 							break;
 						case 0x0A: // LD A, (BC)
 							RegAF.High8 = ReadMemory(RegBC.Value16);
+							RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 							this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 							break;
 						case 0x0B: // DEC BC
@@ -121,19 +125,22 @@ namespace BeeDevelopment.Brazil {
 							break;
 						case 0x10: // DJNZ d
 							TSB = (sbyte)ReadMemory(RegPC.Value16++);
+							RegMemPtr.Value16 = (ushort)(RegPC.Value16 + TSB);
 							if (--RegBC.High8 != 0) {
-								RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+								RegPC.Value16 = RegMemPtr.Value16;
 								this.totalExecutedCycles += 13; this.pendingCycles -= 13;
 							} else {
 								this.totalExecutedCycles += 8; this.pendingCycles -= 8;
 							}
 							break;
 						case 0x11: // LD DE, nn
-							RegDE.Value16 = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
+							RegDE.Value16 = TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 							this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 							break;
 						case 0x12: // LD (DE), A
 							WriteMemory(RegDE.Value16, RegAF.High8);
+							RegMemPtr.Low8 = (byte)(RegDE.Value16 + 1);
+							RegMemPtr.High8 = RegAF.High8;
 							this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 							break;
 						case 0x13: // INC DE
@@ -158,10 +165,12 @@ namespace BeeDevelopment.Brazil {
 							break;
 						case 0x18: // JR d
 							TSB = (sbyte)ReadMemory(RegPC.Value16++);
-							RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+							RegMemPtr.Value16 = (ushort)(RegPC.Value16 + TSB);
+							RegPC.Value16 = RegMemPtr.Value16;
 								this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 							break;
 						case 0x19: // ADD HL, DE
+							RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 							TI1 = (short)RegHL.Value16; TI2 = (short)RegDE.Value16; TIR = TI1 + TI2;
 							TUS = (ushort)TIR;
 							RegFlagH = ((TI1 & 0xFFF) + (TI2 & 0xFFF)) > 0xFFF;
@@ -174,6 +183,7 @@ namespace BeeDevelopment.Brazil {
 							break;
 						case 0x1A: // LD A, (DE)
 							RegAF.High8 = ReadMemory(RegDE.Value16);
+							RegMemPtr.Value16 = (ushort)(RegDE.Value16 + 1);
 							this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 							break;
 						case 0x1B: // DEC DE
@@ -198,21 +208,23 @@ namespace BeeDevelopment.Brazil {
 							break;
 						case 0x20: // JR NZ, d
 							TSB = (sbyte)ReadMemory(RegPC.Value16++);
+							RegMemPtr.Value16 = (ushort)(RegPC.Value16 + TSB);
 							if (!RegFlagZ) {
-								RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+								RegPC.Value16 = RegMemPtr.Value16;
 								this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 							} else {
 								this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 							}
 							break;
 						case 0x21: // LD HL, nn
-							RegHL.Value16 = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
+							RegHL.Value16 = TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 							this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 							break;
 						case 0x22: // LD (nn), HL
 							TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 							WriteMemory(TUS++, RegHL.Low8);
 							WriteMemory(TUS, RegHL.High8);
+							RegMemPtr.Value16 = TUS;
 							this.totalExecutedCycles += 16; this.pendingCycles -= 16;
 							break;
 						case 0x23: // INC HL
@@ -237,14 +249,16 @@ namespace BeeDevelopment.Brazil {
 							break;
 						case 0x28: // JR Z, d
 							TSB = (sbyte)ReadMemory(RegPC.Value16++);
+							RegMemPtr.Value16 = (ushort)(RegPC.Value16 + TSB);
 							if (RegFlagZ) {
-								RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+								RegPC.Value16 = RegMemPtr.Value16;
 								this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 							} else {
 								this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 							}
 							break;
 						case 0x29: // ADD HL, HL
+							RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 							TI1 = (short)RegHL.Value16; TI2 = (short)RegHL.Value16; TIR = TI1 + TI2;
 							TUS = (ushort)TIR;
 							RegFlagH = ((TI1 & 0xFFF) + (TI2 & 0xFFF)) > 0xFFF;
@@ -258,6 +272,7 @@ namespace BeeDevelopment.Brazil {
 						case 0x2A: // LD HL, (nn)
 							TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 							RegHL.Low8 = ReadMemory(TUS++); RegHL.High8 = ReadMemory(TUS);
+							RegMemPtr.Value16 = TUS;
 							this.totalExecutedCycles += 16; this.pendingCycles -= 16;
 							break;
 						case 0x2B: // DEC HL
@@ -282,19 +297,22 @@ namespace BeeDevelopment.Brazil {
 							break;
 						case 0x30: // JR NC, d
 							TSB = (sbyte)ReadMemory(RegPC.Value16++);
+							RegMemPtr.Value16 = (ushort)(RegPC.Value16 + TSB);
 							if (!RegFlagC) {
-								RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+								RegPC.Value16 = RegMemPtr.Value16;
 								this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 							} else {
 								this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 							}
 							break;
 						case 0x31: // LD SP, nn
-							RegSP.Value16 = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
+							RegSP.Value16 = TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 							this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 							break;
 						case 0x32: // LD (nn), A
-							WriteMemory((ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256), RegAF.High8);
+							WriteMemory(TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256), RegAF.High8);
+							RegMemPtr.Low8 = (byte)(TUS + 1);
+							RegMemPtr.High8 = RegAF.High8;
 							this.totalExecutedCycles += 13; this.pendingCycles -= 13;
 							break;
 						case 0x33: // INC SP
@@ -319,14 +337,16 @@ namespace BeeDevelopment.Brazil {
 							break;
 						case 0x38: // JR C, d
 							TSB = (sbyte)ReadMemory(RegPC.Value16++);
+							RegMemPtr.Value16 = (ushort)(RegPC.Value16 + TSB);
 							if (RegFlagC) {
-								RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+								RegPC.Value16 = RegMemPtr.Value16;
 								this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 							} else {
 								this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 							}
 							break;
 						case 0x39: // ADD HL, SP
+							RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 							TI1 = (short)RegHL.Value16; TI2 = (short)RegSP.Value16; TIR = TI1 + TI2;
 							TUS = (ushort)TIR;
 							RegFlagH = ((TI1 & 0xFFF) + (TI2 & 0xFFF)) > 0xFFF;
@@ -338,7 +358,8 @@ namespace BeeDevelopment.Brazil {
 							this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 							break;
 						case 0x3A: // LD A, (nn)
-							RegAF.High8 = ReadMemory((ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256));
+							RegAF.High8 = ReadMemory(TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256));
+							RegMemPtr.Value16 = (ushort)(TUS + 1);
 							this.totalExecutedCycles += 13; this.pendingCycles -= 13;
 							break;
 						case 0x3B: // DEC SP
@@ -873,6 +894,7 @@ namespace BeeDevelopment.Brazil {
 							} else {
 								this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 							}
+							RegMemPtr.Value16 = RegPC.Value16;
 							break;
 						case 0xC1: // POP BC
 							RegBC.Low8 = ReadMemory(RegSP.Value16++); RegBC.High8 = ReadMemory(RegSP.Value16++);
@@ -886,7 +908,8 @@ namespace BeeDevelopment.Brazil {
 							this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 							break;
 						case 0xC3: // JP nn
-							RegPC.Value16 = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
+							RegPC.Value16 = TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
+							RegMemPtr.Value16 = TUS;
 							this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 							break;
 						case 0xC4: // CALL NZ, nn
@@ -898,6 +921,7 @@ namespace BeeDevelopment.Brazil {
 							} else {
 								this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 							}
+							RegMemPtr.Value16 = TUS;
 							break;
 						case 0xC5: // PUSH BC
 							WriteMemory(--RegSP.Value16, RegBC.High8); WriteMemory(--RegSP.Value16, RegBC.Low8);
@@ -910,6 +934,7 @@ namespace BeeDevelopment.Brazil {
 						case 0xC7: // RST $00
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = 0x00;
+							RegMemPtr.Value16 = RegPC.Value16;
 							this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 							break;
 						case 0xC8: // RET Z
@@ -919,10 +944,12 @@ namespace BeeDevelopment.Brazil {
 							} else {
 								this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 							}
+							RegMemPtr.Value16 = RegPC.Value16;
 							break;
 						case 0xC9: // RET
 							RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 							this.totalExecutedCycles += 10; this.pendingCycles -= 10;
+							RegMemPtr.Value16 = RegPC.Value16;
 							break;
 						case 0xCA: // JP Z, nn
 							TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
@@ -1322,8 +1349,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegBC.High8 & 0x01) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegBC.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegBC.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1332,8 +1359,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegBC.Low8 & 0x01) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegBC.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegBC.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1342,8 +1369,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegDE.High8 & 0x01) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegDE.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegDE.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1352,8 +1379,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegDE.Low8 & 0x01) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegDE.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegDE.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1362,8 +1389,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegHL.High8 & 0x01) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegHL.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegHL.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1372,8 +1399,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegHL.Low8 & 0x01) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegHL.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegHL.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1382,8 +1409,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (ReadMemory(RegHL.Value16) & 0x01) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
@@ -1392,8 +1419,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegAF.High8 & 0x01) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegAF.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegAF.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1402,8 +1429,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegBC.High8 & 0x02) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegBC.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegBC.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1412,8 +1439,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegBC.Low8 & 0x02) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegBC.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegBC.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1422,8 +1449,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegDE.High8 & 0x02) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegDE.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegDE.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1432,8 +1459,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegDE.Low8 & 0x02) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegDE.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegDE.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1442,8 +1469,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegHL.High8 & 0x02) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegHL.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegHL.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1452,8 +1479,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegHL.Low8 & 0x02) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegHL.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegHL.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1462,8 +1489,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (ReadMemory(RegHL.Value16) & 0x02) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
@@ -1472,8 +1499,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegAF.High8 & 0x02) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegAF.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegAF.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1482,8 +1509,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegBC.High8 & 0x04) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegBC.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegBC.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1492,8 +1519,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegBC.Low8 & 0x04) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegBC.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegBC.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1502,8 +1529,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegDE.High8 & 0x04) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegDE.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegDE.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1512,8 +1539,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegDE.Low8 & 0x04) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegDE.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegDE.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1522,8 +1549,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegHL.High8 & 0x04) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegHL.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegHL.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1532,8 +1559,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegHL.Low8 & 0x04) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegHL.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegHL.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1542,8 +1569,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (ReadMemory(RegHL.Value16) & 0x04) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
@@ -1552,8 +1579,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegAF.High8 & 0x04) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegAF.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegAF.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1562,8 +1589,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegBC.High8 & 0x08) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = !RegFlagZ;
-									RegFlag5 = false;
+									RegFlag3 = (RegBC.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegBC.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1572,8 +1599,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegBC.Low8 & 0x08) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = !RegFlagZ;
-									RegFlag5 = false;
+									RegFlag3 = (RegBC.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegBC.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1582,8 +1609,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegDE.High8 & 0x08) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = !RegFlagZ;
-									RegFlag5 = false;
+									RegFlag3 = (RegDE.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegDE.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1592,8 +1619,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegDE.Low8 & 0x08) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = !RegFlagZ;
-									RegFlag5 = false;
+									RegFlag3 = (RegDE.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegDE.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1602,8 +1629,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegHL.High8 & 0x08) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = !RegFlagZ;
-									RegFlag5 = false;
+									RegFlag3 = (RegHL.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegHL.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1612,8 +1639,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegHL.Low8 & 0x08) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = !RegFlagZ;
-									RegFlag5 = false;
+									RegFlag3 = (RegHL.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegHL.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1622,8 +1649,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (ReadMemory(RegHL.Value16) & 0x08) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = !RegFlagZ;
-									RegFlag5 = false;
+									RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
@@ -1632,8 +1659,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegAF.High8 & 0x08) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = !RegFlagZ;
-									RegFlag5 = false;
+									RegFlag3 = (RegAF.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegAF.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1642,8 +1669,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegBC.High8 & 0x10) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegBC.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegBC.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1652,8 +1679,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegBC.Low8 & 0x10) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegBC.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegBC.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1662,8 +1689,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegDE.High8 & 0x10) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegDE.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegDE.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1672,8 +1699,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegDE.Low8 & 0x10) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegDE.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegDE.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1682,8 +1709,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegHL.High8 & 0x10) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegHL.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegHL.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1692,8 +1719,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegHL.Low8 & 0x10) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegHL.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegHL.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1702,8 +1729,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (ReadMemory(RegHL.Value16) & 0x10) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
@@ -1712,8 +1739,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegAF.High8 & 0x10) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegAF.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegAF.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1722,8 +1749,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegBC.High8 & 0x20) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = !RegFlagZ;
+									RegFlag3 = (RegBC.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegBC.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1732,8 +1759,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegBC.Low8 & 0x20) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = !RegFlagZ;
+									RegFlag3 = (RegBC.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegBC.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1742,8 +1769,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegDE.High8 & 0x20) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = !RegFlagZ;
+									RegFlag3 = (RegDE.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegDE.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1752,8 +1779,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegDE.Low8 & 0x20) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = !RegFlagZ;
+									RegFlag3 = (RegDE.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegDE.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1762,8 +1789,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegHL.High8 & 0x20) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = !RegFlagZ;
+									RegFlag3 = (RegHL.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegHL.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1772,8 +1799,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegHL.Low8 & 0x20) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = !RegFlagZ;
+									RegFlag3 = (RegHL.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegHL.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1782,8 +1809,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (ReadMemory(RegHL.Value16) & 0x20) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = !RegFlagZ;
+									RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
@@ -1792,8 +1819,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegAF.High8 & 0x20) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = !RegFlagZ;
+									RegFlag3 = (RegAF.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegAF.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1802,8 +1829,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegBC.High8 & 0x40) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegBC.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegBC.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1812,8 +1839,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegBC.Low8 & 0x40) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegBC.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegBC.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1822,8 +1849,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegDE.High8 & 0x40) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegDE.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegDE.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1832,8 +1859,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegDE.Low8 & 0x40) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegDE.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegDE.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1842,8 +1869,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegHL.High8 & 0x40) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegHL.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegHL.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1852,8 +1879,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegHL.Low8 & 0x40) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegHL.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegHL.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1862,8 +1889,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (ReadMemory(RegHL.Value16) & 0x40) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
@@ -1872,8 +1899,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegAF.High8 & 0x40) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = false;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegAF.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegAF.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1882,8 +1909,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegBC.High8 & 0x80) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = !RegFlagZ;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegBC.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegBC.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1892,8 +1919,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegBC.Low8 & 0x80) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = !RegFlagZ;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegBC.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegBC.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1902,8 +1929,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegDE.High8 & 0x80) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = !RegFlagZ;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegDE.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegDE.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1912,8 +1939,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegDE.Low8 & 0x80) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = !RegFlagZ;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegDE.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegDE.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1922,8 +1949,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegHL.High8 & 0x80) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = !RegFlagZ;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegHL.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegHL.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1932,8 +1959,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegHL.Low8 & 0x80) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = !RegFlagZ;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegHL.Low8 & (1 << 3)) != 0;
+									RegFlag5 = (RegHL.Low8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -1942,8 +1969,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (ReadMemory(RegHL.Value16) & 0x80) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = !RegFlagZ;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
@@ -1952,8 +1979,8 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = (RegAF.High8 & 0x80) == 0;
 									RegFlagP = RegFlagZ;
 									RegFlagS = !RegFlagZ;
-									RegFlag3 = false;
-									RegFlag5 = false;
+									RegFlag3 = (RegAF.High8 & (1 << 3)) != 0;
+									RegFlag5 = (RegAF.High8 & (1 << 5)) != 0;
 									RegFlagH = true;
 									RegFlagN = false;
 									this.totalExecutedCycles += 8; this.pendingCycles -= 8;
@@ -2481,11 +2508,13 @@ namespace BeeDevelopment.Brazil {
 							} else {
 								this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 							}
+							RegMemPtr.Value16 = TUS;
 							break;
 						case 0xCD: // CALL nn
 							TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = TUS;
+							RegMemPtr.Value16 = TUS;
 							this.totalExecutedCycles += 17; this.pendingCycles -= 17;
 							break;
 						case 0xCE: // ADC A, n
@@ -2495,6 +2524,7 @@ namespace BeeDevelopment.Brazil {
 						case 0xCF: // RST $08
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = 0x08;
+							RegMemPtr.Value16 = RegPC.Value16;
 							this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 							break;
 						case 0xD0: // RET NC
@@ -2504,6 +2534,7 @@ namespace BeeDevelopment.Brazil {
 							} else {
 								this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 							}
+							RegMemPtr.Value16 = RegPC.Value16;
 							break;
 						case 0xD1: // POP DE
 							RegDE.Low8 = ReadMemory(RegSP.Value16++); RegDE.High8 = ReadMemory(RegSP.Value16++);
@@ -2517,7 +2548,9 @@ namespace BeeDevelopment.Brazil {
 							this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 							break;
 						case 0xD3: // OUT n, A
-							WriteHardware(ReadMemory(RegPC.Value16++), RegAF.High8);
+							WriteHardware(TUS = ReadMemory(RegPC.Value16++), RegAF.High8);
+							RegMemPtr.Low8 = (byte)(TUS + 1);
+							RegMemPtr.High8 = RegAF.High8;
 							this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 							break;
 						case 0xD4: // CALL NC, nn
@@ -2529,6 +2562,7 @@ namespace BeeDevelopment.Brazil {
 							} else {
 								this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 							}
+							RegMemPtr.Value16 = TUS;
 							break;
 						case 0xD5: // PUSH DE
 							WriteMemory(--RegSP.Value16, RegDE.High8); WriteMemory(--RegSP.Value16, RegDE.Low8);
@@ -2541,6 +2575,7 @@ namespace BeeDevelopment.Brazil {
 						case 0xD7: // RST $10
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = 0x10;
+							RegMemPtr.Value16 = RegPC.Value16;
 							this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 							break;
 						case 0xD8: // RET C
@@ -2550,6 +2585,7 @@ namespace BeeDevelopment.Brazil {
 							} else {
 								this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 							}
+							RegMemPtr.Value16 = RegPC.Value16;
 							break;
 						case 0xD9: // EXX
 							TUS = RegBC.Value16; RegBC.Value16 = RegAltBC.Value16; RegAltBC.Value16 = TUS;
@@ -2565,7 +2601,9 @@ namespace BeeDevelopment.Brazil {
 							this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 							break;
 						case 0xDB: // IN A, n
-							RegAF.High8 = ReadHardware((ushort)ReadMemory(RegPC.Value16++));
+							RegMemPtr.Value16 = RegAF.High8;
+							RegAF.High8 = ReadHardware(TUS = (ushort)ReadMemory(RegPC.Value16++));
+							RegMemPtr.Value16 += (ushort)(TUS + 1);
 							this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 							break;
 						case 0xDC: // CALL C, nn
@@ -2577,6 +2615,7 @@ namespace BeeDevelopment.Brazil {
 							} else {
 								this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 							}
+							RegMemPtr.Value16 = TUS;
 							break;
 						case 0xDD: // (Prefix)
 							++RegR;
@@ -2585,11 +2624,13 @@ namespace BeeDevelopment.Brazil {
 									this.totalExecutedCycles += 4; this.pendingCycles -= 4;
 									break;
 								case 0x01: // LD BC, nn
-									RegBC.Value16 = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
+									RegBC.Value16 = TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									break;
 								case 0x02: // LD (BC), A
 									WriteMemory(RegBC.Value16, RegAF.High8);
+									RegMemPtr.Low8 = (byte)(RegBC.Value16 + 1);
+									RegMemPtr.High8 = RegAF.High8;
 									this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 									break;
 								case 0x03: // INC BC
@@ -2617,6 +2658,7 @@ namespace BeeDevelopment.Brazil {
 									this.totalExecutedCycles += 4; this.pendingCycles -= 4;
 									break;
 								case 0x09: // ADD IX, BC
+									RegMemPtr.Value16 = (ushort)(RegIX.Value16 + 1);
 									TI1 = (short)RegIX.Value16; TI2 = (short)RegBC.Value16; TIR = TI1 + TI2;
 									TUS = (ushort)TIR;
 									RegFlagH = ((TI1 & 0xFFF) + (TI2 & 0xFFF)) > 0xFFF;
@@ -2629,6 +2671,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x0A: // LD A, (BC)
 									RegAF.High8 = ReadMemory(RegBC.Value16);
+									RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 									this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 									break;
 								case 0x0B: // DEC BC
@@ -2653,19 +2696,22 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x10: // DJNZ d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
+									RegMemPtr.Value16 = (ushort)(RegPC.Value16 + TSB);
 									if (--RegBC.High8 != 0) {
-										RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+										RegPC.Value16 = RegMemPtr.Value16;
 										this.totalExecutedCycles += 13; this.pendingCycles -= 13;
 									} else {
 										this.totalExecutedCycles += 8; this.pendingCycles -= 8;
 									}
 									break;
 								case 0x11: // LD DE, nn
-									RegDE.Value16 = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
+									RegDE.Value16 = TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									break;
 								case 0x12: // LD (DE), A
 									WriteMemory(RegDE.Value16, RegAF.High8);
+									RegMemPtr.Low8 = (byte)(RegDE.Value16 + 1);
+									RegMemPtr.High8 = RegAF.High8;
 									this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 									break;
 								case 0x13: // INC DE
@@ -2690,10 +2736,12 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x18: // JR d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
-									RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+									RegMemPtr.Value16 = (ushort)(RegPC.Value16 + TSB);
+									RegPC.Value16 = RegMemPtr.Value16;
 										this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									break;
 								case 0x19: // ADD IX, DE
+									RegMemPtr.Value16 = (ushort)(RegIX.Value16 + 1);
 									TI1 = (short)RegIX.Value16; TI2 = (short)RegDE.Value16; TIR = TI1 + TI2;
 									TUS = (ushort)TIR;
 									RegFlagH = ((TI1 & 0xFFF) + (TI2 & 0xFFF)) > 0xFFF;
@@ -2706,6 +2754,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x1A: // LD A, (DE)
 									RegAF.High8 = ReadMemory(RegDE.Value16);
+									RegMemPtr.Value16 = (ushort)(RegDE.Value16 + 1);
 									this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 									break;
 								case 0x1B: // DEC DE
@@ -2730,21 +2779,23 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x20: // JR NZ, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
+									RegMemPtr.Value16 = (ushort)(RegPC.Value16 + TSB);
 									if (!RegFlagZ) {
-										RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+										RegPC.Value16 = RegMemPtr.Value16;
 										this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									} else {
 										this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 									}
 									break;
 								case 0x21: // LD IX, nn
-									RegIX.Value16 = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
+									RegIX.Value16 = TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									this.totalExecutedCycles += 14; this.pendingCycles -= 14;
 									break;
 								case 0x22: // LD (nn), IX
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									WriteMemory(TUS++, RegIX.Low8);
 									WriteMemory(TUS, RegIX.High8);
+									RegMemPtr.Value16 = TUS;
 									this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 									break;
 								case 0x23: // INC IX
@@ -2769,14 +2820,16 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x28: // JR Z, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
+									RegMemPtr.Value16 = (ushort)(RegPC.Value16 + TSB);
 									if (RegFlagZ) {
-										RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+										RegPC.Value16 = RegMemPtr.Value16;
 										this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									} else {
 										this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 									}
 									break;
 								case 0x29: // ADD IX, IX
+									RegMemPtr.Value16 = (ushort)(RegIX.Value16 + 1);
 									TI1 = (short)RegIX.Value16; TI2 = (short)RegIX.Value16; TIR = TI1 + TI2;
 									TUS = (ushort)TIR;
 									RegFlagH = ((TI1 & 0xFFF) + (TI2 & 0xFFF)) > 0xFFF;
@@ -2790,6 +2843,7 @@ namespace BeeDevelopment.Brazil {
 								case 0x2A: // LD IX, (nn)
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									RegIX.Low8 = ReadMemory(TUS++); RegIX.High8 = ReadMemory(TUS);
+									RegMemPtr.Value16 = TUS;
 									this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 									break;
 								case 0x2B: // DEC IX
@@ -2814,19 +2868,22 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x30: // JR NC, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
+									RegMemPtr.Value16 = (ushort)(RegPC.Value16 + TSB);
 									if (!RegFlagC) {
-										RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+										RegPC.Value16 = RegMemPtr.Value16;
 										this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									} else {
 										this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 									}
 									break;
 								case 0x31: // LD SP, nn
-									RegSP.Value16 = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
+									RegSP.Value16 = TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									break;
 								case 0x32: // LD (nn), A
-									WriteMemory((ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256), RegAF.High8);
+									WriteMemory(TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256), RegAF.High8);
+									RegMemPtr.Low8 = (byte)(TUS + 1);
+									RegMemPtr.High8 = RegAF.High8;
 									this.totalExecutedCycles += 13; this.pendingCycles -= 13;
 									break;
 								case 0x33: // INC SP
@@ -2835,17 +2892,17 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x34: // INC (IX+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									TB = ReadMemory((ushort)(RegIX.Value16 + Displacement)); RegAF.Low8 = (byte)(TableInc[++TB] | (RegAF.Low8 & 1)); WriteMemory((ushort)(RegIX.Value16 + Displacement), TB);
+									TB = ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)); RegAF.Low8 = (byte)(TableInc[++TB] | (RegAF.Low8 & 1)); WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), TB);
 									this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 									break;
 								case 0x35: // DEC (IX+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									TB = ReadMemory((ushort)(RegIX.Value16 + Displacement)); RegAF.Low8 = (byte)(TableDec[--TB] | (RegAF.Low8 & 1)); WriteMemory((ushort)(RegIX.Value16 + Displacement), TB);
+									TB = ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)); RegAF.Low8 = (byte)(TableDec[--TB] | (RegAF.Low8 & 1)); WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), TB);
 									this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 									break;
 								case 0x36: // LD (IX+d), n
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									WriteMemory((ushort)(RegIX.Value16 + Displacement), ReadMemory(RegPC.Value16++));
+									WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), ReadMemory(RegPC.Value16++));
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x37: // SCF
@@ -2854,14 +2911,16 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x38: // JR C, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
+									RegMemPtr.Value16 = (ushort)(RegPC.Value16 + TSB);
 									if (RegFlagC) {
-										RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+										RegPC.Value16 = RegMemPtr.Value16;
 										this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									} else {
 										this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 									}
 									break;
 								case 0x39: // ADD IX, SP
+									RegMemPtr.Value16 = (ushort)(RegIX.Value16 + 1);
 									TI1 = (short)RegIX.Value16; TI2 = (short)RegSP.Value16; TIR = TI1 + TI2;
 									TUS = (ushort)TIR;
 									RegFlagH = ((TI1 & 0xFFF) + (TI2 & 0xFFF)) > 0xFFF;
@@ -2873,7 +2932,8 @@ namespace BeeDevelopment.Brazil {
 									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
 									break;
 								case 0x3A: // LD A, (nn)
-									RegAF.High8 = ReadMemory((ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256));
+									RegAF.High8 = ReadMemory(TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256));
+									RegMemPtr.Value16 = (ushort)(TUS + 1);
 									this.totalExecutedCycles += 13; this.pendingCycles -= 13;
 									break;
 								case 0x3B: // DEC SP
@@ -2921,7 +2981,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x46: // LD B, (IX+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegBC.High8 = ReadMemory((ushort)(RegIX.Value16 + Displacement));
+									RegBC.High8 = ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement));
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x47: // LD B, A
@@ -2953,7 +3013,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x4E: // LD C, (IX+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegBC.Low8 = ReadMemory((ushort)(RegIX.Value16 + Displacement));
+									RegBC.Low8 = ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement));
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x4F: // LD C, A
@@ -2985,7 +3045,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x56: // LD D, (IX+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegDE.High8 = ReadMemory((ushort)(RegIX.Value16 + Displacement));
+									RegDE.High8 = ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement));
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x57: // LD D, A
@@ -3017,7 +3077,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x5E: // LD E, (IX+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegDE.Low8 = ReadMemory((ushort)(RegIX.Value16 + Displacement));
+									RegDE.Low8 = ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement));
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x5F: // LD E, A
@@ -3049,7 +3109,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x66: // LD H, (IX+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegHL.High8 = ReadMemory((ushort)(RegIX.Value16 + Displacement));
+									RegHL.High8 = ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement));
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x67: // LD IXH, A
@@ -3081,7 +3141,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x6E: // LD L, (IX+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegHL.Low8 = ReadMemory((ushort)(RegIX.Value16 + Displacement));
+									RegHL.Low8 = ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement));
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x6F: // LD IXL, A
@@ -3090,32 +3150,32 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x70: // LD (IX+d), B
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.High8);
+									WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.High8);
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x71: // LD (IX+d), C
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
+									WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x72: // LD (IX+d), D
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.High8);
+									WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.High8);
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x73: // LD (IX+d), E
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
+									WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x74: // LD (IX+d), H
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.High8);
+									WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.High8);
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x75: // LD (IX+d), L
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
+									WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x76: // HALT
@@ -3124,7 +3184,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x77: // LD (IX+d), A
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									WriteMemory((ushort)(RegIX.Value16 + Displacement), RegAF.High8);
+									WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegAF.High8);
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x78: // LD A, B
@@ -3153,7 +3213,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x7E: // LD A, (IX+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegAF.High8 = ReadMemory((ushort)(RegIX.Value16 + Displacement));
+									RegAF.High8 = ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement));
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x7F: // LD A, A
@@ -3185,7 +3245,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x86: // ADD A, (IX+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegAF.Value16 = TableALU[0, RegAF.High8, ReadMemory((ushort)(RegIX.Value16 + Displacement)), 0];
+									RegAF.Value16 = TableALU[0, RegAF.High8, ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)), 0];
 									this.totalExecutedCycles += 16; this.pendingCycles -= 16;
 									break;
 								case 0x87: // ADD A, A
@@ -3218,7 +3278,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x8E: // ADC A, (IX+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegAF.Value16 = TableALU[1, RegAF.High8, ReadMemory((ushort)(RegIX.Value16 + Displacement)), RegFlagC ? 1 : 0];
+									RegAF.Value16 = TableALU[1, RegAF.High8, ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)), RegFlagC ? 1 : 0];
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x8F: // ADC A, A
@@ -3251,7 +3311,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x96: // SUB (IX+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegAF.Value16 = TableALU[2, RegAF.High8, ReadMemory((ushort)(RegIX.Value16 + Displacement)), 0];
+									RegAF.Value16 = TableALU[2, RegAF.High8, ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)), 0];
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x97: // SUB A, A
@@ -3284,7 +3344,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x9E: // SBC A, (IX+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegAF.Value16 = TableALU[3, RegAF.High8, ReadMemory((ushort)(RegIX.Value16 + Displacement)), RegFlagC ? 1 : 0];
+									RegAF.Value16 = TableALU[3, RegAF.High8, ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)), RegFlagC ? 1 : 0];
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x9F: // SBC A, A
@@ -3317,7 +3377,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xA6: // AND (IX+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegAF.Value16 = TableALU[4, RegAF.High8, ReadMemory((ushort)(RegIX.Value16 + Displacement)), 0];
+									RegAF.Value16 = TableALU[4, RegAF.High8, ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)), 0];
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0xA7: // AND A
@@ -3350,7 +3410,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xAE: // XOR (IX+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegAF.Value16 = TableALU[5, RegAF.High8, ReadMemory((ushort)(RegIX.Value16 + Displacement)), 0];
+									RegAF.Value16 = TableALU[5, RegAF.High8, ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)), 0];
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0xAF: // XOR A
@@ -3383,7 +3443,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xB6: // OR (IX+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegAF.Value16 = TableALU[6, RegAF.High8, ReadMemory((ushort)(RegIX.Value16 + Displacement)), 0];
+									RegAF.Value16 = TableALU[6, RegAF.High8, ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)), 0];
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0xB7: // OR A
@@ -3416,7 +3476,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xBE: // CP (IX+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegAF.Value16 = TableALU[7, RegAF.High8, ReadMemory((ushort)(RegIX.Value16 + Displacement)), 0];
+									RegAF.Value16 = TableALU[7, RegAF.High8, ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)), 0];
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0xBF: // CP A
@@ -3430,6 +3490,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 									}
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0xC1: // POP BC
 									RegBC.Low8 = ReadMemory(RegSP.Value16++); RegBC.High8 = ReadMemory(RegSP.Value16++);
@@ -3443,7 +3504,8 @@ namespace BeeDevelopment.Brazil {
 									this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									break;
 								case 0xC3: // JP nn
-									RegPC.Value16 = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
+									RegPC.Value16 = TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
+									RegMemPtr.Value16 = TUS;
 									this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									break;
 								case 0xC4: // CALL NZ, nn
@@ -3455,6 +3517,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									}
+									RegMemPtr.Value16 = TUS;
 									break;
 								case 0xC5: // PUSH BC
 									WriteMemory(--RegSP.Value16, RegBC.High8); WriteMemory(--RegSP.Value16, RegBC.Low8);
@@ -3467,6 +3530,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xC7: // RST $00
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = 0x00;
+									RegMemPtr.Value16 = RegPC.Value16;
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 								case 0xC8: // RET Z
@@ -3476,10 +3540,12 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 									}
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0xC9: // RET
 									RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 									this.totalExecutedCycles += 10; this.pendingCycles -= 10;
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0xCA: // JP Z, nn
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
@@ -3493,1579 +3559,1707 @@ namespace BeeDevelopment.Brazil {
 									++RegR;
 									switch (ReadMemory(RegPC.Value16++)) {
 										case 0x00: // RLC (IX+d)→B
-											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegBC.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x01: // RLC (IX+d)→C
-											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegBC.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x02: // RLC (IX+d)→D
-											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegDE.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x03: // RLC (IX+d)→E
-											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegDE.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x04: // RLC (IX+d)→H
-											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegHL.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x05: // RLC (IX+d)→L
-											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegHL.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x06: // RLC (IX+d)
-											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x07: // RLC (IX+d)→A
-											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegAF.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x08: // RRC (IX+d)→B
-											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegBC.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x09: // RRC (IX+d)→C
-											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegBC.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x0A: // RRC (IX+d)→D
-											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegDE.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x0B: // RRC (IX+d)→E
-											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegDE.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x0C: // RRC (IX+d)→H
-											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegHL.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x0D: // RRC (IX+d)→L
-											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegHL.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x0E: // RRC (IX+d)
-											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x0F: // RRC (IX+d)→A
-											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegAF.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x10: // RL (IX+d)→B
-											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegBC.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x11: // RL (IX+d)→C
-											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegBC.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x12: // RL (IX+d)→D
-											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegDE.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x13: // RL (IX+d)→E
-											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegDE.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x14: // RL (IX+d)→H
-											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegHL.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x15: // RL (IX+d)→L
-											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegHL.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x16: // RL (IX+d)
-											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x17: // RL (IX+d)→A
-											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegAF.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x18: // RR (IX+d)→B
-											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegBC.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x19: // RR (IX+d)→C
-											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegBC.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x1A: // RR (IX+d)→D
-											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegDE.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x1B: // RR (IX+d)→E
-											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegDE.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x1C: // RR (IX+d)→H
-											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegHL.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x1D: // RR (IX+d)→L
-											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegHL.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x1E: // RR (IX+d)
-											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x1F: // RR (IX+d)→A
-											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegAF.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x20: // SLA (IX+d)→B
-											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegBC.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x21: // SLA (IX+d)→C
-											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegBC.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x22: // SLA (IX+d)→D
-											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegDE.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x23: // SLA (IX+d)→E
-											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegDE.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x24: // SLA (IX+d)→H
-											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegHL.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x25: // SLA (IX+d)→L
-											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegHL.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x26: // SLA (IX+d)
-											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x27: // SLA (IX+d)→A
-											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegAF.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x28: // SRA (IX+d)→B
-											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegBC.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x29: // SRA (IX+d)→C
-											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegBC.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x2A: // SRA (IX+d)→D
-											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegDE.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x2B: // SRA (IX+d)→E
-											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegDE.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x2C: // SRA (IX+d)→H
-											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegHL.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x2D: // SRA (IX+d)→L
-											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegHL.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x2E: // SRA (IX+d)
-											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x2F: // SRA (IX+d)→A
-											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegAF.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x30: // SL1 (IX+d)→B
-											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegBC.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x31: // SL1 (IX+d)→C
-											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegBC.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x32: // SL1 (IX+d)→D
-											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegDE.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x33: // SL1 (IX+d)→E
-											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegDE.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x34: // SL1 (IX+d)→H
-											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegHL.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x35: // SL1 (IX+d)→L
-											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegHL.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x36: // SL1 (IX+d)
-											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x37: // SL1 (IX+d)→A
-											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegAF.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x38: // SRL (IX+d)→B
-											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegBC.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x39: // SRL (IX+d)→C
-											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegBC.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x3A: // SRL (IX+d)→D
-											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegDE.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x3B: // SRL (IX+d)→E
-											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegDE.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x3C: // SRL (IX+d)→H
-											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegHL.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x3D: // SRL (IX+d)→L
-											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegHL.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x3E: // SRL (IX+d)
-											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x3F: // SRL (IX+d)→A
-											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIX.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											RegAF.High8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x40: // BIT 0, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x01) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x01) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x41: // BIT 0, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x01) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x01) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x42: // BIT 0, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x01) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x01) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x43: // BIT 0, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x01) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x01) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x44: // BIT 0, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x01) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x01) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x45: // BIT 0, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x01) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x01) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x46: // BIT 0, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x01) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x01) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x47: // BIT 0, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x01) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x01) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x48: // BIT 1, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x02) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x02) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x49: // BIT 1, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x02) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x02) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x4A: // BIT 1, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x02) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x02) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x4B: // BIT 1, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x02) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x02) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x4C: // BIT 1, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x02) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x02) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x4D: // BIT 1, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x02) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x02) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x4E: // BIT 1, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x02) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x02) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x4F: // BIT 1, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x02) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x02) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x50: // BIT 2, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x04) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x04) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x51: // BIT 2, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x04) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x04) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x52: // BIT 2, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x04) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x04) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x53: // BIT 2, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x04) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x04) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x54: // BIT 2, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x04) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x04) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x55: // BIT 2, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x04) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x04) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x56: // BIT 2, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x04) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x04) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x57: // BIT 2, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x04) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x04) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x58: // BIT 3, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x08) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x08) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x59: // BIT 3, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x08) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x08) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x5A: // BIT 3, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x08) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x08) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x5B: // BIT 3, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x08) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x08) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x5C: // BIT 3, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x08) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x08) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x5D: // BIT 3, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x08) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x08) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x5E: // BIT 3, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x08) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x08) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x5F: // BIT 3, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x08) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x08) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x60: // BIT 4, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x10) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x10) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x61: // BIT 4, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x10) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x10) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x62: // BIT 4, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x10) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x10) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x63: // BIT 4, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x10) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x10) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x64: // BIT 4, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x10) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x10) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x65: // BIT 4, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x10) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x10) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x66: // BIT 4, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x10) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x10) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x67: // BIT 4, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x10) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x10) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x68: // BIT 5, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x20) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x20) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x69: // BIT 5, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x20) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x20) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x6A: // BIT 5, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x20) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x20) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x6B: // BIT 5, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x20) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x20) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x6C: // BIT 5, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x20) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x20) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x6D: // BIT 5, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x20) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x20) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x6E: // BIT 5, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x20) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x20) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x6F: // BIT 5, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x20) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x20) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x70: // BIT 6, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x40) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x40) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x71: // BIT 6, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x40) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x40) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x72: // BIT 6, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x40) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x40) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x73: // BIT 6, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x40) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x40) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x74: // BIT 6, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x40) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x40) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x75: // BIT 6, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x40) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x40) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x76: // BIT 6, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x40) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x40) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x77: // BIT 6, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x40) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x40) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x78: // BIT 7, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x80) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x80) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = !RegFlagZ;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x79: // BIT 7, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x80) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x80) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = !RegFlagZ;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x7A: // BIT 7, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x80) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x80) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = !RegFlagZ;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x7B: // BIT 7, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x80) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x80) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = !RegFlagZ;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x7C: // BIT 7, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x80) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x80) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = !RegFlagZ;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x7D: // BIT 7, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x80) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x80) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = !RegFlagZ;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x7E: // BIT 7, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x80) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x80) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = !RegFlagZ;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x7F: // BIT 7, (IX+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIX.Value16 + Displacement)) & 0x80) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & 0x80) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = !RegFlagZ;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x80: // RES 0, (IX+d)→B
-											RegBC.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x01));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.High8);
+											RegBC.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x01));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x81: // RES 0, (IX+d)→C
-											RegBC.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x01));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
+											RegBC.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x01));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x82: // RES 0, (IX+d)→D
-											RegDE.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x01));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.High8);
+											RegDE.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x01));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x83: // RES 0, (IX+d)→E
-											RegDE.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x01));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
+											RegDE.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x01));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x84: // RES 0, (IX+d)→H
-											RegHL.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x01));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.High8);
+											RegHL.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x01));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x85: // RES 0, (IX+d)→L
-											RegHL.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x01));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
+											RegHL.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x01));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x86: // RES 0, (IX+d)
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x01)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x01)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x87: // RES 0, (IX+d)→A
-											RegAF.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x01));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegAF.High8);
+											RegAF.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x01));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegAF.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x88: // RES 1, (IX+d)→B
-											RegBC.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x02));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.High8);
+											RegBC.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x02));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x89: // RES 1, (IX+d)→C
-											RegBC.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x02));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
+											RegBC.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x02));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x8A: // RES 1, (IX+d)→D
-											RegDE.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x02));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.High8);
+											RegDE.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x02));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x8B: // RES 1, (IX+d)→E
-											RegDE.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x02));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
+											RegDE.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x02));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x8C: // RES 1, (IX+d)→H
-											RegHL.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x02));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.High8);
+											RegHL.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x02));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x8D: // RES 1, (IX+d)→L
-											RegHL.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x02));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
+											RegHL.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x02));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x8E: // RES 1, (IX+d)
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x02)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x02)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x8F: // RES 1, (IX+d)→A
-											RegAF.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x02));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegAF.High8);
+											RegAF.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x02));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegAF.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x90: // RES 2, (IX+d)→B
-											RegBC.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x04));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.High8);
+											RegBC.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x04));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x91: // RES 2, (IX+d)→C
-											RegBC.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x04));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
+											RegBC.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x04));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x92: // RES 2, (IX+d)→D
-											RegDE.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x04));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.High8);
+											RegDE.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x04));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x93: // RES 2, (IX+d)→E
-											RegDE.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x04));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
+											RegDE.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x04));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x94: // RES 2, (IX+d)→H
-											RegHL.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x04));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.High8);
+											RegHL.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x04));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x95: // RES 2, (IX+d)→L
-											RegHL.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x04));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
+											RegHL.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x04));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x96: // RES 2, (IX+d)
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x04)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x04)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x97: // RES 2, (IX+d)→A
-											RegAF.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x04));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegAF.High8);
+											RegAF.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x04));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegAF.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x98: // RES 3, (IX+d)→B
-											RegBC.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x08));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.High8);
+											RegBC.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x08));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x99: // RES 3, (IX+d)→C
-											RegBC.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x08));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
+											RegBC.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x08));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x9A: // RES 3, (IX+d)→D
-											RegDE.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x08));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.High8);
+											RegDE.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x08));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x9B: // RES 3, (IX+d)→E
-											RegDE.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x08));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
+											RegDE.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x08));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x9C: // RES 3, (IX+d)→H
-											RegHL.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x08));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.High8);
+											RegHL.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x08));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x9D: // RES 3, (IX+d)→L
-											RegHL.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x08));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
+											RegHL.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x08));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x9E: // RES 3, (IX+d)
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x08)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x08)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x9F: // RES 3, (IX+d)→A
-											RegAF.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x08));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegAF.High8);
+											RegAF.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x08));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegAF.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA0: // RES 4, (IX+d)→B
-											RegBC.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x10));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.High8);
+											RegBC.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x10));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA1: // RES 4, (IX+d)→C
-											RegBC.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x10));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
+											RegBC.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x10));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA2: // RES 4, (IX+d)→D
-											RegDE.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x10));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.High8);
+											RegDE.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x10));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA3: // RES 4, (IX+d)→E
-											RegDE.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x10));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
+											RegDE.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x10));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA4: // RES 4, (IX+d)→H
-											RegHL.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x10));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.High8);
+											RegHL.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x10));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA5: // RES 4, (IX+d)→L
-											RegHL.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x10));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
+											RegHL.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x10));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA6: // RES 4, (IX+d)
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x10)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x10)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA7: // RES 4, (IX+d)→A
-											RegAF.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x10));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegAF.High8);
+											RegAF.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x10));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegAF.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA8: // RES 5, (IX+d)→B
-											RegBC.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x20));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.High8);
+											RegBC.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x20));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA9: // RES 5, (IX+d)→C
-											RegBC.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x20));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
+											RegBC.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x20));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xAA: // RES 5, (IX+d)→D
-											RegDE.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x20));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.High8);
+											RegDE.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x20));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xAB: // RES 5, (IX+d)→E
-											RegDE.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x20));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
+											RegDE.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x20));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xAC: // RES 5, (IX+d)→H
-											RegHL.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x20));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.High8);
+											RegHL.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x20));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xAD: // RES 5, (IX+d)→L
-											RegHL.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x20));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
+											RegHL.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x20));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xAE: // RES 5, (IX+d)
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x20)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x20)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xAF: // RES 5, (IX+d)→A
-											RegAF.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x20));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegAF.High8);
+											RegAF.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x20));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegAF.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB0: // RES 6, (IX+d)→B
-											RegBC.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x40));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.High8);
+											RegBC.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x40));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB1: // RES 6, (IX+d)→C
-											RegBC.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x40));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
+											RegBC.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x40));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB2: // RES 6, (IX+d)→D
-											RegDE.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x40));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.High8);
+											RegDE.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x40));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB3: // RES 6, (IX+d)→E
-											RegDE.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x40));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
+											RegDE.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x40));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB4: // RES 6, (IX+d)→H
-											RegHL.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x40));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.High8);
+											RegHL.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x40));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB5: // RES 6, (IX+d)→L
-											RegHL.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x40));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
+											RegHL.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x40));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB6: // RES 6, (IX+d)
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x40)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x40)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB7: // RES 6, (IX+d)→A
-											RegAF.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x40));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegAF.High8);
+											RegAF.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x40));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegAF.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB8: // RES 7, (IX+d)→B
-											RegBC.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x80));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.High8);
+											RegBC.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x80));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB9: // RES 7, (IX+d)→C
-											RegBC.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x80));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
+											RegBC.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x80));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xBA: // RES 7, (IX+d)→D
-											RegDE.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x80));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.High8);
+											RegDE.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x80));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xBB: // RES 7, (IX+d)→E
-											RegDE.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x80));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
+											RegDE.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x80));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xBC: // RES 7, (IX+d)→H
-											RegHL.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x80));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.High8);
+											RegHL.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x80));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xBD: // RES 7, (IX+d)→L
-											RegHL.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x80));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
+											RegHL.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x80));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xBE: // RES 7, (IX+d)
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x80)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x80)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xBF: // RES 7, (IX+d)→A
-											RegAF.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x80));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegAF.High8);
+											RegAF.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) & unchecked((byte)~0x80));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegAF.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC0: // SET 0, (IX+d)→B
-											RegBC.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x01));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.High8);
+											RegBC.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x01));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC1: // SET 0, (IX+d)→C
-											RegBC.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x01));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
+											RegBC.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x01));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC2: // SET 0, (IX+d)→D
-											RegDE.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x01));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.High8);
+											RegDE.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x01));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC3: // SET 0, (IX+d)→E
-											RegDE.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x01));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
+											RegDE.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x01));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC4: // SET 0, (IX+d)→H
-											RegHL.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x01));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.High8);
+											RegHL.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x01));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC5: // SET 0, (IX+d)→L
-											RegHL.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x01));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
+											RegHL.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x01));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC6: // SET 0, (IX+d)
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x01)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x01)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC7: // SET 0, (IX+d)→A
-											RegAF.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x01));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegAF.High8);
+											RegAF.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x01));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegAF.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC8: // SET 1, (IX+d)→B
-											RegBC.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x02));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.High8);
+											RegBC.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x02));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC9: // SET 1, (IX+d)→C
-											RegBC.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x02));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
+											RegBC.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x02));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xCA: // SET 1, (IX+d)→D
-											RegDE.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x02));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.High8);
+											RegDE.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x02));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xCB: // SET 1, (IX+d)→E
-											RegDE.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x02));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
+											RegDE.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x02));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xCC: // SET 1, (IX+d)→H
-											RegHL.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x02));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.High8);
+											RegHL.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x02));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xCD: // SET 1, (IX+d)→L
-											RegHL.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x02));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
+											RegHL.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x02));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xCE: // SET 1, (IX+d)
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x02)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x02)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xCF: // SET 1, (IX+d)→A
-											RegAF.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x02));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegAF.High8);
+											RegAF.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x02));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegAF.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD0: // SET 2, (IX+d)→B
-											RegBC.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x04));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.High8);
+											RegBC.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x04));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD1: // SET 2, (IX+d)→C
-											RegBC.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x04));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
+											RegBC.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x04));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD2: // SET 2, (IX+d)→D
-											RegDE.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x04));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.High8);
+											RegDE.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x04));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD3: // SET 2, (IX+d)→E
-											RegDE.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x04));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
+											RegDE.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x04));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD4: // SET 2, (IX+d)→H
-											RegHL.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x04));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.High8);
+											RegHL.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x04));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD5: // SET 2, (IX+d)→L
-											RegHL.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x04));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
+											RegHL.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x04));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD6: // SET 2, (IX+d)
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x04)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x04)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD7: // SET 2, (IX+d)→A
-											RegAF.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x04));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegAF.High8);
+											RegAF.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x04));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegAF.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD8: // SET 3, (IX+d)→B
-											RegBC.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x08));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.High8);
+											RegBC.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x08));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD9: // SET 3, (IX+d)→C
-											RegBC.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x08));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
+											RegBC.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x08));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xDA: // SET 3, (IX+d)→D
-											RegDE.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x08));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.High8);
+											RegDE.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x08));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xDB: // SET 3, (IX+d)→E
-											RegDE.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x08));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
+											RegDE.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x08));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xDC: // SET 3, (IX+d)→H
-											RegHL.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x08));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.High8);
+											RegHL.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x08));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xDD: // SET 3, (IX+d)→L
-											RegHL.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x08));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
+											RegHL.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x08));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xDE: // SET 3, (IX+d)
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x08)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x08)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xDF: // SET 3, (IX+d)→A
-											RegAF.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x08));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegAF.High8);
+											RegAF.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x08));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegAF.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE0: // SET 4, (IX+d)→B
-											RegBC.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x10));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.High8);
+											RegBC.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x10));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE1: // SET 4, (IX+d)→C
-											RegBC.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x10));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
+											RegBC.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x10));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE2: // SET 4, (IX+d)→D
-											RegDE.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x10));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.High8);
+											RegDE.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x10));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE3: // SET 4, (IX+d)→E
-											RegDE.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x10));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
+											RegDE.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x10));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE4: // SET 4, (IX+d)→H
-											RegHL.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x10));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.High8);
+											RegHL.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x10));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE5: // SET 4, (IX+d)→L
-											RegHL.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x10));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
+											RegHL.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x10));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE6: // SET 4, (IX+d)
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x10)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x10)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE7: // SET 4, (IX+d)→A
-											RegAF.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x10));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegAF.High8);
+											RegAF.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x10));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegAF.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE8: // SET 5, (IX+d)→B
-											RegBC.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x20));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.High8);
+											RegBC.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x20));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE9: // SET 5, (IX+d)→C
-											RegBC.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x20));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
+											RegBC.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x20));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xEA: // SET 5, (IX+d)→D
-											RegDE.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x20));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.High8);
+											RegDE.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x20));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xEB: // SET 5, (IX+d)→E
-											RegDE.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x20));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
+											RegDE.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x20));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xEC: // SET 5, (IX+d)→H
-											RegHL.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x20));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.High8);
+											RegHL.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x20));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xED: // SET 5, (IX+d)→L
-											RegHL.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x20));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
+											RegHL.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x20));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xEE: // SET 5, (IX+d)
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x20)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x20)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xEF: // SET 5, (IX+d)→A
-											RegAF.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x20));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegAF.High8);
+											RegAF.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x20));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegAF.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF0: // SET 6, (IX+d)→B
-											RegBC.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x40));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.High8);
+											RegBC.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x40));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF1: // SET 6, (IX+d)→C
-											RegBC.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x40));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
+											RegBC.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x40));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF2: // SET 6, (IX+d)→D
-											RegDE.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x40));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.High8);
+											RegDE.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x40));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF3: // SET 6, (IX+d)→E
-											RegDE.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x40));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
+											RegDE.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x40));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF4: // SET 6, (IX+d)→H
-											RegHL.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x40));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.High8);
+											RegHL.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x40));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF5: // SET 6, (IX+d)→L
-											RegHL.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x40));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
+											RegHL.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x40));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF6: // SET 6, (IX+d)
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x40)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x40)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF7: // SET 6, (IX+d)→A
-											RegAF.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x40));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegAF.High8);
+											RegAF.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x40));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegAF.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF8: // SET 7, (IX+d)→B
-											RegBC.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x80));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.High8);
+											RegBC.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x80));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF9: // SET 7, (IX+d)→C
-											RegBC.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x80));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
+											RegBC.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x80));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegBC.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xFA: // SET 7, (IX+d)→D
-											RegDE.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x80));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.High8);
+											RegDE.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x80));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xFB: // SET 7, (IX+d)→E
-											RegDE.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x80));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
+											RegDE.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x80));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegDE.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xFC: // SET 7, (IX+d)→H
-											RegHL.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x80));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.High8);
+											RegHL.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x80));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xFD: // SET 7, (IX+d)→L
-											RegHL.Low8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x80));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
+											RegHL.Low8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x80));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegHL.Low8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xFE: // SET 7, (IX+d)
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x80)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x80)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xFF: // SET 7, (IX+d)→A
-											RegAF.High8 = (byte)(ReadMemory((ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x80));
-											WriteMemory((ushort)(RegIX.Value16 + Displacement), RegAF.High8);
+											RegAF.High8 = (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement)) | unchecked((byte)0x80));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIX.Value16 + Displacement), RegAF.High8);
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 									}
@@ -5079,11 +5273,13 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									}
+									RegMemPtr.Value16 = TUS;
 									break;
 								case 0xCD: // CALL nn
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
+									RegMemPtr.Value16 = TUS;
 									this.totalExecutedCycles += 17; this.pendingCycles -= 17;
 									break;
 								case 0xCE: // ADC A, n
@@ -5093,6 +5289,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xCF: // RST $08
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = 0x08;
+									RegMemPtr.Value16 = RegPC.Value16;
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 								case 0xD0: // RET NC
@@ -5102,6 +5299,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 									}
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0xD1: // POP DE
 									RegDE.Low8 = ReadMemory(RegSP.Value16++); RegDE.High8 = ReadMemory(RegSP.Value16++);
@@ -5115,7 +5313,9 @@ namespace BeeDevelopment.Brazil {
 									this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									break;
 								case 0xD3: // OUT n, A
-									WriteHardware(ReadMemory(RegPC.Value16++), RegAF.High8);
+									WriteHardware(TUS = ReadMemory(RegPC.Value16++), RegAF.High8);
+									RegMemPtr.Low8 = (byte)(TUS + 1);
+									RegMemPtr.High8 = RegAF.High8;
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 								case 0xD4: // CALL NC, nn
@@ -5127,6 +5327,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									}
+									RegMemPtr.Value16 = TUS;
 									break;
 								case 0xD5: // PUSH DE
 									WriteMemory(--RegSP.Value16, RegDE.High8); WriteMemory(--RegSP.Value16, RegDE.Low8);
@@ -5139,6 +5340,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xD7: // RST $10
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = 0x10;
+									RegMemPtr.Value16 = RegPC.Value16;
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 								case 0xD8: // RET C
@@ -5148,6 +5350,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 									}
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0xD9: // EXX
 									TUS = RegBC.Value16; RegBC.Value16 = RegAltBC.Value16; RegAltBC.Value16 = TUS;
@@ -5163,7 +5366,9 @@ namespace BeeDevelopment.Brazil {
 									this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									break;
 								case 0xDB: // IN A, n
-									RegAF.High8 = ReadHardware((ushort)ReadMemory(RegPC.Value16++));
+									RegMemPtr.Value16 = RegAF.High8;
+									RegAF.High8 = ReadHardware(TUS = (ushort)ReadMemory(RegPC.Value16++));
+									RegMemPtr.Value16 += (ushort)(TUS + 1);
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 								case 0xDC: // CALL C, nn
@@ -5175,6 +5380,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									}
+									RegMemPtr.Value16 = TUS;
 									break;
 								case 0xDD: // <-
 									// Invalid sequence.
@@ -5187,6 +5393,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xDF: // RST $18
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = 0x18;
+									RegMemPtr.Value16 = RegPC.Value16;
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 								case 0xE0: // RET PO
@@ -5196,6 +5403,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 									}
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0xE1: // POP IX
 									RegIX.Low8 = ReadMemory(RegSP.Value16++); RegIX.High8 = ReadMemory(RegSP.Value16++);
@@ -5212,6 +5420,7 @@ namespace BeeDevelopment.Brazil {
 									TUS = RegSP.Value16; TBL = ReadMemory(TUS++); TBH = ReadMemory(TUS--);
 									WriteMemory(TUS++, RegIX.Low8); WriteMemory(TUS, RegIX.High8);
 									RegIX.Low8 = TBL; RegIX.High8 = TBH;
+									RegMemPtr.Low8 = TBL; RegMemPtr.High8 = TBH;
 									this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 									break;
 								case 0xE4: // CALL C, nn
@@ -5223,6 +5432,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									}
+									RegMemPtr.Value16 = TUS;
 									break;
 								case 0xE5: // PUSH IX
 									WriteMemory(--RegSP.Value16, RegIX.High8); WriteMemory(--RegSP.Value16, RegIX.Low8);
@@ -5235,6 +5445,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xE7: // RST $20
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = 0x20;
+									RegMemPtr.Value16 = RegPC.Value16;
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 								case 0xE8: // RET PE
@@ -5244,6 +5455,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 									}
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0xE9: // JP IX
 									RegPC.Value16 = RegIX.Value16;
@@ -5269,6 +5481,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									}
+									RegMemPtr.Value16 = TUS;
 									break;
 								case 0xED: // (Prefix)
 									++RegR;
@@ -5472,13 +5685,16 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[RegBC.High8];
 											RegFlagN = false;
+											RegMemPtr.Value16 = RegBC.Value16;
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x41: // OUT C, B
-											WriteHardware(RegBC.Low8, RegBC.High8);
+											WriteHardware(TUS = RegBC.Low8, RegBC.High8);
+											RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x42: // SBC HL, BC
+											RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegBC.Value16; TIR = TI1 - TI2;
 											if (RegFlagC) { --TIR; ++TI2; }
 											TUS = (ushort)TIR;
@@ -5497,6 +5713,7 @@ namespace BeeDevelopment.Brazil {
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											WriteMemory(TUS++, RegBC.Low8);
 											WriteMemory(TUS, RegBC.High8);
+											RegMemPtr.Value16 = TUS;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x44: // NEG
@@ -5507,6 +5724,7 @@ namespace BeeDevelopment.Brazil {
 											RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 											this.IFF1 = this.IFF2;
 											this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+											RegMemPtr.Value16 = RegPC.Value16;
 											break;
 										case 0x46: // IM $0
 											interruptMode = 0;
@@ -5523,13 +5741,16 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[RegBC.Low8];
 											RegFlagN = false;
+											RegMemPtr.Value16 = RegBC.Value16;
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x49: // OUT C, C
-											WriteHardware(RegBC.Low8, RegBC.Low8);
+											WriteHardware(TUS = RegBC.Low8, RegBC.Low8);
+											RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x4A: // ADC HL, BC
+											RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegBC.Value16; TIR = TI1 + TI2;
 											if (RegFlagC) { ++TIR; ++TI2; }
 											TUS = (ushort)TIR;
@@ -5547,6 +5768,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x4B: // LD BC, (nn)
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											RegBC.Low8 = ReadMemory(TUS++); RegBC.High8 = ReadMemory(TUS);
+											RegMemPtr.Value16 = TUS;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x4C: // NEG
@@ -5556,6 +5778,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x4D: // RETI
 											RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 											this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+											RegMemPtr.Value16 = RegPC.Value16;
 											break;
 										case 0x4E: // IM $0
 											interruptMode = 0;
@@ -5572,13 +5795,16 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[RegDE.High8];
 											RegFlagN = false;
+											RegMemPtr.Value16 = RegBC.Value16;
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x51: // OUT C, D
-											WriteHardware(RegBC.Low8, RegDE.High8);
+											WriteHardware(TUS = RegBC.Low8, RegDE.High8);
+											RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x52: // SBC HL, DE
+											RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegDE.Value16; TIR = TI1 - TI2;
 											if (RegFlagC) { --TIR; ++TI2; }
 											TUS = (ushort)TIR;
@@ -5597,6 +5823,7 @@ namespace BeeDevelopment.Brazil {
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											WriteMemory(TUS++, RegDE.Low8);
 											WriteMemory(TUS, RegDE.High8);
+											RegMemPtr.Value16 = TUS;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x54: // NEG
@@ -5607,6 +5834,7 @@ namespace BeeDevelopment.Brazil {
 											RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 											this.IFF1 = this.IFF2;
 											this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+											RegMemPtr.Value16 = RegPC.Value16;
 											break;
 										case 0x56: // IM $1
 											interruptMode = 1;
@@ -5628,13 +5856,16 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[RegDE.Low8];
 											RegFlagN = false;
+											RegMemPtr.Value16 = RegBC.Value16;
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x59: // OUT C, E
-											WriteHardware(RegBC.Low8, RegDE.Low8);
+											WriteHardware(TUS = RegBC.Low8, RegDE.Low8);
+											RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x5A: // ADC HL, DE
+											RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegDE.Value16; TIR = TI1 + TI2;
 											if (RegFlagC) { ++TIR; ++TI2; }
 											TUS = (ushort)TIR;
@@ -5652,6 +5883,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x5B: // LD DE, (nn)
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											RegDE.Low8 = ReadMemory(TUS++); RegDE.High8 = ReadMemory(TUS);
+											RegMemPtr.Value16 = TUS;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x5C: // NEG
@@ -5661,6 +5893,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x5D: // RETI
 											RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 											this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+											RegMemPtr.Value16 = RegPC.Value16;
 											break;
 										case 0x5E: // IM $2
 											interruptMode = 2;
@@ -5682,13 +5915,16 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[RegHL.High8];
 											RegFlagN = false;
+											RegMemPtr.Value16 = RegBC.Value16;
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x61: // OUT C, H
-											WriteHardware(RegBC.Low8, RegHL.High8);
+											WriteHardware(TUS = RegBC.Low8, RegHL.High8);
+											RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x62: // SBC HL, HL
+											RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegHL.Value16; TIR = TI1 - TI2;
 											if (RegFlagC) { --TIR; ++TI2; }
 											TUS = (ushort)TIR;
@@ -5707,6 +5943,7 @@ namespace BeeDevelopment.Brazil {
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											WriteMemory(TUS++, RegHL.Low8);
 											WriteMemory(TUS, RegHL.High8);
+											RegMemPtr.Value16 = TUS;
 											this.totalExecutedCycles += 16; this.pendingCycles -= 16;
 											break;
 										case 0x64: // NEG
@@ -5717,6 +5954,7 @@ namespace BeeDevelopment.Brazil {
 											RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 											this.IFF1 = this.IFF2;
 											this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+											RegMemPtr.Value16 = RegPC.Value16;
 											break;
 										case 0x66: // IM $0
 											interruptMode = 0;
@@ -5733,6 +5971,7 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											RegFlag3 = (RegAF.High8 & 0x08) != 0;
 											RegFlag5 = (RegAF.High8 & 0x20) != 0;
+											RegMemPtr.Value16 = RegHL.Value16;
 											this.totalExecutedCycles += 18; this.pendingCycles -= 18;
 											break;
 										case 0x68: // IN L, C
@@ -5742,13 +5981,16 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[RegHL.Low8];
 											RegFlagN = false;
+											RegMemPtr.Value16 = RegBC.Value16;
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x69: // OUT C, L
-											WriteHardware(RegBC.Low8, RegHL.Low8);
+											WriteHardware(TUS = RegBC.Low8, RegHL.Low8);
+											RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x6A: // ADC HL, HL
+											RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegHL.Value16; TIR = TI1 + TI2;
 											if (RegFlagC) { ++TIR; ++TI2; }
 											TUS = (ushort)TIR;
@@ -5766,6 +6008,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x6B: // LD HL, (nn)
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											RegHL.Low8 = ReadMemory(TUS++); RegHL.High8 = ReadMemory(TUS);
+											RegMemPtr.Value16 = TUS;
 											this.totalExecutedCycles += 16; this.pendingCycles -= 16;
 											break;
 										case 0x6C: // NEG
@@ -5775,6 +6018,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x6D: // RETI
 											RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 											this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+											RegMemPtr.Value16 = RegPC.Value16;
 											break;
 										case 0x6E: // IM $0
 											interruptMode = 0;
@@ -5791,6 +6035,7 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											RegFlag3 = (RegAF.High8 & 0x08) != 0;
 											RegFlag5 = (RegAF.High8 & 0x20) != 0;
+											RegMemPtr.Value16 = RegHL.Value16;
 											this.totalExecutedCycles += 18; this.pendingCycles -= 18;
 											break;
 										case 0x70: // IN 0, C
@@ -5800,13 +6045,16 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[TB];
 											RegFlagN = false;
+											RegMemPtr.Value16 = RegBC.Value16;
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x71: // OUT C, 0
-											WriteHardware(RegBC.Low8, 0);
+											WriteHardware(TUS = RegBC.Low8, 0);
+											RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x72: // SBC HL, SP
+											RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegSP.Value16; TIR = TI1 - TI2;
 											if (RegFlagC) { --TIR; ++TI2; }
 											TUS = (ushort)TIR;
@@ -5825,6 +6073,7 @@ namespace BeeDevelopment.Brazil {
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											WriteMemory(TUS++, RegSP.Low8);
 											WriteMemory(TUS, RegSP.High8);
+											RegMemPtr.Value16 = TUS;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x74: // NEG
@@ -5835,6 +6084,7 @@ namespace BeeDevelopment.Brazil {
 											RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 											this.IFF1 = this.IFF2;
 											this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+											RegMemPtr.Value16 = RegPC.Value16;
 											break;
 										case 0x76: // IM $1
 											interruptMode = 1;
@@ -5850,13 +6100,16 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[RegAF.High8];
 											RegFlagN = false;
+											RegMemPtr.Value16 = RegBC.Value16;
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x79: // OUT C, A
-											WriteHardware(RegBC.Low8, RegAF.High8);
+											WriteHardware(TUS = RegBC.Low8, RegAF.High8);
+											RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x7A: // ADC HL, SP
+											RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegSP.Value16; TIR = TI1 + TI2;
 											if (RegFlagC) { ++TIR; ++TI2; }
 											TUS = (ushort)TIR;
@@ -5874,6 +6127,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x7B: // LD SP, (nn)
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											RegSP.Low8 = ReadMemory(TUS++); RegSP.High8 = ReadMemory(TUS);
+											RegMemPtr.Value16 = TUS;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x7C: // NEG
@@ -5883,6 +6137,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x7D: // RETI
 											RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 											this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+											RegMemPtr.Value16 = RegPC.Value16;
 											break;
 										case 0x7E: // IM $2
 											interruptMode = 2;
@@ -6003,12 +6258,14 @@ namespace BeeDevelopment.Brazil {
 											RegFlagZ = TB2 == 0;
 											RegFlagS = TB2 > 127;
 											TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
+											++RegMemPtr.Value16;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											this.totalExecutedCycles += 16; this.pendingCycles -= 16;
 											break;
 										case 0xA2: // INI
 											WriteMemory(RegHL.Value16++, ReadHardware(RegBC.Value16));
+											RegMemPtr.Value16 = RegBC.Value16; ++RegMemPtr.Value16;
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
@@ -6017,6 +6274,7 @@ namespace BeeDevelopment.Brazil {
 										case 0xA3: // OUTI
 											WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16++));
 											--RegBC.High8;
+											RegMemPtr.Value16 = RegBC.Value16; ++RegMemPtr.Value16;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											this.totalExecutedCycles += 16; this.pendingCycles -= 16;
@@ -6049,12 +6307,14 @@ namespace BeeDevelopment.Brazil {
 											RegFlagZ = TB2 == 0;
 											RegFlagS = TB2 > 127;
 											TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
+											--RegMemPtr.Value16;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											this.totalExecutedCycles += 16; this.pendingCycles -= 16;
 											break;
 										case 0xAA: // IND
 											WriteMemory(RegHL.Value16--, ReadHardware(RegBC.Value16));
+											RegMemPtr.Value16 = RegBC.Value16; --RegMemPtr.Value16;
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
@@ -6063,6 +6323,7 @@ namespace BeeDevelopment.Brazil {
 										case 0xAB: // OUTD
 											WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16--));
 											--RegBC.High8;
+											RegMemPtr.Value16 = RegBC.Value16; --RegMemPtr.Value16;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											this.totalExecutedCycles += 16; this.pendingCycles -= 16;
@@ -6082,6 +6343,7 @@ namespace BeeDevelopment.Brazil {
 										case 0xB0: // LDIR
 											WriteMemory(RegDE.Value16++, TB1 = ReadMemory(RegHL.Value16++));
 											TB1 += RegAF.High8; RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
+											if (RegBC.Value16 != 1) RegMemPtr.Value16 = RegPC.Value16;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
@@ -6100,6 +6362,11 @@ namespace BeeDevelopment.Brazil {
 											RegFlagZ = TB2 == 0;
 											RegFlagS = TB2 > 127;
 											TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
+											if (RegBC.Value16 == 1 || RegFlagZ) {
+												++RegMemPtr.Value16;
+											} else {
+												RegMemPtr.Value16 = RegPC.Value16;
+											}
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											if (RegBC.Value16 != 0 && !RegFlagZ) {
@@ -6111,6 +6378,7 @@ namespace BeeDevelopment.Brazil {
 											break;
 										case 0xB2: // INIR
 											WriteMemory(RegHL.Value16++, ReadHardware(RegBC.Value16));
+											RegMemPtr.Value16 = RegBC.Value16; ++RegMemPtr.Value16;
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
@@ -6124,6 +6392,7 @@ namespace BeeDevelopment.Brazil {
 										case 0xB3: // OTIR
 											WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16++));
 											--RegBC.High8;
+											RegMemPtr.Value16 = RegBC.Value16; ++RegMemPtr.Value16;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
@@ -6148,6 +6417,7 @@ namespace BeeDevelopment.Brazil {
 										case 0xB8: // LDDR
 											WriteMemory(RegDE.Value16--, TB1 = ReadMemory(RegHL.Value16--));
 											TB1 += RegAF.High8; RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
+											if (RegBC.Value16 != 1) RegMemPtr.Value16 = RegPC.Value16;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
@@ -6166,6 +6436,11 @@ namespace BeeDevelopment.Brazil {
 											RegFlagZ = TB2 == 0;
 											RegFlagS = TB2 > 127;
 											TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
+											if (RegBC.Value16 == 1 || RegFlagZ) {
+												--RegMemPtr.Value16;
+											} else {
+												RegMemPtr.Value16 = RegPC.Value16;
+											}
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											if (RegBC.Value16 != 0 && !RegFlagZ) {
@@ -6177,6 +6452,7 @@ namespace BeeDevelopment.Brazil {
 											break;
 										case 0xBA: // INDR
 											WriteMemory(RegHL.Value16--, ReadHardware(RegBC.Value16));
+											RegMemPtr.Value16 = RegBC.Value16; --RegMemPtr.Value16;
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
@@ -6190,6 +6466,7 @@ namespace BeeDevelopment.Brazil {
 										case 0xBB: // OTDR
 											WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16--));
 											--RegBC.High8;
+											RegMemPtr.Value16 = RegBC.Value16; --RegMemPtr.Value16;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
@@ -6412,6 +6689,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xEF: // RST $28
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = 0x28;
+									RegMemPtr.Value16 = RegPC.Value16;
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 								case 0xF0: // RET P
@@ -6421,6 +6699,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 									}
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0xF1: // POP AF
 									RegAF.Low8 = ReadMemory(RegSP.Value16++); RegAF.High8 = ReadMemory(RegSP.Value16++);
@@ -6446,6 +6725,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									}
+									RegMemPtr.Value16 = TUS;
 									break;
 								case 0xF5: // PUSH AF
 									WriteMemory(--RegSP.Value16, RegAF.High8); WriteMemory(--RegSP.Value16, RegAF.Low8);
@@ -6458,6 +6738,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xF7: // RST $30
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = 0x30;
+									RegMemPtr.Value16 = RegPC.Value16;
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 								case 0xF8: // RET M
@@ -6467,6 +6748,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 									}
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0xF9: // LD SP, IX
 									RegSP.Value16 = RegIX.Value16;
@@ -6493,6 +6775,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									}
+									RegMemPtr.Value16 = TUS;
 									break;
 								case 0xFD: // <-
 									// Invalid sequence.
@@ -6505,6 +6788,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xFF: // RST $38
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = 0x38;
+									RegMemPtr.Value16 = RegPC.Value16;
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 							}
@@ -6516,6 +6800,7 @@ namespace BeeDevelopment.Brazil {
 						case 0xDF: // RST $18
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = 0x18;
+							RegMemPtr.Value16 = RegPC.Value16;
 							this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 							break;
 						case 0xE0: // RET PO
@@ -6525,6 +6810,7 @@ namespace BeeDevelopment.Brazil {
 							} else {
 								this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 							}
+							RegMemPtr.Value16 = RegPC.Value16;
 							break;
 						case 0xE1: // POP HL
 							RegHL.Low8 = ReadMemory(RegSP.Value16++); RegHL.High8 = ReadMemory(RegSP.Value16++);
@@ -6541,6 +6827,7 @@ namespace BeeDevelopment.Brazil {
 							TUS = RegSP.Value16; TBL = ReadMemory(TUS++); TBH = ReadMemory(TUS--);
 							WriteMemory(TUS++, RegHL.Low8); WriteMemory(TUS, RegHL.High8);
 							RegHL.Low8 = TBL; RegHL.High8 = TBH;
+							RegMemPtr.Low8 = TBL; RegMemPtr.High8 = TBH;
 							this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 							break;
 						case 0xE4: // CALL C, nn
@@ -6552,6 +6839,7 @@ namespace BeeDevelopment.Brazil {
 							} else {
 								this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 							}
+							RegMemPtr.Value16 = TUS;
 							break;
 						case 0xE5: // PUSH HL
 							WriteMemory(--RegSP.Value16, RegHL.High8); WriteMemory(--RegSP.Value16, RegHL.Low8);
@@ -6564,6 +6852,7 @@ namespace BeeDevelopment.Brazil {
 						case 0xE7: // RST $20
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = 0x20;
+							RegMemPtr.Value16 = RegPC.Value16;
 							this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 							break;
 						case 0xE8: // RET PE
@@ -6573,6 +6862,7 @@ namespace BeeDevelopment.Brazil {
 							} else {
 								this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 							}
+							RegMemPtr.Value16 = RegPC.Value16;
 							break;
 						case 0xE9: // JP HL
 							RegPC.Value16 = RegHL.Value16;
@@ -6598,6 +6888,7 @@ namespace BeeDevelopment.Brazil {
 							} else {
 								this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 							}
+							RegMemPtr.Value16 = TUS;
 							break;
 						case 0xED: // (Prefix)
 							++RegR;
@@ -6801,13 +7092,16 @@ namespace BeeDevelopment.Brazil {
 									RegFlagH = false;
 									RegFlagP = TableParity[RegBC.High8];
 									RegFlagN = false;
+									RegMemPtr.Value16 = RegBC.Value16;
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									break;
 								case 0x41: // OUT C, B
-									WriteHardware(RegBC.Low8, RegBC.High8);
+									WriteHardware(TUS = RegBC.Low8, RegBC.High8);
+									RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									break;
 								case 0x42: // SBC HL, BC
+									RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 									TI1 = (short)RegHL.Value16; TI2 = (short)RegBC.Value16; TIR = TI1 - TI2;
 									if (RegFlagC) { --TIR; ++TI2; }
 									TUS = (ushort)TIR;
@@ -6826,6 +7120,7 @@ namespace BeeDevelopment.Brazil {
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									WriteMemory(TUS++, RegBC.Low8);
 									WriteMemory(TUS, RegBC.High8);
+									RegMemPtr.Value16 = TUS;
 									this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 									break;
 								case 0x44: // NEG
@@ -6836,6 +7131,7 @@ namespace BeeDevelopment.Brazil {
 									RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 									this.IFF1 = this.IFF2;
 									this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0x46: // IM $0
 									interruptMode = 0;
@@ -6852,13 +7148,16 @@ namespace BeeDevelopment.Brazil {
 									RegFlagH = false;
 									RegFlagP = TableParity[RegBC.Low8];
 									RegFlagN = false;
+									RegMemPtr.Value16 = RegBC.Value16;
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									break;
 								case 0x49: // OUT C, C
-									WriteHardware(RegBC.Low8, RegBC.Low8);
+									WriteHardware(TUS = RegBC.Low8, RegBC.Low8);
+									RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									break;
 								case 0x4A: // ADC HL, BC
+									RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 									TI1 = (short)RegHL.Value16; TI2 = (short)RegBC.Value16; TIR = TI1 + TI2;
 									if (RegFlagC) { ++TIR; ++TI2; }
 									TUS = (ushort)TIR;
@@ -6876,6 +7175,7 @@ namespace BeeDevelopment.Brazil {
 								case 0x4B: // LD BC, (nn)
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									RegBC.Low8 = ReadMemory(TUS++); RegBC.High8 = ReadMemory(TUS);
+									RegMemPtr.Value16 = TUS;
 									this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 									break;
 								case 0x4C: // NEG
@@ -6885,6 +7185,7 @@ namespace BeeDevelopment.Brazil {
 								case 0x4D: // RETI
 									RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 									this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0x4E: // IM $0
 									interruptMode = 0;
@@ -6901,13 +7202,16 @@ namespace BeeDevelopment.Brazil {
 									RegFlagH = false;
 									RegFlagP = TableParity[RegDE.High8];
 									RegFlagN = false;
+									RegMemPtr.Value16 = RegBC.Value16;
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									break;
 								case 0x51: // OUT C, D
-									WriteHardware(RegBC.Low8, RegDE.High8);
+									WriteHardware(TUS = RegBC.Low8, RegDE.High8);
+									RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									break;
 								case 0x52: // SBC HL, DE
+									RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 									TI1 = (short)RegHL.Value16; TI2 = (short)RegDE.Value16; TIR = TI1 - TI2;
 									if (RegFlagC) { --TIR; ++TI2; }
 									TUS = (ushort)TIR;
@@ -6926,6 +7230,7 @@ namespace BeeDevelopment.Brazil {
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									WriteMemory(TUS++, RegDE.Low8);
 									WriteMemory(TUS, RegDE.High8);
+									RegMemPtr.Value16 = TUS;
 									this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 									break;
 								case 0x54: // NEG
@@ -6936,6 +7241,7 @@ namespace BeeDevelopment.Brazil {
 									RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 									this.IFF1 = this.IFF2;
 									this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0x56: // IM $1
 									interruptMode = 1;
@@ -6957,13 +7263,16 @@ namespace BeeDevelopment.Brazil {
 									RegFlagH = false;
 									RegFlagP = TableParity[RegDE.Low8];
 									RegFlagN = false;
+									RegMemPtr.Value16 = RegBC.Value16;
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									break;
 								case 0x59: // OUT C, E
-									WriteHardware(RegBC.Low8, RegDE.Low8);
+									WriteHardware(TUS = RegBC.Low8, RegDE.Low8);
+									RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									break;
 								case 0x5A: // ADC HL, DE
+									RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 									TI1 = (short)RegHL.Value16; TI2 = (short)RegDE.Value16; TIR = TI1 + TI2;
 									if (RegFlagC) { ++TIR; ++TI2; }
 									TUS = (ushort)TIR;
@@ -6981,6 +7290,7 @@ namespace BeeDevelopment.Brazil {
 								case 0x5B: // LD DE, (nn)
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									RegDE.Low8 = ReadMemory(TUS++); RegDE.High8 = ReadMemory(TUS);
+									RegMemPtr.Value16 = TUS;
 									this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 									break;
 								case 0x5C: // NEG
@@ -6990,6 +7300,7 @@ namespace BeeDevelopment.Brazil {
 								case 0x5D: // RETI
 									RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 									this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0x5E: // IM $2
 									interruptMode = 2;
@@ -7011,13 +7322,16 @@ namespace BeeDevelopment.Brazil {
 									RegFlagH = false;
 									RegFlagP = TableParity[RegHL.High8];
 									RegFlagN = false;
+									RegMemPtr.Value16 = RegBC.Value16;
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									break;
 								case 0x61: // OUT C, H
-									WriteHardware(RegBC.Low8, RegHL.High8);
+									WriteHardware(TUS = RegBC.Low8, RegHL.High8);
+									RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									break;
 								case 0x62: // SBC HL, HL
+									RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 									TI1 = (short)RegHL.Value16; TI2 = (short)RegHL.Value16; TIR = TI1 - TI2;
 									if (RegFlagC) { --TIR; ++TI2; }
 									TUS = (ushort)TIR;
@@ -7036,6 +7350,7 @@ namespace BeeDevelopment.Brazil {
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									WriteMemory(TUS++, RegHL.Low8);
 									WriteMemory(TUS, RegHL.High8);
+									RegMemPtr.Value16 = TUS;
 									this.totalExecutedCycles += 16; this.pendingCycles -= 16;
 									break;
 								case 0x64: // NEG
@@ -7046,6 +7361,7 @@ namespace BeeDevelopment.Brazil {
 									RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 									this.IFF1 = this.IFF2;
 									this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0x66: // IM $0
 									interruptMode = 0;
@@ -7062,6 +7378,7 @@ namespace BeeDevelopment.Brazil {
 									RegFlagN = false;
 									RegFlag3 = (RegAF.High8 & 0x08) != 0;
 									RegFlag5 = (RegAF.High8 & 0x20) != 0;
+									RegMemPtr.Value16 = RegHL.Value16;
 									this.totalExecutedCycles += 18; this.pendingCycles -= 18;
 									break;
 								case 0x68: // IN L, C
@@ -7071,13 +7388,16 @@ namespace BeeDevelopment.Brazil {
 									RegFlagH = false;
 									RegFlagP = TableParity[RegHL.Low8];
 									RegFlagN = false;
+									RegMemPtr.Value16 = RegBC.Value16;
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									break;
 								case 0x69: // OUT C, L
-									WriteHardware(RegBC.Low8, RegHL.Low8);
+									WriteHardware(TUS = RegBC.Low8, RegHL.Low8);
+									RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									break;
 								case 0x6A: // ADC HL, HL
+									RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 									TI1 = (short)RegHL.Value16; TI2 = (short)RegHL.Value16; TIR = TI1 + TI2;
 									if (RegFlagC) { ++TIR; ++TI2; }
 									TUS = (ushort)TIR;
@@ -7095,6 +7415,7 @@ namespace BeeDevelopment.Brazil {
 								case 0x6B: // LD HL, (nn)
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									RegHL.Low8 = ReadMemory(TUS++); RegHL.High8 = ReadMemory(TUS);
+									RegMemPtr.Value16 = TUS;
 									this.totalExecutedCycles += 16; this.pendingCycles -= 16;
 									break;
 								case 0x6C: // NEG
@@ -7104,6 +7425,7 @@ namespace BeeDevelopment.Brazil {
 								case 0x6D: // RETI
 									RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 									this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0x6E: // IM $0
 									interruptMode = 0;
@@ -7120,6 +7442,7 @@ namespace BeeDevelopment.Brazil {
 									RegFlagN = false;
 									RegFlag3 = (RegAF.High8 & 0x08) != 0;
 									RegFlag5 = (RegAF.High8 & 0x20) != 0;
+									RegMemPtr.Value16 = RegHL.Value16;
 									this.totalExecutedCycles += 18; this.pendingCycles -= 18;
 									break;
 								case 0x70: // IN 0, C
@@ -7129,13 +7452,16 @@ namespace BeeDevelopment.Brazil {
 									RegFlagH = false;
 									RegFlagP = TableParity[TB];
 									RegFlagN = false;
+									RegMemPtr.Value16 = RegBC.Value16;
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									break;
 								case 0x71: // OUT C, 0
-									WriteHardware(RegBC.Low8, 0);
+									WriteHardware(TUS = RegBC.Low8, 0);
+									RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									break;
 								case 0x72: // SBC HL, SP
+									RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 									TI1 = (short)RegHL.Value16; TI2 = (short)RegSP.Value16; TIR = TI1 - TI2;
 									if (RegFlagC) { --TIR; ++TI2; }
 									TUS = (ushort)TIR;
@@ -7154,6 +7480,7 @@ namespace BeeDevelopment.Brazil {
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									WriteMemory(TUS++, RegSP.Low8);
 									WriteMemory(TUS, RegSP.High8);
+									RegMemPtr.Value16 = TUS;
 									this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 									break;
 								case 0x74: // NEG
@@ -7164,6 +7491,7 @@ namespace BeeDevelopment.Brazil {
 									RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 									this.IFF1 = this.IFF2;
 									this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0x76: // IM $1
 									interruptMode = 1;
@@ -7179,13 +7507,16 @@ namespace BeeDevelopment.Brazil {
 									RegFlagH = false;
 									RegFlagP = TableParity[RegAF.High8];
 									RegFlagN = false;
+									RegMemPtr.Value16 = RegBC.Value16;
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									break;
 								case 0x79: // OUT C, A
-									WriteHardware(RegBC.Low8, RegAF.High8);
+									WriteHardware(TUS = RegBC.Low8, RegAF.High8);
+									RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 									this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									break;
 								case 0x7A: // ADC HL, SP
+									RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 									TI1 = (short)RegHL.Value16; TI2 = (short)RegSP.Value16; TIR = TI1 + TI2;
 									if (RegFlagC) { ++TIR; ++TI2; }
 									TUS = (ushort)TIR;
@@ -7203,6 +7534,7 @@ namespace BeeDevelopment.Brazil {
 								case 0x7B: // LD SP, (nn)
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									RegSP.Low8 = ReadMemory(TUS++); RegSP.High8 = ReadMemory(TUS);
+									RegMemPtr.Value16 = TUS;
 									this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 									break;
 								case 0x7C: // NEG
@@ -7212,6 +7544,7 @@ namespace BeeDevelopment.Brazil {
 								case 0x7D: // RETI
 									RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 									this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0x7E: // IM $2
 									interruptMode = 2;
@@ -7332,12 +7665,14 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = TB2 == 0;
 									RegFlagS = TB2 > 127;
 									TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
+									++RegMemPtr.Value16;
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									this.totalExecutedCycles += 16; this.pendingCycles -= 16;
 									break;
 								case 0xA2: // INI
 									WriteMemory(RegHL.Value16++, ReadHardware(RegBC.Value16));
+									RegMemPtr.Value16 = RegBC.Value16; ++RegMemPtr.Value16;
 									--RegBC.High8;
 									RegFlagZ = RegBC.High8 == 0;
 									RegFlagN = true;
@@ -7346,6 +7681,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xA3: // OUTI
 									WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16++));
 									--RegBC.High8;
+									RegMemPtr.Value16 = RegBC.Value16; ++RegMemPtr.Value16;
 									RegFlagZ = RegBC.High8 == 0;
 									RegFlagN = true;
 									this.totalExecutedCycles += 16; this.pendingCycles -= 16;
@@ -7378,12 +7714,14 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = TB2 == 0;
 									RegFlagS = TB2 > 127;
 									TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
+									--RegMemPtr.Value16;
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									this.totalExecutedCycles += 16; this.pendingCycles -= 16;
 									break;
 								case 0xAA: // IND
 									WriteMemory(RegHL.Value16--, ReadHardware(RegBC.Value16));
+									RegMemPtr.Value16 = RegBC.Value16; --RegMemPtr.Value16;
 									--RegBC.High8;
 									RegFlagZ = RegBC.High8 == 0;
 									RegFlagN = true;
@@ -7392,6 +7730,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xAB: // OUTD
 									WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16--));
 									--RegBC.High8;
+									RegMemPtr.Value16 = RegBC.Value16; --RegMemPtr.Value16;
 									RegFlagZ = RegBC.High8 == 0;
 									RegFlagN = true;
 									this.totalExecutedCycles += 16; this.pendingCycles -= 16;
@@ -7411,6 +7750,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xB0: // LDIR
 									WriteMemory(RegDE.Value16++, TB1 = ReadMemory(RegHL.Value16++));
 									TB1 += RegAF.High8; RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
+									if (RegBC.Value16 != 1) RegMemPtr.Value16 = RegPC.Value16;
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									RegFlagH = false;
@@ -7429,6 +7769,11 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = TB2 == 0;
 									RegFlagS = TB2 > 127;
 									TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
+									if (RegBC.Value16 == 1 || RegFlagZ) {
+										++RegMemPtr.Value16;
+									} else {
+										RegMemPtr.Value16 = RegPC.Value16;
+									}
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									if (RegBC.Value16 != 0 && !RegFlagZ) {
@@ -7440,6 +7785,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xB2: // INIR
 									WriteMemory(RegHL.Value16++, ReadHardware(RegBC.Value16));
+									RegMemPtr.Value16 = RegBC.Value16; ++RegMemPtr.Value16;
 									--RegBC.High8;
 									RegFlagZ = RegBC.High8 == 0;
 									RegFlagN = true;
@@ -7453,6 +7799,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xB3: // OTIR
 									WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16++));
 									--RegBC.High8;
+									RegMemPtr.Value16 = RegBC.Value16; ++RegMemPtr.Value16;
 									RegFlagZ = RegBC.High8 == 0;
 									RegFlagN = true;
 									if (RegBC.High8 != 0) {
@@ -7477,6 +7824,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xB8: // LDDR
 									WriteMemory(RegDE.Value16--, TB1 = ReadMemory(RegHL.Value16--));
 									TB1 += RegAF.High8; RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
+									if (RegBC.Value16 != 1) RegMemPtr.Value16 = RegPC.Value16;
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									RegFlagH = false;
@@ -7495,6 +7843,11 @@ namespace BeeDevelopment.Brazil {
 									RegFlagZ = TB2 == 0;
 									RegFlagS = TB2 > 127;
 									TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
+									if (RegBC.Value16 == 1 || RegFlagZ) {
+										--RegMemPtr.Value16;
+									} else {
+										RegMemPtr.Value16 = RegPC.Value16;
+									}
 									--RegBC.Value16;
 									RegFlagP = RegBC.Value16 != 0;
 									if (RegBC.Value16 != 0 && !RegFlagZ) {
@@ -7506,6 +7859,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xBA: // INDR
 									WriteMemory(RegHL.Value16--, ReadHardware(RegBC.Value16));
+									RegMemPtr.Value16 = RegBC.Value16; --RegMemPtr.Value16;
 									--RegBC.High8;
 									RegFlagZ = RegBC.High8 == 0;
 									RegFlagN = true;
@@ -7519,6 +7873,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xBB: // OTDR
 									WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16--));
 									--RegBC.High8;
+									RegMemPtr.Value16 = RegBC.Value16; --RegMemPtr.Value16;
 									RegFlagZ = RegBC.High8 == 0;
 									RegFlagN = true;
 									if (RegBC.High8 != 0) {
@@ -7741,6 +8096,7 @@ namespace BeeDevelopment.Brazil {
 						case 0xEF: // RST $28
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = 0x28;
+							RegMemPtr.Value16 = RegPC.Value16;
 							this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 							break;
 						case 0xF0: // RET P
@@ -7750,6 +8106,7 @@ namespace BeeDevelopment.Brazil {
 							} else {
 								this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 							}
+							RegMemPtr.Value16 = RegPC.Value16;
 							break;
 						case 0xF1: // POP AF
 							RegAF.Low8 = ReadMemory(RegSP.Value16++); RegAF.High8 = ReadMemory(RegSP.Value16++);
@@ -7775,6 +8132,7 @@ namespace BeeDevelopment.Brazil {
 							} else {
 								this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 							}
+							RegMemPtr.Value16 = TUS;
 							break;
 						case 0xF5: // PUSH AF
 							WriteMemory(--RegSP.Value16, RegAF.High8); WriteMemory(--RegSP.Value16, RegAF.Low8);
@@ -7787,6 +8145,7 @@ namespace BeeDevelopment.Brazil {
 						case 0xF7: // RST $30
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = 0x30;
+							RegMemPtr.Value16 = RegPC.Value16;
 							this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 							break;
 						case 0xF8: // RET M
@@ -7796,6 +8155,7 @@ namespace BeeDevelopment.Brazil {
 							} else {
 								this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 							}
+							RegMemPtr.Value16 = RegPC.Value16;
 							break;
 						case 0xF9: // LD SP, HL
 							RegSP.Value16 = RegHL.Value16;
@@ -7822,6 +8182,7 @@ namespace BeeDevelopment.Brazil {
 							} else {
 								this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 							}
+							RegMemPtr.Value16 = TUS;
 							break;
 						case 0xFD: // (Prefix)
 							++RegR;
@@ -7830,11 +8191,13 @@ namespace BeeDevelopment.Brazil {
 									this.totalExecutedCycles += 4; this.pendingCycles -= 4;
 									break;
 								case 0x01: // LD BC, nn
-									RegBC.Value16 = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
+									RegBC.Value16 = TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									break;
 								case 0x02: // LD (BC), A
 									WriteMemory(RegBC.Value16, RegAF.High8);
+									RegMemPtr.Low8 = (byte)(RegBC.Value16 + 1);
+									RegMemPtr.High8 = RegAF.High8;
 									this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 									break;
 								case 0x03: // INC BC
@@ -7862,6 +8225,7 @@ namespace BeeDevelopment.Brazil {
 									this.totalExecutedCycles += 4; this.pendingCycles -= 4;
 									break;
 								case 0x09: // ADD IY, BC
+									RegMemPtr.Value16 = (ushort)(RegIY.Value16 + 1);
 									TI1 = (short)RegIY.Value16; TI2 = (short)RegBC.Value16; TIR = TI1 + TI2;
 									TUS = (ushort)TIR;
 									RegFlagH = ((TI1 & 0xFFF) + (TI2 & 0xFFF)) > 0xFFF;
@@ -7874,6 +8238,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x0A: // LD A, (BC)
 									RegAF.High8 = ReadMemory(RegBC.Value16);
+									RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 									this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 									break;
 								case 0x0B: // DEC BC
@@ -7898,19 +8263,22 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x10: // DJNZ d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
+									RegMemPtr.Value16 = (ushort)(RegPC.Value16 + TSB);
 									if (--RegBC.High8 != 0) {
-										RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+										RegPC.Value16 = RegMemPtr.Value16;
 										this.totalExecutedCycles += 13; this.pendingCycles -= 13;
 									} else {
 										this.totalExecutedCycles += 8; this.pendingCycles -= 8;
 									}
 									break;
 								case 0x11: // LD DE, nn
-									RegDE.Value16 = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
+									RegDE.Value16 = TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									break;
 								case 0x12: // LD (DE), A
 									WriteMemory(RegDE.Value16, RegAF.High8);
+									RegMemPtr.Low8 = (byte)(RegDE.Value16 + 1);
+									RegMemPtr.High8 = RegAF.High8;
 									this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 									break;
 								case 0x13: // INC DE
@@ -7935,10 +8303,12 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x18: // JR d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
-									RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+									RegMemPtr.Value16 = (ushort)(RegPC.Value16 + TSB);
+									RegPC.Value16 = RegMemPtr.Value16;
 										this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									break;
 								case 0x19: // ADD IY, DE
+									RegMemPtr.Value16 = (ushort)(RegIY.Value16 + 1);
 									TI1 = (short)RegIY.Value16; TI2 = (short)RegDE.Value16; TIR = TI1 + TI2;
 									TUS = (ushort)TIR;
 									RegFlagH = ((TI1 & 0xFFF) + (TI2 & 0xFFF)) > 0xFFF;
@@ -7951,6 +8321,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x1A: // LD A, (DE)
 									RegAF.High8 = ReadMemory(RegDE.Value16);
+									RegMemPtr.Value16 = (ushort)(RegDE.Value16 + 1);
 									this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 									break;
 								case 0x1B: // DEC DE
@@ -7975,21 +8346,23 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x20: // JR NZ, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
+									RegMemPtr.Value16 = (ushort)(RegPC.Value16 + TSB);
 									if (!RegFlagZ) {
-										RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+										RegPC.Value16 = RegMemPtr.Value16;
 										this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									} else {
 										this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 									}
 									break;
 								case 0x21: // LD IY, nn
-									RegIY.Value16 = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
+									RegIY.Value16 = TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									this.totalExecutedCycles += 14; this.pendingCycles -= 14;
 									break;
 								case 0x22: // LD (nn), IY
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									WriteMemory(TUS++, RegIY.Low8);
 									WriteMemory(TUS, RegIY.High8);
+									RegMemPtr.Value16 = TUS;
 									this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 									break;
 								case 0x23: // INC IY
@@ -8014,14 +8387,16 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x28: // JR Z, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
+									RegMemPtr.Value16 = (ushort)(RegPC.Value16 + TSB);
 									if (RegFlagZ) {
-										RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+										RegPC.Value16 = RegMemPtr.Value16;
 										this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									} else {
 										this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 									}
 									break;
 								case 0x29: // ADD IY, IY
+									RegMemPtr.Value16 = (ushort)(RegIY.Value16 + 1);
 									TI1 = (short)RegIY.Value16; TI2 = (short)RegIY.Value16; TIR = TI1 + TI2;
 									TUS = (ushort)TIR;
 									RegFlagH = ((TI1 & 0xFFF) + (TI2 & 0xFFF)) > 0xFFF;
@@ -8035,6 +8410,7 @@ namespace BeeDevelopment.Brazil {
 								case 0x2A: // LD IY, (nn)
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									RegIY.Low8 = ReadMemory(TUS++); RegIY.High8 = ReadMemory(TUS);
+									RegMemPtr.Value16 = TUS;
 									this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 									break;
 								case 0x2B: // DEC IY
@@ -8059,19 +8435,22 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x30: // JR NC, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
+									RegMemPtr.Value16 = (ushort)(RegPC.Value16 + TSB);
 									if (!RegFlagC) {
-										RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+										RegPC.Value16 = RegMemPtr.Value16;
 										this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									} else {
 										this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 									}
 									break;
 								case 0x31: // LD SP, nn
-									RegSP.Value16 = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
+									RegSP.Value16 = TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									break;
 								case 0x32: // LD (nn), A
-									WriteMemory((ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256), RegAF.High8);
+									WriteMemory(TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256), RegAF.High8);
+									RegMemPtr.Low8 = (byte)(TUS + 1);
+									RegMemPtr.High8 = RegAF.High8;
 									this.totalExecutedCycles += 13; this.pendingCycles -= 13;
 									break;
 								case 0x33: // INC SP
@@ -8080,17 +8459,17 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x34: // INC (IY+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									TB = ReadMemory((ushort)(RegIY.Value16 + Displacement)); RegAF.Low8 = (byte)(TableInc[++TB] | (RegAF.Low8 & 1)); WriteMemory((ushort)(RegIY.Value16 + Displacement), TB);
+									TB = ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)); RegAF.Low8 = (byte)(TableInc[++TB] | (RegAF.Low8 & 1)); WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), TB);
 									this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 									break;
 								case 0x35: // DEC (IY+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									TB = ReadMemory((ushort)(RegIY.Value16 + Displacement)); RegAF.Low8 = (byte)(TableDec[--TB] | (RegAF.Low8 & 1)); WriteMemory((ushort)(RegIY.Value16 + Displacement), TB);
+									TB = ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)); RegAF.Low8 = (byte)(TableDec[--TB] | (RegAF.Low8 & 1)); WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), TB);
 									this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 									break;
 								case 0x36: // LD (IY+d), n
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									WriteMemory((ushort)(RegIY.Value16 + Displacement), ReadMemory(RegPC.Value16++));
+									WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), ReadMemory(RegPC.Value16++));
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x37: // SCF
@@ -8099,14 +8478,16 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x38: // JR C, d
 									TSB = (sbyte)ReadMemory(RegPC.Value16++);
+									RegMemPtr.Value16 = (ushort)(RegPC.Value16 + TSB);
 									if (RegFlagC) {
-										RegPC.Value16 = (ushort)(RegPC.Value16 + TSB);
+										RegPC.Value16 = RegMemPtr.Value16;
 										this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 									} else {
 										this.totalExecutedCycles += 7; this.pendingCycles -= 7;
 									}
 									break;
 								case 0x39: // ADD IY, SP
+									RegMemPtr.Value16 = (ushort)(RegIY.Value16 + 1);
 									TI1 = (short)RegIY.Value16; TI2 = (short)RegSP.Value16; TIR = TI1 + TI2;
 									TUS = (ushort)TIR;
 									RegFlagH = ((TI1 & 0xFFF) + (TI2 & 0xFFF)) > 0xFFF;
@@ -8118,7 +8499,8 @@ namespace BeeDevelopment.Brazil {
 									this.totalExecutedCycles += 15; this.pendingCycles -= 15;
 									break;
 								case 0x3A: // LD A, (nn)
-									RegAF.High8 = ReadMemory((ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256));
+									RegAF.High8 = ReadMemory(TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256));
+									RegMemPtr.Value16 = (ushort)(TUS + 1);
 									this.totalExecutedCycles += 13; this.pendingCycles -= 13;
 									break;
 								case 0x3B: // DEC SP
@@ -8166,7 +8548,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x46: // LD B, (IY+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegBC.High8 = ReadMemory((ushort)(RegIY.Value16 + Displacement));
+									RegBC.High8 = ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement));
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x47: // LD B, A
@@ -8198,7 +8580,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x4E: // LD C, (IY+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegBC.Low8 = ReadMemory((ushort)(RegIY.Value16 + Displacement));
+									RegBC.Low8 = ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement));
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x4F: // LD C, A
@@ -8230,7 +8612,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x56: // LD D, (IY+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegDE.High8 = ReadMemory((ushort)(RegIY.Value16 + Displacement));
+									RegDE.High8 = ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement));
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x57: // LD D, A
@@ -8262,7 +8644,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x5E: // LD E, (IY+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegDE.Low8 = ReadMemory((ushort)(RegIY.Value16 + Displacement));
+									RegDE.Low8 = ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement));
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x5F: // LD E, A
@@ -8294,7 +8676,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x66: // LD H, (IY+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegHL.High8 = ReadMemory((ushort)(RegIY.Value16 + Displacement));
+									RegHL.High8 = ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement));
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x67: // LD IYH, A
@@ -8326,7 +8708,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x6E: // LD L, (IY+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegHL.Low8 = ReadMemory((ushort)(RegIY.Value16 + Displacement));
+									RegHL.Low8 = ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement));
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x6F: // LD IYL, A
@@ -8335,32 +8717,32 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x70: // LD (IY+d), B
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									WriteMemory((ushort)(RegIY.Value16 + Displacement), RegBC.High8);
+									WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), RegBC.High8);
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x71: // LD (IY+d), C
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									WriteMemory((ushort)(RegIY.Value16 + Displacement), RegBC.Low8);
+									WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), RegBC.Low8);
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x72: // LD (IY+d), D
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									WriteMemory((ushort)(RegIY.Value16 + Displacement), RegDE.High8);
+									WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), RegDE.High8);
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x73: // LD (IY+d), E
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									WriteMemory((ushort)(RegIY.Value16 + Displacement), RegDE.Low8);
+									WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), RegDE.Low8);
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x74: // LD (IY+d), H
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									WriteMemory((ushort)(RegIY.Value16 + Displacement), RegHL.High8);
+									WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), RegHL.High8);
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x75: // LD (IY+d), L
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									WriteMemory((ushort)(RegIY.Value16 + Displacement), RegHL.Low8);
+									WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), RegHL.Low8);
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x76: // HALT
@@ -8369,7 +8751,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x77: // LD (IY+d), A
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									WriteMemory((ushort)(RegIY.Value16 + Displacement), RegAF.High8);
+									WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), RegAF.High8);
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x78: // LD A, B
@@ -8398,7 +8780,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x7E: // LD A, (IY+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegAF.High8 = ReadMemory((ushort)(RegIY.Value16 + Displacement));
+									RegAF.High8 = ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement));
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x7F: // LD A, A
@@ -8430,7 +8812,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x86: // ADD A, (IY+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegAF.Value16 = TableALU[0, RegAF.High8, ReadMemory((ushort)(RegIY.Value16 + Displacement)), 0];
+									RegAF.Value16 = TableALU[0, RegAF.High8, ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)), 0];
 									this.totalExecutedCycles += 16; this.pendingCycles -= 16;
 									break;
 								case 0x87: // ADD A, A
@@ -8463,7 +8845,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x8E: // ADC A, (IY+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegAF.Value16 = TableALU[1, RegAF.High8, ReadMemory((ushort)(RegIY.Value16 + Displacement)), RegFlagC ? 1 : 0];
+									RegAF.Value16 = TableALU[1, RegAF.High8, ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)), RegFlagC ? 1 : 0];
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x8F: // ADC A, A
@@ -8496,7 +8878,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x96: // SUB (IY+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegAF.Value16 = TableALU[2, RegAF.High8, ReadMemory((ushort)(RegIY.Value16 + Displacement)), 0];
+									RegAF.Value16 = TableALU[2, RegAF.High8, ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)), 0];
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x97: // SUB A, A
@@ -8529,7 +8911,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0x9E: // SBC A, (IY+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegAF.Value16 = TableALU[3, RegAF.High8, ReadMemory((ushort)(RegIY.Value16 + Displacement)), RegFlagC ? 1 : 0];
+									RegAF.Value16 = TableALU[3, RegAF.High8, ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)), RegFlagC ? 1 : 0];
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0x9F: // SBC A, A
@@ -8562,7 +8944,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xA6: // AND (IY+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegAF.Value16 = TableALU[4, RegAF.High8, ReadMemory((ushort)(RegIY.Value16 + Displacement)), 0];
+									RegAF.Value16 = TableALU[4, RegAF.High8, ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)), 0];
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0xA7: // AND A
@@ -8595,7 +8977,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xAE: // XOR (IY+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegAF.Value16 = TableALU[5, RegAF.High8, ReadMemory((ushort)(RegIY.Value16 + Displacement)), 0];
+									RegAF.Value16 = TableALU[5, RegAF.High8, ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)), 0];
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0xAF: // XOR A
@@ -8628,7 +9010,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xB6: // OR (IY+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegAF.Value16 = TableALU[6, RegAF.High8, ReadMemory((ushort)(RegIY.Value16 + Displacement)), 0];
+									RegAF.Value16 = TableALU[6, RegAF.High8, ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)), 0];
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0xB7: // OR A
@@ -8661,7 +9043,7 @@ namespace BeeDevelopment.Brazil {
 									break;
 								case 0xBE: // CP (IY+d)
 									Displacement = (sbyte)ReadMemory(RegPC.Value16++);
-									RegAF.Value16 = TableALU[7, RegAF.High8, ReadMemory((ushort)(RegIY.Value16 + Displacement)), 0];
+									RegAF.Value16 = TableALU[7, RegAF.High8, ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)), 0];
 									this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 									break;
 								case 0xBF: // CP A
@@ -8675,6 +9057,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 									}
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0xC1: // POP BC
 									RegBC.Low8 = ReadMemory(RegSP.Value16++); RegBC.High8 = ReadMemory(RegSP.Value16++);
@@ -8688,7 +9071,8 @@ namespace BeeDevelopment.Brazil {
 									this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									break;
 								case 0xC3: // JP nn
-									RegPC.Value16 = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
+									RegPC.Value16 = TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
+									RegMemPtr.Value16 = TUS;
 									this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									break;
 								case 0xC4: // CALL NZ, nn
@@ -8700,6 +9084,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									}
+									RegMemPtr.Value16 = TUS;
 									break;
 								case 0xC5: // PUSH BC
 									WriteMemory(--RegSP.Value16, RegBC.High8); WriteMemory(--RegSP.Value16, RegBC.Low8);
@@ -8712,6 +9097,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xC7: // RST $00
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = 0x00;
+									RegMemPtr.Value16 = RegPC.Value16;
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 								case 0xC8: // RET Z
@@ -8721,10 +9107,12 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 									}
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0xC9: // RET
 									RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 									this.totalExecutedCycles += 10; this.pendingCycles -= 10;
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0xCA: // JP Z, nn
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
@@ -8738,1411 +9126,1539 @@ namespace BeeDevelopment.Brazil {
 									++RegR;
 									switch (ReadMemory(RegPC.Value16++)) {
 										case 0x00: // RLC (IY+d)
-											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x01: // RLC (IY+d)
-											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x02: // RLC (IY+d)
-											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x03: // RLC (IY+d)
-											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x04: // RLC (IY+d)
-											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x05: // RLC (IY+d)
-											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x06: // RLC (IY+d)
-											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x07: // RLC (IY+d)
-											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 0, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x08: // RRC (IY+d)
-											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x09: // RRC (IY+d)
-											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x0A: // RRC (IY+d)
-											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x0B: // RRC (IY+d)
-											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x0C: // RRC (IY+d)
-											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x0D: // RRC (IY+d)
-											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x0E: // RRC (IY+d)
-											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x0F: // RRC (IY+d)
-											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 1, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x10: // RL (IY+d)
-											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x11: // RL (IY+d)
-											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x12: // RL (IY+d)
-											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x13: // RL (IY+d)
-											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x14: // RL (IY+d)
-											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x15: // RL (IY+d)
-											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x16: // RL (IY+d)
-											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x17: // RL (IY+d)
-											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 2, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x18: // RR (IY+d)
-											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x19: // RR (IY+d)
-											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x1A: // RR (IY+d)
-											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x1B: // RR (IY+d)
-											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x1C: // RR (IY+d)
-											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x1D: // RR (IY+d)
-											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x1E: // RR (IY+d)
-											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x1F: // RR (IY+d)
-											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 3, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x20: // SLA (IY+d)
-											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x21: // SLA (IY+d)
-											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x22: // SLA (IY+d)
-											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x23: // SLA (IY+d)
-											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x24: // SLA (IY+d)
-											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x25: // SLA (IY+d)
-											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x26: // SLA (IY+d)
-											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x27: // SLA (IY+d)
-											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 4, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x28: // SRA (IY+d)
-											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x29: // SRA (IY+d)
-											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x2A: // SRA (IY+d)
-											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x2B: // SRA (IY+d)
-											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x2C: // SRA (IY+d)
-											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x2D: // SRA (IY+d)
-											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x2E: // SRA (IY+d)
-											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x2F: // SRA (IY+d)
-											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 5, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x30: // SL1 (IY+d)
-											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x31: // SL1 (IY+d)
-											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x32: // SL1 (IY+d)
-											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x33: // SL1 (IY+d)
-											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x34: // SL1 (IY+d)
-											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x35: // SL1 (IY+d)
-											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x36: // SL1 (IY+d)
-											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x37: // SL1 (IY+d)
-											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 6, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x38: // SRL (IY+d)
-											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x39: // SRL (IY+d)
-											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x3A: // SRL (IY+d)
-											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x3B: // SRL (IY+d)
-											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x3C: // SRL (IY+d)
-											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x3D: // SRL (IY+d)
-											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x3E: // SRL (IY+d)
-											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x3F: // SRL (IY+d)
-											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory((ushort)(RegIY.Value16 + Displacement))];
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
+											TUS = TableRotShift[1, 7, RegAF.Low8 + 256 * ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement))];
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(TUS >> 8));
 											RegAF.Low8 = (byte)TUS;
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x40: // BIT 0, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x01) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x01) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x41: // BIT 0, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x01) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x01) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x42: // BIT 0, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x01) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x01) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x43: // BIT 0, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x01) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x01) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x44: // BIT 0, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x01) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x01) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x45: // BIT 0, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x01) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x01) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x46: // BIT 0, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x01) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x01) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x47: // BIT 0, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x01) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x01) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x48: // BIT 1, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x02) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x02) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x49: // BIT 1, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x02) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x02) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x4A: // BIT 1, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x02) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x02) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x4B: // BIT 1, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x02) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x02) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x4C: // BIT 1, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x02) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x02) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x4D: // BIT 1, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x02) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x02) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x4E: // BIT 1, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x02) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x02) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x4F: // BIT 1, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x02) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x02) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x50: // BIT 2, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x04) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x04) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x51: // BIT 2, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x04) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x04) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x52: // BIT 2, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x04) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x04) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x53: // BIT 2, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x04) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x04) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x54: // BIT 2, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x04) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x04) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x55: // BIT 2, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x04) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x04) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x56: // BIT 2, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x04) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x04) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x57: // BIT 2, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x04) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x04) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x58: // BIT 3, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x08) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x08) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x59: // BIT 3, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x08) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x08) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x5A: // BIT 3, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x08) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x08) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x5B: // BIT 3, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x08) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x08) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x5C: // BIT 3, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x08) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x08) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x5D: // BIT 3, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x08) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x08) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x5E: // BIT 3, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x08) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x08) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x5F: // BIT 3, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x08) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x08) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x60: // BIT 4, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x10) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x10) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x61: // BIT 4, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x10) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x10) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x62: // BIT 4, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x10) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x10) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x63: // BIT 4, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x10) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x10) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x64: // BIT 4, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x10) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x10) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x65: // BIT 4, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x10) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x10) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x66: // BIT 4, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x10) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x10) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x67: // BIT 4, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x10) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x10) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x68: // BIT 5, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x20) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x20) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x69: // BIT 5, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x20) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x20) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x6A: // BIT 5, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x20) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x20) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x6B: // BIT 5, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x20) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x20) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x6C: // BIT 5, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x20) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x20) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x6D: // BIT 5, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x20) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x20) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x6E: // BIT 5, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x20) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x20) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x6F: // BIT 5, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x20) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x20) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x70: // BIT 6, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x40) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x40) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x71: // BIT 6, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x40) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x40) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x72: // BIT 6, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x40) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x40) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x73: // BIT 6, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x40) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x40) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x74: // BIT 6, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x40) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x40) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x75: // BIT 6, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x40) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x40) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x76: // BIT 6, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x40) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x40) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x77: // BIT 6, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x40) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x40) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = false;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x78: // BIT 7, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x80) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x80) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = !RegFlagZ;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x79: // BIT 7, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x80) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x80) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = !RegFlagZ;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x7A: // BIT 7, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x80) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x80) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = !RegFlagZ;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x7B: // BIT 7, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x80) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x80) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = !RegFlagZ;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x7C: // BIT 7, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x80) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x80) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = !RegFlagZ;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x7D: // BIT 7, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x80) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x80) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = !RegFlagZ;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x7E: // BIT 7, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x80) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x80) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = !RegFlagZ;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x7F: // BIT 7, (IY+d)
-											RegFlagZ = (ReadMemory((ushort)(RegIY.Value16 + Displacement)) & 0x80) == 0;
+											RegFlagZ = (ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & 0x80) == 0;
 											RegFlagP = RegFlagZ;
 											RegFlagS = !RegFlagZ;
+											RegFlag3 = (RegMemPtr.High8 & (1 << 3)) != 0;
+											RegFlag5 = (RegMemPtr.High8 & (1 << 5)) != 0;
 											RegFlagH = true;
 											RegFlagN = false;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x80: // RES 0, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x01)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x01)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x81: // RES 0, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x01)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x01)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x82: // RES 0, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x01)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x01)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x83: // RES 0, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x01)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x01)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x84: // RES 0, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x01)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x01)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x85: // RES 0, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x01)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x01)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x86: // RES 0, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x01)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x01)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x87: // RES 0, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x01)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x01)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x88: // RES 1, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x02)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x02)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x89: // RES 1, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x02)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x02)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x8A: // RES 1, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x02)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x02)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x8B: // RES 1, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x02)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x02)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x8C: // RES 1, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x02)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x02)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x8D: // RES 1, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x02)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x02)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x8E: // RES 1, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x02)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x02)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x8F: // RES 1, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x02)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x02)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x90: // RES 2, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x04)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x04)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x91: // RES 2, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x04)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x04)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x92: // RES 2, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x04)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x04)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x93: // RES 2, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x04)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x04)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x94: // RES 2, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x04)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x04)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x95: // RES 2, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x04)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x04)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x96: // RES 2, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x04)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x04)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x97: // RES 2, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x04)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x04)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x98: // RES 3, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x08)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x08)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x99: // RES 3, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x08)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x08)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x9A: // RES 3, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x08)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x08)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x9B: // RES 3, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x08)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x08)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x9C: // RES 3, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x08)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x08)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x9D: // RES 3, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x08)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x08)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x9E: // RES 3, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x08)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x08)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0x9F: // RES 3, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x08)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x08)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA0: // RES 4, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x10)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x10)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA1: // RES 4, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x10)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x10)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA2: // RES 4, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x10)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x10)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA3: // RES 4, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x10)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x10)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA4: // RES 4, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x10)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x10)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA5: // RES 4, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x10)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x10)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA6: // RES 4, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x10)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x10)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA7: // RES 4, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x10)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x10)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA8: // RES 5, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x20)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x20)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xA9: // RES 5, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x20)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x20)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xAA: // RES 5, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x20)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x20)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xAB: // RES 5, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x20)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x20)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xAC: // RES 5, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x20)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x20)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xAD: // RES 5, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x20)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x20)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xAE: // RES 5, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x20)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x20)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xAF: // RES 5, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x20)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x20)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB0: // RES 6, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x40)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x40)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB1: // RES 6, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x40)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x40)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB2: // RES 6, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x40)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x40)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB3: // RES 6, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x40)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x40)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB4: // RES 6, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x40)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x40)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB5: // RES 6, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x40)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x40)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB6: // RES 6, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x40)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x40)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB7: // RES 6, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x40)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x40)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB8: // RES 7, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x80)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x80)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xB9: // RES 7, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x80)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x80)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xBA: // RES 7, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x80)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x80)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xBB: // RES 7, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x80)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x80)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xBC: // RES 7, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x80)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x80)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xBD: // RES 7, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x80)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x80)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xBE: // RES 7, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x80)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x80)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xBF: // RES 7, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x80)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) & unchecked((byte)~0x80)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC0: // SET 0, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x01)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x01)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC1: // SET 0, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x01)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x01)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC2: // SET 0, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x01)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x01)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC3: // SET 0, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x01)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x01)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC4: // SET 0, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x01)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x01)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC5: // SET 0, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x01)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x01)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC6: // SET 0, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x01)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x01)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC7: // SET 0, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x01)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x01)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC8: // SET 1, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x02)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x02)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xC9: // SET 1, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x02)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x02)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xCA: // SET 1, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x02)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x02)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xCB: // SET 1, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x02)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x02)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xCC: // SET 1, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x02)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x02)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xCD: // SET 1, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x02)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x02)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xCE: // SET 1, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x02)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x02)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xCF: // SET 1, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x02)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x02)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD0: // SET 2, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x04)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x04)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD1: // SET 2, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x04)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x04)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD2: // SET 2, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x04)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x04)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD3: // SET 2, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x04)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x04)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD4: // SET 2, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x04)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x04)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD5: // SET 2, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x04)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x04)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD6: // SET 2, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x04)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x04)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD7: // SET 2, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x04)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x04)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD8: // SET 3, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x08)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x08)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xD9: // SET 3, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x08)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x08)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xDA: // SET 3, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x08)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x08)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xDB: // SET 3, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x08)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x08)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xDC: // SET 3, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x08)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x08)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xDD: // SET 3, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x08)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x08)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xDE: // SET 3, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x08)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x08)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xDF: // SET 3, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x08)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x08)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE0: // SET 4, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x10)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x10)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE1: // SET 4, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x10)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x10)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE2: // SET 4, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x10)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x10)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE3: // SET 4, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x10)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x10)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE4: // SET 4, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x10)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x10)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE5: // SET 4, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x10)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x10)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE6: // SET 4, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x10)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x10)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE7: // SET 4, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x10)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x10)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE8: // SET 5, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x20)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x20)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xE9: // SET 5, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x20)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x20)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xEA: // SET 5, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x20)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x20)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xEB: // SET 5, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x20)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x20)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xEC: // SET 5, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x20)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x20)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xED: // SET 5, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x20)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x20)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xEE: // SET 5, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x20)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x20)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xEF: // SET 5, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x20)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x20)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF0: // SET 6, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x40)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x40)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF1: // SET 6, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x40)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x40)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF2: // SET 6, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x40)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x40)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF3: // SET 6, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x40)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x40)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF4: // SET 6, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x40)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x40)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF5: // SET 6, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x40)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x40)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF6: // SET 6, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x40)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x40)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF7: // SET 6, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x40)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x40)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF8: // SET 7, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x80)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x80)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xF9: // SET 7, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x80)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x80)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xFA: // SET 7, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x80)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x80)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xFB: // SET 7, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x80)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x80)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xFC: // SET 7, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x80)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x80)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xFD: // SET 7, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x80)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x80)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xFE: // SET 7, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x80)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x80)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 										case 0xFF: // SET 7, (IY+d)
-											WriteMemory((ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory((ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x80)));
+											WriteMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement), (byte)(ReadMemory(RegMemPtr.Value16 = (ushort)(RegIY.Value16 + Displacement)) | unchecked((byte)0x80)));
 											this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 											break;
 									}
@@ -10156,11 +10672,13 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									}
+									RegMemPtr.Value16 = TUS;
 									break;
 								case 0xCD: // CALL nn
 									TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = TUS;
+									RegMemPtr.Value16 = TUS;
 									this.totalExecutedCycles += 17; this.pendingCycles -= 17;
 									break;
 								case 0xCE: // ADC A, n
@@ -10170,6 +10688,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xCF: // RST $08
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = 0x08;
+									RegMemPtr.Value16 = RegPC.Value16;
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 								case 0xD0: // RET NC
@@ -10179,6 +10698,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 									}
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0xD1: // POP DE
 									RegDE.Low8 = ReadMemory(RegSP.Value16++); RegDE.High8 = ReadMemory(RegSP.Value16++);
@@ -10192,7 +10712,9 @@ namespace BeeDevelopment.Brazil {
 									this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									break;
 								case 0xD3: // OUT n, A
-									WriteHardware(ReadMemory(RegPC.Value16++), RegAF.High8);
+									WriteHardware(TUS = ReadMemory(RegPC.Value16++), RegAF.High8);
+									RegMemPtr.Low8 = (byte)(TUS + 1);
+									RegMemPtr.High8 = RegAF.High8;
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 								case 0xD4: // CALL NC, nn
@@ -10204,6 +10726,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									}
+									RegMemPtr.Value16 = TUS;
 									break;
 								case 0xD5: // PUSH DE
 									WriteMemory(--RegSP.Value16, RegDE.High8); WriteMemory(--RegSP.Value16, RegDE.Low8);
@@ -10216,6 +10739,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xD7: // RST $10
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = 0x10;
+									RegMemPtr.Value16 = RegPC.Value16;
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 								case 0xD8: // RET C
@@ -10225,6 +10749,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 									}
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0xD9: // EXX
 									TUS = RegBC.Value16; RegBC.Value16 = RegAltBC.Value16; RegAltBC.Value16 = TUS;
@@ -10240,7 +10765,9 @@ namespace BeeDevelopment.Brazil {
 									this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									break;
 								case 0xDB: // IN A, n
-									RegAF.High8 = ReadHardware((ushort)ReadMemory(RegPC.Value16++));
+									RegMemPtr.Value16 = RegAF.High8;
+									RegAF.High8 = ReadHardware(TUS = (ushort)ReadMemory(RegPC.Value16++));
+									RegMemPtr.Value16 += (ushort)(TUS + 1);
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 								case 0xDC: // CALL C, nn
@@ -10252,6 +10779,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									}
+									RegMemPtr.Value16 = TUS;
 									break;
 								case 0xDD: // <-
 									// Invalid sequence.
@@ -10264,6 +10792,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xDF: // RST $18
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = 0x18;
+									RegMemPtr.Value16 = RegPC.Value16;
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 								case 0xE0: // RET PO
@@ -10273,6 +10802,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 									}
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0xE1: // POP IY
 									RegIY.Low8 = ReadMemory(RegSP.Value16++); RegIY.High8 = ReadMemory(RegSP.Value16++);
@@ -10289,6 +10819,7 @@ namespace BeeDevelopment.Brazil {
 									TUS = RegSP.Value16; TBL = ReadMemory(TUS++); TBH = ReadMemory(TUS--);
 									WriteMemory(TUS++, RegIY.Low8); WriteMemory(TUS, RegIY.High8);
 									RegIY.Low8 = TBL; RegIY.High8 = TBH;
+									RegMemPtr.Low8 = TBL; RegMemPtr.High8 = TBH;
 									this.totalExecutedCycles += 23; this.pendingCycles -= 23;
 									break;
 								case 0xE4: // CALL C, nn
@@ -10300,6 +10831,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									}
+									RegMemPtr.Value16 = TUS;
 									break;
 								case 0xE5: // PUSH IY
 									WriteMemory(--RegSP.Value16, RegIY.High8); WriteMemory(--RegSP.Value16, RegIY.Low8);
@@ -10312,6 +10844,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xE7: // RST $20
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = 0x20;
+									RegMemPtr.Value16 = RegPC.Value16;
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 								case 0xE8: // RET PE
@@ -10321,6 +10854,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 									}
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0xE9: // JP IY
 									RegPC.Value16 = RegIY.Value16;
@@ -10346,6 +10880,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									}
+									RegMemPtr.Value16 = TUS;
 									break;
 								case 0xED: // (Prefix)
 									++RegR;
@@ -10549,13 +11084,16 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[RegBC.High8];
 											RegFlagN = false;
+											RegMemPtr.Value16 = RegBC.Value16;
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x41: // OUT C, B
-											WriteHardware(RegBC.Low8, RegBC.High8);
+											WriteHardware(TUS = RegBC.Low8, RegBC.High8);
+											RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x42: // SBC HL, BC
+											RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegBC.Value16; TIR = TI1 - TI2;
 											if (RegFlagC) { --TIR; ++TI2; }
 											TUS = (ushort)TIR;
@@ -10574,6 +11112,7 @@ namespace BeeDevelopment.Brazil {
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											WriteMemory(TUS++, RegBC.Low8);
 											WriteMemory(TUS, RegBC.High8);
+											RegMemPtr.Value16 = TUS;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x44: // NEG
@@ -10584,6 +11123,7 @@ namespace BeeDevelopment.Brazil {
 											RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 											this.IFF1 = this.IFF2;
 											this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+											RegMemPtr.Value16 = RegPC.Value16;
 											break;
 										case 0x46: // IM $0
 											interruptMode = 0;
@@ -10600,13 +11140,16 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[RegBC.Low8];
 											RegFlagN = false;
+											RegMemPtr.Value16 = RegBC.Value16;
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x49: // OUT C, C
-											WriteHardware(RegBC.Low8, RegBC.Low8);
+											WriteHardware(TUS = RegBC.Low8, RegBC.Low8);
+											RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x4A: // ADC HL, BC
+											RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegBC.Value16; TIR = TI1 + TI2;
 											if (RegFlagC) { ++TIR; ++TI2; }
 											TUS = (ushort)TIR;
@@ -10624,6 +11167,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x4B: // LD BC, (nn)
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											RegBC.Low8 = ReadMemory(TUS++); RegBC.High8 = ReadMemory(TUS);
+											RegMemPtr.Value16 = TUS;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x4C: // NEG
@@ -10633,6 +11177,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x4D: // RETI
 											RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 											this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+											RegMemPtr.Value16 = RegPC.Value16;
 											break;
 										case 0x4E: // IM $0
 											interruptMode = 0;
@@ -10649,13 +11194,16 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[RegDE.High8];
 											RegFlagN = false;
+											RegMemPtr.Value16 = RegBC.Value16;
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x51: // OUT C, D
-											WriteHardware(RegBC.Low8, RegDE.High8);
+											WriteHardware(TUS = RegBC.Low8, RegDE.High8);
+											RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x52: // SBC HL, DE
+											RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegDE.Value16; TIR = TI1 - TI2;
 											if (RegFlagC) { --TIR; ++TI2; }
 											TUS = (ushort)TIR;
@@ -10674,6 +11222,7 @@ namespace BeeDevelopment.Brazil {
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											WriteMemory(TUS++, RegDE.Low8);
 											WriteMemory(TUS, RegDE.High8);
+											RegMemPtr.Value16 = TUS;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x54: // NEG
@@ -10684,6 +11233,7 @@ namespace BeeDevelopment.Brazil {
 											RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 											this.IFF1 = this.IFF2;
 											this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+											RegMemPtr.Value16 = RegPC.Value16;
 											break;
 										case 0x56: // IM $1
 											interruptMode = 1;
@@ -10705,13 +11255,16 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[RegDE.Low8];
 											RegFlagN = false;
+											RegMemPtr.Value16 = RegBC.Value16;
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x59: // OUT C, E
-											WriteHardware(RegBC.Low8, RegDE.Low8);
+											WriteHardware(TUS = RegBC.Low8, RegDE.Low8);
+											RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x5A: // ADC HL, DE
+											RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegDE.Value16; TIR = TI1 + TI2;
 											if (RegFlagC) { ++TIR; ++TI2; }
 											TUS = (ushort)TIR;
@@ -10729,6 +11282,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x5B: // LD DE, (nn)
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											RegDE.Low8 = ReadMemory(TUS++); RegDE.High8 = ReadMemory(TUS);
+											RegMemPtr.Value16 = TUS;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x5C: // NEG
@@ -10738,6 +11292,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x5D: // RETI
 											RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 											this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+											RegMemPtr.Value16 = RegPC.Value16;
 											break;
 										case 0x5E: // IM $2
 											interruptMode = 2;
@@ -10759,13 +11314,16 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[RegHL.High8];
 											RegFlagN = false;
+											RegMemPtr.Value16 = RegBC.Value16;
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x61: // OUT C, H
-											WriteHardware(RegBC.Low8, RegHL.High8);
+											WriteHardware(TUS = RegBC.Low8, RegHL.High8);
+											RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x62: // SBC HL, HL
+											RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegHL.Value16; TIR = TI1 - TI2;
 											if (RegFlagC) { --TIR; ++TI2; }
 											TUS = (ushort)TIR;
@@ -10784,6 +11342,7 @@ namespace BeeDevelopment.Brazil {
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											WriteMemory(TUS++, RegHL.Low8);
 											WriteMemory(TUS, RegHL.High8);
+											RegMemPtr.Value16 = TUS;
 											this.totalExecutedCycles += 16; this.pendingCycles -= 16;
 											break;
 										case 0x64: // NEG
@@ -10794,6 +11353,7 @@ namespace BeeDevelopment.Brazil {
 											RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 											this.IFF1 = this.IFF2;
 											this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+											RegMemPtr.Value16 = RegPC.Value16;
 											break;
 										case 0x66: // IM $0
 											interruptMode = 0;
@@ -10810,6 +11370,7 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											RegFlag3 = (RegAF.High8 & 0x08) != 0;
 											RegFlag5 = (RegAF.High8 & 0x20) != 0;
+											RegMemPtr.Value16 = RegHL.Value16;
 											this.totalExecutedCycles += 18; this.pendingCycles -= 18;
 											break;
 										case 0x68: // IN L, C
@@ -10819,13 +11380,16 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[RegHL.Low8];
 											RegFlagN = false;
+											RegMemPtr.Value16 = RegBC.Value16;
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x69: // OUT C, L
-											WriteHardware(RegBC.Low8, RegHL.Low8);
+											WriteHardware(TUS = RegBC.Low8, RegHL.Low8);
+											RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x6A: // ADC HL, HL
+											RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegHL.Value16; TIR = TI1 + TI2;
 											if (RegFlagC) { ++TIR; ++TI2; }
 											TUS = (ushort)TIR;
@@ -10843,6 +11407,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x6B: // LD HL, (nn)
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											RegHL.Low8 = ReadMemory(TUS++); RegHL.High8 = ReadMemory(TUS);
+											RegMemPtr.Value16 = TUS;
 											this.totalExecutedCycles += 16; this.pendingCycles -= 16;
 											break;
 										case 0x6C: // NEG
@@ -10852,6 +11417,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x6D: // RETI
 											RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 											this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+											RegMemPtr.Value16 = RegPC.Value16;
 											break;
 										case 0x6E: // IM $0
 											interruptMode = 0;
@@ -10868,6 +11434,7 @@ namespace BeeDevelopment.Brazil {
 											RegFlagN = false;
 											RegFlag3 = (RegAF.High8 & 0x08) != 0;
 											RegFlag5 = (RegAF.High8 & 0x20) != 0;
+											RegMemPtr.Value16 = RegHL.Value16;
 											this.totalExecutedCycles += 18; this.pendingCycles -= 18;
 											break;
 										case 0x70: // IN 0, C
@@ -10877,13 +11444,16 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[TB];
 											RegFlagN = false;
+											RegMemPtr.Value16 = RegBC.Value16;
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x71: // OUT C, 0
-											WriteHardware(RegBC.Low8, 0);
+											WriteHardware(TUS = RegBC.Low8, 0);
+											RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x72: // SBC HL, SP
+											RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegSP.Value16; TIR = TI1 - TI2;
 											if (RegFlagC) { --TIR; ++TI2; }
 											TUS = (ushort)TIR;
@@ -10902,6 +11472,7 @@ namespace BeeDevelopment.Brazil {
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											WriteMemory(TUS++, RegSP.Low8);
 											WriteMemory(TUS, RegSP.High8);
+											RegMemPtr.Value16 = TUS;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x74: // NEG
@@ -10912,6 +11483,7 @@ namespace BeeDevelopment.Brazil {
 											RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 											this.IFF1 = this.IFF2;
 											this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+											RegMemPtr.Value16 = RegPC.Value16;
 											break;
 										case 0x76: // IM $1
 											interruptMode = 1;
@@ -10927,13 +11499,16 @@ namespace BeeDevelopment.Brazil {
 											RegFlagH = false;
 											RegFlagP = TableParity[RegAF.High8];
 											RegFlagN = false;
+											RegMemPtr.Value16 = RegBC.Value16;
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x79: // OUT C, A
-											WriteHardware(RegBC.Low8, RegAF.High8);
+											WriteHardware(TUS = RegBC.Low8, RegAF.High8);
+											RegMemPtr.Value16 = (ushort)(RegBC.Value16 + 1);
 											this.totalExecutedCycles += 12; this.pendingCycles -= 12;
 											break;
 										case 0x7A: // ADC HL, SP
+											RegMemPtr.Value16 = (ushort)(RegHL.Value16 + 1);
 											TI1 = (short)RegHL.Value16; TI2 = (short)RegSP.Value16; TIR = TI1 + TI2;
 											if (RegFlagC) { ++TIR; ++TI2; }
 											TUS = (ushort)TIR;
@@ -10951,6 +11526,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x7B: // LD SP, (nn)
 											TUS = (ushort)(ReadMemory(RegPC.Value16++) + ReadMemory(RegPC.Value16++) * 256);
 											RegSP.Low8 = ReadMemory(TUS++); RegSP.High8 = ReadMemory(TUS);
+											RegMemPtr.Value16 = TUS;
 											this.totalExecutedCycles += 20; this.pendingCycles -= 20;
 											break;
 										case 0x7C: // NEG
@@ -10960,6 +11536,7 @@ namespace BeeDevelopment.Brazil {
 										case 0x7D: // RETI
 											RegPC.Low8 = ReadMemory(RegSP.Value16++); RegPC.High8 = ReadMemory(RegSP.Value16++);
 											this.totalExecutedCycles += 14; this.pendingCycles -= 14;
+											RegMemPtr.Value16 = RegPC.Value16;
 											break;
 										case 0x7E: // IM $2
 											interruptMode = 2;
@@ -11080,12 +11657,14 @@ namespace BeeDevelopment.Brazil {
 											RegFlagZ = TB2 == 0;
 											RegFlagS = TB2 > 127;
 											TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
+											++RegMemPtr.Value16;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											this.totalExecutedCycles += 16; this.pendingCycles -= 16;
 											break;
 										case 0xA2: // INI
 											WriteMemory(RegHL.Value16++, ReadHardware(RegBC.Value16));
+											RegMemPtr.Value16 = RegBC.Value16; ++RegMemPtr.Value16;
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
@@ -11094,6 +11673,7 @@ namespace BeeDevelopment.Brazil {
 										case 0xA3: // OUTI
 											WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16++));
 											--RegBC.High8;
+											RegMemPtr.Value16 = RegBC.Value16; ++RegMemPtr.Value16;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											this.totalExecutedCycles += 16; this.pendingCycles -= 16;
@@ -11126,12 +11706,14 @@ namespace BeeDevelopment.Brazil {
 											RegFlagZ = TB2 == 0;
 											RegFlagS = TB2 > 127;
 											TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
+											--RegMemPtr.Value16;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											this.totalExecutedCycles += 16; this.pendingCycles -= 16;
 											break;
 										case 0xAA: // IND
 											WriteMemory(RegHL.Value16--, ReadHardware(RegBC.Value16));
+											RegMemPtr.Value16 = RegBC.Value16; --RegMemPtr.Value16;
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
@@ -11140,6 +11722,7 @@ namespace BeeDevelopment.Brazil {
 										case 0xAB: // OUTD
 											WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16--));
 											--RegBC.High8;
+											RegMemPtr.Value16 = RegBC.Value16; --RegMemPtr.Value16;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											this.totalExecutedCycles += 16; this.pendingCycles -= 16;
@@ -11159,6 +11742,7 @@ namespace BeeDevelopment.Brazil {
 										case 0xB0: // LDIR
 											WriteMemory(RegDE.Value16++, TB1 = ReadMemory(RegHL.Value16++));
 											TB1 += RegAF.High8; RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
+											if (RegBC.Value16 != 1) RegMemPtr.Value16 = RegPC.Value16;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
@@ -11177,6 +11761,11 @@ namespace BeeDevelopment.Brazil {
 											RegFlagZ = TB2 == 0;
 											RegFlagS = TB2 > 127;
 											TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
+											if (RegBC.Value16 == 1 || RegFlagZ) {
+												++RegMemPtr.Value16;
+											} else {
+												RegMemPtr.Value16 = RegPC.Value16;
+											}
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											if (RegBC.Value16 != 0 && !RegFlagZ) {
@@ -11188,6 +11777,7 @@ namespace BeeDevelopment.Brazil {
 											break;
 										case 0xB2: // INIR
 											WriteMemory(RegHL.Value16++, ReadHardware(RegBC.Value16));
+											RegMemPtr.Value16 = RegBC.Value16; ++RegMemPtr.Value16;
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
@@ -11201,6 +11791,7 @@ namespace BeeDevelopment.Brazil {
 										case 0xB3: // OTIR
 											WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16++));
 											--RegBC.High8;
+											RegMemPtr.Value16 = RegBC.Value16; ++RegMemPtr.Value16;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
@@ -11225,6 +11816,7 @@ namespace BeeDevelopment.Brazil {
 										case 0xB8: // LDDR
 											WriteMemory(RegDE.Value16--, TB1 = ReadMemory(RegHL.Value16--));
 											TB1 += RegAF.High8; RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
+											if (RegBC.Value16 != 1) RegMemPtr.Value16 = RegPC.Value16;
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											RegFlagH = false;
@@ -11243,6 +11835,11 @@ namespace BeeDevelopment.Brazil {
 											RegFlagZ = TB2 == 0;
 											RegFlagS = TB2 > 127;
 											TB1 = (byte)(RegAF.High8 - TB1 - (RegFlagH ? 1 : 0)); RegFlag5 = (TB1 & 0x02) != 0; RegFlag3 = (TB1 & 0x08) != 0;
+											if (RegBC.Value16 == 1 || RegFlagZ) {
+												--RegMemPtr.Value16;
+											} else {
+												RegMemPtr.Value16 = RegPC.Value16;
+											}
 											--RegBC.Value16;
 											RegFlagP = RegBC.Value16 != 0;
 											if (RegBC.Value16 != 0 && !RegFlagZ) {
@@ -11254,6 +11851,7 @@ namespace BeeDevelopment.Brazil {
 											break;
 										case 0xBA: // INDR
 											WriteMemory(RegHL.Value16--, ReadHardware(RegBC.Value16));
+											RegMemPtr.Value16 = RegBC.Value16; --RegMemPtr.Value16;
 											--RegBC.High8;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
@@ -11267,6 +11865,7 @@ namespace BeeDevelopment.Brazil {
 										case 0xBB: // OTDR
 											WriteHardware(RegBC.Value16, ReadMemory(RegHL.Value16--));
 											--RegBC.High8;
+											RegMemPtr.Value16 = RegBC.Value16; --RegMemPtr.Value16;
 											RegFlagZ = RegBC.High8 == 0;
 											RegFlagN = true;
 											if (RegBC.High8 != 0) {
@@ -11489,6 +12088,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xEF: // RST $28
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = 0x28;
+									RegMemPtr.Value16 = RegPC.Value16;
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 								case 0xF0: // RET P
@@ -11498,6 +12098,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 									}
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0xF1: // POP AF
 									RegAF.Low8 = ReadMemory(RegSP.Value16++); RegAF.High8 = ReadMemory(RegSP.Value16++);
@@ -11523,6 +12124,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									}
+									RegMemPtr.Value16 = TUS;
 									break;
 								case 0xF5: // PUSH AF
 									WriteMemory(--RegSP.Value16, RegAF.High8); WriteMemory(--RegSP.Value16, RegAF.Low8);
@@ -11535,6 +12137,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xF7: // RST $30
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = 0x30;
+									RegMemPtr.Value16 = RegPC.Value16;
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 								case 0xF8: // RET M
@@ -11544,6 +12147,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 5; this.pendingCycles -= 5;
 									}
+									RegMemPtr.Value16 = RegPC.Value16;
 									break;
 								case 0xF9: // LD SP, IY
 									RegSP.Value16 = RegIY.Value16;
@@ -11570,6 +12174,7 @@ namespace BeeDevelopment.Brazil {
 									} else {
 										this.totalExecutedCycles += 10; this.pendingCycles -= 10;
 									}
+									RegMemPtr.Value16 = TUS;
 									break;
 								case 0xFD: // <-
 									// Invalid sequence.
@@ -11582,6 +12187,7 @@ namespace BeeDevelopment.Brazil {
 								case 0xFF: // RST $38
 									WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 									RegPC.Value16 = 0x38;
+									RegMemPtr.Value16 = RegPC.Value16;
 									this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 									break;
 							}
@@ -11593,6 +12199,7 @@ namespace BeeDevelopment.Brazil {
 						case 0xFF: // RST $38
 							WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 							RegPC.Value16 = 0x38;
+							RegMemPtr.Value16 = RegPC.Value16;
 							this.totalExecutedCycles += 11; this.pendingCycles -= 11;
 							break;
 					}
@@ -11612,6 +12219,7 @@ namespace BeeDevelopment.Brazil {
 
 					WriteMemory(--RegSP.Value16, RegPC.High8); WriteMemory(--RegSP.Value16, RegPC.Low8);
 					RegPC.Value16 = 0x66;
+					RegMemPtr.Value16 = RegPC.Value16;
 				
 				} else if (this.iff1 && this.interrupt && Interruptable) {
 				
@@ -11635,6 +12243,9 @@ namespace BeeDevelopment.Brazil {
 							this.totalExecutedCycles += 19; this.pendingCycles -= 19;
 							break;
 					}
+					
+					RegMemPtr.Value16 = RegPC.Value16;
+
 				}
 			}
 		}
