@@ -623,9 +623,73 @@ namespace BeeDevelopment.Cogwheel {
 		public static extern uint MapVirtualKey(uint uCode, uint uMapType);
 
 		public static uint ToScanCode(Keys key) {
-			var Table = new byte[] { 0, 118, 22, 30, 38, 37, 46, 54, 61, 62, 70, 69, 78, 85, 102, 13, 21, 29, 36, 45, 44, 53, 60, 67, 68, 77, 84, 91, 90, 20, 28, 27, 35, 43, 52, 51, 59, 66, 75, 76, 82, 14, 18, 93, 26, 34, 33, 42, 50, 49, 58, 65, 73, 74, 89, 124, 17, 41, 88, 5, 6, 4, 12, 3, 11, 2, 131, 10, 1, 9, 119, 126, 108, 117, 125, 123, 107, 115, 116, 121, 105, 114, 122, 112, 113, 127, 132, 96, 97, 120, 7, 15, 23, 31, 39, 47, 55, 63, 71, 79, 86, 94, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 87, 111, 19, 25, 57, 81, 83, 92, 95, 98, 99, 100, 101, 103, 104, 106, 109, 110, 128, 129, 130, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 0, 255 };
-			uint Result = MapVirtualKey((uint)key, MAPVK_VK_TO_VSC);
-			return Table[Result & 0xFF];
+			switch (key) {
+				case Keys.RControlKey:
+					return 0xE014;
+				case Keys.RWin:
+					return 0xE027;
+				case Keys.RMenu:
+					return 0xE02F;
+				case Keys.PrintScreen:
+					return 0xE012;
+				case Keys.Insert:
+					return 0xE070;
+				case Keys.Home:
+					return 0xE06C;
+				case Keys.PageUp:
+					return 0xE07D;
+				case Keys.Delete:
+					return 0xE071;
+				case Keys.End:
+					return 0xE069;
+				case Keys.PageDown:
+					return 0xE07A;
+				case Keys.Up:
+					return 0xE075;
+				case Keys.Left:
+					return 0xE06B;
+				case Keys.Down:
+					return 0xE072;
+				case Keys.Right:
+					return 0xE074;
+				case Keys.NumLock:
+					return 0x77;
+				case Keys.Divide:
+					return 0xE04A;
+				case Keys.Multiply:
+					return 0x7C;
+				case Keys.Subtract:
+					return 0x7B;
+				case Keys.Add:
+					return 0x79;
+				case Keys.Decimal:
+					return 0x71;
+				case Keys.NumPad0:
+					return 0x70;
+				case Keys.NumPad1:
+					return 0x69;
+				case Keys.NumPad2:
+					return 0x72;
+				case Keys.NumPad3:
+					return 0x7A;
+				case Keys.NumPad4:
+					return 0x6B;
+				case Keys.NumPad5:
+					return 0x73;
+				case Keys.NumPad6:
+					return 0x74;
+				case Keys.NumPad7:
+					return 0x6C;
+				case Keys.NumPad8:
+					return 0x75;
+				case Keys.NumPad9:
+					return 0x7D;
+				default:
+					Console.WriteLine(key);
+					var Table = new byte[] { 0, 118, 22, 30, 38, 37, 46, 54, 61, 62, 70, 69, 78, 85, 102, 13, 21, 29, 36, 45, 44, 53, 60, 67, 68, 77, 84, 91, 90, 20, 28, 27, 35, 43, 52, 51, 59, 66, 75, 76, 82, 14, 18, 93, 26, 34, 33, 42, 50, 49, 58, 65, 73, 74, 89, 124, 17, 41, 88, 5, 6, 4, 12, 3, 11, 2, 131, 10, 1, 9, 119, 126, 108, 117, 125, 123, 107, 115, 116, 121, 105, 114, 122, 112, 113, 127, 132, 96, 97, 120, 7, 15, 23, 31, 39, 47, 55, 63, 71, 79, 86, 94, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 87, 111, 19, 25, 57, 81, 83, 92, 95, 98, 99, 100, 101, 103, 104, 106, 109, 110, 128, 129, 130, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 0, 255 };
+					uint Result = MapVirtualKey((uint)key, MAPVK_VK_TO_VSC);
+					return Table[Result & 0xFF];
+			}
 		}
 	}
 
