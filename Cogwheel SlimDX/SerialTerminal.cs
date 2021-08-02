@@ -24,6 +24,18 @@ namespace BeeDevelopment.Cogwheel {
 				baudRateDropdownMenuItem.Click += BaudRateDropdownMenuItem_Click;
 			}
 
+			BaudRateMenuItem.DropDownItems.Add(new ToolStripSeparator());
+			for (int baudRate = 31250; baudRate != 0; baudRate = 0) {
+				var baudRateDropdownMenuItem = new ToolStripMenuItem {
+					Text = baudRate.ToString(),
+					Tag = baudRate
+				};
+				BaudRateMenuItem.DropDownItems.Add(baudRateDropdownMenuItem);
+				baudRateDropdownMenuItem.Click += BaudRateDropdownMenuItem_Click;
+			}
+
+
+
 			if (SerialPort.GetPortNames().Length > 0) {
 				ConnectToMenuItem.DropDownItems.Add(new ToolStripSeparator());
 				foreach (var serialPortName in SerialPort.GetPortNames()) {
@@ -176,8 +188,11 @@ namespace BeeDevelopment.Cogwheel {
 
 		private void BaudRateMenuItem_DropDownOpening(object sender, EventArgs e) {
 			var emulator = this.GetEmulator();
-			foreach (ToolStripMenuItem item in BaudRateMenuItem.DropDownItems) {
-				item.Checked = (emulator != null && emulator.SerialPort.BaudRate == (int)item.Tag);
+			foreach (ToolStripItem item in BaudRateMenuItem.DropDownItems) {
+				var menuItem = item as ToolStripMenuItem;
+				if (menuItem != null) {
+					menuItem.Checked = (emulator != null && emulator.SerialPort.BaudRate == (int)menuItem.Tag);
+				}
 			}
 		}
 
