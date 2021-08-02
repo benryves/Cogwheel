@@ -124,6 +124,10 @@
 			this.ColourDialog = new System.Windows.Forms.ColorDialog();
 			this.SaveVgmDialog = new System.Windows.Forms.SaveFileDialog();
 			this.OpenVgmDialog = new System.Windows.Forms.OpenFileDialog();
+			this.StatusNumLock = new System.Windows.Forms.ToolStripStatusLabel();
+			this.StatusSpacer = new System.Windows.Forms.ToolStripStatusLabel();
+			this.StatusCapsLock = new System.Windows.Forms.ToolStripStatusLabel();
+			this.StatusScrollLock = new System.Windows.Forms.ToolStripStatusLabel();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -859,7 +863,11 @@
 			// Status
 			// 
 			this.Status.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MessageStatus});
+            this.MessageStatus,
+            this.StatusSpacer,
+            this.StatusNumLock,
+            this.StatusCapsLock,
+            this.StatusScrollLock});
 			this.Status.Location = new System.Drawing.Point(0, 286);
 			this.Status.Name = "Status";
 			this.Status.Size = new System.Drawing.Size(421, 22);
@@ -870,7 +878,8 @@
 			// 
 			this.MessageStatus.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.MessageStatus.Name = "MessageStatus";
-			this.MessageStatus.Size = new System.Drawing.Size(0, 17);
+			this.MessageStatus.Size = new System.Drawing.Size(121, 19);
+			this.MessageStatus.Spring = true;
 			// 
 			// MessageTicker
 			// 
@@ -902,6 +911,36 @@
 			// OpenVgmDialog
 			// 
 			this.OpenVgmDialog.Filter = "VGM files (*.vgm;*.vgz)|*.vgm;*.vgz|All files (*.*)|*.*";
+			// 
+			// StatusNumLock
+			// 
+			this.StatusNumLock.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+			this.StatusNumLock.Enabled = false;
+			this.StatusNumLock.Name = "StatusNumLock";
+			this.StatusNumLock.Size = new System.Drawing.Size(35, 17);
+			this.StatusNumLock.Text = "NUM";
+			// 
+			// StatusSpacer
+			// 
+			this.StatusSpacer.Name = "StatusSpacer";
+			this.StatusSpacer.Size = new System.Drawing.Size(143, 17);
+			this.StatusSpacer.Spring = true;
+			// 
+			// StatusCapsLock
+			// 
+			this.StatusCapsLock.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+			this.StatusCapsLock.Enabled = false;
+			this.StatusCapsLock.Name = "StatusCapsLock";
+			this.StatusCapsLock.Size = new System.Drawing.Size(36, 17);
+			this.StatusCapsLock.Text = "CAPS";
+			// 
+			// StatusScrollLock
+			// 
+			this.StatusScrollLock.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+			this.StatusScrollLock.Enabled = false;
+			this.StatusScrollLock.Name = "StatusScrollLock";
+			this.StatusScrollLock.Size = new System.Drawing.Size(49, 17);
+			this.StatusScrollLock.Text = "SCROLL";
 			// 
 			// MainForm
 			// 
@@ -1033,6 +1072,10 @@
 		private System.Windows.Forms.ToolStripSeparator ControllerProfileMenuSep0;
 		private System.Windows.Forms.ToolStripSeparator EmulationSep0;
 		private System.Windows.Forms.ToolStripMenuItem EmulationSpeedMenu;
+		private System.Windows.Forms.ToolStripStatusLabel StatusSpacer;
+		private System.Windows.Forms.ToolStripStatusLabel StatusNumLock;
+		private System.Windows.Forms.ToolStripStatusLabel StatusCapsLock;
+		private System.Windows.Forms.ToolStripStatusLabel StatusScrollLock;
 #endif
 	}
 }

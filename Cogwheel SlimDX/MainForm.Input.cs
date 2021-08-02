@@ -16,6 +16,22 @@ namespace BeeDevelopment.Cogwheel {
 
 			this.Input.Sources.AddRange(Array.ConvertAll(new JoystickInput.JoystickCollection(Properties.Settings.Default.InputSkipDuplicatedXInputJoysticks).Joysticks, J => new JoystickInputSource(Input, J)));
 			this.Input.ReloadSettings();
+
+			if (this.Emulator != null && this.Emulator.HasPS2Keyboard) {
+				// Re-attach keyboard handler.
+				this.Emulator.PS2Keyboard.StatusLedsChanged -= PS2Keyboard_StatusLedsChanged;
+				this.Emulator.PS2Keyboard.StatusLedsChanged += PS2Keyboard_StatusLedsChanged;
+				this.StatusNumLock.Visible = this.StatusCapsLock.Visible = this.StatusScrollLock.Visible = true;
+				this.PS2Keyboard_StatusLedsChanged(null, new EventArgs());
+			} else {
+				this.StatusNumLock.Visible = this.StatusCapsLock.Visible = this.StatusScrollLock.Visible = false;
+			}
+		}
+
+		private void PS2Keyboard_StatusLedsChanged(object sender, EventArgs e) {
+			this.StatusNumLock.Enabled = this.Emulator != null && this.Emulator.HasPS2Keyboard && this.Emulator.PS2Keyboard.NumLock;
+			this.StatusCapsLock.Enabled = this.Emulator != null && this.Emulator.HasPS2Keyboard && this.Emulator.PS2Keyboard.CapsLock;
+			this.StatusScrollLock.Enabled = this.Emulator != null && this.Emulator.HasPS2Keyboard && this.Emulator.PS2Keyboard.ScrollLock;
 		}
 
 		protected override void OnKeyDown(KeyEventArgs e) {

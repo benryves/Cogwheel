@@ -22,6 +22,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 
 		private bool myClock;
 		private bool theirClock;
+		private bool theirClockLastTick;
+		private uint theirClockHeldLowCounter = 0;
 		public bool Clock {
 			get { return this.myClock && this.theirClock; }
 			set { this.theirClock = value; }
@@ -92,24 +94,41 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 		/// Runs the AT emulator for half a clock cycle.
 		/// </summary>
 		public virtual void Tick() {
+
+			// How long have they been holding clock low?
+			var theirPreviousClockHeldLowCounter = this.theirClockHeldLowCounter;
+			if (this.theirClock) {
+				this.theirClockHeldLowCounter = 0;
+			} else {
+				++this.theirClockHeldLowCounter;
+			}
+
+			// Check the status of their clock line.
+			var theirPreviousClock = this.theirClockLastTick;
+			this.theirClockLastTick = this.theirClock;
+
 			if (!this.theirClock) {
+				if (this.Receiving) throw new InvalidOperationException();
+				// Clock inhibiting will restart from the start of the current 11-bit byte.
 				if ((this.CurrentOutputStreamIndex % 11) != 0) {
 					this.CurrentOutputStreamIndex = 0;
 				}
 				this.myClock = true;
 				this.myData = true;
-				if (!this.theirData && !this.Receiving) {
-					this.Receiving = true;
-					this.ReceiveBuffer.Clear();
-				}
 				return;
+			} else if (this.theirClock != theirPreviousClock) {
+				// RTS = clock held low for at least 100uS followed by clock being released with data held low
+				if (!this.theirData && theirPreviousClockHeldLowCounter >= 2) {
+					this.Receiving = true;
+					return;
+				}
 			}
 
 			if (this.Receiving) {
-				this.myClock ^= true;
 				if (this.myClock) {
 					this.ReceiveBuffer.Add(this.theirData);
 				}
+				this.myClock ^= true;
 				if (this.ReceiveBuffer.Count == 10) {
 					this.myData = false; // ACK
 				} else if (this.ReceiveBuffer.Count == 11) {
@@ -117,8 +136,9 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 					this.Receiving = false;
 					byte Received = 0;
 					for (int i = 0; i < 8; ++i) {
-						if (this.ReceiveBuffer[i]) Received |= (byte)(1 << i);
+						if (this.ReceiveBuffer[i + 1]) Received |= (byte)(1 << i); // +1 to skip start bit.
 					}
+					this.ReceiveBuffer.Clear();
 					this.OnByteReceived(Received);
 				}
 				return;
@@ -157,7 +177,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 
 		enum PendingData {
 			None,
-			Led,
+			Led = 0xED,
+			TypematicRateDelay = 0xF3,
 		}
 
 		#endregion
@@ -204,6 +225,11 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 		/// </summary>
 		public bool ScrollLock { get; private set; }
 
+		/// <summary>
+		/// Gets whether the keyboard is currently enabled or not.
+		/// </summary>
+		public bool Enabled { get; private set; }
+
 		#endregion
 
 		#region Overidden Methods
@@ -221,6 +247,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 			this.CapsLock = false;
 			this.ScrollLock = false;
 			this.EnqueueByte(0xAA);
+			this.Enabled = true;
 		}
 
 		/// <summary>
@@ -228,33 +255,91 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 		/// </summary>
 		public override void Tick() {
 			++this.Ticks;
-			foreach (var Repeater in this.PressedScanCodes) {
-				if (Repeater.Value.Repeating) {
-					if ((Repeater.Value.TimePressed + ((1.0 / this.TickPeriod) / this.TypematicRate)) <= this.Ticks) {
-						this.EnqueueScancode(Repeater.Key, true);
-						Repeater.Value.TimePressed = this.Ticks;
-					}
-				} else {
-					if ((uint)(Repeater.Value.TimePressed + this.TypematicDelay.TotalSeconds * (1.0 / this.TickPeriod)) <= this.Ticks) {
-						this.EnqueueScancode(Repeater.Key, true);
-						Repeater.Value.Repeating = true;
-						Repeater.Value.TimePressed = this.Ticks;
+			if (this.Enabled) {
+				foreach (var Repeater in this.PressedScanCodes) {
+					if (Repeater.Value.Repeating) {
+						if ((Repeater.Value.TimePressed + ((1.0 / this.TickPeriod) / this.TypematicRate)) <= this.Ticks) {
+							this.EnqueueScancode(Repeater.Key, true);
+							Repeater.Value.TimePressed = this.Ticks;
+						}
+					} else {
+						if ((uint)(Repeater.Value.TimePressed + this.TypematicDelay.TotalSeconds * (1.0 / this.TickPeriod)) <= this.Ticks) {
+							this.EnqueueScancode(Repeater.Key, true);
+							Repeater.Value.Repeating = true;
+							Repeater.Value.TimePressed = this.Ticks;
+						}
 					}
 				}
 			}
 			base.Tick();
 		}
 
+		public event EventHandler<EventArgs> StatusLedsChanged;
+
+		protected virtual void OnStatusLedsChanged(EventArgs e) {
+			StatusLedsChanged?.Invoke(this, e);
+		}
+
 		protected override void OnByteReceived(byte value) {
-			switch (value) {
-				case 0xFF:
-					this.EnqueueByte(0xFA);
-					this.Reset();
+			switch (this.Pending) {
+				case PendingData.Led:
+					this.Pending = PendingData.None;
+					this.ScrollLock = (value & 0x01) != 0;
+					this.NumLock= (value & 0x02) != 0;
+					this.CapsLock = (value & 0x04) != 0;
+					this.OnStatusLedsChanged(new EventArgs());
+					break;
+				case PendingData.TypematicRateDelay:
+					this.Pending = PendingData.None;
 					break;
 				default:
-					base.OnByteReceived(value);
+					switch (value) {
+						case 0xFF:
+							this.Acknowledge();
+							this.Reset();
+							break;
+						case 0xFE:
+							// Resend
+							break;
+						case 0xF6: // Reset to defaults.
+							this.Acknowledge();
+							this.TypematicDelay = TimeSpan.FromMilliseconds(500d);
+							this.TypematicRate = 10.9d;
+							break;
+						case 0xF5: // Disable
+							this.Acknowledge();
+							this.TypematicDelay = TimeSpan.FromMilliseconds(500d);
+							this.TypematicRate = 10.9d;
+							this.Enabled = false;
+							break;
+						case 0xF4: // Enabled
+							this.Acknowledge();
+							this.Enabled = true;
+							break;
+						case 0xF3: // Set typematic rate/delay.
+							this.Acknowledge();
+							this.Pending = PendingData.TypematicRateDelay;
+							break;
+						case 0xF2: // Read ID.
+							this.Acknowledge();
+							this.EnqueueByte(0xAB);
+							this.EnqueueByte(0x83);
+							break;
+						case 0xEE: // Echo.
+							this.Acknowledge();
+							this.EnqueueByte(0xEE);
+							break;
+						case 0xED: // Set LED status.
+							this.Acknowledge();
+							this.Pending = PendingData.Led;
+							break;
+						default:
+							base.OnByteReceived(value);
+							break;
+					}
 					break;
 			}
+			
 		}
 
 		#endregion
@@ -381,16 +466,20 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 			}
 		}
 
+		private void Acknowledge() {
+			this.EnqueueByte(0xFA);
+		}
+
+		#endregion
+
+		#region Public Methods
+
 		public void EnqueueScancode(uint scancode, bool pressed) {
 			var Sequence = new List<byte>();
 			if (!pressed) Sequence.Add(0xF0);
 			Sequence.Add((byte)scancode);
 			this.EnqueueBytes(Sequence);
 		}
-
-		#endregion
-
-		#region Public Methods
 
 		public void PressKey(uint scancode) {
 			if (scancode == 0 || PressedScanCodes.ContainsKey(scancode)) {
@@ -558,6 +647,11 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 				new KeyValuePair<uint, bool>(0x5D, true),  // '~'
 				new KeyValuePair<uint, bool>(0x00, false), // ' '
 			})[c - ' '];
+
+			if (scancodeAndShifted.Key != 0 && this.CapsLock && char.ToUpperInvariant(c) >= 'A' && char.ToUpperInvariant(c) <= 'Z') {
+				scancodeAndShifted = new KeyValuePair<uint, bool>(scancodeAndShifted.Key, !scancodeAndShifted.Value);
+			}
+
 			return scancodeAndShifted.Key != 0;
 		}
 
@@ -569,35 +663,27 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 		}
 
 		#endregion
-
-
-
 	}
 
 	/// <summary>
 	/// Emulates a PS/2 keyboard.
 	/// </summary>
-	public class PS2Keyboard {
-
-		private Keyboard keyboard;
+	public class PS2Keyboard : Keyboard {
 
 		public void SetKeyState(SC3000Keyboard.Keys key, bool pressed) {
 			if (pressed) {
-				this.keyboard.PressKey(key);
+				this.PressKey(key);
 			} else {
-				this.keyboard.ReleaseKey(key);
+				this.ReleaseKey(key);
 			}
 		}
 
 		public void SetKeyState(uint scancode, bool pressed) {
 			if (pressed) {
-				this.keyboard.PressKey(scancode);
+				this.PressKey(scancode);
 			} else {
-				this.keyboard.ReleaseKey(scancode);
+				this.ReleaseKey(scancode);
 			}
-		}
-		public void ReleaseAllKeys() {
-			this.keyboard.ReleaseAllKeys();
 		}
 
 		/// <summary>
@@ -611,13 +697,12 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 		/// <param name="emulator">The <see cref="Emulator"/> instance that the keyboard is connected to.</param>
 		public PS2Keyboard(Emulator emulator) {
 			this.Emulator = emulator;
-			this.keyboard = new Keyboard {
-				TickPeriod = (64e-6d * 2d) / 3d, // We update the keyboard 3 times per 2 scanlines.
-			};
+			this.TickPeriod = (64e-6d * 2d) / 3d;
 		}
-
-		public void Tick() {
-			this.keyboard.Tick();
+		public new void Tick() {
+			this.UpdateState();
+			base.Tick();
+			this.UpdateState();
 		}
 
 		/// <summary>
@@ -625,52 +710,17 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 		/// </summary>
 		public void UpdateState() {
 			if (this.Emulator.SegaPorts[0].TH.Direction == PinDirection.Output) {
-				this.keyboard.Data = this.Emulator.SegaPorts[0].TH.OutputState;
+				this.Data = this.Emulator.SegaPorts[0].TH.OutputState;
 			} else {
-				this.keyboard.Data = true;
-				this.Emulator.SegaPorts[0].TH.InputState = this.keyboard.Data;
+				this.Data = true;
+				this.Emulator.SegaPorts[0].TH.InputState = this.Data;
 			}
 			if (this.Emulator.SegaPorts[0].TR.Direction == PinDirection.Output) {
-				this.keyboard.Clock = this.Emulator.SegaPorts[0].TR.OutputState;
+				this.Clock = this.Emulator.SegaPorts[0].TR.OutputState;
 			} else {
-				this.keyboard.Clock = true;
-				this.Emulator.SegaPorts[0].TR.InputState = this.keyboard.Clock;
+				this.Clock = true;
+				this.Emulator.SegaPorts[0].TR.InputState = this.Clock;
 			}
-		}
-
-		public void Type(char c) {
-			this.keyboard.Type(c);
-		}
-		public void Type(string s) {
-			this.keyboard.Type(s);
-		}
-
-		public void PressKey(SC3000Keyboard.Keys key) {
-			this.keyboard.PressKey(key);
-		}
-
-		public void ReleaseKey(SC3000Keyboard.Keys key) {
-			this.keyboard.ReleaseKey(key);
-		}
-
-		public void PressKey(uint scancode) {
-			this.keyboard.PressKey(scancode);
-		}
-
-		public void ReleaseKey(uint scancode) {
-			this.keyboard.ReleaseKey(scancode);
-		}
-
-		public void ClearBufferedData() {
-			this.keyboard.ClearBufferedData();
-		}
-
-		public int BufferedDataCount {
-			get { return this.keyboard.BufferedDataCount; }
-		}
-
-		public bool HasBufferedData {
-			get { return this.keyboard.HasBufferedData; }
 		}
 
 	}
