@@ -588,6 +588,7 @@ namespace BeeDevelopment.Cogwheel {
 
 		#region Focus
 		private void MainForm_Deactivate(object sender, EventArgs e) {
+			this.Input.ReleaseAll();
 			foreach (Form F in Application.OpenForms) {
 				if (F.Focused) return;
 			}
@@ -595,10 +596,8 @@ namespace BeeDevelopment.Cogwheel {
 				this.Paused = true;
 				if (!this.SoundMuted) this.SoundBuffer.Stop();
 			}
-			this.Input.ReleaseAll();
 			this.ShowCursor();
 			this.CursorHider.Stop();
-			base.OnLostFocus(e);
 		}
 
 

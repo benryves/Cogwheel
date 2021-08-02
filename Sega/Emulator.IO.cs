@@ -181,7 +181,6 @@ namespace BeeDevelopment.Sega8Bit {
 						default:
 							throw new NotImplementedException(string.Format("? io[{0:X2}]", port & 0xFF));
 					}
-					break;
 
 
 

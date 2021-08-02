@@ -359,7 +359,9 @@ namespace BeeDevelopment.Cogwheel {
 				emulator.SC3000Keyboard.UpdateState();
 			} else if (emulator.HasPS2Keyboard) {
 				var o = this.GetScancodeStates();
-				if (o != null) {
+				if (o == null) {
+					emulator.PS2Keyboard.ReleaseAllKeys();
+				} else {
 					foreach (var item in o) {
 						emulator.PS2Keyboard.SetKeyState(item.Key, item.Value);
 					}
@@ -545,7 +547,7 @@ namespace BeeDevelopment.Cogwheel {
 			return this.CurrentScancodeStates;
 		}
 
-		public void ReleaseAll() {
+		public virtual void ReleaseAll() {
 			this.CurrentStates = new Dictionary<InputButton, bool>[2];
 			this.CurrentScancodeStates = null;
 			for (int Player = 0; Player < 2; ++Player) {

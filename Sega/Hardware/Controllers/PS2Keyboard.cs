@@ -582,6 +582,9 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 				this.keyboard.ReleaseKey(scancode);
 			}
 		}
+		public void ReleaseAllKeys() {
+			this.keyboard.ReleaseAllKeys();
+		}
 
 		/// <summary>
 		/// Gets the <see cref="Emulator"/> that the keyboard is connected to.

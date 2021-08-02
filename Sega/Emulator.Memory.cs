@@ -109,7 +109,6 @@ namespace BeeDevelopment.Sega8Bit {
 					} else {
 						return this.WorkRam.Read(address);
 					}
-					break;
 
 				default: // Sega (default) memory map.
 					// Reads from RAM.
