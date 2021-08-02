@@ -3,6 +3,14 @@ using System.Collections.Generic;
 
 namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 
+	/// <summary>
+	/// Provides base methods for emulating AT protocol devices.
+	/// </summary>
+	/// <remarks>
+	/// The clock speed is expected to be between 10 kHz and 16.7 kHz,
+	/// so you should call Tick between 22kHz-33.4kHz.
+	/// That works out as being between every 45uS-30uS.
+	/// </remarks>
 	public class ATDevice {
 
 		private bool myData;
@@ -81,7 +89,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 		}
 
 		/// <summary>
-		/// Runs the AT emulator for 40 microseconds.
+		/// Runs the AT emulator for half a clock cycle.
 		/// </summary>
 		public virtual void Tick() {
 			if (!this.theirClock) {
@@ -161,6 +169,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 		public Keyboard()
 			: base() {
 			this.Reset();
+			this.TickPeriod = 40e-6d;
 		}
 
 		#region Properties
@@ -174,6 +183,11 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 		/// Gets or sets the number of characters typed per second when a key is held.
 		/// </summary>
 		public double TypematicRate { get; set; }
+
+		/// <summary>
+		/// Gets or sets the period between ticks (used to calculate key repeats).
+		/// </summary>
+		public double TickPeriod { get; set; }
 
 		/// <summary>
 		/// Gets the state of the keyboard's Num Lock LED.
@@ -210,18 +224,18 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 		}
 
 		/// <summary>
-		/// Emulates the keyboard for 40uS.
+		/// Emulates the keyboard for half a clock cycle.
 		/// </summary>
 		public override void Tick() {
 			++this.Ticks;
 			foreach (var Repeater in this.PressedScanCodes) {
 				if (Repeater.Value.Repeating) {
-					if ((Repeater.Value.TimePressed + (25000.0d / this.TypematicRate)) <= this.Ticks) {
+					if ((Repeater.Value.TimePressed + ((1.0 / this.TickPeriod) / this.TypematicRate)) <= this.Ticks) {
 						this.EnqueueScancode(Repeater.Key, true);
 						Repeater.Value.TimePressed = this.Ticks;
 					}
 				} else {
-					if ((uint)(Repeater.Value.TimePressed + this.TypematicDelay.TotalMilliseconds * 25.0d) <= this.Ticks) {
+					if ((uint)(Repeater.Value.TimePressed + this.TypematicDelay.TotalSeconds * (1.0 / this.TickPeriod)) <= this.Ticks) {
 						this.EnqueueScancode(Repeater.Key, true);
 						Repeater.Value.Repeating = true;
 						Repeater.Value.TimePressed = this.Ticks;
@@ -597,7 +611,9 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 		/// <param name="emulator">The <see cref="Emulator"/> instance that the keyboard is connected to.</param>
 		public PS2Keyboard(Emulator emulator) {
 			this.Emulator = emulator;
-			this.keyboard = new Keyboard();
+			this.keyboard = new Keyboard {
+				TickPeriod = (64e-6d * 2d) / 3d, // We update the keyboard 3 times per 2 scanlines.
+			};
 		}
 
 		public void Tick() {

@@ -126,12 +126,19 @@ namespace BeeDevelopment.Sega8Bit {
 		/// </summary>
 		/// <returns>True if the last line of the active display has been rendered.</returns>
 		public bool RunScanline() {
-			Debug.WriteLine("Emulator.RunScaline()");
-			this.FetchExecute(this.video.CpuCyclesPerScanline);
-			this.SerialPort.UpdateState();
 
-			if (this.HasPS2Keyboard) this.PS2Keyboard.Tick();
-			if (this.HasSerialPort) this.SerialPort.UpdateState();
+			var Video = this.video;
+			var CyclesPerScanline = Video.CpuCyclesPerScanline;
+
+			if (this.HasSerialPort || this.HasPS2Keyboard) {
+				for (int i = 0; i < 2; ++i) {
+					this.FetchExecute(CyclesPerScanline / 2);
+					if (this.HasSerialPort) this.SerialPort.UpdateState();
+					if (this.HasPS2Keyboard && (Video.ScanlinesDrawn & 1) == 0) this.PS2Keyboard.Tick();
+				}
+			} else {
+				this.FetchExecute(CyclesPerScanline);
+			}
 
 			return this.video.RasteriseLine();
 		}
@@ -144,16 +151,15 @@ namespace BeeDevelopment.Sega8Bit {
 			var CyclesPerScanline = Video.CpuCyclesPerScanline;
 			do {
 
-				if (this.HasSerialPort) {
+				if (this.HasSerialPort || this.HasPS2Keyboard) {
 					for (int i = 0; i < 2; ++i) {
 						this.FetchExecute(CyclesPerScanline / 2);
-						this.SerialPort.UpdateState();
+						if (this.HasSerialPort) this.SerialPort.UpdateState();
+						if (this.HasPS2Keyboard && (Video.ScanlinesDrawn & 1) == 0) this.PS2Keyboard.Tick();
 					}
 				} else {
 					this.FetchExecute(CyclesPerScanline);
 				}
-
-				if (this.HasPS2Keyboard) this.PS2Keyboard.Tick();
 
 
 			} while (!Video.RasteriseLine());
