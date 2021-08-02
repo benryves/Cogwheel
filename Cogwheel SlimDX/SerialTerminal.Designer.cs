@@ -98,9 +98,11 @@ namespace BeeDevelopment.Cogwheel {
 			this.Controls.Add(this.ConsoleOutput);
 			this.Controls.Add(this.ConsoleInput);
 			this.Controls.Add(this.ConsoleMenuStrip);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.MainMenuStrip = this.ConsoleMenuStrip;
 			this.Name = "SerialTerminal";
+			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Serial Terminal";
 			this.Load += new System.EventHandler(this.SerialTerminal_Load);
 			this.ConsoleMenuStrip.ResumeLayout(false);

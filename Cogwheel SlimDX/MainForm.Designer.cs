@@ -63,6 +63,8 @@
 			this.GameGenieMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.GameGenieEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.GameGenieEditMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.EmulationSep0 = new System.Windows.Forms.ToolStripSeparator();
+			this.EmulationSpeedMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.SdscDebugConsoleMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.SerialTerminalConsoleMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -122,8 +124,6 @@
 			this.ColourDialog = new System.Windows.Forms.ColorDialog();
 			this.SaveVgmDialog = new System.Windows.Forms.SaveFileDialog();
 			this.OpenVgmDialog = new System.Windows.Forms.OpenFileDialog();
-			this.EmulationSep0 = new System.Windows.Forms.ToolStripSeparator();
-			this.EmulationSpeedMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -355,33 +355,33 @@
             this.RegionExportMenu});
 			this.EmulationRegionMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_World;
 			this.EmulationRegionMenu.Name = "EmulationRegionMenu";
-			this.EmulationRegionMenu.Size = new System.Drawing.Size(180, 22);
+			this.EmulationRegionMenu.Size = new System.Drawing.Size(153, 22);
 			this.EmulationRegionMenu.Text = "&Region";
 			this.EmulationRegionMenu.DropDownOpening += new System.EventHandler(this.EmulationRegionMenu_DropDownOpening);
 			// 
 			// RegionAutomaticMenu
 			// 
 			this.RegionAutomaticMenu.Name = "RegionAutomaticMenu";
-			this.RegionAutomaticMenu.Size = new System.Drawing.Size(180, 22);
+			this.RegionAutomaticMenu.Size = new System.Drawing.Size(130, 22);
 			this.RegionAutomaticMenu.Text = "&Automatic";
 			this.RegionAutomaticMenu.Click += new System.EventHandler(this.RegionAutomaticMenu_Click);
 			// 
 			// EmulationRegionSep0
 			// 
 			this.EmulationRegionSep0.Name = "EmulationRegionSep0";
-			this.EmulationRegionSep0.Size = new System.Drawing.Size(177, 6);
+			this.EmulationRegionSep0.Size = new System.Drawing.Size(127, 6);
 			// 
 			// RegionJapaneseMenu
 			// 
 			this.RegionJapaneseMenu.Name = "RegionJapaneseMenu";
-			this.RegionJapaneseMenu.Size = new System.Drawing.Size(180, 22);
+			this.RegionJapaneseMenu.Size = new System.Drawing.Size(130, 22);
 			this.RegionJapaneseMenu.Text = "&Japanese";
 			this.RegionJapaneseMenu.Click += new System.EventHandler(this.RegionCountry_Click);
 			// 
 			// RegionExportMenu
 			// 
 			this.RegionExportMenu.Name = "RegionExportMenu";
-			this.RegionExportMenu.Size = new System.Drawing.Size(180, 22);
+			this.RegionExportMenu.Size = new System.Drawing.Size(130, 22);
 			this.RegionExportMenu.Text = "&Export";
 			this.RegionExportMenu.Click += new System.EventHandler(this.RegionCountry_Click);
 			// 
@@ -394,33 +394,33 @@
             this.VideoStandardPalMenu});
 			this.EmulationVideoMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Television;
 			this.EmulationVideoMenu.Name = "EmulationVideoMenu";
-			this.EmulationVideoMenu.Size = new System.Drawing.Size(180, 22);
+			this.EmulationVideoMenu.Size = new System.Drawing.Size(153, 22);
 			this.EmulationVideoMenu.Text = "&Video standard";
 			this.EmulationVideoMenu.DropDownOpening += new System.EventHandler(this.DebugVideoMenu_DropDownOpening);
 			// 
 			// VideoStandardAutomaticMenu
 			// 
 			this.VideoStandardAutomaticMenu.Name = "VideoStandardAutomaticMenu";
-			this.VideoStandardAutomaticMenu.Size = new System.Drawing.Size(180, 22);
+			this.VideoStandardAutomaticMenu.Size = new System.Drawing.Size(140, 22);
 			this.VideoStandardAutomaticMenu.Text = "&Automatic";
 			this.VideoStandardAutomaticMenu.Click += new System.EventHandler(this.VideoStandardAutomaticMenu_Click);
 			// 
 			// VideoStandardSep0
 			// 
 			this.VideoStandardSep0.Name = "VideoStandardSep0";
-			this.VideoStandardSep0.Size = new System.Drawing.Size(177, 6);
+			this.VideoStandardSep0.Size = new System.Drawing.Size(137, 6);
 			// 
 			// VideoStandardNtscMenu
 			// 
 			this.VideoStandardNtscMenu.Name = "VideoStandardNtscMenu";
-			this.VideoStandardNtscMenu.Size = new System.Drawing.Size(180, 22);
+			this.VideoStandardNtscMenu.Size = new System.Drawing.Size(140, 22);
 			this.VideoStandardNtscMenu.Text = "&NTSC (60Hz)";
 			this.VideoStandardNtscMenu.Click += new System.EventHandler(this.VideoStandardTypeMenu_Click);
 			// 
 			// VideoStandardPalMenu
 			// 
 			this.VideoStandardPalMenu.Name = "VideoStandardPalMenu";
-			this.VideoStandardPalMenu.Size = new System.Drawing.Size(180, 22);
+			this.VideoStandardPalMenu.Size = new System.Drawing.Size(140, 22);
 			this.VideoStandardPalMenu.Text = "&PAL (50Hz)";
 			this.VideoStandardPalMenu.Click += new System.EventHandler(this.VideoStandardTypeMenu_Click);
 			// 
@@ -431,7 +431,7 @@
             this.GameGenieEditMenu});
 			this.GameGenieMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_GameGenie;
 			this.GameGenieMenu.Name = "GameGenieMenu";
-			this.GameGenieMenu.Size = new System.Drawing.Size(180, 22);
+			this.GameGenieMenu.Size = new System.Drawing.Size(153, 22);
 			this.GameGenieMenu.Text = "&Game Genie";
 			this.GameGenieMenu.DropDownOpening += new System.EventHandler(this.GameGenieMenu_DropDownOpening);
 			// 
@@ -439,16 +439,28 @@
 			// 
 			this.GameGenieEnabledMenu.CheckOnClick = true;
 			this.GameGenieEnabledMenu.Name = "GameGenieEnabledMenu";
-			this.GameGenieEnabledMenu.Size = new System.Drawing.Size(180, 22);
+			this.GameGenieEnabledMenu.Size = new System.Drawing.Size(137, 22);
 			this.GameGenieEnabledMenu.Text = "&Enabled";
 			this.GameGenieEnabledMenu.Click += new System.EventHandler(this.GameGenieEnabledMenu_Click);
 			// 
 			// GameGenieEditMenu
 			// 
 			this.GameGenieEditMenu.Name = "GameGenieEditMenu";
-			this.GameGenieEditMenu.Size = new System.Drawing.Size(180, 22);
+			this.GameGenieEditMenu.Size = new System.Drawing.Size(137, 22);
 			this.GameGenieEditMenu.Text = "Edit codes...";
 			this.GameGenieEditMenu.Click += new System.EventHandler(this.GameGenieEditMenu_Click);
+			// 
+			// EmulationSep0
+			// 
+			this.EmulationSep0.Name = "EmulationSep0";
+			this.EmulationSep0.Size = new System.Drawing.Size(150, 6);
+			// 
+			// EmulationSpeedMenu
+			// 
+			this.EmulationSpeedMenu.Name = "EmulationSpeedMenu";
+			this.EmulationSpeedMenu.Size = new System.Drawing.Size(153, 22);
+			this.EmulationSpeedMenu.Text = "&Speed";
+			this.EmulationSpeedMenu.DropDownOpening += new System.EventHandler(this.EmulationSpeedMenu_DropDownOpening);
 			// 
 			// debugToolStripMenuItem
 			// 
@@ -891,18 +903,6 @@
 			// 
 			this.OpenVgmDialog.Filter = "VGM files (*.vgm;*.vgz)|*.vgm;*.vgz|All files (*.*)|*.*";
 			// 
-			// EmulationSep0
-			// 
-			this.EmulationSep0.Name = "EmulationSep0";
-			this.EmulationSep0.Size = new System.Drawing.Size(177, 6);
-			// 
-			// EmulationSpeedMenu
-			// 
-			this.EmulationSpeedMenu.Name = "EmulationSpeedMenu";
-			this.EmulationSpeedMenu.Size = new System.Drawing.Size(180, 22);
-			this.EmulationSpeedMenu.Text = "&Speed";
-			this.EmulationSpeedMenu.DropDownOpening += new System.EventHandler(this.EmulationSpeedMenu_DropDownOpening);
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -916,6 +916,8 @@
 			this.MainMenuStrip = this.Menus;
 			this.MinimumSize = new System.Drawing.Size(256, 128);
 			this.Name = "MainForm";
+			this.Activated += new System.EventHandler(this.MainForm_Activated);
+			this.Deactivate += new System.EventHandler(this.MainForm_Deactivate);
 			this.ResizeBegin += new System.EventHandler(this.MainForm_ResizeBegin);
 			this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
 			this.Move += new System.EventHandler(this.MainForm_Move);

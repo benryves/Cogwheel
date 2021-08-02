@@ -587,28 +587,30 @@ namespace BeeDevelopment.Cogwheel {
 		#endregion
 
 		#region Focus
-
-		protected override void OnLostFocus(EventArgs e) {
-			return;
+		private void MainForm_Deactivate(object sender, EventArgs e) {
 			foreach (Form F in Application.OpenForms) {
-				if ((F is DebugConsole || F is SerialTerminal) && F.Focused) return;
+				if (F.Focused) return;
 			}
-			this.Paused = true;
-			if (!this.SoundMuted) this.SoundBuffer.Stop();
+			if (!this.Paused) {
+				this.Paused = true;
+				if (!this.SoundMuted) this.SoundBuffer.Stop();
+			}
 			this.Input.ReleaseAll();
 			this.ShowCursor();
 			this.CursorHider.Stop();
 			base.OnLostFocus(e);
 		}
 
-		protected override void OnGotFocus(EventArgs e) {
-			this.Paused = false;
-			if (!this.SoundMuted) this.StartPlayingSound();
+
+		private void MainForm_Activated(object sender, EventArgs e) {
+			if (this.Paused) {
+				this.Paused = false;
+				if (!this.SoundMuted) this.StartPlayingSound();
+			}
 			this.OnMouseMove(new MouseEventArgs(MouseButtons.None, 0, -10, +10, 0));
 			this.OnMouseMove(new MouseEventArgs(MouseButtons.None, 0, +10, -10, 0));
-			base.OnGotFocus(e);
-		}
-
+		}		
+		
 		#endregion
 
 		#region Help
@@ -1059,6 +1061,7 @@ namespace BeeDevelopment.Cogwheel {
 				e.Effect = DragDropEffects.Copy;
 			}
 		}
+
 
 		#endregion
 
