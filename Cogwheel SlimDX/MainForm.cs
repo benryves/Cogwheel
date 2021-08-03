@@ -970,6 +970,15 @@ namespace BeeDevelopment.Cogwheel {
 
 			this.Emulator.PS2Keyboard.ClearBufferedData();
 		}
+		private void PaletteMenu_Click(object sender, EventArgs e) {
+			foreach (Form F in Application.OpenForms) {
+				if (F is PaletteEditor) {
+					F.BringToFront();
+					return;
+				}
+			}
+			new PaletteEditor().Show(this);
+		}
 		private void BackgroundEnabledMenu_Click(object sender, EventArgs e) {
 			this.Emulator.Video.BackgroundLayerEnabled ^= true;
 		}
@@ -1063,6 +1072,5 @@ namespace BeeDevelopment.Cogwheel {
 
 
 		#endregion
-
 	}
 }

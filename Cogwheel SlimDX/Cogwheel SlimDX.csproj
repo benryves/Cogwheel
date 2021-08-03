@@ -132,6 +132,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="NativeToolStripRenderer.cs" />
+    <Compile Include="PaletteEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PaletteEditor.Designer.cs">
+      <DependentUpon>PaletteEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="PixelDumper3D.cs" />
     <Compile Include="PowerStrip.cs" />
     <Compile Include="Program.cs" />
@@ -165,6 +171,9 @@
     <EmbeddedResource Include="GameGenieEditor.resx">
       <DependentUpon>GameGenieEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PaletteEditor.resx">
+      <DependentUpon>PaletteEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -272,8 +281,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cog.ico" />
+    <None Include="Resources\palette.png" />
     <None Include="Resources\Config_PS2KeyMapping.txt" />
-    <None Include="Resources\Config_SC3000KeyMapping1.txt" />
     <None Include="Resources\arrow_down.png" />
     <None Include="Resources\arrow_left.png" />
     <None Include="Resources\arrow_right.png" />

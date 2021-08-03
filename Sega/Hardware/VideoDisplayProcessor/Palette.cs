@@ -15,11 +15,11 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// 
 		/// In certain modes the data in the colour RAM is ignored entirely when the display is rasterised.
 		/// </remarks>
-		public int[] ColourRam { 
+		public int[] ColourRam {
 			get { return this.colourRam; }
 			set {
 				if (value == null || value.Length != this.colourRam.Length) throw new InvalidOperationException();
-				this.colourRam = value; 
+				this.colourRam = value;
 			}
 		}
 		private int[] colourRam;
@@ -34,6 +34,29 @@ namespace BeeDevelopment.Sega8Bit.Hardware {
 		/// written simultaneously.
 		/// </remarks>
 		public byte LatchedColourRamData { get; set; }
+
+		/// <summary>
+		/// Gets a read-only copy of the current palette.
+		/// </summary>
+		public int[] Palette {
+			get {
+				int[] palette = null;
+				switch (this.CurrentMode) {
+					case Mode.Mode4:
+					case Mode.Mode4Resolution224:
+					case Mode.Mode4Resolution240:
+						palette = colourRam;
+						break;
+					default:
+						palette = fixedPaletteMode == FixedPaletteModes.MasterSystem ? FixedPaletteMasterSystem : FixedPaletteTMS9918;
+						break;
+				}
+				if (palette == null) return null;
+				var result = new int[palette.Length];
+				Array.Copy(palette, result, palette.Length);
+				return result;
+			}
+		}
 
 		#endregion
 

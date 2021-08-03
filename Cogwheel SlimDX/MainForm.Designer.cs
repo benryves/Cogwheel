@@ -69,7 +69,8 @@
 			this.SdscDebugConsoleMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.SerialTerminalConsoleMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.PasteKeyboardMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+			this.DebugSep1 = new System.Windows.Forms.ToolStripSeparator();
+			this.PaletteMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.EmulationVideoBackgroundEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.EmulationVideoSpritesEnabledMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.OptionsMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -117,6 +118,10 @@
 			this.OpenRomDialog = new System.Windows.Forms.OpenFileDialog();
 			this.Status = new System.Windows.Forms.StatusStrip();
 			this.MessageStatus = new System.Windows.Forms.ToolStripStatusLabel();
+			this.StatusSpacer = new System.Windows.Forms.ToolStripStatusLabel();
+			this.StatusNumLock = new System.Windows.Forms.ToolStripStatusLabel();
+			this.StatusCapsLock = new System.Windows.Forms.ToolStripStatusLabel();
+			this.StatusScrollLock = new System.Windows.Forms.ToolStripStatusLabel();
 			this.MessageTicker = new System.Windows.Forms.Timer(this.components);
 			this.OpenStateDialog = new System.Windows.Forms.OpenFileDialog();
 			this.SaveStateDialog = new System.Windows.Forms.SaveFileDialog();
@@ -124,10 +129,6 @@
 			this.ColourDialog = new System.Windows.Forms.ColorDialog();
 			this.SaveVgmDialog = new System.Windows.Forms.SaveFileDialog();
 			this.OpenVgmDialog = new System.Windows.Forms.OpenFileDialog();
-			this.StatusNumLock = new System.Windows.Forms.ToolStripStatusLabel();
-			this.StatusSpacer = new System.Windows.Forms.ToolStripStatusLabel();
-			this.StatusCapsLock = new System.Windows.Forms.ToolStripStatusLabel();
-			this.StatusScrollLock = new System.Windows.Forms.ToolStripStatusLabel();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -472,7 +473,8 @@
             this.SdscDebugConsoleMenu,
             this.SerialTerminalConsoleMenu,
             this.PasteKeyboardMenu,
-            this.toolStripMenuItem1,
+            this.DebugSep1,
+            this.PaletteMenu,
             this.EmulationVideoBackgroundEnabledMenu,
             this.EmulationVideoSpritesEnabledMenu});
 			this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
@@ -500,13 +502,21 @@
 			this.PasteKeyboardMenu.Name = "PasteKeyboardMenu";
 			this.PasteKeyboardMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
 			this.PasteKeyboardMenu.Size = new System.Drawing.Size(211, 22);
-			this.PasteKeyboardMenu.Text = "&Paste keyboard";
+			this.PasteKeyboardMenu.Text = "Paste &keyboard";
 			this.PasteKeyboardMenu.Click += new System.EventHandler(this.PasteKeyboardMenu_Click);
 			// 
-			// toolStripMenuItem1
+			// DebugSep1
 			// 
-			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(208, 6);
+			this.DebugSep1.Name = "DebugSep1";
+			this.DebugSep1.Size = new System.Drawing.Size(208, 6);
+			// 
+			// PaletteMenu
+			// 
+			this.PaletteMenu.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_Palette;
+			this.PaletteMenu.Name = "PaletteMenu";
+			this.PaletteMenu.Size = new System.Drawing.Size(211, 22);
+			this.PaletteMenu.Text = "&Palette";
+			this.PaletteMenu.Click += new System.EventHandler(this.PaletteMenu_Click);
 			// 
 			// EmulationVideoBackgroundEnabledMenu
 			// 
@@ -878,8 +888,37 @@
 			// 
 			this.MessageStatus.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.MessageStatus.Name = "MessageStatus";
-			this.MessageStatus.Size = new System.Drawing.Size(121, 19);
-			this.MessageStatus.Spring = true;
+			this.MessageStatus.Size = new System.Drawing.Size(0, 17);
+			// 
+			// StatusSpacer
+			// 
+			this.StatusSpacer.Name = "StatusSpacer";
+			this.StatusSpacer.Size = new System.Drawing.Size(255, 17);
+			this.StatusSpacer.Spring = true;
+			// 
+			// StatusNumLock
+			// 
+			this.StatusNumLock.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+			this.StatusNumLock.Enabled = false;
+			this.StatusNumLock.Name = "StatusNumLock";
+			this.StatusNumLock.Size = new System.Drawing.Size(35, 17);
+			this.StatusNumLock.Text = "NUM";
+			// 
+			// StatusCapsLock
+			// 
+			this.StatusCapsLock.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+			this.StatusCapsLock.Enabled = false;
+			this.StatusCapsLock.Name = "StatusCapsLock";
+			this.StatusCapsLock.Size = new System.Drawing.Size(36, 17);
+			this.StatusCapsLock.Text = "CAPS";
+			// 
+			// StatusScrollLock
+			// 
+			this.StatusScrollLock.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+			this.StatusScrollLock.Enabled = false;
+			this.StatusScrollLock.Name = "StatusScrollLock";
+			this.StatusScrollLock.Size = new System.Drawing.Size(49, 17);
+			this.StatusScrollLock.Text = "SCROLL";
 			// 
 			// MessageTicker
 			// 
@@ -911,36 +950,6 @@
 			// OpenVgmDialog
 			// 
 			this.OpenVgmDialog.Filter = "VGM files (*.vgm;*.vgz)|*.vgm;*.vgz|All files (*.*)|*.*";
-			// 
-			// StatusNumLock
-			// 
-			this.StatusNumLock.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-			this.StatusNumLock.Enabled = false;
-			this.StatusNumLock.Name = "StatusNumLock";
-			this.StatusNumLock.Size = new System.Drawing.Size(35, 17);
-			this.StatusNumLock.Text = "NUM";
-			// 
-			// StatusSpacer
-			// 
-			this.StatusSpacer.Name = "StatusSpacer";
-			this.StatusSpacer.Size = new System.Drawing.Size(143, 17);
-			this.StatusSpacer.Spring = true;
-			// 
-			// StatusCapsLock
-			// 
-			this.StatusCapsLock.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-			this.StatusCapsLock.Enabled = false;
-			this.StatusCapsLock.Name = "StatusCapsLock";
-			this.StatusCapsLock.Size = new System.Drawing.Size(36, 17);
-			this.StatusCapsLock.Text = "CAPS";
-			// 
-			// StatusScrollLock
-			// 
-			this.StatusScrollLock.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-			this.StatusScrollLock.Enabled = false;
-			this.StatusScrollLock.Name = "StatusScrollLock";
-			this.StatusScrollLock.Size = new System.Drawing.Size(49, 17);
-			this.StatusScrollLock.Text = "SCROLL";
 			// 
 			// MainForm
 			// 
@@ -1054,7 +1063,7 @@
 		private System.Windows.Forms.ToolStripMenuItem SdscDebugConsoleMenu;
 		private System.Windows.Forms.ToolStripMenuItem VideoStandardAutomaticMenu;
 		private System.Windows.Forms.ToolStripMenuItem EmulationVideoBackgroundEnabledMenu;
-		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+		private System.Windows.Forms.ToolStripSeparator DebugSep1;
 		private System.Windows.Forms.ToolStripMenuItem EmulationVideoSpritesEnabledMenu;
 		private System.Windows.Forms.ToolStripMenuItem StartStopRecordingVgmMenu;
 		private System.Windows.Forms.ToolStripSeparator FileSep4;
@@ -1076,6 +1085,7 @@
 		private System.Windows.Forms.ToolStripStatusLabel StatusNumLock;
 		private System.Windows.Forms.ToolStripStatusLabel StatusCapsLock;
 		private System.Windows.Forms.ToolStripStatusLabel StatusScrollLock;
+		private System.Windows.Forms.ToolStripMenuItem PaletteMenu;
 #endif
 	}
 }

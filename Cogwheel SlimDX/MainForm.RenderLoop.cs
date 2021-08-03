@@ -47,6 +47,13 @@ namespace BeeDevelopment.Cogwheel {
 				this.Dumper.Render();
 				this.RenderPanel.BackColor = BackdropColour;
 			}
+
+			// Update debugging windows.
+			foreach (var F in Application.OpenForms) {
+				if (F is PaletteEditor p) {
+					p.Refresh(this.Emulator);
+				}
+			}
 		}
 
 		[System.Security.SuppressUnmanagedCodeSecurity, DllImport("User32.dll", CharSet = CharSet.Auto)]
