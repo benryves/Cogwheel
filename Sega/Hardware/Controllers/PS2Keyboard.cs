@@ -291,6 +291,13 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 					break;
 				case PendingData.TypematicRateDelay:
 					this.Pending = PendingData.None;
+					this.TypematicDelay = TimeSpan.FromSeconds((1 + ((value >> 5) & 3)) * 0.25d); // 0.25, 0.50, 0.75, 1.00.
+					this.TypematicRate = new[] {
+						30.0d, 26.7d, 24.0d, 21.8d, 20.7d, 18.5d, 17.1d, 16.0d,
+						15.0d, 13.3d, 12.0d, 10.9d, 10.0d,  9.2d,  8.6d,  8.0d,
+						 7.5d,  6.7d,  6.0d,  5.5d,  5.0d,  4.6d,  4.3d,  4.0d,
+						 3.7d,  3.3d,  3.0d,  2.7d,  2.5d,  2.3d,  2.1d,  2.0d
+					}[value & 0x1F];
 					break;
 				default:
 					switch (value) {
