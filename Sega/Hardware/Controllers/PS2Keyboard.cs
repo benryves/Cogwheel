@@ -363,11 +363,17 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 
 		public void EnqueueScancode(uint scancode, bool pressed) {
 			var Sequence = new List<byte>();
-			byte prefix = (byte)(scancode >> 8);
-			if (prefix != 0) Sequence.Add(prefix);
-			if (!pressed) Sequence.Add(0xF0);
-			Sequence.Add((byte)scancode);
-			this.EnqueueBytes(Sequence);
+			if (scancode == unchecked(0xE11477E1)) {
+				if (pressed) {
+					this.EnqueueBytes(new byte[] { 0xE1, 0x14, 0x77, 0xE1, 0xF0, 0x14, 0xE0, 0x77 });
+				}
+			} else {
+				byte prefix = (byte)(scancode >> 8);
+				if (prefix != 0) Sequence.Add(prefix);
+				if (!pressed) Sequence.Add(0xF0);
+				Sequence.Add((byte)scancode);
+				this.EnqueueBytes(Sequence);
+			}
 		}
 
 		public void PressKey(uint scancode) {
