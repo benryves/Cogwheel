@@ -353,126 +353,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 
 		#region Private Methods
 
-		private static uint ToScanCode(SC3000Keyboard.Keys key) {
-			switch (key) {
-				case SC3000Keyboard.Keys.D1:
-					return 0x16;
-				case SC3000Keyboard.Keys.D2:
-					return 0x1E;
-				case SC3000Keyboard.Keys.D3:
-					return 0x26;
-				case SC3000Keyboard.Keys.D4:
-					return 0x25;
-				case SC3000Keyboard.Keys.D5:
-					return 0x2E;
-				case SC3000Keyboard.Keys.D6:
-					return 0x36;
-				case SC3000Keyboard.Keys.D7:
-					return 0x3D;
-				case SC3000Keyboard.Keys.D8:
-					return 0x3E;
-				case SC3000Keyboard.Keys.D9:
-					return 0x46;
-				case SC3000Keyboard.Keys.D0:
-					return 0x45;
-				case SC3000Keyboard.Keys.Q:
-					return 0x15;
-				case SC3000Keyboard.Keys.W:
-					return 0x1D;
-				case SC3000Keyboard.Keys.E:
-					return 0x24;
-				case SC3000Keyboard.Keys.R:
-					return 0x2D;
-				case SC3000Keyboard.Keys.T:
-					return 0x2C;
-				case SC3000Keyboard.Keys.Y:
-					return 0x35;
-				case SC3000Keyboard.Keys.U:
-					return 0x3C;
-				case SC3000Keyboard.Keys.I:
-					return 0x43;
-				case SC3000Keyboard.Keys.O:
-					return 0x44;
-				case SC3000Keyboard.Keys.P:
-					return 0x4D;
-				case SC3000Keyboard.Keys.A:
-					return 0x1C;
-				case SC3000Keyboard.Keys.S:
-					return 0x1B;
-				case SC3000Keyboard.Keys.D:
-					return 0x23;
-				case SC3000Keyboard.Keys.F:
-					return 0x2B;
-				case SC3000Keyboard.Keys.G:
-					return 0x34;
-				case SC3000Keyboard.Keys.H:
-					return 0x33;
-				case SC3000Keyboard.Keys.J:
-					return 0x3B;
-				case SC3000Keyboard.Keys.K:
-					return 0x42;
-				case SC3000Keyboard.Keys.L:
-					return 0x4B;
-				case SC3000Keyboard.Keys.Z:
-					return 0x1A;
-				case SC3000Keyboard.Keys.X:
-					return 0x22;
-				case SC3000Keyboard.Keys.C:
-					return 0x21;
-				case SC3000Keyboard.Keys.V:
-					return 0x2A;
-				case SC3000Keyboard.Keys.B:
-					return 0x32;
-				case SC3000Keyboard.Keys.N:
-					return 0x31;
-				case SC3000Keyboard.Keys.M:
-					return 0x3A;
-				case SC3000Keyboard.Keys.Shift:
-					return 0x12;
-				case SC3000Keyboard.Keys.Break:
-					return 0x76;
-				case SC3000Keyboard.Keys.Minus:
-					return 0x4E;
-				case SC3000Keyboard.Keys.Caret:
-					return 0x55;
-				case SC3000Keyboard.Keys.CarriageReturn:
-					return 0x5A;
-				case SC3000Keyboard.Keys.Comma:
-					return 0x41;
-				case SC3000Keyboard.Keys.Period:
-					return 0x49;
-				case SC3000Keyboard.Keys.Slash:
-					return 0x4A;
-				case SC3000Keyboard.Keys.Semicolon:
-					return 0x4C;
-				case SC3000Keyboard.Keys.Colon:
-					return 0x52;
-				case SC3000Keyboard.Keys.CloseBrackets:
-					return 0x5D;
-				case SC3000Keyboard.Keys.AtSign:
-					return 0x54;
-				case SC3000Keyboard.Keys.OpenBrackets:
-					return 0x5B;
-				case SC3000Keyboard.Keys.InsDel:
-					return 0x66;
-				case SC3000Keyboard.Keys.Up:
-					return 0x75;
-				case SC3000Keyboard.Keys.Down:
-					return 0x72;
-				case SC3000Keyboard.Keys.Left:
-					return 0x6B;
-				case SC3000Keyboard.Keys.Right:
-					return 0x74;
-				case SC3000Keyboard.Keys.Space:
-					return 0x29;
-				case SC3000Keyboard.Keys.Control:
-					return 0x14;
-				default:
-					return 0;
-					//throw new InvalidOperationException();
-			}
-		}
-
 		private void Acknowledge() {
 			this.EnqueueByte(0xFA);
 		}
@@ -483,6 +363,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 
 		public void EnqueueScancode(uint scancode, bool pressed) {
 			var Sequence = new List<byte>();
+			byte prefix = (byte)(scancode >> 8);
+			if (prefix != 0) Sequence.Add(prefix);
 			if (!pressed) Sequence.Add(0xF0);
 			Sequence.Add((byte)scancode);
 			this.EnqueueBytes(Sequence);
@@ -497,14 +379,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 			this.EnqueueScancode(scancode, true);
 		}
 
-		/// <summary>
-		/// Simulates pressing a key on the emulated keyboard.
-		/// </summary>
-		/// <param name="key">The <see cref="Keys"/> that has been pressed.</param>
-		public void PressKey(SC3000Keyboard.Keys key) {
-			PressKey(ToScanCode(key));
-		}
-
 		public void ReleaseKey(uint scancode) {
 			if (scancode == 0 || !PressedScanCodes.ContainsKey(scancode)) {
 				return;
@@ -512,14 +386,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 				PressedScanCodes.Remove(scancode);
 			}
 			this.EnqueueScancode(scancode, false);
-		}
-
-		/// <summary>
-		/// Simulates releasing a key on the emulated keyboard.
-		/// </summary>
-		/// <param name="key">The <see cref="Keys"/> that has been released.</param>
-		public void ReleaseKey(SC3000Keyboard.Keys key) {
-			ReleaseKey(ToScanCode(key));
 		}
 
 		public void ReleaseAllKeys() {
@@ -677,14 +543,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 	/// </summary>
 	public class PS2Keyboard : Keyboard {
 
-		public void SetKeyState(SC3000Keyboard.Keys key, bool pressed) {
-			if (pressed) {
-				this.PressKey(key);
-			} else {
-				this.ReleaseKey(key);
-			}
-		}
-
 		public void SetKeyState(uint scancode, bool pressed) {
 			if (pressed) {
 				this.PressKey(scancode);
@@ -712,10 +570,15 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 			this.UpdateState();
 		}
 
+		int timingFudgeFactor = 0;
+
 		/// <summary>
 		/// Updates the state of the emulator's controller ports to reflect the current keyboard state.
 		/// </summary>
 		public void UpdateState() {
+
+			var oldTH = this.Emulator.SegaPorts[0].TH.State;
+
 			if (this.Emulator.SegaPorts[0].TH.Direction == PinDirection.Output) {
 				this.Data = this.Emulator.SegaPorts[0].TH.OutputState;
 			} else {
@@ -727,6 +590,13 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 			} else {
 				this.Clock = true;
 				this.Emulator.SegaPorts[0].TR.InputState = this.Clock;
+			}
+
+			if (!oldTH && this.Emulator.SegaPorts[0].TH.State) {
+				this.Emulator.TotalExecutedCycles += timingFudgeFactor;
+				this.Emulator.Video.LatchHorizontalCounter();
+				this.Emulator.TotalExecutedCycles -= timingFudgeFactor;
+				timingFudgeFactor = (timingFudgeFactor + 8) % 1024;
 			}
 		}
 
