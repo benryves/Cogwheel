@@ -137,6 +137,22 @@ namespace BeeDevelopment.Cogwheel {
 				}
 			}
 
+			// Can we preload the SRAM?
+			var sramPreload = Path.Combine(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename) + ".ram");
+			if (File.Exists(sramPreload)) {
+				try {
+					// Are we using a standard cartridge?
+					var StandardCartridge = this.Emulator.CartridgeSlot.Memory as Sega8Bit.Mappers.Standard;
+					if (StandardCartridge != null) {
+						// Can we load it?
+						try {
+							StandardCartridge.Ram = File.ReadAllBytes(sramPreload);
+						} catch (Exception ex) {
+							MessageBox.Show(this, "Could not load the save RAM: " + ex.Message, "Save RAM", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						}
+					}
+				} catch { }
+			}
 			// Load the SRAM.
 			this.LoadRam();
 

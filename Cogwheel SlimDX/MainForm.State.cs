@@ -116,7 +116,7 @@ namespace BeeDevelopment.Cogwheel {
 
 		private string GetSaveRamFilename(bool checkEmpty) {
 			
-			// Try and convert the cartridge slot memory to the Standard mapper type.
+			// Try to convert the cartridge slot memory to the Standard mapper type.
 			var StandardCartridge = this.Emulator.CartridgeSlot.Memory as Standard;
 			if (StandardCartridge == null) return null;
 			
