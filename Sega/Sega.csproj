@@ -75,6 +75,7 @@
     <Compile Include="Hardware\Controllers\PS2Keyboard.cs" />
     <Compile Include="Hardware\Controllers\SC3000Keyboard.cs" />
     <Compile Include="Hardware\Controllers\SegaControllerPort.cs" />
+    <Compile Include="Hardware\Controllers\CassetteRecorder.cs" />
     <Compile Include="Hardware\Controllers\SerialPort.cs" />
     <Compile Include="Hardware\DebugConsole.cs" />
     <Compile Include="Hardware\FloppyDiskController\FloppyDiskController.cs" />

@@ -41,9 +41,14 @@ namespace BeeDevelopment.Sega8Bit {
 		public bool HasPS2Keyboard { get; set; }
 
 		/// <summary>
-		/// Gets or sets whether the emulator reponds serial port.
+		/// Gets or sets whether the emulator reponds to a serial port.
 		/// </summary>
 		public bool HasSerialPort { get; set; }
+
+		/// <summary>
+		/// Gets or sets whether the emulator reponds to a tape cassette.
+		/// </summary>
+		public bool HasCassetteRecorder { get; set; }
 
 		/// <summary>
 		/// Gets the primary <see cref="ProgrammablePeripheralInterface"/> used by the emulator in SC-3000 and SF-7000 mode.
@@ -410,6 +415,7 @@ namespace BeeDevelopment.Sega8Bit {
 
 								if (this.HasPS2Keyboard) this.PS2Keyboard.UpdateState();
 								if (this.HasSerialPort) this.SerialPort.UpdateState();
+								if (this.HasCassetteRecorder) this.CassetteRecorder.UpdateState();
 								break;
 
 							case 0x40: // PSG.

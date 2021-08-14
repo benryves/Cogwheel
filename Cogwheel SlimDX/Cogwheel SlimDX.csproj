@@ -78,6 +78,12 @@
     <Compile Include="AdvancedRomLoadDialog.Designer.cs">
       <DependentUpon>AdvancedRomLoadDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="CassetteRecorder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CassetteRecorder.Designer.cs">
+      <DependentUpon>CassetteRecorder.cs</DependentUpon>
+    </Compile>
     <Compile Include="ControlEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -155,6 +161,9 @@
     <EmbeddedResource Include="AdvancedRomLoadDialog.resx">
       <DependentUpon>AdvancedRomLoadDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CassetteRecorder.resx">
+      <DependentUpon>CassetteRecorder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ControlEditor.resx">
       <DependentUpon>ControlEditor.cs</DependentUpon>
@@ -281,6 +290,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cog.ico" />
+    <None Include="Resources\control_stop.png" />
+    <None Include="Resources\control_start.png" />
+    <None Include="Resources\control_rewind.png" />
+    <None Include="Resources\control_play.png" />
+    <None Include="Resources\control_fastforward.png" />
+    <None Include="Resources\control_end.png" />
+    <None Include="Resources\control_eject.png" />
     <None Include="Resources\palette.png" />
     <None Include="Resources\Config_PS2KeyMapping.txt" />
     <None Include="Resources\arrow_down.png" />

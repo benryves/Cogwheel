@@ -150,7 +150,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 			}
 
 			if (this.CurrentOutputStream != null) {
-				if (this.myClock) {
+				if (this.myClock && this.CurrentOutputStreamIndex < this.CurrentOutputStream.Length) {
 					this.myData = this.CurrentOutputStream[this.CurrentOutputStreamIndex++];
 				} else {
 					if (this.CurrentOutputStreamIndex == this.CurrentOutputStream.Length) {

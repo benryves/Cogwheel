@@ -201,7 +201,7 @@ namespace BeeDevelopment.Sega8Bit {
 			this.HasResetButton = (model == HardwareModel.MasterSystem || model == HardwareModel.MasterSystem2 || model == HardwareModel.MasterSystemComputer);
 			this.HasPauseButton = !(model == HardwareModel.GameGear || model == HardwareModel.ColecoVision);
 
-			this.HasPS2Keyboard = this.HasSerialPort = (model == HardwareModel.MasterSystemComputer);
+			this.HasPS2Keyboard = this.HasSerialPort = this.HasCassetteRecorder = (model == HardwareModel.MasterSystemComputer);
 
 			for (int i = 0; i < 2; ++i) {
 				this.SegaPorts[i].SupportsOutput = (model == HardwareModel.MasterSystem || model == HardwareModel.MasterSystem2 || model == HardwareModel.MasterSystemComputer) && this.Region != Region.Japanese;

@@ -908,6 +908,7 @@ namespace BeeDevelopment.Cogwheel {
 			this.EmulationVideoBackgroundEnabledMenu.Checked = this.Emulator.Video.BackgroundLayerEnabled;
 			this.EmulationVideoSpritesEnabledMenu.Checked = this.Emulator.Video.SpriteLayerEnabled;
 			this.SerialTerminalConsoleMenu.Visible = this.SerialTerminalConsoleMenu.Enabled = this.Emulator.HasSerialPort;
+			this.CassetteRecorderMenu.Visible = this.CassetteRecorderMenu.Enabled = this.Emulator.HasCassetteRecorder;
 			this.PasteKeyboardMenu.Visible = this.PasteKeyboardMenu.Enabled = this.Emulator.HasPS2Keyboard;
 		}
 
@@ -931,6 +932,16 @@ namespace BeeDevelopment.Cogwheel {
 			new SerialTerminal().Show(this);
 		}
 
+
+		private void CassetteRecorderMenu_Click(object sender, EventArgs e) {
+			foreach (Form F in Application.OpenForms) {
+				if (F is CassetteRecorder) {
+					F.BringToFront();
+					return;
+				}
+			}
+			new CassetteRecorder().Show(this);
+		}
 
 		private void PasteKeyboardMenu_Click(object sender, EventArgs e) {
 			this.Emulator.PS2Keyboard.Type(Clipboard.GetText(TextDataFormat.Text));
@@ -1072,5 +1083,6 @@ namespace BeeDevelopment.Cogwheel {
 
 
 		#endregion
+
 	}
 }

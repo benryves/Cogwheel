@@ -52,6 +52,8 @@ namespace BeeDevelopment.Cogwheel {
 			foreach (var F in Application.OpenForms) {
 				if (F is PaletteEditor p) {
 					p.Refresh(this.Emulator);
+				} else if (F is CassetteRecorder c) {
+					c.Refresh(this.Emulator);
 				}
 			}
 		}

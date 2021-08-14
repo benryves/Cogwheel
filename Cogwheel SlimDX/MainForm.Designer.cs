@@ -129,6 +129,7 @@
 			this.ColourDialog = new System.Windows.Forms.ColorDialog();
 			this.SaveVgmDialog = new System.Windows.Forms.SaveFileDialog();
 			this.OpenVgmDialog = new System.Windows.Forms.OpenFileDialog();
+			this.CassetteRecorderMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -472,6 +473,7 @@
 			this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SdscDebugConsoleMenu,
             this.SerialTerminalConsoleMenu,
+            this.CassetteRecorderMenu,
             this.PasteKeyboardMenu,
             this.DebugSep1,
             this.PaletteMenu,
@@ -893,7 +895,7 @@
 			// StatusSpacer
 			// 
 			this.StatusSpacer.Name = "StatusSpacer";
-			this.StatusSpacer.Size = new System.Drawing.Size(255, 17);
+			this.StatusSpacer.Size = new System.Drawing.Size(286, 17);
 			this.StatusSpacer.Spring = true;
 			// 
 			// StatusNumLock
@@ -950,6 +952,13 @@
 			// OpenVgmDialog
 			// 
 			this.OpenVgmDialog.Filter = "VGM files (*.vgm;*.vgz)|*.vgm;*.vgz|All files (*.*)|*.*";
+			// 
+			// CassetteRecorderMenu
+			// 
+			this.CassetteRecorderMenu.Name = "CassetteRecorderMenu";
+			this.CassetteRecorderMenu.Size = new System.Drawing.Size(211, 22);
+			this.CassetteRecorderMenu.Text = "&Cassette recorder";
+			this.CassetteRecorderMenu.Click += new System.EventHandler(this.CassetteRecorderMenu_Click);
 			// 
 			// MainForm
 			// 
@@ -1086,6 +1095,7 @@
 		private System.Windows.Forms.ToolStripStatusLabel StatusCapsLock;
 		private System.Windows.Forms.ToolStripStatusLabel StatusScrollLock;
 		private System.Windows.Forms.ToolStripMenuItem PaletteMenu;
+		private System.Windows.Forms.ToolStripMenuItem CassetteRecorderMenu;
 #endif
 	}
 }

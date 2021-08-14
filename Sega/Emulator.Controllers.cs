@@ -37,6 +37,12 @@ namespace BeeDevelopment.Sega8Bit {
 		public SerialPort SerialPort { get; private set; }
 
 		/// <summary>
+		/// Gets the <see cref="Hardware.Controllers.CassetteRecorder"/> connected to the console.
+		/// </summary>
+		[StateNotSaved()]
+		public CassetteRecorder CassetteRecorder { get; private set; }
+
+		/// <summary>
 		/// Resets the controller ports to their default state.
 		/// </summary>
 		public void ResetPorts() {
@@ -51,6 +57,7 @@ namespace BeeDevelopment.Sega8Bit {
 			this.SC3000Keyboard = new SC3000Keyboard(this);
 			this.PS2Keyboard = new PS2Keyboard(this);
 			this.SerialPort = new SerialPort(this);
+			this.CassetteRecorder = new CassetteRecorder(this);
 			this.ReadingColecoVisionJoysticks = false;
 			this.ResetButton = false;
 		}
@@ -63,6 +70,7 @@ namespace BeeDevelopment.Sega8Bit {
 
 			if (this.HasPS2Keyboard) this.PS2Keyboard.UpdateState();
 			if (this.HasSerialPort) this.SerialPort.UpdateState();
+			if (this.HasCassetteRecorder) this.CassetteRecorder.UpdateState();
 
 			return (byte)(
 				(this.SegaPorts[0].Up.State ? 0x01 : 0x00) |
@@ -84,6 +92,7 @@ namespace BeeDevelopment.Sega8Bit {
 
 			if (this.HasPS2Keyboard) this.PS2Keyboard.UpdateState();
 			if (this.HasSerialPort) this.SerialPort.UpdateState();
+			if (this.HasCassetteRecorder) this.CassetteRecorder.UpdateState();
 
 			return (byte)(
 				(this.SegaPorts[1].Left.State ? 0x01 : 0x00) |
