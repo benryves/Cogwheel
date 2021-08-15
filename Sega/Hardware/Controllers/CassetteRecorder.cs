@@ -223,6 +223,11 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 			}
 		}
 
+		public bool InvertLevel {
+			get; set;
+		}
+
+
 		private int tapePosition = 0;
 
 		TapeBitStream tapeBitstream;
@@ -303,7 +308,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 					this.emulator.SegaPorts[1].TR.InputState = true;
 					this.Stop();
 				} else if (this.PlayState == CassetteRecorderPlayState.Playing) {
-					this.emulator.SegaPorts[1].TR.InputState = !this.tapeBitstream[this.tapePosition];
+					this.emulator.SegaPorts[1].TR.InputState = this.tapeBitstream[this.tapePosition] ^ this.InvertLevel;
 				} else {
 					this.emulator.SegaPorts[1].TR.InputState = true;
 				}

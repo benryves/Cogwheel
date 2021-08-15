@@ -236,5 +236,19 @@ namespace BeeDevelopment.Cogwheel {
 				emulator.CassetteRecorder.TapePosition = seekTime;
 			}
 		}
+
+		private void CassetteInvertPhaseMenuItem_Click(object sender, EventArgs e) {
+			Emulator emulator = this.GetEmulator();
+			if (emulator != null) {
+				emulator.CassetteRecorder.InvertLevel ^= true;
+			}
+		}
+
+		private void CassetteOptionsMenu_DropDownOpening(object sender, EventArgs e) {
+			Emulator emulator = this.GetEmulator();
+			if (emulator != null) {
+				CassetteInvertPhaseMenuItem.Checked = emulator.CassetteRecorder.InvertLevel;
+			}
+		}
 	}
 }

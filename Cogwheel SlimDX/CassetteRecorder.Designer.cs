@@ -45,6 +45,8 @@ namespace BeeDevelopment.Cogwheel {
 			this.BlockListNumberHeading = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.BlockListLengthHeading = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.OpenCassetteDialog = new System.Windows.Forms.OpenFileDialog();
+			this.CassetteOptionsMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.CassetteInvertPhaseMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.TransportControls.SuspendLayout();
 			this.TapeProgressControls.SuspendLayout();
 			this.ProgressData.SuspendLayout();
@@ -224,7 +226,8 @@ namespace BeeDevelopment.Cogwheel {
 			// 
 			this.CassetteRecorderMenu.Dock = System.Windows.Forms.DockStyle.None;
 			this.CassetteRecorderMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.CassetteFileMenu});
+            this.CassetteFileMenu,
+            this.CassetteOptionsMenu});
 			this.CassetteRecorderMenu.Location = new System.Drawing.Point(0, 0);
 			this.CassetteRecorderMenu.Name = "CassetteRecorderMenu";
 			this.CassetteRecorderMenu.Size = new System.Drawing.Size(501, 24);
@@ -312,6 +315,22 @@ namespace BeeDevelopment.Cogwheel {
 			// 
 			this.OpenCassetteDialog.Filter = "Unified Emulator Format (*.uef)|*.uef";
 			// 
+			// CassetteOptionsMenu
+			// 
+			this.CassetteOptionsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CassetteInvertPhaseMenuItem});
+			this.CassetteOptionsMenu.Name = "CassetteOptionsMenu";
+			this.CassetteOptionsMenu.Size = new System.Drawing.Size(61, 20);
+			this.CassetteOptionsMenu.Text = "&Options";
+			this.CassetteOptionsMenu.DropDownOpening += new System.EventHandler(this.CassetteOptionsMenu_DropDownOpening);
+			// 
+			// CassetteInvertPhaseMenuItem
+			// 
+			this.CassetteInvertPhaseMenuItem.Name = "CassetteInvertPhaseMenuItem";
+			this.CassetteInvertPhaseMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.CassetteInvertPhaseMenuItem.Text = "&Invert phase 180°";
+			this.CassetteInvertPhaseMenuItem.Click += new System.EventHandler(this.CassetteInvertPhaseMenuItem_Click);
+			// 
 			// CassetteRecorder
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -364,5 +383,7 @@ namespace BeeDevelopment.Cogwheel {
 		private System.Windows.Forms.ColumnHeader BlockListNameHeading;
 		private System.Windows.Forms.ColumnHeader BlockListNumberHeading;
 		private System.Windows.Forms.ColumnHeader BlockListLengthHeading;
+		private System.Windows.Forms.ToolStripMenuItem CassetteOptionsMenu;
+		private System.Windows.Forms.ToolStripMenuItem CassetteInvertPhaseMenuItem;
 	}
 }

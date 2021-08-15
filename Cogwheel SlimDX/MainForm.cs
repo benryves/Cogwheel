@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using BeeDevelopment.Sega8Bit;
+using BeeDevelopment.Sega8Bit.Hardware.Controllers;
 using BeeDevelopment.Sega8Bit.Mappers;
 using BeeDevelopment.Sega8Bit.Utility;
 
@@ -124,11 +125,31 @@ namespace BeeDevelopment.Cogwheel {
 			this.QuickSaveSlot = 0;
 
 			// Parse command-line arguments.
-			if (arguments.Length == 1 && File.Exists(arguments[0])) {
+			if (arguments.Length >= 1 && File.Exists(arguments[0])) {
 				try {
 					this.QuickLoad(arguments[0]);
 				} catch { }
 			}
+
+			// Load secondary files, if specified.
+			for (int i = 1; i < arguments.Length; ++i) {
+				if (File.Exists(arguments[i])) {
+					switch (Path.GetExtension(arguments[i]).ToLowerInvariant()) {
+						case ".uef":
+							if (this.Emulator.HasCassetteRecorder) {
+								try {
+									var tape = UnifiedEmulatorFormat.FromFile(arguments[i]);
+									if (tape != null) {
+										this.Emulator.CassetteRecorder.Tape = tape;
+									}
+								} catch { }
+							}
+							break;
+					}
+				}
+
+			}
+
 		}
 
 		void MainForm_Disposed(object sender, EventArgs e) {
