@@ -329,6 +329,12 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 					return TimeSpan.Zero;
 				}
 			}
+			set {
+				if (this.tapeBitstream != null) {
+					this.tapePosition = (int)Math.Floor(value.TotalSeconds * 4800d);
+					this.ClampPlayPosition();
+				}
+			}
 		}
 	}
 }
