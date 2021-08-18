@@ -175,6 +175,7 @@
             this.QuickSaveStateMenu,
             this.QuickStateSlotMenu,
             this.FileSep1,
+            this.CassetteRecorderMenu,
             this.RecentRomsMenu,
             this.FileSep2,
             this.PlayVgmMenu,
@@ -277,7 +278,7 @@
 			// dummyToolStripMenuItem
 			// 
 			this.dummyToolStripMenuItem.Name = "dummyToolStripMenuItem";
-			this.dummyToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+			this.dummyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.dummyToolStripMenuItem.Text = "&Dummy";
 			// 
 			// FileSep2
@@ -473,7 +474,6 @@
 			this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SdscDebugConsoleMenu,
             this.SerialTerminalConsoleMenu,
-            this.CassetteRecorderMenu,
             this.PasteKeyboardMenu,
             this.DebugSep1,
             this.PaletteMenu,
@@ -956,7 +956,7 @@
 			// CassetteRecorderMenu
 			// 
 			this.CassetteRecorderMenu.Name = "CassetteRecorderMenu";
-			this.CassetteRecorderMenu.Size = new System.Drawing.Size(211, 22);
+			this.CassetteRecorderMenu.Size = new System.Drawing.Size(213, 22);
 			this.CassetteRecorderMenu.Text = "&Cassette recorder";
 			this.CassetteRecorderMenu.Click += new System.EventHandler(this.CassetteRecorderMenu_Click);
 			// 

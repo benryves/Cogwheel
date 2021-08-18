@@ -316,6 +316,7 @@ namespace BeeDevelopment.Cogwheel {
 
 		private void FileMenu_DropDownOpening(object sender, EventArgs e) {
 			this.StartStopRecordingVgmMenu.Text = this.Recorder == null ? "Start recording &VGM..." : "Stop recording &VGM";
+			this.CassetteRecorderMenu.Visible = this.Emulator.HasCassetteRecorder;
 		}
 
 		private void UpdateFormTitle(string filename) {
@@ -929,7 +930,6 @@ namespace BeeDevelopment.Cogwheel {
 			this.EmulationVideoBackgroundEnabledMenu.Checked = this.Emulator.Video.BackgroundLayerEnabled;
 			this.EmulationVideoSpritesEnabledMenu.Checked = this.Emulator.Video.SpriteLayerEnabled;
 			this.SerialTerminalConsoleMenu.Visible = this.SerialTerminalConsoleMenu.Enabled = this.Emulator.HasSerialPort;
-			this.CassetteRecorderMenu.Visible = this.CassetteRecorderMenu.Enabled = this.Emulator.HasCassetteRecorder;
 			this.PasteKeyboardMenu.Visible = this.PasteKeyboardMenu.Enabled = this.Emulator.HasPS2Keyboard;
 		}
 

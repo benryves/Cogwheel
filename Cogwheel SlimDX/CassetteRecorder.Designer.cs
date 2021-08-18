@@ -38,6 +38,8 @@ namespace BeeDevelopment.Cogwheel {
 			this.CassetteRecorderMenu = new System.Windows.Forms.MenuStrip();
 			this.CassetteFileMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.CassetteFileOpenMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.CassetteOptionsMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.CassetteInvertPhaseMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.CassetteRecorderToolStrip = new System.Windows.Forms.ToolStripContainer();
 			this.BlockList = new System.Windows.Forms.ListView();
 			this.BlockListTimeHeading = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -45,8 +47,10 @@ namespace BeeDevelopment.Cogwheel {
 			this.BlockListNumberHeading = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.BlockListLengthHeading = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.OpenCassetteDialog = new System.Windows.Forms.OpenFileDialog();
-			this.CassetteOptionsMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.CassetteInvertPhaseMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.CassetteFileSep0 = new System.Windows.Forms.ToolStripSeparator();
+			this.CassetteFileExport = new System.Windows.Forms.ToolStripMenuItem();
+			this.ExportFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
+			this.ExportFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this.TransportControls.SuspendLayout();
 			this.TapeProgressControls.SuspendLayout();
 			this.ProgressData.SuspendLayout();
@@ -66,7 +70,7 @@ namespace BeeDevelopment.Cogwheel {
 			this.PlayButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
 			this.PlayButton.Location = new System.Drawing.Point(3, 3);
 			this.PlayButton.Name = "PlayButton";
-			this.PlayButton.Size = new System.Drawing.Size(93, 38);
+			this.PlayButton.Size = new System.Drawing.Size(96, 38);
 			this.PlayButton.TabIndex = 0;
 			this.PlayButton.Text = "&Play";
 			this.PlayButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -91,7 +95,7 @@ namespace BeeDevelopment.Cogwheel {
 			this.TransportControls.Name = "TransportControls";
 			this.TransportControls.RowCount = 1;
 			this.TransportControls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.TransportControls.Size = new System.Drawing.Size(495, 44);
+			this.TransportControls.Size = new System.Drawing.Size(512, 44);
 			this.TransportControls.TabIndex = 2;
 			// 
 			// EjectButton
@@ -101,9 +105,9 @@ namespace BeeDevelopment.Cogwheel {
 			this.EjectButton.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.EjectButton.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_ControlEject;
 			this.EjectButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-			this.EjectButton.Location = new System.Drawing.Point(399, 3);
+			this.EjectButton.Location = new System.Drawing.Point(411, 3);
 			this.EjectButton.Name = "EjectButton";
-			this.EjectButton.Size = new System.Drawing.Size(93, 38);
+			this.EjectButton.Size = new System.Drawing.Size(98, 38);
 			this.EjectButton.TabIndex = 4;
 			this.EjectButton.Text = "&Eject";
 			this.EjectButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -117,9 +121,9 @@ namespace BeeDevelopment.Cogwheel {
 			this.StopButton.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.StopButton.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_ControlStop;
 			this.StopButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-			this.StopButton.Location = new System.Drawing.Point(300, 3);
+			this.StopButton.Location = new System.Drawing.Point(309, 3);
 			this.StopButton.Name = "StopButton";
-			this.StopButton.Size = new System.Drawing.Size(93, 38);
+			this.StopButton.Size = new System.Drawing.Size(96, 38);
 			this.StopButton.TabIndex = 3;
 			this.StopButton.Text = "&Stop";
 			this.StopButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -133,9 +137,9 @@ namespace BeeDevelopment.Cogwheel {
 			this.FFwdButton.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.FFwdButton.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_ControlFastForward;
 			this.FFwdButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-			this.FFwdButton.Location = new System.Drawing.Point(201, 3);
+			this.FFwdButton.Location = new System.Drawing.Point(207, 3);
 			this.FFwdButton.Name = "FFwdButton";
-			this.FFwdButton.Size = new System.Drawing.Size(93, 38);
+			this.FFwdButton.Size = new System.Drawing.Size(96, 38);
 			this.FFwdButton.TabIndex = 2;
 			this.FFwdButton.Text = "&F.Fwd";
 			this.FFwdButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -149,9 +153,9 @@ namespace BeeDevelopment.Cogwheel {
 			this.RewindButton.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.RewindButton.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_ControlRewind;
 			this.RewindButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-			this.RewindButton.Location = new System.Drawing.Point(102, 3);
+			this.RewindButton.Location = new System.Drawing.Point(105, 3);
 			this.RewindButton.Name = "RewindButton";
-			this.RewindButton.Size = new System.Drawing.Size(93, 38);
+			this.RewindButton.Size = new System.Drawing.Size(96, 38);
 			this.RewindButton.TabIndex = 1;
 			this.RewindButton.Text = "&Rewind";
 			this.RewindButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -165,12 +169,12 @@ namespace BeeDevelopment.Cogwheel {
 			this.TapeProgressControls.Controls.Add(this.ProgressData, 0, 0);
 			this.TapeProgressControls.Controls.Add(this.TransportControls, 0, 1);
 			this.TapeProgressControls.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.TapeProgressControls.Location = new System.Drawing.Point(0, 210);
+			this.TapeProgressControls.Location = new System.Drawing.Point(0, 324);
 			this.TapeProgressControls.Name = "TapeProgressControls";
 			this.TapeProgressControls.RowCount = 2;
 			this.TapeProgressControls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.TapeProgressControls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-			this.TapeProgressControls.Size = new System.Drawing.Size(501, 80);
+			this.TapeProgressControls.Size = new System.Drawing.Size(518, 80);
 			this.TapeProgressControls.TabIndex = 3;
 			// 
 			// ProgressData
@@ -187,13 +191,13 @@ namespace BeeDevelopment.Cogwheel {
 			this.ProgressData.Name = "ProgressData";
 			this.ProgressData.RowCount = 1;
 			this.ProgressData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.ProgressData.Size = new System.Drawing.Size(495, 24);
+			this.ProgressData.Size = new System.Drawing.Size(512, 24);
 			this.ProgressData.TabIndex = 4;
 			// 
 			// TapeCounterLength
 			// 
 			this.TapeCounterLength.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.TapeCounterLength.Location = new System.Drawing.Point(438, 0);
+			this.TapeCounterLength.Location = new System.Drawing.Point(455, 0);
 			this.TapeCounterLength.Name = "TapeCounterLength";
 			this.TapeCounterLength.Size = new System.Drawing.Size(54, 24);
 			this.TapeCounterLength.TabIndex = 3;
@@ -207,7 +211,7 @@ namespace BeeDevelopment.Cogwheel {
 			this.TapeProgress.Location = new System.Drawing.Point(63, 3);
 			this.TapeProgress.Maximum = 600000;
 			this.TapeProgress.Name = "TapeProgress";
-			this.TapeProgress.Size = new System.Drawing.Size(369, 18);
+			this.TapeProgress.Size = new System.Drawing.Size(386, 18);
 			this.TapeProgress.SmallChange = 250;
 			this.TapeProgress.TabIndex = 2;
 			this.TapeProgress.TickFrequency = 15000;
@@ -230,25 +234,44 @@ namespace BeeDevelopment.Cogwheel {
             this.CassetteOptionsMenu});
 			this.CassetteRecorderMenu.Location = new System.Drawing.Point(0, 0);
 			this.CassetteRecorderMenu.Name = "CassetteRecorderMenu";
-			this.CassetteRecorderMenu.Size = new System.Drawing.Size(501, 24);
+			this.CassetteRecorderMenu.Size = new System.Drawing.Size(518, 24);
 			this.CassetteRecorderMenu.TabIndex = 4;
 			this.CassetteRecorderMenu.Text = "menuStrip1";
 			// 
 			// CassetteFileMenu
 			// 
 			this.CassetteFileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.CassetteFileOpenMenu});
+            this.CassetteFileOpenMenu,
+            this.CassetteFileSep0,
+            this.CassetteFileExport});
 			this.CassetteFileMenu.Name = "CassetteFileMenu";
 			this.CassetteFileMenu.Size = new System.Drawing.Size(37, 20);
 			this.CassetteFileMenu.Text = "&File";
+			this.CassetteFileMenu.DropDownOpening += new System.EventHandler(this.CassetteFileMenu_DropDownOpening);
 			// 
 			// CassetteFileOpenMenu
 			// 
 			this.CassetteFileOpenMenu.Name = "CassetteFileOpenMenu";
 			this.CassetteFileOpenMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-			this.CassetteFileOpenMenu.Size = new System.Drawing.Size(181, 22);
+			this.CassetteFileOpenMenu.Size = new System.Drawing.Size(187, 22);
 			this.CassetteFileOpenMenu.Text = "&Open tape...";
 			this.CassetteFileOpenMenu.Click += new System.EventHandler(this.CassetteFileOpenMenu_Click);
+			// 
+			// CassetteOptionsMenu
+			// 
+			this.CassetteOptionsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CassetteInvertPhaseMenuItem});
+			this.CassetteOptionsMenu.Name = "CassetteOptionsMenu";
+			this.CassetteOptionsMenu.Size = new System.Drawing.Size(61, 20);
+			this.CassetteOptionsMenu.Text = "&Options";
+			this.CassetteOptionsMenu.DropDownOpening += new System.EventHandler(this.CassetteOptionsMenu_DropDownOpening);
+			// 
+			// CassetteInvertPhaseMenuItem
+			// 
+			this.CassetteInvertPhaseMenuItem.Name = "CassetteInvertPhaseMenuItem";
+			this.CassetteInvertPhaseMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.CassetteInvertPhaseMenuItem.Text = "&Invert phase 180°";
+			this.CassetteInvertPhaseMenuItem.Click += new System.EventHandler(this.CassetteInvertPhaseMenuItem_Click);
 			// 
 			// CassetteRecorderToolStrip
 			// 
@@ -257,11 +280,11 @@ namespace BeeDevelopment.Cogwheel {
 			// 
 			this.CassetteRecorderToolStrip.ContentPanel.Controls.Add(this.BlockList);
 			this.CassetteRecorderToolStrip.ContentPanel.Controls.Add(this.TapeProgressControls);
-			this.CassetteRecorderToolStrip.ContentPanel.Size = new System.Drawing.Size(501, 290);
+			this.CassetteRecorderToolStrip.ContentPanel.Size = new System.Drawing.Size(518, 404);
 			this.CassetteRecorderToolStrip.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.CassetteRecorderToolStrip.Location = new System.Drawing.Point(0, 0);
 			this.CassetteRecorderToolStrip.Name = "CassetteRecorderToolStrip";
-			this.CassetteRecorderToolStrip.Size = new System.Drawing.Size(501, 314);
+			this.CassetteRecorderToolStrip.Size = new System.Drawing.Size(518, 428);
 			this.CassetteRecorderToolStrip.TabIndex = 5;
 			this.CassetteRecorderToolStrip.Text = "toolStripContainer1";
 			// 
@@ -280,12 +303,11 @@ namespace BeeDevelopment.Cogwheel {
             this.BlockListLengthHeading});
 			this.BlockList.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.BlockList.FullRowSelect = true;
-			this.BlockList.GridLines = true;
 			this.BlockList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this.BlockList.HideSelection = false;
 			this.BlockList.Location = new System.Drawing.Point(0, 0);
 			this.BlockList.Name = "BlockList";
-			this.BlockList.Size = new System.Drawing.Size(501, 210);
+			this.BlockList.Size = new System.Drawing.Size(518, 324);
 			this.BlockList.TabIndex = 4;
 			this.BlockList.UseCompatibleStateImageBehavior = false;
 			this.BlockList.View = System.Windows.Forms.View.Details;
@@ -315,30 +337,30 @@ namespace BeeDevelopment.Cogwheel {
 			// 
 			this.OpenCassetteDialog.Filter = "Unified Emulator Format (*.uef)|*.uef";
 			// 
-			// CassetteOptionsMenu
+			// CassetteFileSep0
 			// 
-			this.CassetteOptionsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.CassetteInvertPhaseMenuItem});
-			this.CassetteOptionsMenu.Name = "CassetteOptionsMenu";
-			this.CassetteOptionsMenu.Size = new System.Drawing.Size(61, 20);
-			this.CassetteOptionsMenu.Text = "&Options";
-			this.CassetteOptionsMenu.DropDownOpening += new System.EventHandler(this.CassetteOptionsMenu_DropDownOpening);
+			this.CassetteFileSep0.Name = "CassetteFileSep0";
+			this.CassetteFileSep0.Size = new System.Drawing.Size(184, 6);
 			// 
-			// CassetteInvertPhaseMenuItem
+			// CassetteFileExport
 			// 
-			this.CassetteInvertPhaseMenuItem.Name = "CassetteInvertPhaseMenuItem";
-			this.CassetteInvertPhaseMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.CassetteInvertPhaseMenuItem.Text = "&Invert phase 180°";
-			this.CassetteInvertPhaseMenuItem.Click += new System.EventHandler(this.CassetteInvertPhaseMenuItem_Click);
+			this.CassetteFileExport.Name = "CassetteFileExport";
+			this.CassetteFileExport.Size = new System.Drawing.Size(187, 22);
+			this.CassetteFileExport.Text = "&Export selected files...";
+			this.CassetteFileExport.Click += new System.EventHandler(this.CassetteFileExport_Click);
+			// 
+			// ExportFileDialog
+			// 
+			this.ExportFileDialog.Filter = "All files (*.*)|*.*";
 			// 
 			// CassetteRecorder
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(501, 314);
+			this.ClientSize = new System.Drawing.Size(518, 428);
 			this.Controls.Add(this.CassetteRecorderToolStrip);
 			this.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.MainMenuStrip = this.CassetteRecorderMenu;
 			this.Name = "CassetteRecorder";
 			this.ShowIcon = false;
@@ -385,5 +407,9 @@ namespace BeeDevelopment.Cogwheel {
 		private System.Windows.Forms.ColumnHeader BlockListLengthHeading;
 		private System.Windows.Forms.ToolStripMenuItem CassetteOptionsMenu;
 		private System.Windows.Forms.ToolStripMenuItem CassetteInvertPhaseMenuItem;
+		private System.Windows.Forms.ToolStripSeparator CassetteFileSep0;
+		private System.Windows.Forms.ToolStripMenuItem CassetteFileExport;
+		private System.Windows.Forms.FolderBrowserDialog ExportFolderDialog;
+		private System.Windows.Forms.SaveFileDialog ExportFileDialog;
 	}
 }

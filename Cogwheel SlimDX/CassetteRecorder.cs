@@ -56,12 +56,17 @@ namespace BeeDevelopment.Cogwheel {
 					// Populate the block list.
 					var currentTape = cassetteRecorder.Tape;
 					if (currentTape != previousTape) {
+
+						this.BlockList.Groups.Clear();
 						this.BlockList.Items.Clear();
 
 						int leaderChunk = -1;
 						
 						int bitstreamIndex = 0;
 						var bitstreamIndices = new int[currentTape.Chunks.Length];
+
+						ListViewGroup currentGroup = null;
+						List<byte> currentGroupData = null;
 
 						for (int i = 0; i < currentTape.Chunks.Length; ++i) {
 							
@@ -89,11 +94,27 @@ namespace BeeDevelopment.Cogwheel {
 												}
 											}
 
+
+											var blockName = Encoding.ASCII.GetString(filename.ToArray());
+
 											headerReader.ReadUInt32(); // load address
 											headerReader.ReadUInt32(); // execution address
 											var blockNumber = headerReader.ReadUInt16();
 											var dataLength = headerReader.ReadUInt16();
 											headerReader.ReadByte(); // flag
+											headerReader.ReadUInt32(); // address of next file
+											headerReader.ReadUInt16(); // header CRC
+
+											if (currentGroup == null || currentGroup.Header != blockName) {
+												currentGroupData = new List<byte>();
+												currentGroup = new ListViewGroup {
+													Header = blockName,
+													Tag = currentGroupData,
+												};
+												this.BlockList.Groups.Add(currentGroup);
+											}
+
+											currentGroupData.AddRange(headerReader.ReadBytes(dataLength));
 
 											var seekTime = bitstreamIndices[Math.Max(0, leaderChunk)];
 											var time = TimeSpan.FromSeconds(seekTime / 4800d);
@@ -101,9 +122,10 @@ namespace BeeDevelopment.Cogwheel {
 											var blockSkipItem = new ListViewItem {
 												Text = string.Format("{0}:{1:00}", time.Minutes, time.Seconds),
 												Tag = time,
+												Group = currentGroup,
 											};
 
-											blockSkipItem.SubItems.Add(Encoding.ASCII.GetString(filename.ToArray()));
+											blockSkipItem.SubItems.Add(blockName);
 											blockSkipItem.SubItems.Add(blockNumber.ToString("X2"));
 											blockSkipItem.SubItems.Add(dataLength.ToString("X4"));
 
@@ -248,6 +270,36 @@ namespace BeeDevelopment.Cogwheel {
 			Emulator emulator = this.GetEmulator();
 			if (emulator != null) {
 				CassetteInvertPhaseMenuItem.Checked = emulator.CassetteRecorder.InvertLevel;
+			}
+		}
+
+		private void CassetteFileMenu_DropDownOpening(object sender, EventArgs e) {
+			this.CassetteFileExport.Enabled = this.BlockList.SelectedItems.Count > 0;
+		}
+
+		private void CassetteFileExport_Click(object sender, EventArgs e) {
+			try {
+				List<ListViewGroup> filesToExport = new List<ListViewGroup>();
+				foreach (ListViewItem item in this.BlockList.SelectedItems) {
+					if (!filesToExport.Contains(item.Group as ListViewGroup)) {
+						filesToExport.Add(item.Group as ListViewGroup);
+					}
+				}
+				if (filesToExport.Count == 1) {
+					var file = filesToExport[0];
+					this.ExportFileDialog.FileName = file.Header;
+					if (this.ExportFileDialog.ShowDialog(this) == DialogResult.OK) {
+						File.WriteAllBytes(this.ExportFileDialog.FileName, (file.Tag as List<byte>).ToArray());
+					}
+				} else if (filesToExport.Count > 1) {
+					if (this.ExportFolderDialog.ShowDialog(this) == DialogResult.OK) {
+						foreach (ListViewGroup file in filesToExport) {
+							File.WriteAllBytes(Path.Combine(this.ExportFolderDialog.SelectedPath, file.Header), (file.Tag as List<byte>).ToArray());
+						}
+					}
+				}
+			} catch (Exception ex) {
+				MessageBox.Show(this, "There was an error exporting the file: " + ex.Message, "Export", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 	}
