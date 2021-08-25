@@ -52,15 +52,15 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 
 		public void WriteDataBit(bool value) {
 			if (value) {
-				this.Add(true);
 				this.Add(false);
 				this.Add(true);
 				this.Add(false);
+				this.Add(true);
 			} else {
-				this.Add(true);
-				this.Add(true);
 				this.Add(false);
 				this.Add(false);
+				this.Add(true);
+				this.Add(true);
 			}
 		}
 
@@ -104,7 +104,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 					break;
 				case 0x0112: // Chunk &0112 - integer gap
 					for (int i = (this.Data[0] + (this.Data[1] * 256)) * 8; i > 0; --i) {
-						tapeBitStream.Add(false);
+						tapeBitStream.Add(true);
 					}
 					break;
 				default:
