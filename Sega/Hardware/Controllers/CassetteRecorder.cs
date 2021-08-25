@@ -305,12 +305,12 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 				this.tapePosition += bitsAdvanced * playSpeed;
 
 				if (this.tapePosition < 0 || this.tapePosition >= this.tapeBitstream.Count) {
-					this.emulator.SegaPorts[1].TR.InputState = true;
+					this.emulator.SegaPorts[1].Down.State = true;
 					this.Stop();
 				} else if (this.PlayState == CassetteRecorderPlayState.Playing) {
-					this.emulator.SegaPorts[1].TR.InputState = this.tapeBitstream[this.tapePosition] ^ this.InvertLevel;
+					this.emulator.SegaPorts[1].Down.State = this.tapeBitstream[this.tapePosition] ^ this.InvertLevel;
 				} else {
-					this.emulator.SegaPorts[1].TR.InputState = true;
+					this.emulator.SegaPorts[1].Down.State = true;
 				}
 
 			}
