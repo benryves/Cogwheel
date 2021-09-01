@@ -290,6 +290,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cog.ico" />
+    <None Include="Resources\control_record.png" />
     <None Include="Resources\control_stop.png" />
     <None Include="Resources\control_start.png" />
     <None Include="Resources\control_rewind.png" />
@@ -306,6 +307,9 @@
     <None Include="Resources\application_xp_terminal.png" />
     <None Include="Resources\bullet_black.png" />
     <None Include="Resources\Config_DefaultJoystickMapping.txt" />
+    <None Include="Resources\cassette.png" />
+    <None Include="Resources\cassette_play.png" />
+    <None Include="Resources\cassette_record.png" />
     <Content Include="Resources\Config_DefaultKeyMapping.txt" />
     <None Include="Resources\music.png" />
     <None Include="Resources\vgmplayer.stub" />

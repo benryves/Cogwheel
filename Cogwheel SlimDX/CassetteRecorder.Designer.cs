@@ -26,6 +26,7 @@ namespace BeeDevelopment.Cogwheel {
 		private void InitializeComponent() {
 			this.PlayButton = new System.Windows.Forms.CheckBox();
 			this.TransportControls = new System.Windows.Forms.TableLayoutPanel();
+			this.RecordButton = new System.Windows.Forms.CheckBox();
 			this.EjectButton = new System.Windows.Forms.CheckBox();
 			this.StopButton = new System.Windows.Forms.CheckBox();
 			this.FFwdButton = new System.Windows.Forms.CheckBox();
@@ -38,6 +39,8 @@ namespace BeeDevelopment.Cogwheel {
 			this.CassetteRecorderMenu = new System.Windows.Forms.MenuStrip();
 			this.CassetteFileMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.CassetteFileOpenMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.CassetteFileSep0 = new System.Windows.Forms.ToolStripSeparator();
+			this.CassetteFileExport = new System.Windows.Forms.ToolStripMenuItem();
 			this.CassetteOptionsMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.CassetteInvertPhaseMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.CassetteRecorderToolStrip = new System.Windows.Forms.ToolStripContainer();
@@ -47,8 +50,6 @@ namespace BeeDevelopment.Cogwheel {
 			this.BlockListNumberHeading = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.BlockListLengthHeading = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.OpenCassetteDialog = new System.Windows.Forms.OpenFileDialog();
-			this.CassetteFileSep0 = new System.Windows.Forms.ToolStripSeparator();
-			this.CassetteFileExport = new System.Windows.Forms.ToolStripMenuItem();
 			this.ExportFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.ExportFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this.TransportControls.SuspendLayout();
@@ -68,28 +69,30 @@ namespace BeeDevelopment.Cogwheel {
 			this.PlayButton.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.PlayButton.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_ControlPlay;
 			this.PlayButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-			this.PlayButton.Location = new System.Drawing.Point(3, 3);
+			this.PlayButton.Location = new System.Drawing.Point(88, 3);
 			this.PlayButton.Name = "PlayButton";
-			this.PlayButton.Size = new System.Drawing.Size(96, 38);
+			this.PlayButton.Size = new System.Drawing.Size(79, 38);
 			this.PlayButton.TabIndex = 0;
-			this.PlayButton.Text = "&Play";
+			this.PlayButton.Text = "Play";
 			this.PlayButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
 			this.PlayButton.UseVisualStyleBackColor = true;
 			this.PlayButton.Click += new System.EventHandler(this.PlayButton_Click);
 			// 
 			// TransportControls
 			// 
-			this.TransportControls.ColumnCount = 5;
-			this.TransportControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-			this.TransportControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-			this.TransportControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-			this.TransportControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-			this.TransportControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-			this.TransportControls.Controls.Add(this.EjectButton, 4, 0);
-			this.TransportControls.Controls.Add(this.StopButton, 3, 0);
-			this.TransportControls.Controls.Add(this.FFwdButton, 2, 0);
-			this.TransportControls.Controls.Add(this.RewindButton, 1, 0);
-			this.TransportControls.Controls.Add(this.PlayButton, 0, 0);
+			this.TransportControls.ColumnCount = 6;
+			this.TransportControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+			this.TransportControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+			this.TransportControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+			this.TransportControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+			this.TransportControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+			this.TransportControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+			this.TransportControls.Controls.Add(this.RecordButton, 0, 0);
+			this.TransportControls.Controls.Add(this.EjectButton, 5, 0);
+			this.TransportControls.Controls.Add(this.StopButton, 4, 0);
+			this.TransportControls.Controls.Add(this.FFwdButton, 3, 0);
+			this.TransportControls.Controls.Add(this.RewindButton, 2, 0);
+			this.TransportControls.Controls.Add(this.PlayButton, 1, 0);
 			this.TransportControls.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.TransportControls.Location = new System.Drawing.Point(3, 33);
 			this.TransportControls.Name = "TransportControls";
@@ -98,6 +101,21 @@ namespace BeeDevelopment.Cogwheel {
 			this.TransportControls.Size = new System.Drawing.Size(512, 44);
 			this.TransportControls.TabIndex = 2;
 			// 
+			// RecordButton
+			// 
+			this.RecordButton.Appearance = System.Windows.Forms.Appearance.Button;
+			this.RecordButton.AutoCheck = false;
+			this.RecordButton.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.RecordButton.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_ControlRecord;
+			this.RecordButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+			this.RecordButton.Location = new System.Drawing.Point(3, 3);
+			this.RecordButton.Name = "RecordButton";
+			this.RecordButton.Size = new System.Drawing.Size(79, 38);
+			this.RecordButton.TabIndex = 5;
+			this.RecordButton.Text = "Record";
+			this.RecordButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+			this.RecordButton.UseVisualStyleBackColor = true;
+			// 
 			// EjectButton
 			// 
 			this.EjectButton.Appearance = System.Windows.Forms.Appearance.Button;
@@ -105,11 +123,11 @@ namespace BeeDevelopment.Cogwheel {
 			this.EjectButton.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.EjectButton.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_ControlEject;
 			this.EjectButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-			this.EjectButton.Location = new System.Drawing.Point(411, 3);
+			this.EjectButton.Location = new System.Drawing.Point(428, 3);
 			this.EjectButton.Name = "EjectButton";
-			this.EjectButton.Size = new System.Drawing.Size(98, 38);
+			this.EjectButton.Size = new System.Drawing.Size(81, 38);
 			this.EjectButton.TabIndex = 4;
-			this.EjectButton.Text = "&Eject";
+			this.EjectButton.Text = "Eject";
 			this.EjectButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
 			this.EjectButton.UseVisualStyleBackColor = true;
 			this.EjectButton.Click += new System.EventHandler(this.EjectButton_Click);
@@ -121,11 +139,11 @@ namespace BeeDevelopment.Cogwheel {
 			this.StopButton.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.StopButton.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_ControlStop;
 			this.StopButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-			this.StopButton.Location = new System.Drawing.Point(309, 3);
+			this.StopButton.Location = new System.Drawing.Point(343, 3);
 			this.StopButton.Name = "StopButton";
-			this.StopButton.Size = new System.Drawing.Size(96, 38);
+			this.StopButton.Size = new System.Drawing.Size(79, 38);
 			this.StopButton.TabIndex = 3;
-			this.StopButton.Text = "&Stop";
+			this.StopButton.Text = "Stop";
 			this.StopButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
 			this.StopButton.UseVisualStyleBackColor = true;
 			this.StopButton.Click += new System.EventHandler(this.StopButton_Click);
@@ -137,11 +155,11 @@ namespace BeeDevelopment.Cogwheel {
 			this.FFwdButton.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.FFwdButton.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_ControlFastForward;
 			this.FFwdButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-			this.FFwdButton.Location = new System.Drawing.Point(207, 3);
+			this.FFwdButton.Location = new System.Drawing.Point(258, 3);
 			this.FFwdButton.Name = "FFwdButton";
-			this.FFwdButton.Size = new System.Drawing.Size(96, 38);
+			this.FFwdButton.Size = new System.Drawing.Size(79, 38);
 			this.FFwdButton.TabIndex = 2;
-			this.FFwdButton.Text = "&F.Fwd";
+			this.FFwdButton.Text = "F.Fwd";
 			this.FFwdButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
 			this.FFwdButton.UseVisualStyleBackColor = true;
 			this.FFwdButton.Click += new System.EventHandler(this.FFwdButton_CheckedChanged);
@@ -153,11 +171,11 @@ namespace BeeDevelopment.Cogwheel {
 			this.RewindButton.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.RewindButton.Image = global::BeeDevelopment.Cogwheel.Properties.Resources.Icon_ControlRewind;
 			this.RewindButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-			this.RewindButton.Location = new System.Drawing.Point(105, 3);
+			this.RewindButton.Location = new System.Drawing.Point(173, 3);
 			this.RewindButton.Name = "RewindButton";
-			this.RewindButton.Size = new System.Drawing.Size(96, 38);
+			this.RewindButton.Size = new System.Drawing.Size(79, 38);
 			this.RewindButton.TabIndex = 1;
-			this.RewindButton.Text = "&Rewind";
+			this.RewindButton.Text = "Rewind";
 			this.RewindButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
 			this.RewindButton.UseVisualStyleBackColor = true;
 			this.RewindButton.Click += new System.EventHandler(this.RewindButton_CheckedChanged);
@@ -257,6 +275,18 @@ namespace BeeDevelopment.Cogwheel {
 			this.CassetteFileOpenMenu.Text = "&Open tape...";
 			this.CassetteFileOpenMenu.Click += new System.EventHandler(this.CassetteFileOpenMenu_Click);
 			// 
+			// CassetteFileSep0
+			// 
+			this.CassetteFileSep0.Name = "CassetteFileSep0";
+			this.CassetteFileSep0.Size = new System.Drawing.Size(184, 6);
+			// 
+			// CassetteFileExport
+			// 
+			this.CassetteFileExport.Name = "CassetteFileExport";
+			this.CassetteFileExport.Size = new System.Drawing.Size(187, 22);
+			this.CassetteFileExport.Text = "&Export selected files...";
+			this.CassetteFileExport.Click += new System.EventHandler(this.CassetteFileExport_Click);
+			// 
 			// CassetteOptionsMenu
 			// 
 			this.CassetteOptionsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -269,7 +299,7 @@ namespace BeeDevelopment.Cogwheel {
 			// CassetteInvertPhaseMenuItem
 			// 
 			this.CassetteInvertPhaseMenuItem.Name = "CassetteInvertPhaseMenuItem";
-			this.CassetteInvertPhaseMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.CassetteInvertPhaseMenuItem.Size = new System.Drawing.Size(164, 22);
 			this.CassetteInvertPhaseMenuItem.Text = "&Invert phase 180°";
 			this.CassetteInvertPhaseMenuItem.Click += new System.EventHandler(this.CassetteInvertPhaseMenuItem_Click);
 			// 
@@ -337,18 +367,6 @@ namespace BeeDevelopment.Cogwheel {
 			// 
 			this.OpenCassetteDialog.Filter = "Unified Emulator Format (*.uef)|*.uef";
 			// 
-			// CassetteFileSep0
-			// 
-			this.CassetteFileSep0.Name = "CassetteFileSep0";
-			this.CassetteFileSep0.Size = new System.Drawing.Size(184, 6);
-			// 
-			// CassetteFileExport
-			// 
-			this.CassetteFileExport.Name = "CassetteFileExport";
-			this.CassetteFileExport.Size = new System.Drawing.Size(187, 22);
-			this.CassetteFileExport.Text = "&Export selected files...";
-			this.CassetteFileExport.Click += new System.EventHandler(this.CassetteFileExport_Click);
-			// 
 			// ExportFileDialog
 			// 
 			this.ExportFileDialog.Filter = "All files (*.*)|*.*";
@@ -411,5 +429,6 @@ namespace BeeDevelopment.Cogwheel {
 		private System.Windows.Forms.ToolStripMenuItem CassetteFileExport;
 		private System.Windows.Forms.FolderBrowserDialog ExportFolderDialog;
 		private System.Windows.Forms.SaveFileDialog ExportFileDialog;
+		private System.Windows.Forms.CheckBox RecordButton;
 	}
 }

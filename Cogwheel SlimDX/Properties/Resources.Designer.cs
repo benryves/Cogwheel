@@ -377,6 +377,36 @@ namespace BeeDevelopment.Cogwheel.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Icon_Cassette {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Cassette", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Icon_CassettePlay {
+            get {
+                object obj = ResourceManager.GetObject("Icon_CassettePlay", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Icon_CassetteRecord {
+            get {
+                object obj = ResourceManager.GetObject("Icon_CassetteRecord", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Icon_Comment {
             get {
                 object obj = ResourceManager.GetObject("Icon_Comment", resourceCulture);
@@ -440,6 +470,16 @@ namespace BeeDevelopment.Cogwheel.Properties {
         internal static System.Drawing.Bitmap Icon_ControlPlay {
             get {
                 object obj = ResourceManager.GetObject("Icon_ControlPlay", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Icon_ControlRecord {
+            get {
+                object obj = ResourceManager.GetObject("Icon_ControlRecord", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

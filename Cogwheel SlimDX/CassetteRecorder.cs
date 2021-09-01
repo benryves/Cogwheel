@@ -57,98 +57,90 @@ namespace BeeDevelopment.Cogwheel {
 					var currentTape = cassetteRecorder.Tape;
 					if (currentTape != previousTape) {
 
+						var tapeStream = currentTape.ToTapeBitStream();
+
+						var tapeBlocks = tapeStream.GetDataBlocks();
+
 						this.BlockList.Groups.Clear();
 						this.BlockList.Items.Clear();
-
-						int leaderChunk = -1;
 						
-						int bitstreamIndex = 0;
 						var bitstreamIndices = new int[currentTape.Chunks.Length];
 
 						ListViewGroup currentGroup = null;
 						List<byte> currentGroupData = null;
 
-						for (int i = 0; i < currentTape.Chunks.Length; ++i) {
-							
-							var chunk = currentTape.Chunks[i];
-							if ((chunk.ID & 0xFF00) == 0x0100) {
-								
-								bitstreamIndices[i] = bitstreamIndex;
-								bitstreamIndex += chunk.ToTapeBitStream().Count;
+						foreach (var item in tapeBlocks) {
 
-								switch (chunk.ID) {
-									case 0x0100: // Here's our data chunk!
-										if (chunk.Data.Length > 16) {
+							var headerReader = new BinaryReader(new MemoryStream(item.Value));
 
-											var headerReader = new BinaryReader(new MemoryStream(chunk.Data));
+							// Read up to sync byte.
+							do {
+								if (headerReader.BaseStream.Position == headerReader.BaseStream.Length) {
+									break;
+								}
+							} while (headerReader.ReadByte() != 0x2A);
 
-											if (headerReader.PeekChar() == 0x2A) {
-												headerReader.ReadByte();
-											}
-
-											List<byte> filename = new List<byte>();
-											{
-												byte b;
-												while ((b = headerReader.ReadByte()) != 0) {
-													filename.Add(b);
-												}
-											}
+							// Is there any data left?
+							if ((headerReader.BaseStream.Length - headerReader.BaseStream.Position) < 16) {
+								continue;
+							}
 
 
-											var blockName = Encoding.ASCII.GetString(filename.ToArray());
-
-											headerReader.ReadUInt32(); // load address
-											headerReader.ReadUInt32(); // execution address
-											var blockNumber = headerReader.ReadUInt16();
-											var dataLength = headerReader.ReadUInt16();
-											headerReader.ReadByte(); // flag
-											headerReader.ReadUInt32(); // address of next file
-											headerReader.ReadUInt16(); // header CRC
-
-											if (currentGroup == null || currentGroup.Header != blockName) {
-												currentGroupData = new List<byte>();
-												currentGroup = new ListViewGroup {
-													Header = blockName,
-													Tag = currentGroupData,
-												};
-												this.BlockList.Groups.Add(currentGroup);
-											}
-
-											currentGroupData.AddRange(headerReader.ReadBytes(dataLength));
-
-											var seekTime = bitstreamIndices[Math.Max(0, leaderChunk)];
-											var time = TimeSpan.FromSeconds(seekTime / 4800d);
-
-											var blockSkipItem = new ListViewItem {
-												Text = string.Format("{0}:{1:00}", time.Minutes, time.Seconds),
-												Tag = time,
-												Group = currentGroup,
-											};
-
-											blockSkipItem.SubItems.Add(blockName);
-											blockSkipItem.SubItems.Add(blockNumber.ToString("X2"));
-											blockSkipItem.SubItems.Add(dataLength.ToString("X4"));
-
-											this.BlockList.Items.Add(blockSkipItem);
-										}
-										leaderChunk = -1;
-										break;
-									case 0x0110: // Carrier
-									case 0x0111:
-										leaderChunk = i;
-										break;
-									case 0x0115: // Do nothing with these chunks.
-									case 0x0117:
-									case 0x0120:
-									case 0x0130:
-										break;
-									default: // Everything else is unsupported and indicates a loss of leader.
-										leaderChunk = -1;
-										break;
-
+							List<byte> filename = new List<byte>();
+							{
+								byte b;
+								while ((b = headerReader.ReadByte()) != 0 && filename.Count < 10) {
+									filename.Add(b);
 								}
 							}
-							
+
+
+							var blockName = Encoding.ASCII.GetString(filename.ToArray());
+
+							// Is there enough data left?
+							if ((headerReader.BaseStream.Length - headerReader.BaseStream.Position) < 19) {
+								continue;
+							}
+
+							headerReader.ReadUInt32(); // load address
+							headerReader.ReadUInt32(); // execution address
+							var blockNumber = headerReader.ReadUInt16();
+							var dataLength = headerReader.ReadUInt16();
+							headerReader.ReadByte(); // flag
+							headerReader.ReadUInt32(); // address of next file
+							headerReader.ReadUInt16(); // header CRC
+
+							if (currentGroup == null || currentGroup.Header != blockName) {
+								currentGroupData = new List<byte>();
+								currentGroup = new ListViewGroup {
+									Header = blockName,
+									Tag = currentGroupData,
+								};
+								this.BlockList.Groups.Add(currentGroup);
+							}
+
+							// Is there enough data left?
+							if ((headerReader.BaseStream.Length - headerReader.BaseStream.Position) < dataLength) {
+								continue;
+							}
+
+							currentGroupData.AddRange(headerReader.ReadBytes(dataLength));
+
+							var seekTime = Math.Max(0, item.Key - 2400);
+							var time = TimeSpan.FromSeconds(seekTime / 4800d);
+
+							var blockSkipItem = new ListViewItem {
+								Text = string.Format("{0}:{1:00}", time.Minutes, time.Seconds),
+								Tag = time,
+								Group = currentGroup,
+							};
+
+							blockSkipItem.SubItems.Add(blockName);
+							blockSkipItem.SubItems.Add(blockNumber.ToString("X2"));
+							blockSkipItem.SubItems.Add(dataLength.ToString("X4"));
+
+							this.BlockList.Items.Add(blockSkipItem);
+
 						}
 
 						this.previousTape = currentTape;

@@ -56,6 +56,19 @@ namespace BeeDevelopment.Cogwheel {
 					c.Refresh(this.Emulator);
 				}
 			}
+
+			if (this.StatusCassette.Visible = (this.Emulator.HasCassetteRecorder && (this.Emulator.CassetteRecorder.Tape != null))) {
+				var tapePosition = this.Emulator.CassetteRecorder.TapePosition;
+				this.StatusCassette.Text = string.Format("{0}:{1:00}", tapePosition.Minutes, tapePosition.Seconds);
+				switch (this.Emulator.CassetteRecorder.PlayState) {
+					case Sega8Bit.Hardware.Controllers.CassetteRecorderPlayState.Playing:
+						this.StatusCassette.Image = Properties.Resources.Icon_CassettePlay;
+						break;
+					default:
+						this.StatusCassette.Image = Properties.Resources.Icon_Cassette;
+						break;
+				}
+			}
 		}
 
 		[System.Security.SuppressUnmanagedCodeSecurity, DllImport("User32.dll", CharSet = CharSet.Auto)]

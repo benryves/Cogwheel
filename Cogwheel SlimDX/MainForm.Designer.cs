@@ -39,6 +39,7 @@
 			this.QuickStateSlotMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.dummyToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.FileSep1 = new System.Windows.Forms.ToolStripSeparator();
+			this.CassetteRecorderMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.RecentRomsMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.dummyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.FileSep2 = new System.Windows.Forms.ToolStripSeparator();
@@ -117,6 +118,7 @@
 			this.BugReportMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.OpenRomDialog = new System.Windows.Forms.OpenFileDialog();
 			this.Status = new System.Windows.Forms.StatusStrip();
+			this.StatusCassette = new System.Windows.Forms.ToolStripStatusLabel();
 			this.MessageStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.StatusSpacer = new System.Windows.Forms.ToolStripStatusLabel();
 			this.StatusNumLock = new System.Windows.Forms.ToolStripStatusLabel();
@@ -129,7 +131,6 @@
 			this.ColourDialog = new System.Windows.Forms.ColorDialog();
 			this.SaveVgmDialog = new System.Windows.Forms.SaveFileDialog();
 			this.OpenVgmDialog = new System.Windows.Forms.OpenFileDialog();
-			this.CassetteRecorderMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -266,6 +267,13 @@
 			this.FileSep1.Name = "FileSep1";
 			this.FileSep1.Size = new System.Drawing.Size(210, 6);
 			// 
+			// CassetteRecorderMenu
+			// 
+			this.CassetteRecorderMenu.Name = "CassetteRecorderMenu";
+			this.CassetteRecorderMenu.Size = new System.Drawing.Size(213, 22);
+			this.CassetteRecorderMenu.Text = "&Cassette recorder";
+			this.CassetteRecorderMenu.Click += new System.EventHandler(this.CassetteRecorderMenu_Click);
+			// 
 			// RecentRomsMenu
 			// 
 			this.RecentRomsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -278,7 +286,7 @@
 			// dummyToolStripMenuItem
 			// 
 			this.dummyToolStripMenuItem.Name = "dummyToolStripMenuItem";
-			this.dummyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.dummyToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
 			this.dummyToolStripMenuItem.Text = "&Dummy";
 			// 
 			// FileSep2
@@ -875,6 +883,7 @@
 			// Status
 			// 
 			this.Status.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StatusCassette,
             this.MessageStatus,
             this.StatusSpacer,
             this.StatusNumLock,
@@ -886,6 +895,13 @@
 			this.Status.SizingGrip = false;
 			this.Status.TabIndex = 0;
 			// 
+			// StatusCassette
+			// 
+			this.StatusCassette.Image = ((System.Drawing.Image)(resources.GetObject("StatusCassette.Image")));
+			this.StatusCassette.Name = "StatusCassette";
+			this.StatusCassette.Size = new System.Drawing.Size(16, 17);
+			this.StatusCassette.Click += new System.EventHandler(this.CassetteRecorderMenu_Click);
+			// 
 			// MessageStatus
 			// 
 			this.MessageStatus.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
@@ -895,7 +911,7 @@
 			// StatusSpacer
 			// 
 			this.StatusSpacer.Name = "StatusSpacer";
-			this.StatusSpacer.Size = new System.Drawing.Size(286, 17);
+			this.StatusSpacer.Size = new System.Drawing.Size(209, 17);
 			this.StatusSpacer.Spring = true;
 			// 
 			// StatusNumLock
@@ -952,13 +968,6 @@
 			// OpenVgmDialog
 			// 
 			this.OpenVgmDialog.Filter = "VGM files (*.vgm;*.vgz)|*.vgm;*.vgz|All files (*.*)|*.*";
-			// 
-			// CassetteRecorderMenu
-			// 
-			this.CassetteRecorderMenu.Name = "CassetteRecorderMenu";
-			this.CassetteRecorderMenu.Size = new System.Drawing.Size(213, 22);
-			this.CassetteRecorderMenu.Text = "&Cassette recorder";
-			this.CassetteRecorderMenu.Click += new System.EventHandler(this.CassetteRecorderMenu_Click);
 			// 
 			// MainForm
 			// 
@@ -1096,6 +1105,7 @@
 		private System.Windows.Forms.ToolStripStatusLabel StatusScrollLock;
 		private System.Windows.Forms.ToolStripMenuItem PaletteMenu;
 		private System.Windows.Forms.ToolStripMenuItem CassetteRecorderMenu;
+		private System.Windows.Forms.ToolStripStatusLabel StatusCassette;
 #endif
 	}
 }

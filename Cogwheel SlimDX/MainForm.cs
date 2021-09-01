@@ -1104,6 +1104,5 @@ namespace BeeDevelopment.Cogwheel {
 
 
 		#endregion
-
 	}
 }

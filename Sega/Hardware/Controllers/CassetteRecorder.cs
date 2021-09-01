@@ -77,6 +77,88 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 			}
 		}
 
+		/// <summary>
+		/// Decode the bit stream into a stream of data bits.
+		/// </summary>
+		public KeyValuePair<int, bool>[] GetDataBits() {
+			List<KeyValuePair<int, bool>> result = new List<KeyValuePair<int, bool>>();
+
+			int lastStateChanged = 0;
+			bool waitingSecondHalfOfOne = false;
+			for (int i = 1; i < this.count; ++i) {
+				if (this[i] != this[i - 1]) {
+					if (!this[i]) {
+						var waveLength = i - lastStateChanged;
+						if (waveLength > 1 && waveLength < 6) {
+							if (waveLength < 3 && waitingSecondHalfOfOne) {
+								waitingSecondHalfOfOne = false;
+							} else {
+								if (waveLength < 3) {
+									waitingSecondHalfOfOne = true;
+									result.Add(new KeyValuePair<int, bool>(lastStateChanged, true));
+								} else {
+									result.Add(new KeyValuePair<int, bool>(lastStateChanged, false));
+								}
+							}
+						} else {
+							waitingSecondHalfOfOne = false;
+						}
+						lastStateChanged = i;
+					}
+				}
+			}
+			return result.ToArray();
+		}
+
+		/// <summary>
+		/// Decode the bit stream into a stream of data bytes.
+		/// </summary>
+		public KeyValuePair<int, byte>[] GetDataBytes() {
+			List<KeyValuePair<int, byte>> result = new List<KeyValuePair<int, byte>>();
+			int lastBitReceived = 0;
+			byte value = 0;
+			int bitsReceived = -1;
+			int startBitTime = 0;
+			foreach (var item in this.GetDataBits()) {
+				if (item.Key - lastBitReceived > 8) {
+					bitsReceived = -1;
+				}
+				if (bitsReceived < 0) {
+					if (!item.Value) {
+						bitsReceived = 0;
+						startBitTime = item.Key;
+					}
+				} else if (bitsReceived < 8) {
+					value >>= 1;
+					if (item.Value) value |= 0x80;
+					++bitsReceived;
+				} else {
+					bitsReceived = -1;
+					if (item.Value) {
+						result.Add(new KeyValuePair<int, byte>(startBitTime, value));
+					}
+				}
+				lastBitReceived = item.Key;
+			}
+			return result.ToArray();
+		}
+
+		/// <summary>
+		/// Decode the bit stream into a stream of data blocks.
+		/// </summary>
+		public KeyValuePair<int, byte[]>[] GetDataBlocks() {
+			List<KeyValuePair<int, List<byte>>> result = new List<KeyValuePair<int, List<byte>>>();
+			int lastByteReceived = 0;
+			foreach (var item in this.GetDataBytes()) {
+				if (result.Count == 0 || (item.Key - lastByteReceived) > 80) {
+					result.Add(new KeyValuePair<int, List<byte>>(item.Key, new List<byte>()));
+				}
+				result[result.Count - 1].Value.Add(item.Value);
+				lastByteReceived = item.Key;
+			}
+			return Array.ConvertAll(result.ToArray(), item => new KeyValuePair<int, byte[]>(item.Key, item.Value.ToArray()));
+		}
+
 	}
 
 	public struct UnifiedEmulatorFormatChunk {
