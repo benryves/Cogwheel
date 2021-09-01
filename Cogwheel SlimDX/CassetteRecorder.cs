@@ -28,7 +28,15 @@ namespace BeeDevelopment.Cogwheel {
 			}
 		}
 
-		private UnifiedEmulatorFormat previousTape = null;
+		private void RecordButton_Click(object sender, EventArgs e) {
+			var emulator = this.GetEmulator();
+			if ((emulator != null) && emulator.HasCassetteRecorder) {
+				emulator.CassetteRecorder.Record();
+			}
+		}
+
+		private TapeBitStream previousTape = null;
+		private int previousTapeLength = 0;
 
 		public void Refresh(Emulator emulator) {
 			if (!emulator.HasCassetteRecorder) {
@@ -36,10 +44,10 @@ namespace BeeDevelopment.Cogwheel {
 				return;
 			} else {
 				this.Enabled = true;
-				
+
 				var cassetteRecorder = emulator.CassetteRecorder;
 
-				if (cassetteRecorder.Tape == null) {
+				if (cassetteRecorder.TapeBitStream == null) {
 
 					this.BlockList.Items.Clear();
 
@@ -48,23 +56,25 @@ namespace BeeDevelopment.Cogwheel {
 					this.TapeProgress.Maximum = 600000;
 					this.TapeCounterLength.Text = this.TapeCounterPosition.Text = "--:--";
 
-					this.PlayButton.Checked = this.StopButton.Checked = this.RewindButton.Checked = this.FFwdButton.Checked = false;
+					this.RecordButton.Checked = this.PlayButton.Checked = this.StopButton.Checked = this.RewindButton.Checked = this.FFwdButton.Checked = false;
+
+					this.previousTape = null;
+					this.previousTapeLength = 0;
 
 				} else {
+
 					this.TapeProgressControls.Enabled = true;
 
 					// Populate the block list.
-					var currentTape = cassetteRecorder.Tape;
-					if (currentTape != previousTape) {
+					var currentTape = cassetteRecorder.TapeBitStream;
+					if (currentTape != previousTape || previousTapeLength != currentTape.Count) {
 
-						var tapeStream = currentTape.ToTapeBitStream();
+						var tapeStream = currentTape;
 
 						var tapeBlocks = tapeStream.GetDataBlocks();
 
 						this.BlockList.Groups.Clear();
 						this.BlockList.Items.Clear();
-						
-						var bitstreamIndices = new int[currentTape.Chunks.Length];
 
 						ListViewGroup currentGroup = null;
 						List<byte> currentGroupData = null;
@@ -144,6 +154,7 @@ namespace BeeDevelopment.Cogwheel {
 						}
 
 						this.previousTape = currentTape;
+						this.previousTapeLength = currentTape.Count;
 					}
 
 					var tapePosition = cassetteRecorder.TapePosition;
@@ -161,7 +172,8 @@ namespace BeeDevelopment.Cogwheel {
 						this.TapeProgress.Maximum = maximum;
 					}
 
-					this.PlayButton.Checked = cassetteRecorder.PlayState == CassetteRecorderPlayState.Playing;
+					this.RecordButton.Checked = cassetteRecorder.PlayState == CassetteRecorderPlayState.Recording;
+					this.PlayButton.Checked = cassetteRecorder.PlayState == CassetteRecorderPlayState.Playing || cassetteRecorder.PlayState == CassetteRecorderPlayState.Recording;
 					this.StopButton.Checked = cassetteRecorder.PlayState == CassetteRecorderPlayState.Stopped;
 					this.RewindButton.Checked = cassetteRecorder.PlayState == CassetteRecorderPlayState.Rewinding;
 					this.FFwdButton.Checked = cassetteRecorder.PlayState == CassetteRecorderPlayState.FastForwarding;
@@ -206,6 +218,8 @@ namespace BeeDevelopment.Cogwheel {
 				}
 			}
 		}
+
+		
 
 		private void EjectButton_Click(object sender, EventArgs e) {
 			var emulator = this.GetEmulator();
@@ -294,5 +308,14 @@ namespace BeeDevelopment.Cogwheel {
 				MessageBox.Show(this, "There was an error exporting the file: " + ex.Message, "Export", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
+
+		private void CassetteFileNewMenu_Click(object sender, EventArgs e) {
+			Emulator emulator = this.GetEmulator();
+			if (emulator != null) {
+				emulator.CassetteRecorder.Tape = new UnifiedEmulatorFormat();
+			}
+
+		}
+
 	}
 }

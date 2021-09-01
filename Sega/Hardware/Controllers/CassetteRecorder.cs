@@ -207,9 +207,11 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 
 		public TapeBitStream ToTapeBitStream() {
 			var result = new TapeBitStream();
-			foreach (var chunk in this.Chunks) {
-				if ((chunk.ID & 0xFF00) == 0x0100) {
-					result.Add(chunk.ToTapeBitStream());
+			if (this.Chunks != null) {
+				foreach (var chunk in this.Chunks) {
+					if ((chunk.ID & 0xFF00) == 0x0100) {
+						result.Add(chunk.ToTapeBitStream());
+					}
 				}
 			}
 			return result;
@@ -277,6 +279,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 	public enum CassetteRecorderPlayState {
 		Stopped,
 		Playing,
+		Recording,
 		Rewinding,
 		FastForwarding,
 	};
@@ -289,19 +292,21 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 
 		private Emulator emulator;
 
-		private UnifiedEmulatorFormat tape;
-
 		public UnifiedEmulatorFormat Tape {
-			get { return this.tape; }
 			set {
-				this.tape = value;
 				this.PlayState = CassetteRecorderPlayState.Stopped;
 				this.tapePosition = 0;
-				if (this.tape != null) {
-					this.tapeBitstream = this.Tape.ToTapeBitStream();
+				if (value != null) {
+					this.tapeBitstream = value.ToTapeBitStream();
 				} else {
 					this.tapeBitstream = null;
 				}
+			}
+		}
+
+		public TapeBitStream TapeBitStream {
+			get {
+				return this.tapeBitstream;
 			}
 		}
 
@@ -315,9 +320,17 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 		TapeBitStream tapeBitstream;
 
 		public void Play() {
-			if (this.Tape != null) {
+			if (this.tapeBitstream != null) {
 				this.lastCpuCycles = this.emulator.TotalExecutedCycles;
 				this.PlayState = CassetteRecorderPlayState.Playing;
+				this.ClampPlayPosition();
+			}
+		}
+
+		public void Record() {
+			if (this.tapeBitstream != null) {
+				this.lastCpuCycles = this.emulator.TotalExecutedCycles;
+				this.PlayState = CassetteRecorderPlayState.Recording;
 				this.ClampPlayPosition();
 			}
 		}
@@ -335,7 +348,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 		}
 
 		public void FastForward() {
-			if (this.Tape != null) {
+			if (this.tapeBitstream != null) {
 				this.lastCpuCycles = this.emulator.TotalExecutedCycles;
 				this.PlayState = CassetteRecorderPlayState.FastForwarding;
 				this.ClampPlayPosition();
@@ -343,7 +356,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 		}
 
 		public void Rewind() {
-			if (this.Tape != null) {
+			if (this.tapeBitstream != null) {
 				this.lastCpuCycles = this.emulator.TotalExecutedCycles;
 				this.PlayState = CassetteRecorderPlayState.Rewinding;
 				this.ClampPlayPosition();
@@ -351,7 +364,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 		}
 
 		private void ClampPlayPosition() {
-			if (this.tape != null && this.tapeBitstream != null) {
+			if (this.tapeBitstream != null) {
 				this.tapePosition = Math.Max(0, Math.Min(this.tapeBitstream.Count - 1, this.tapePosition));
 			}
 		}
@@ -370,6 +383,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 				var playSpeed = 0;
 				switch (this.PlayState) {
 					case CassetteRecorderPlayState.Playing:
+					case CassetteRecorderPlayState.Recording:
 						playSpeed = 1;
 						break;
 					case CassetteRecorderPlayState.FastForwarding:
@@ -386,11 +400,17 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 				this.lastCpuCycles += bitsAdvanced * (this.emulator.ClockSpeed / 4800);
 				this.tapePosition += bitsAdvanced * playSpeed;
 
-				if (this.tapePosition < 0 || this.tapePosition >= this.tapeBitstream.Count) {
+				if (this.tapePosition < 0 || (this.tapePosition >= this.tapeBitstream.Count && this.PlayState != CassetteRecorderPlayState.Recording)) {
 					this.emulator.SegaPorts[1].Down.State = true;
 					this.Stop();
 				} else if (this.PlayState == CassetteRecorderPlayState.Playing) {
 					this.emulator.SegaPorts[1].Down.State = this.tapeBitstream[this.tapePosition] ^ this.InvertLevel;
+				} else if (this.PlayState == CassetteRecorderPlayState.Recording) {
+					var level = this.emulator.SegaPorts[1].TH.State ^ this.InvertLevel;
+					while (this.tapeBitstream.Count <= this.tapePosition) {
+						this.tapeBitstream.Add(false);
+					}
+					this.tapeBitstream[this.tapePosition] = level;
 				} else {
 					this.emulator.SegaPorts[1].Down.State = true;
 				}

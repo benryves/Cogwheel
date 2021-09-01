@@ -52,6 +52,7 @@ namespace BeeDevelopment.Cogwheel {
 			this.OpenCassetteDialog = new System.Windows.Forms.OpenFileDialog();
 			this.ExportFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.ExportFileDialog = new System.Windows.Forms.SaveFileDialog();
+			this.CassetteFileNewMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.TransportControls.SuspendLayout();
 			this.TapeProgressControls.SuspendLayout();
 			this.ProgressData.SuspendLayout();
@@ -115,6 +116,7 @@ namespace BeeDevelopment.Cogwheel {
 			this.RecordButton.Text = "Record";
 			this.RecordButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
 			this.RecordButton.UseVisualStyleBackColor = true;
+			this.RecordButton.Click += new System.EventHandler(this.RecordButton_Click);
 			// 
 			// EjectButton
 			// 
@@ -259,6 +261,7 @@ namespace BeeDevelopment.Cogwheel {
 			// CassetteFileMenu
 			// 
 			this.CassetteFileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CassetteFileNewMenu,
             this.CassetteFileOpenMenu,
             this.CassetteFileSep0,
             this.CassetteFileExport});
@@ -271,19 +274,19 @@ namespace BeeDevelopment.Cogwheel {
 			// 
 			this.CassetteFileOpenMenu.Name = "CassetteFileOpenMenu";
 			this.CassetteFileOpenMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-			this.CassetteFileOpenMenu.Size = new System.Drawing.Size(187, 22);
+			this.CassetteFileOpenMenu.Size = new System.Drawing.Size(199, 22);
 			this.CassetteFileOpenMenu.Text = "&Open tape...";
 			this.CassetteFileOpenMenu.Click += new System.EventHandler(this.CassetteFileOpenMenu_Click);
 			// 
 			// CassetteFileSep0
 			// 
 			this.CassetteFileSep0.Name = "CassetteFileSep0";
-			this.CassetteFileSep0.Size = new System.Drawing.Size(184, 6);
+			this.CassetteFileSep0.Size = new System.Drawing.Size(196, 6);
 			// 
 			// CassetteFileExport
 			// 
 			this.CassetteFileExport.Name = "CassetteFileExport";
-			this.CassetteFileExport.Size = new System.Drawing.Size(187, 22);
+			this.CassetteFileExport.Size = new System.Drawing.Size(199, 22);
 			this.CassetteFileExport.Text = "&Export selected files...";
 			this.CassetteFileExport.Click += new System.EventHandler(this.CassetteFileExport_Click);
 			// 
@@ -371,6 +374,14 @@ namespace BeeDevelopment.Cogwheel {
 			// 
 			this.ExportFileDialog.Filter = "All files (*.*)|*.*";
 			// 
+			// CassetteFileNewMenu
+			// 
+			this.CassetteFileNewMenu.Name = "CassetteFileNewMenu";
+			this.CassetteFileNewMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+			this.CassetteFileNewMenu.Size = new System.Drawing.Size(199, 22);
+			this.CassetteFileNewMenu.Text = "&New blank tape";
+			this.CassetteFileNewMenu.Click += new System.EventHandler(this.CassetteFileNewMenu_Click);
+			// 
 			// CassetteRecorder
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -430,5 +441,6 @@ namespace BeeDevelopment.Cogwheel {
 		private System.Windows.Forms.FolderBrowserDialog ExportFolderDialog;
 		private System.Windows.Forms.SaveFileDialog ExportFileDialog;
 		private System.Windows.Forms.CheckBox RecordButton;
+		private System.Windows.Forms.ToolStripMenuItem CassetteFileNewMenu;
 	}
 }

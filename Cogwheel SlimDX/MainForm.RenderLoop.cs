@@ -57,12 +57,15 @@ namespace BeeDevelopment.Cogwheel {
 				}
 			}
 
-			if (this.StatusCassette.Visible = (this.Emulator.HasCassetteRecorder && (this.Emulator.CassetteRecorder.Tape != null))) {
+			if (this.StatusCassette.Visible = (this.Emulator.HasCassetteRecorder && (this.Emulator.CassetteRecorder.TapeBitStream != null))) {
 				var tapePosition = this.Emulator.CassetteRecorder.TapePosition;
 				this.StatusCassette.Text = string.Format("{0}:{1:00}", tapePosition.Minutes, tapePosition.Seconds);
 				switch (this.Emulator.CassetteRecorder.PlayState) {
 					case Sega8Bit.Hardware.Controllers.CassetteRecorderPlayState.Playing:
 						this.StatusCassette.Image = Properties.Resources.Icon_CassettePlay;
+						break;
+					case Sega8Bit.Hardware.Controllers.CassetteRecorderPlayState.Recording:
+						this.StatusCassette.Image = Properties.Resources.Icon_CassetteRecord;
 						break;
 					default:
 						this.StatusCassette.Image = Properties.Resources.Icon_Cassette;
