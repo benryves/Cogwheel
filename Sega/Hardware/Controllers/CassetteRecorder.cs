@@ -289,6 +289,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 
 
 		public CassetteRecorderPlayState PlayState { get; private set; }
+		public bool MotorOn { get; set; }
 
 		private Emulator emulator;
 
@@ -371,13 +372,17 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 
 		public CassetteRecorder(Emulator emulator) {
 			this.emulator = emulator;
+			this.MotorOn = true;
 		}
 
 		private int lastCpuCycles = 0;
 
 		public void UpdateState() {
+
+			this.MotorOn = this.emulator.SegaPorts[1].TR.Direction == PinDirection.Output && this.emulator.SegaPorts[1].TR.OutputState;
+
 			if (this.PlayState == CassetteRecorderPlayState.Stopped || this.tapeBitstream == null) {
-				this.emulator.SegaPorts[1].TR.InputState = true;
+				this.emulator.SegaPorts[1].Down.State = true;
 			} else {
 
 				var playSpeed = 0;
@@ -392,6 +397,10 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 					case CassetteRecorderPlayState.Rewinding:
 						playSpeed = -2;
 						break;
+				}
+
+				if (!this.MotorOn) {
+					playSpeed = 0;
 				}
 
 				// Calculate the new read position.

@@ -108,7 +108,7 @@ namespace BeeDevelopment.Cogwheel {
 			this.LoadRecentItemsFromSettings();
 
 			// Populate speed menu.
-			for (int speed = 1; speed <= 8; speed *= 2) {
+			for (int speed = 1; speed <= 16; speed *= 2) {
 				var SpeedMenuItem = new ToolStripMenuItem {
 					Text = string.Format("{0}x", speed),
 					Tag = speed,
@@ -116,6 +116,13 @@ namespace BeeDevelopment.Cogwheel {
 				SpeedMenuItem.Click += SpeedMenuItem_Click;
 				this.EmulationSpeedMenu.DropDownItems.Add(SpeedMenuItem);
 			}
+
+			this.EmulationSpeedMenu.DropDownItems.Add(new ToolStripSeparator());
+			var OnlySpeedUpWhenLoading = new ToolStripMenuItem {
+				Text = "Only speed up during loading"
+			};
+			OnlySpeedUpWhenLoading.Click += SpeedMenuItem_Click;
+			this.EmulationSpeedMenu.DropDownItems.Add(OnlySpeedUpWhenLoading);
 
 			// Attach render loop handler.
 			Application.Idle += new EventHandler(Application_Idle);
@@ -141,6 +148,7 @@ namespace BeeDevelopment.Cogwheel {
 									var tape = UnifiedEmulatorFormat.FromFile(arguments[i]);
 									if (tape != null) {
 										this.Emulator.CassetteRecorder.Tape = tape;
+										this.Emulator.CassetteRecorder.Play();
 									}
 								} catch { }
 							}
@@ -907,15 +915,27 @@ namespace BeeDevelopment.Cogwheel {
 			var speedToolStripItem = sender as ToolStripItem;
 			if (speedToolStripItem == null) return;
 			var speed = speedToolStripItem.Tag;
-			if (speed == null) return;
-			this.SpeedMultiplier = (int)speed;
+			if (speed == null) {
+				this.OnlySpeedUpDuringLoading ^= true;
+			} else {
+				this.SpeedMultiplier = (int)speed;
+			}
 		}
 
 		private void EmulationSpeedMenu_DropDownOpening(object sender, EventArgs e) {
 			foreach (var item in EmulationSpeedMenu.DropDownItems) {
 				var speedToolStripItem = item as ToolStripMenuItem;
 				if (speedToolStripItem != null) {
-					speedToolStripItem.Image = (speedToolStripItem.Tag != null && (int)speedToolStripItem.Tag == this.speedMultiplier) ? Properties.Resources.Icon_Bullet_Black : null;
+					if (speedToolStripItem.Tag == null) {
+						speedToolStripItem.Checked = this.OnlySpeedUpDuringLoading;
+						speedToolStripItem.Visible = this.Emulator.HasCassetteRecorder;
+					} else {
+						speedToolStripItem.Image = ((int)speedToolStripItem.Tag == this.speedMultiplier) ? Properties.Resources.Icon_Bullet_Black : null;
+					}
+				}
+				var speedToolStripSeparator = item as ToolStripSeparator;
+				if (speedToolStripSeparator != null) {
+					speedToolStripSeparator.Visible = this.Emulator.HasCassetteRecorder;
 				}
 			}
 		}

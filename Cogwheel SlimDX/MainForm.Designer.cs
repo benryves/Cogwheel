@@ -911,7 +911,7 @@
 			// StatusSpacer
 			// 
 			this.StatusSpacer.Name = "StatusSpacer";
-			this.StatusSpacer.Size = new System.Drawing.Size(209, 17);
+			this.StatusSpacer.Size = new System.Drawing.Size(239, 17);
 			this.StatusSpacer.Spring = true;
 			// 
 			// StatusNumLock

@@ -213,6 +213,7 @@ namespace BeeDevelopment.Cogwheel {
 				try {
 					emulator.CassetteRecorder.Stop();
 					emulator.CassetteRecorder.Tape = UnifiedEmulatorFormat.FromFile(this.OpenCassetteDialog.FileName);
+					emulator.CassetteRecorder.Play();
 				} catch (Exception ex) {
 					MessageBox.Show(this, "There was an error loading the UEF: " + ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
@@ -313,6 +314,7 @@ namespace BeeDevelopment.Cogwheel {
 			Emulator emulator = this.GetEmulator();
 			if (emulator != null) {
 				emulator.CassetteRecorder.Tape = new UnifiedEmulatorFormat();
+				emulator.CassetteRecorder.Record();
 			}
 
 		}

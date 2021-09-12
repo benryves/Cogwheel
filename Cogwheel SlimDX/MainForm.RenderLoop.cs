@@ -59,17 +59,34 @@ namespace BeeDevelopment.Cogwheel {
 
 			if (this.StatusCassette.Visible = (this.Emulator.HasCassetteRecorder && (this.Emulator.CassetteRecorder.TapeBitStream != null))) {
 				var tapePosition = this.Emulator.CassetteRecorder.TapePosition;
-				this.StatusCassette.Text = string.Format("{0}:{1:00}", tapePosition.Minutes, tapePosition.Seconds);
+				
+				var text = string.Format("{0}:{1:00}", tapePosition.Minutes, tapePosition.Seconds);
+				var image = Properties.Resources.Icon_Cassette; 
+
 				switch (this.Emulator.CassetteRecorder.PlayState) {
 					case Sega8Bit.Hardware.Controllers.CassetteRecorderPlayState.Playing:
-						this.StatusCassette.Image = Properties.Resources.Icon_CassettePlay;
+						image = Properties.Resources.Icon_CassettePlay;
+						if (this.Emulator.CassetteRecorder.MotorOn) {
+							text += " (Playing)";
+						}
 						break;
 					case Sega8Bit.Hardware.Controllers.CassetteRecorderPlayState.Recording:
-						this.StatusCassette.Image = Properties.Resources.Icon_CassetteRecord;
+						image = Properties.Resources.Icon_CassetteRecord;
+						if (this.Emulator.CassetteRecorder.MotorOn) {
+							text += " (Recording)";
+						}
 						break;
-					default:
-						this.StatusCassette.Image = Properties.Resources.Icon_Cassette;
-						break;
+				}
+
+				if (!this.Emulator.CassetteRecorder.MotorOn) {
+					image = Properties.Resources.Icon_Cassette;
+				}
+
+				if (this.StatusCassette.Text != text) {
+					this.StatusCassette.Text = text;
+				}
+				if (this.StatusCassette.Image != image) {
+					this.StatusCassette.Image = image;
 				}
 			}
 		}
@@ -92,6 +109,10 @@ namespace BeeDevelopment.Cogwheel {
 			}
 		}
 
+		public bool OnlySpeedUpDuringLoading {
+			get; set;
+		}
+
 		Stopwatch FrameTime = new Stopwatch();
 
 		void Application_Idle(object sender, EventArgs e) {
@@ -110,7 +131,9 @@ namespace BeeDevelopment.Cogwheel {
 						FramesToRender = 5;
 					}
 
-					FramesToRender *= speedMultiplier;
+					if (!(this.Emulator.HasCassetteRecorder && OnlySpeedUpDuringLoading && (!this.Emulator.CassetteRecorder.MotorOn || this.Emulator.CassetteRecorder.PlayState == Sega8Bit.Hardware.Controllers.CassetteRecorderPlayState.Stopped))) {
+						FramesToRender *= speedMultiplier;
+					}
 
 					if (!this.Paused) {
 						RefreshStepper -= this.Emulator.Video.FrameRate * FramesToRender;
