@@ -379,7 +379,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 
 		public void UpdateState() {
 
-			this.MotorOn = this.emulator.SegaPorts[1].TR.Direction == PinDirection.Output && this.emulator.SegaPorts[1].TR.OutputState;
+			this.MotorOn = this.emulator.SegaPorts[1].TR.Direction == PinDirection.Output && !this.emulator.SegaPorts[1].TR.OutputState;
 
 			if (this.PlayState == CassetteRecorderPlayState.Stopped || this.tapeBitstream == null) {
 				this.emulator.SegaPorts[1].Down.State = true;
@@ -413,9 +413,9 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 					this.emulator.SegaPorts[1].Down.State = true;
 					this.Stop();
 				} else if (this.PlayState == CassetteRecorderPlayState.Playing) {
-					this.emulator.SegaPorts[1].Down.State = this.tapeBitstream[this.tapePosition] ^ this.InvertLevel;
+					this.emulator.SegaPorts[1].Down.State = (this.tapeBitstream[this.tapePosition] ^ this.InvertLevel);
 				} else if (this.PlayState == CassetteRecorderPlayState.Recording) {
-					var level = this.emulator.SegaPorts[1].TH.State ^ this.InvertLevel;
+					var level = (this.emulator.SegaPorts[1].TH.State ^ this.InvertLevel);
 					while (this.tapeBitstream.Count <= this.tapePosition) {
 						this.tapeBitstream.Add(false);
 					}
