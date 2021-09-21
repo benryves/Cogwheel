@@ -214,6 +214,8 @@ namespace BeeDevelopment.Cogwheel {
 					emulator.CassetteRecorder.Stop();
 					emulator.CassetteRecorder.Tape = UnifiedEmulatorFormat.FromFile(this.OpenCassetteDialog.FileName);
 					emulator.CassetteRecorder.Play();
+					emulator.CassetteRecorder.ConnectedToEmulator = true;
+					if (emulator.HasSerialPort) emulator.SerialPort.ConnectedToEmulator = false;
 				} catch (Exception ex) {
 					MessageBox.Show(this, "There was an error loading the UEF: " + ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
@@ -276,6 +278,7 @@ namespace BeeDevelopment.Cogwheel {
 		private void CassetteOptionsMenu_DropDownOpening(object sender, EventArgs e) {
 			Emulator emulator = this.GetEmulator();
 			if (emulator != null) {
+				CassetteConnectToEmulatorMenuItem.Checked = emulator.CassetteRecorder.ConnectedToEmulator;
 				CassetteInvertPhaseMenuItem.Checked = emulator.CassetteRecorder.InvertLevel;
 			}
 		}
@@ -315,9 +318,17 @@ namespace BeeDevelopment.Cogwheel {
 			if (emulator != null) {
 				emulator.CassetteRecorder.Tape = new UnifiedEmulatorFormat();
 				emulator.CassetteRecorder.Record();
+				emulator.CassetteRecorder.ConnectedToEmulator = true;
+				if (emulator.HasSerialPort) emulator.SerialPort.ConnectedToEmulator = false;
 			}
 
 		}
 
+		private void CassetteConnectToEmulatorMenuItem_Click(object sender, EventArgs e) {
+			Emulator emulator = this.GetEmulator();
+			if (emulator != null) {
+				emulator.CassetteRecorder.ConnectedToEmulator ^= true;
+			}
+		}
 	}
 }

@@ -147,6 +147,7 @@ namespace BeeDevelopment.Cogwheel {
 								try {
 									var tape = UnifiedEmulatorFormat.FromFile(arguments[i]);
 									if (tape != null) {
+										this.Emulator.CassetteRecorder.ConnectedToEmulator = true;
 										this.Emulator.CassetteRecorder.Tape = tape;
 										this.Emulator.CassetteRecorder.Play();
 									}
@@ -324,7 +325,12 @@ namespace BeeDevelopment.Cogwheel {
 
 		private void FileMenu_DropDownOpening(object sender, EventArgs e) {
 			this.StartStopRecordingVgmMenu.Text = this.Recorder == null ? "Start recording &VGM..." : "Stop recording &VGM";
+			
 			this.CassetteRecorderMenu.Visible = this.Emulator.HasCassetteRecorder;
+			this.CassetteRecorderMenu.Checked = this.Emulator.CassetteRecorder != null && this.Emulator.CassetteRecorder.ConnectedToEmulator;
+
+			this.VDriveMenu.Visible = this.Emulator.HasSerialPort;
+			this.VDriveMenu.Checked = (this.Emulator.SerialPort is Sega8Bit.Hardware.Controllers.VDrive.VDrive);
 		}
 
 		private void UpdateFormTitle(string filename) {
@@ -984,6 +990,16 @@ namespace BeeDevelopment.Cogwheel {
 			new CassetteRecorder().Show(this);
 		}
 
+		private void VDriveMenu_Click(object sender, EventArgs e) {
+			foreach (Form F in Application.OpenForms) {
+				if (F is VDrive) {
+					F.BringToFront();
+					return;
+				}
+			}
+			new VDrive().Show(this);
+		}
+
 		private void PasteKeyboardMenu_Click(object sender, EventArgs e) {
 			this.Emulator.PS2Keyboard.Type(Clipboard.GetText(TextDataFormat.Text));
 
@@ -1124,5 +1140,7 @@ namespace BeeDevelopment.Cogwheel {
 
 
 		#endregion
+
+		
 	}
 }

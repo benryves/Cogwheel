@@ -211,6 +211,25 @@ namespace BeeDevelopment.Cogwheel {
 
 		private void SerialTerminal_Load(object sender, EventArgs e) {
 			var emulator = this.GetEmulator();
+			if (!emulator.HasSerialPort) {
+				this.Close();
+			}
+			if (!emulator.SerialPort.ConnectedToEmulator) {
+				switch (MessageBox.Show(this, "The emulator doesn't have a serial cable plugged in at the moment." + Environment.NewLine + "Would you like to plug one in?", this.Text, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)) {
+					case DialogResult.Yes:
+						emulator.SerialPort.ConnectedToEmulator = true;
+						break;
+					case DialogResult.No:
+						emulator.SerialPort.ConnectedToEmulator = false;
+						break;
+					case DialogResult.Cancel:
+						this.Close();
+						break;
+				}
+			}
+			if (emulator.SerialPort.ConnectedToEmulator && emulator.HasCassetteRecorder) {
+				emulator.CassetteRecorder.ConnectedToEmulator = false;
+			}
 		}
 	}
 }

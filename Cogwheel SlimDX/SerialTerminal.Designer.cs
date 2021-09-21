@@ -51,7 +51,6 @@ namespace BeeDevelopment.Cogwheel {
 			this.ConsoleMenuStrip.Name = "ConsoleMenuStrip";
 			this.ConsoleMenuStrip.Size = new System.Drawing.Size(424, 24);
 			this.ConsoleMenuStrip.TabIndex = 1;
-			this.ConsoleMenuStrip.Text = "menuStrip1";
 			// 
 			// BaudRateMenuItem
 			// 
@@ -72,7 +71,7 @@ namespace BeeDevelopment.Cogwheel {
 			// ConnectToNoneMenuItem
 			// 
 			this.ConnectToNoneMenuItem.Name = "ConnectToNoneMenuItem";
-			this.ConnectToNoneMenuItem.Size = new System.Drawing.Size(103, 22);
+			this.ConnectToNoneMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.ConnectToNoneMenuItem.Text = "None";
 			this.ConnectToNoneMenuItem.Click += new System.EventHandler(this.ConnectToDropdownMenuItem_Click);
 			// 

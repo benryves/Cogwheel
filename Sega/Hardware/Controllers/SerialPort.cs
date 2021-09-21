@@ -8,6 +8,10 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 
 		private Emulator emulator;
 
+		public bool ConnectedToEmulator {
+			get; set;
+		}
+
 		private int baudRate = 9600;
 		public int BaudRate {
 			get {
@@ -64,13 +68,22 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 
 		public SerialPort(Emulator emulator) {
 			this.emulator = emulator;
-			this.TxD = true; // Idle
-			this.RxD = true; // Idle
+			this.TxD = true;
+			this.RxD = true;
+			this.CTS = true;
+			this.RTS = true;
 			this.receivingData = false;
 		}
 
 
 		public void UpdateState() {
+
+			if (!this.ConnectedToEmulator) {
+				this.transmitBitQueue.Clear();
+				this.receiveBitQueue.Clear();
+				this.receivingData = false;
+				return;
+			}
 
 			while (this.transmitBitQueue.Count > 0) {
 				var headOfQueue = this.transmitBitQueue.Peek();
@@ -105,8 +118,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 
 					bool currentRxD = true;  // Start bit should always be false.
 
-					Debug.Write("Data in <- ");
-
 					int data = 0;
 					for (int i = 0, sampleTime = this.receiveStartTime + (this.emulator.ClockSpeed / baudRate) / 2; i < 10; ++i, sampleTime += (this.emulator.ClockSpeed / baudRate)) {
 
@@ -120,12 +131,9 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 							}
 						}
 
-						Debug.Write(currentRxD ? "0" : "1");
-
 						if (currentRxD) data |= (1 << i);
 
 					}
-					Debug.WriteLine(string.Format(" ({0:X2})", (data >> 1) & 0xFF));
 
 					if ((data & 1) == 0 && ((data >> 9) & 1) == 1) {
 						this.OnDataRecieved(new SerialDataReceivedEventArgs((byte)(data >> 1)));
@@ -141,11 +149,10 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 			}
 
 			// Copy the CTS state.
-			this.emulator.SegaPorts[1].Up.State = this.CTS;
+			this.emulator.SegaPorts[1].Up.State = !this.CTS;
 
-			if (this.RTS && this.writeBuffer.Count > 0) {
+			if (!this.RTS && this.writeBuffer.Count > 0 && this.transmitBitQueue.Count == 0) {
 				var value = this.writeBuffer.Dequeue();
-				Debug.WriteLine(string.Format("--Write buffer: value={0:X2}, length={1}", value, writeBuffer.Count));
 				this.RawWrite(value);
 			}
 		}

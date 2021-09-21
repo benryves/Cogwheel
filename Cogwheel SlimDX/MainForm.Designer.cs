@@ -131,6 +131,7 @@
 			this.ColourDialog = new System.Windows.Forms.ColorDialog();
 			this.SaveVgmDialog = new System.Windows.Forms.SaveFileDialog();
 			this.OpenVgmDialog = new System.Windows.Forms.OpenFileDialog();
+			this.VDriveMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -177,6 +178,7 @@
             this.QuickStateSlotMenu,
             this.FileSep1,
             this.CassetteRecorderMenu,
+            this.VDriveMenu,
             this.RecentRomsMenu,
             this.FileSep2,
             this.PlayVgmMenu,
@@ -911,7 +913,7 @@
 			// StatusSpacer
 			// 
 			this.StatusSpacer.Name = "StatusSpacer";
-			this.StatusSpacer.Size = new System.Drawing.Size(239, 17);
+			this.StatusSpacer.Size = new System.Drawing.Size(270, 17);
 			this.StatusSpacer.Spring = true;
 			// 
 			// StatusNumLock
@@ -968,6 +970,13 @@
 			// OpenVgmDialog
 			// 
 			this.OpenVgmDialog.Filter = "VGM files (*.vgm;*.vgz)|*.vgm;*.vgz|All files (*.*)|*.*";
+			// 
+			// VDriveMenu
+			// 
+			this.VDriveMenu.Name = "VDriveMenu";
+			this.VDriveMenu.Size = new System.Drawing.Size(213, 22);
+			this.VDriveMenu.Text = "V&Drive";
+			this.VDriveMenu.Click += new System.EventHandler(this.VDriveMenu_Click);
 			// 
 			// MainForm
 			// 
@@ -1106,6 +1115,7 @@
 		private System.Windows.Forms.ToolStripMenuItem PaletteMenu;
 		private System.Windows.Forms.ToolStripMenuItem CassetteRecorderMenu;
 		private System.Windows.Forms.ToolStripStatusLabel StatusCassette;
+		private System.Windows.Forms.ToolStripMenuItem VDriveMenu;
 #endif
 	}
 }

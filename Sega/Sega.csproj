@@ -77,6 +77,7 @@
     <Compile Include="Hardware\Controllers\SegaControllerPort.cs" />
     <Compile Include="Hardware\Controllers\CassetteRecorder.cs" />
     <Compile Include="Hardware\Controllers\SerialPort.cs" />
+    <Compile Include="Hardware\Controllers\VDrive.cs" />
     <Compile Include="Hardware\DebugConsole.cs" />
     <Compile Include="Hardware\FloppyDiskController\FloppyDiskController.cs" />
     <Compile Include="Hardware\OPLL\emu2413.c.cs" />

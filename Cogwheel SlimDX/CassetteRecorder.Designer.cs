@@ -38,6 +38,7 @@ namespace BeeDevelopment.Cogwheel {
 			this.TapeCounterPosition = new System.Windows.Forms.Label();
 			this.CassetteRecorderMenu = new System.Windows.Forms.MenuStrip();
 			this.CassetteFileMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.CassetteFileNewMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.CassetteFileOpenMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.CassetteFileSep0 = new System.Windows.Forms.ToolStripSeparator();
 			this.CassetteFileExport = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,7 +53,7 @@ namespace BeeDevelopment.Cogwheel {
 			this.OpenCassetteDialog = new System.Windows.Forms.OpenFileDialog();
 			this.ExportFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.ExportFileDialog = new System.Windows.Forms.SaveFileDialog();
-			this.CassetteFileNewMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.CassetteConnectToEmulatorMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.TransportControls.SuspendLayout();
 			this.TapeProgressControls.SuspendLayout();
 			this.ProgressData.SuspendLayout();
@@ -270,6 +271,14 @@ namespace BeeDevelopment.Cogwheel {
 			this.CassetteFileMenu.Text = "&File";
 			this.CassetteFileMenu.DropDownOpening += new System.EventHandler(this.CassetteFileMenu_DropDownOpening);
 			// 
+			// CassetteFileNewMenu
+			// 
+			this.CassetteFileNewMenu.Name = "CassetteFileNewMenu";
+			this.CassetteFileNewMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+			this.CassetteFileNewMenu.Size = new System.Drawing.Size(199, 22);
+			this.CassetteFileNewMenu.Text = "&New blank tape";
+			this.CassetteFileNewMenu.Click += new System.EventHandler(this.CassetteFileNewMenu_Click);
+			// 
 			// CassetteFileOpenMenu
 			// 
 			this.CassetteFileOpenMenu.Name = "CassetteFileOpenMenu";
@@ -293,6 +302,7 @@ namespace BeeDevelopment.Cogwheel {
 			// CassetteOptionsMenu
 			// 
 			this.CassetteOptionsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CassetteConnectToEmulatorMenuItem,
             this.CassetteInvertPhaseMenuItem});
 			this.CassetteOptionsMenu.Name = "CassetteOptionsMenu";
 			this.CassetteOptionsMenu.Size = new System.Drawing.Size(61, 20);
@@ -302,7 +312,7 @@ namespace BeeDevelopment.Cogwheel {
 			// CassetteInvertPhaseMenuItem
 			// 
 			this.CassetteInvertPhaseMenuItem.Name = "CassetteInvertPhaseMenuItem";
-			this.CassetteInvertPhaseMenuItem.Size = new System.Drawing.Size(164, 22);
+			this.CassetteInvertPhaseMenuItem.Size = new System.Drawing.Size(212, 22);
 			this.CassetteInvertPhaseMenuItem.Text = "&Invert phase 180°";
 			this.CassetteInvertPhaseMenuItem.Click += new System.EventHandler(this.CassetteInvertPhaseMenuItem_Click);
 			// 
@@ -374,13 +384,12 @@ namespace BeeDevelopment.Cogwheel {
 			// 
 			this.ExportFileDialog.Filter = "All files (*.*)|*.*";
 			// 
-			// CassetteFileNewMenu
+			// CassetteConnectToEmulatorMenuItem
 			// 
-			this.CassetteFileNewMenu.Name = "CassetteFileNewMenu";
-			this.CassetteFileNewMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-			this.CassetteFileNewMenu.Size = new System.Drawing.Size(199, 22);
-			this.CassetteFileNewMenu.Text = "&New blank tape";
-			this.CassetteFileNewMenu.Click += new System.EventHandler(this.CassetteFileNewMenu_Click);
+			this.CassetteConnectToEmulatorMenuItem.Name = "CassetteConnectToEmulatorMenuItem";
+			this.CassetteConnectToEmulatorMenuItem.Size = new System.Drawing.Size(212, 22);
+			this.CassetteConnectToEmulatorMenuItem.Text = "&Connect to controller port";
+			this.CassetteConnectToEmulatorMenuItem.Click += new System.EventHandler(this.CassetteConnectToEmulatorMenuItem_Click);
 			// 
 			// CassetteRecorder
 			// 
@@ -442,5 +451,6 @@ namespace BeeDevelopment.Cogwheel {
 		private System.Windows.Forms.SaveFileDialog ExportFileDialog;
 		private System.Windows.Forms.CheckBox RecordButton;
 		private System.Windows.Forms.ToolStripMenuItem CassetteFileNewMenu;
+		private System.Windows.Forms.ToolStripMenuItem CassetteConnectToEmulatorMenuItem;
 	}
 }

@@ -286,6 +286,9 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 
 	public class CassetteRecorder {
 
+		public bool ConnectedToEmulator {
+			get; set;
+		}
 
 
 		public CassetteRecorderPlayState PlayState { get; private set; }
@@ -378,6 +381,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 		private int lastCpuCycles = 0;
 
 		public void UpdateState() {
+
+			if (!this.ConnectedToEmulator) return;
 
 			this.MotorOn = this.emulator.SegaPorts[1].TR.Direction == PinDirection.Output && !this.emulator.SegaPorts[1].TR.OutputState;
 
