@@ -110,7 +110,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers.VDrive {
 						this.NumericalMode = NumericalMode.Ascii;
 						this.WritePrompt();
 					} else if ((commandString == "IPH" && CommandSet == CommandSet.Extended) || (incomingData.Count == 1 && incomingData[0] == 0x91 && CommandSet == CommandSet.Shortened)) {
-						this.NumericalMode = NumericalMode.Ascii;
+						this.NumericalMode = NumericalMode.Binary;
 						this.WritePrompt();
 					} else if (commandString == "E" || commandString == "e") {
 						this.Write(commandString + "\r");
@@ -219,8 +219,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers.VDrive {
 		}
 		private void Write(uint dword) {
 			for (int i = 0; i < 4; ++i) {
-				byte b = (byte)(dword >> 24);
-				dword <<= 8;
+				byte b = (byte)dword;
+				dword >>= 8;
 				switch (this.NumericalMode) {
 					case NumericalMode.Binary:
 						this.Write(b);
