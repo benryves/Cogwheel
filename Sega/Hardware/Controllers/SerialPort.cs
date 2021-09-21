@@ -75,8 +75,15 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 			this.receivingData = false;
 		}
 
+		int lastUpdatedState = 0;
 
 		public void UpdateState() {
+
+			if (this.emulator.TotalExecutedCycles == lastUpdatedState) {
+				return;
+			} else {
+				lastUpdatedState = this.emulator.TotalExecutedCycles;
+			}
 
 			if (!this.ConnectedToEmulator) {
 				this.transmitBitQueue.Clear();
@@ -85,16 +92,31 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 				return;
 			}
 
-			while (this.transmitBitQueue.Count > 0) {
+			// Has the the RTS status changed?
+			var oldRTS = this.RTS;
+			this.RTS = this.emulator.SegaPorts[1].TR.Direction == PinDirection.Output ? this.emulator.SegaPorts[1].TR.State : true;
+			if (RTS != oldRTS) {
+				this.OnRtsChanged(new EventArgs());
+			}
+
+			// Copy the CTS state.
+			this.emulator.SegaPorts[1].Up.State = !this.CTS;
+
+			if (this.transmitBitQueue.Count > 0) {
 				var headOfQueue = this.transmitBitQueue.Peek();
-				if (headOfQueue.Key < this.emulator.TotalExecutedCycles) {
+				if (headOfQueue.Key < this.lastUpdatedState) {
 					this.TxD = headOfQueue.Value;
 					this.transmitBitQueue.Dequeue();
-					this.emulator.SegaPorts[1].Down.State = this.TxD;
-				} else {
-					break;
 				}
+			} else if (!this.RTS && this.writeBuffer.Count > 0 && this.transmitBitQueue.Count == 0) {
+				var value = this.writeBuffer.Dequeue();
+				this.RawWrite(value);
+				this.TxD = true;
+			} else {
+				this.TxD = true;
 			}
+
+			this.emulator.SegaPorts[1].Down.State = this.TxD;
 
 			this.RxD = this.emulator.SegaPorts[1].TH.Direction == PinDirection.Output ? this.emulator.SegaPorts[1].TH.State : true;
 
@@ -104,7 +126,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 					this.receiveBitQueue.Clear();
 					this.receiveBitQueue.Enqueue(new KeyValuePair<int, bool>(this.emulator.TotalExecutedCycles, this.RxD));
 					this.receiveStartTime = this.emulator.TotalExecutedCycles;
-					this.receiveEndTime = this.receiveStartTime + 10 * emulator.ClockSpeed / baudRate; // 10 bits: start, 8 data bits, stop.
+					this.receiveEndTime = this.receiveStartTime + 10 * this.emulator.ClockSpeed / baudRate; // 10 bits: start, 8 data bits, stop.
 				}
 			} else {
 
@@ -141,20 +163,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 				}
 			}
 
-			// Has the the RTS status changed?
-			var oldRTS = this.RTS;
-			this.RTS = this.emulator.SegaPorts[1].TR.Direction == PinDirection.Output ? this.emulator.SegaPorts[1].TR.State : true;
-			if (RTS != oldRTS) {
-				this.OnRtsChanged(new EventArgs());
-			}
-
-			// Copy the CTS state.
-			this.emulator.SegaPorts[1].Up.State = !this.CTS;
-
-			if (!this.RTS && this.writeBuffer.Count > 0 && this.transmitBitQueue.Count == 0) {
-				var value = this.writeBuffer.Dequeue();
-				this.RawWrite(value);
-			}
 		}
 
 		public event EventHandler<SerialDataReceivedEventArgs> DataRecieved;
@@ -169,20 +177,13 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 			RtsChanged?.Invoke(this, e);
 		}
 
-		
-
 		private Queue<byte> writeBuffer = new Queue<byte>();
 
 		public void Write(byte value) {
-
-			Debug.WriteLine(string.Format("Data out -> {0:X2}", value));
-
 			this.UpdateState();
-
-			if (this.RTS || this.writeBuffer.Count > 0) {
+			if (this.RTS || this.writeBuffer.Count > 0 || this.transmitBitQueue.Count > 0) {
 				// Not clear to send right now.
 				this.writeBuffer.Enqueue(value);
-				Debug.WriteLine(string.Format("Write buffer++: value={0:X2}, length={1}", value, writeBuffer.Count));
 			} else {
 				this.RawWrite(value);
 			}
@@ -195,7 +196,16 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 			}
 		}
 
+
+		int nextWriteTime = 0;
 		private void RawWrite(byte value) {
+			
+			int minNextWriteTime = this.lastUpdatedState;
+
+			if (nextWriteTime < minNextWriteTime) {
+				nextWriteTime = minNextWriteTime;
+			}
+
 			this.Write(false); // Start bit
 			for (int i = 0; i < 8; ++i) {
 				this.Write((value & (1 << i)) != 0); // Data bit
@@ -205,18 +215,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 			}
 		}
 
-		int nextWriteTime = 0;
 		private void Write(bool value) {
-
-			int minNextWriteTime = this.emulator.ExpectedExecutedCycles + 1024;
-
-
-			if (nextWriteTime < minNextWriteTime) {
-				nextWriteTime = minNextWriteTime;
-			}
-
 			this.transmitBitQueue.Enqueue(new KeyValuePair<int, bool>(nextWriteTime += this.emulator.ClockSpeed / this.baudRate, value));
-
 		}
 
 	}

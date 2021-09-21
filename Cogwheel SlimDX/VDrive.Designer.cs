@@ -30,7 +30,7 @@ namespace BeeDevelopment.Cogwheel {
 			// 
 			// InsertDriveButton
 			// 
-			this.InsertDriveButton.Location = new System.Drawing.Point(42, 36);
+			this.InsertDriveButton.Location = new System.Drawing.Point(12, 12);
 			this.InsertDriveButton.Name = "InsertDriveButton";
 			this.InsertDriveButton.Size = new System.Drawing.Size(161, 58);
 			this.InsertDriveButton.TabIndex = 0;
