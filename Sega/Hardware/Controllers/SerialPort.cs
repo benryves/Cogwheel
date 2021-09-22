@@ -79,11 +79,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 
 		public void UpdateState() {
 
-			if (this.emulator.TotalExecutedCycles == lastUpdatedState) {
-				return;
-			} else {
-				lastUpdatedState = this.emulator.TotalExecutedCycles;
-			}
+			lastUpdatedState = this.emulator.TotalExecutedCycles;
 
 			if (!this.ConnectedToEmulator) {
 				this.transmitBitQueue.Clear();
@@ -132,7 +128,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 
 				this.receiveBitQueue.Enqueue(new KeyValuePair<int, bool>(emulator.TotalExecutedCycles, RxD));
 
-				if (this.emulator.TotalExecutedCycles > this.receiveEndTime) {
+				if (this.lastUpdatedState > this.receiveEndTime) {
 
 					this.receivingData = false;
 
