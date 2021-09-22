@@ -29,6 +29,11 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers.VDrive {
 		NoDisk,
 	}
 
+	enum IncomingDataPurpose {
+		None,
+		WriteFile,
+	}
+
 	public class VDrive {
 
 		[DllImport("kernel32.dll", SetLastError = true)]
@@ -44,7 +49,13 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers.VDrive {
 		
 		private Emulator emulator;
 		List<byte> incomingData;
-		uint incomingDataPennding = 0;
+		uint incomingDataPending = 0;
+		bool incomingDataIsNumber = false;
+
+		IncomingDataPurpose incomingDataPurpose = IncomingDataPurpose.None;
+
+		private FileStream openFile = null;
+		private string openFileName = null;
 
 		public VDrive(Emulator emulator) {
 			this.emulator = emulator;
@@ -53,7 +64,6 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers.VDrive {
 
 			this.incomingData = new List<byte>();
 			this.emulator.SerialPort.DataRecieved += SerialPort_DataRecieved;
-			
 		}
 
 		public bool HasDisk {
@@ -87,10 +97,81 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers.VDrive {
 			return filename;
 		}
 
+		uint GetNumber(int offset, int size) {
+			switch (this.NumericalMode) {
+				case NumericalMode.Binary:
+					uint result = 0;
+					for (int i = 0; i < size; i++) {
+						result <<= 8;
+						result |= this.incomingData[offset + i];
+					}
+					return result;
+				case NumericalMode.Ascii:
+					try {
+						var numericString = Encoding.ASCII.GetString(this.incomingData.ToArray(), offset, this.incomingData.Count - offset).TrimEnd();
+						if (numericString.StartsWith("$")) {
+							return Convert.ToUInt32(numericString.Substring(1), 16);
+						} else if (numericString.StartsWith("0x")) {
+							return Convert.ToUInt32(numericString.Substring(2), 16);
+						} else {
+							return Convert.ToUInt32(numericString, 10);
+						}
+					} catch {
+						return 0;
+					}
+			}
+			return 0;
+		}
+
 		private void SerialPort_DataRecieved(object sender, SerialDataReceivedEventArgs e) {
-			if (incomingDataPennding > 0) {
+			if (incomingDataIsNumber) {
+				switch (this.NumericalMode) {
+					case NumericalMode.Binary:
+						this.incomingData.Add(e.Data);
+						if (incomingDataPending > 0) {
+							--incomingDataPending;
+						}
+						if (incomingDataPending == 0) {
+							incomingDataIsNumber = false;
+						}
+						return;
+					case NumericalMode.Ascii:
+						if ("$0123456789ABCDEFx".Contains(((char)e.Data).ToString())) {
+							this.incomingData.Add(e.Data);
+							return;
+						} else {
+							incomingDataIsNumber = false;
+							incomingDataPending = 0;
+						}
+						break;
+				}
+			}
+			if (incomingDataPending > 0) {
 				this.incomingData.Add(e.Data);
-				--incomingDataPennding;
+				if (--incomingDataPending == 0) {
+					switch (incomingDataPurpose) {
+						case IncomingDataPurpose.WriteFile:
+							if (!this.HasDisk) {
+								this.Write(ErrorMessage.NoDisk);
+							} else if (this.openFile == null) {
+								this.Write(ErrorMessage.Invalid);
+							} else {
+								try {
+									this.openFile.Write(incomingData.ToArray(), 0, incomingData.Count);
+									this.WritePrompt();
+								} catch {
+									this.Write(ErrorMessage.DiskFull);
+								}
+							}
+							
+							break;
+						default:
+							this.Write(ErrorMessage.BadCommand);
+							break;
+					}
+					incomingData.Clear();
+					incomingDataPurpose = IncomingDataPurpose.None;
+				}
 			} else if (e.Data == 0x0D) {
 				if (this.incomingData.Count == 0) {
 					if (this.HasDisk) {
@@ -117,6 +198,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers.VDrive {
 					} else if ((commandString == "DIR" && CommandSet == CommandSet.Extended) || (incomingData.Count == 1 && incomingData[0] == 0x01 && CommandSet == CommandSet.Shortened)) {
 						if (!this.HasDisk) {
 							this.Write(ErrorMessage.NoDisk);
+						} else if (this.openFile != null) {
+							this.Write(ErrorMessage.FileOpen);
 						} else {
 							this.emulator.SerialPort.Write(0x0D);
 							foreach (var fsi in Directory.GetFileSystemEntries(GetFullPath(""))) {
@@ -131,6 +214,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers.VDrive {
 					} else if ((commandString.StartsWith("DIR ") && CommandSet == CommandSet.Extended) || (commandString.StartsWith("\x01 ") && CommandSet == CommandSet.Shortened)) {
 						if (!this.HasDisk) {
 							this.Write(ErrorMessage.NoDisk);
+						} else if (this.openFile != null) {
+							this.Write(ErrorMessage.FileOpen);
 						} else {
 							var filename = commandString.Substring(CommandSet == CommandSet.Extended ? 4 : 2).ToUpperInvariant();
 							if (!IsValidFilename(filename)) {
@@ -161,6 +246,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers.VDrive {
 					} else if ((commandString.StartsWith("CD ") && CommandSet == CommandSet.Extended) || (commandString.StartsWith("\x02 ") && CommandSet == CommandSet.Shortened)) {
 						if (!this.HasDisk) {
 							this.Write(ErrorMessage.NoDisk);
+						} else if (this.openFile != null) {
+							this.Write(ErrorMessage.FileOpen);
 						} else {
 							var dirname = commandString.Substring(CommandSet == CommandSet.Extended ? 3 : 2).ToUpperInvariant();
 							if (!IsValidFilename(dirname)) {
@@ -179,6 +266,8 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers.VDrive {
 					} else if ((commandString.StartsWith("RD ") && CommandSet == CommandSet.Extended) || (commandString.StartsWith("\x04 ") && CommandSet == CommandSet.Shortened)) {
 						if (!this.HasDisk) {
 							this.Write(ErrorMessage.NoDisk);
+						} else if (this.openFile != null) {
+							this.Write(ErrorMessage.FileOpen);
 						} else {
 							var filename = commandString.Substring(CommandSet == CommandSet.Extended ? 3 : 2).ToUpperInvariant();
 							if (!IsValidFilename(filename)) {
@@ -193,11 +282,90 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers.VDrive {
 								}
 							}
 						}
+					} else if (
+						((commandString.StartsWith("OPW ") && CommandSet == CommandSet.Extended) || (commandString.StartsWith("\x09 ") && CommandSet == CommandSet.Shortened))
+					||
+						((commandString.StartsWith("OPR ") && CommandSet == CommandSet.Extended) || (commandString.StartsWith("\x0E ") && CommandSet == CommandSet.Shortened))
+					) {
+						if (!this.HasDisk) {
+							this.Write(ErrorMessage.NoDisk);
+						} else if (this.openFile != null) {
+							this.Write(ErrorMessage.FileOpen);
+						} else {
+							var filename = commandString.Substring(CommandSet == CommandSet.Extended ? 4 : 2).ToUpperInvariant().Split(' ')[0];
+							if (!IsValidFilename(filename)) {
+								this.Write(ErrorMessage.FilenameInvalid);
+							} else {
+								var fsi = new FileInfo(GetFullPath(filename));
+								try {
+									if ((commandString.StartsWith("OPW ") && CommandSet == CommandSet.Extended) || (commandString.StartsWith("\x09 ") && CommandSet == CommandSet.Shortened)) {
+										openFile = File.Open(fsi.FullName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+										openFile.Seek(0, SeekOrigin.End);
+									} else {
+										openFile = File.Open(fsi.FullName, FileMode.Open, FileAccess.Read);
+									}
+								} catch {
+									this.Write(ErrorMessage.CommandFailed);
+									openFile = null;
+									return;
+								}
+								openFileName = filename;
+								this.WritePrompt();
+							}
+						}
+					} else if ((commandString.StartsWith("CLF ") && CommandSet == CommandSet.Extended) || (commandString.StartsWith("\x0A ") && CommandSet == CommandSet.Shortened)) {
+						if (!this.HasDisk) {
+							this.Write(ErrorMessage.NoDisk);
+						} else if (this.openFile == null) {
+							this.Write(ErrorMessage.CommandFailed);
+						} else {
+							this.openFile.Close();
+							this.openFile = null;
+							var filename = commandString.Substring(CommandSet == CommandSet.Extended ? 4 : 2).ToUpperInvariant();
+							if (filename != this.openFileName) {
+								this.Write(ErrorMessage.CommandFailed);
+							} else {
+								this.WritePrompt();
+							}
+						}
+					} else if ((commandString.StartsWith("WRF ") && CommandSet == CommandSet.Extended) || (commandString.StartsWith("\x08 ") && CommandSet == CommandSet.Shortened)) {
+						if (!this.HasDisk) {
+							this.Write(ErrorMessage.NoDisk);
+						} else if (this.openFile == null) {
+							this.Write(ErrorMessage.CommandFailed);
+						} else {
+							this.incomingDataPending = this.GetNumber(CommandSet == CommandSet.Extended ? 4 : 2, 4);
+							this.incomingDataPurpose = IncomingDataPurpose.WriteFile;
+						}
+					} else if ((commandString.StartsWith("SEK ") && CommandSet == CommandSet.Extended) || (commandString.StartsWith("\x28 ") && CommandSet == CommandSet.Shortened)) {
+						if (!this.HasDisk) {
+							this.Write(ErrorMessage.NoDisk);
+						} else if (this.openFile == null) {
+							this.Write(ErrorMessage.CommandFailed);
+						} else {
+							try {
+								this.openFile.Position = this.GetNumber(CommandSet == CommandSet.Extended ? 4 : 2, 4);
+								this.WritePrompt();
+							} catch {
+								this.Write(ErrorMessage.CommandFailed);
+							}
+						}
 					} else {
 						this.Write(ErrorMessage.BadCommand);
 					}
 				}
 				this.incomingData.Clear();
+			} else if (e.Data == 0x20) {
+				var commandString = Encoding.ASCII.GetString(this.incomingData.ToArray());
+				if (
+					((commandString == "WRF" && CommandSet == CommandSet.Extended) || (commandString == "\x08" && CommandSet == CommandSet.Shortened)) ||
+					((commandString == "RDF" && CommandSet == CommandSet.Extended) || (commandString == "\x0B" && CommandSet == CommandSet.Shortened)) ||
+					((commandString == "SEK" && CommandSet == CommandSet.Extended) || (commandString == "\x28" && CommandSet == CommandSet.Shortened))
+				) {
+					this.incomingDataIsNumber = true;
+					this.incomingDataPending = 4;
+				}
+				this.incomingData.Add(e.Data);
 			} else {
 				this.incomingData.Add(e.Data);
 			}
