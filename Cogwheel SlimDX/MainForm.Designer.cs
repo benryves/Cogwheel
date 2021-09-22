@@ -40,6 +40,7 @@
 			this.dummyToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.FileSep1 = new System.Windows.Forms.ToolStripSeparator();
 			this.CassetteRecorderMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.VDriveMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.RecentRomsMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.dummyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.FileSep2 = new System.Windows.Forms.ToolStripSeparator();
@@ -131,7 +132,6 @@
 			this.ColourDialog = new System.Windows.Forms.ColorDialog();
 			this.SaveVgmDialog = new System.Windows.Forms.SaveFileDialog();
 			this.OpenVgmDialog = new System.Windows.Forms.OpenFileDialog();
-			this.VDriveMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.Menus.SuspendLayout();
 			this.Status.SuspendLayout();
 			this.SuspendLayout();
@@ -273,8 +273,15 @@
 			// 
 			this.CassetteRecorderMenu.Name = "CassetteRecorderMenu";
 			this.CassetteRecorderMenu.Size = new System.Drawing.Size(213, 22);
-			this.CassetteRecorderMenu.Text = "&Cassette recorder";
+			this.CassetteRecorderMenu.Text = "&Cassette recorder...";
 			this.CassetteRecorderMenu.Click += new System.EventHandler(this.CassetteRecorderMenu_Click);
+			// 
+			// VDriveMenu
+			// 
+			this.VDriveMenu.Name = "VDriveMenu";
+			this.VDriveMenu.Size = new System.Drawing.Size(213, 22);
+			this.VDriveMenu.Text = "V&Drive...";
+			this.VDriveMenu.Click += new System.EventHandler(this.VDriveMenu_Click);
 			// 
 			// RecentRomsMenu
 			// 
@@ -970,13 +977,6 @@
 			// OpenVgmDialog
 			// 
 			this.OpenVgmDialog.Filter = "VGM files (*.vgm;*.vgz)|*.vgm;*.vgz|All files (*.*)|*.*";
-			// 
-			// VDriveMenu
-			// 
-			this.VDriveMenu.Name = "VDriveMenu";
-			this.VDriveMenu.Size = new System.Drawing.Size(213, 22);
-			this.VDriveMenu.Text = "V&Drive";
-			this.VDriveMenu.Click += new System.EventHandler(this.VDriveMenu_Click);
 			// 
 			// MainForm
 			// 

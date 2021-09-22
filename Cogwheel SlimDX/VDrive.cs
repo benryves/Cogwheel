@@ -34,9 +34,15 @@ namespace BeeDevelopment.Cogwheel {
 
 		private void InsertDriveButton_Click(object sender, EventArgs e) {
 			if (this.InsertDriveFolderBrowser.ShowDialog(this) == DialogResult.OK) {
+				this.Drive.DiskPath = null;
 				this.Drive.DiskPath = this.InsertDriveFolderBrowser.SelectedPath;
 				this.Drive.CurrentDirectory = null;
 			}
+		}
+
+		private void RemoveDriveButton_Click(object sender, EventArgs e) {
+			this.Drive.DiskPath = null;
+			this.Drive.CurrentDirectory = null;
 		}
 	}
 }

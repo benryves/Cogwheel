@@ -26,6 +26,7 @@ namespace BeeDevelopment.Cogwheel {
 		private void InitializeComponent() {
 			this.InsertDriveButton = new System.Windows.Forms.Button();
 			this.InsertDriveFolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
+			this.RemoveDriveButton = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// InsertDriveButton
@@ -42,11 +43,22 @@ namespace BeeDevelopment.Cogwheel {
 			// 
 			this.InsertDriveFolderBrowser.Description = "Please select a folder to use as the emulated USB drive\'s file storage area.";
 			// 
+			// RemoveDriveButton
+			// 
+			this.RemoveDriveButton.Location = new System.Drawing.Point(12, 76);
+			this.RemoveDriveButton.Name = "RemoveDriveButton";
+			this.RemoveDriveButton.Size = new System.Drawing.Size(161, 23);
+			this.RemoveDriveButton.TabIndex = 1;
+			this.RemoveDriveButton.Text = "&Remove Drive";
+			this.RemoveDriveButton.UseVisualStyleBackColor = true;
+			this.RemoveDriveButton.Click += new System.EventHandler(this.RemoveDriveButton_Click);
+			// 
 			// VDrive
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(368, 172);
+			this.Controls.Add(this.RemoveDriveButton);
 			this.Controls.Add(this.InsertDriveButton);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "VDrive";
@@ -61,5 +73,6 @@ namespace BeeDevelopment.Cogwheel {
 
 		private System.Windows.Forms.Button InsertDriveButton;
 		private System.Windows.Forms.FolderBrowserDialog InsertDriveFolderBrowser;
+		private System.Windows.Forms.Button RemoveDriveButton;
 	}
 }
