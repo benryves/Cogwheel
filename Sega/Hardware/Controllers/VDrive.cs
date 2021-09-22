@@ -407,11 +407,29 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers.VDrive {
 					} else if ((commandString.StartsWith("WRF ") && CommandSet == CommandSet.Extended) || (commandString.StartsWith("\x08 ") && CommandSet == CommandSet.Shortened)) {
 						if (!this.HasDisk) {
 							this.Write(StatusMessage.NoDisk);
-						} else if (this.openFile == null) {
-							this.Write(StatusMessage.CommandFailed);
+						} else if (this.openFile == null || !this.openFile.CanWrite) {
+							this.Write(StatusMessage.Invalid);
 						} else {
 							this.incomingDataPending = this.GetNumber(CommandSet == CommandSet.Extended ? 4 : 2, 4);
 							this.incomingDataPurpose = IncomingDataPurpose.WriteFile;
+						}
+					} else if ((commandString.StartsWith("RDF ") && CommandSet == CommandSet.Extended) || (commandString.StartsWith("\x0B ") && CommandSet == CommandSet.Shortened)) {
+						if (!this.HasDisk) {
+							this.Write(StatusMessage.NoDisk);
+						} else if (this.openFile == null || !this.openFile.CanRead) {
+							this.Write(StatusMessage.Invalid);
+						} else {
+							var data = new byte[this.GetNumber(CommandSet == CommandSet.Extended ? 4 : 2, 4)];
+							int dataRead = 0;
+							try {
+								dataRead = this.openFile.Read(data, 0, data.Length);
+							} catch { }
+							this.Write(data);
+							if (dataRead < data.Length) {
+								this.Write(StatusMessage.CommandFailed);
+							} else {
+								this.WritePrompt();
+							}
 						}
 					} else if ((commandString.StartsWith("SEK ") && CommandSet == CommandSet.Extended) || (commandString.StartsWith("\x28 ") && CommandSet == CommandSet.Shortened)) {
 						if (!this.HasDisk) {
