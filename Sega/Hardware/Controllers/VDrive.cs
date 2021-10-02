@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace BeeDevelopment.Sega8Bit.Hardware.Controllers.VDrive {
 
@@ -123,20 +124,29 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers.VDrive {
 			return name.ToUpperInvariant();
 		}
 
+		static bool IsValidDirectoryName(string filename) {
+			if (string.IsNullOrEmpty(filename)) return false;
+			return filename == "." || filename == ".." || filename == "/" || IsValidFilename(filename);
+		}
+
 		static bool IsValidFilename(string filename) {
 			if (string.IsNullOrEmpty(filename)) return false;
-			foreach (var item in Path.GetInvalidFileNameChars()) {
-				if (filename.Contains(item.ToString())) {
-					return false;
-				}
-			}
-			return true;
+			filename = filename.ToUpperInvariant();
+			return new Regex(@"^[$%'-_@~`!\(\){}\^#&A-Z0-9]{1,8}(\.[$%'-_@~`!\(\){}\^#&A-Z0-9]{1,3})?$").IsMatch(filename);
 		}
 
 		string GetFullPath(string filename) {
-			if (!string.IsNullOrEmpty(this.CurrentDirectory)) filename = Path.Combine(this.CurrentDirectory, filename);
+			if (!string.IsNullOrEmpty(this.CurrentDirectory)) {
+				filename = Path.Combine(this.CurrentDirectory, filename);
+			}
+
+			filename = filename.Replace('\\', '/');
+
+			while (filename.StartsWith("/")) filename = filename.Substring(1);
+
 			if (!string.IsNullOrEmpty(this.DiskPath)) filename = Path.Combine(this.DiskPath, filename);
-			return filename;
+
+			return Path.GetFullPath(filename).Replace('\\', '/');
 		}
 
 		uint GetNumber(int offset, int size) {
@@ -326,15 +336,15 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers.VDrive {
 							this.Write(StatusMessage.FileOpen);
 						} else {
 							var dirname = commandString.Substring(CommandSet == CommandSet.Extended ? 3 : 2).ToUpperInvariant();
-							if (!IsValidFilename(dirname)) {
+							if (!IsValidDirectoryName(dirname)) {
 								this.Write(StatusMessage.FilenameInvalid);
 							} else {
 								var dirPath = GetFullPath(dirname);
 								var fsi = new DirectoryInfo(dirPath);
-								if (!fsi.Exists) {
+								if (!fsi.Exists || !(dirPath + "/").StartsWith(this.DiskPath.Replace('\\', '/') + "/")) {
 									this.Write(StatusMessage.CommandFailed);
 								} else {
-									this.CurrentDirectory = Path.Combine(this.CurrentDirectory ?? "", Path.GetFileName(dirPath));
+									this.CurrentDirectory = (dirPath + "/").Substring(this.DiskPath.Length + 1);
 									this.WritePrompt();
 								}
 							}
