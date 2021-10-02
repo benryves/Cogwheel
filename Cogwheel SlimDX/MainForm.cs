@@ -155,6 +155,10 @@ namespace BeeDevelopment.Cogwheel {
 							}
 							break;
 					}
+				} else if (Directory.Exists(arguments[i]) && this.Emulator.HasSerialPort) {
+					var vdrive = new VDrive();
+					vdrive.Show(this);
+					vdrive.InsertDrive(arguments[i]);
 				}
 
 			}
@@ -330,7 +334,6 @@ namespace BeeDevelopment.Cogwheel {
 			this.CassetteRecorderMenu.Checked = this.Emulator.CassetteRecorder != null && this.Emulator.CassetteRecorder.ConnectedToEmulator;
 
 			this.VDriveMenu.Visible = this.Emulator.HasSerialPort;
-			this.VDriveMenu.Checked = (this.Emulator.SerialPort is Sega8Bit.Hardware.Controllers.VDrive.VDrive);
 		}
 
 		private void UpdateFormTitle(string filename) {
