@@ -210,6 +210,7 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers.VDrive {
 							} else {
 								try {
 									this.openFile.Write(incomingData.ToArray(), 0, incomingData.Count);
+									this.openFile.SetLength(this.openFile.Position);
 									this.WritePrompt();
 								} catch {
 									this.Write(StatusMessage.DiskFull);
