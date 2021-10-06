@@ -184,8 +184,27 @@ namespace BeeDevelopment.Sega8Bit.Hardware.Controllers {
 						tapeBitStream.WriteDataBit(true);
 					}
 					break;
+				case 0x0111: // Chunk &0111 - carrier tone (previously 'high tone') with dummy byte
+					if (this.Data.Length != 4) throw new InvalidOperationException();
+					for (int i = this.Data[0] + (this.Data[1] * 256); i > 0; --i) {
+						tapeBitStream.WriteDataBit(true);
+					}
+					tapeBitStream.WriteDataByte(0xAA);
+					for (int i = this.Data[2] + (this.Data[3] * 256); i > 0; --i) {
+						tapeBitStream.WriteDataBit(true);
+					}
+					break;
 				case 0x0112: // Chunk &0112 - integer gap
-					for (int i = (this.Data[0] + (this.Data[1] * 256)) * 8; i > 0; --i) {
+					for (int i = (this.Data[0] + (this.Data[1] * 256)) * 4; i > 0; --i) {
+						tapeBitStream.Add(true);
+					}
+					break;
+				case 0x0116: // Chunk &0116 - floating point gap
+					float f = 0;
+					using (var br = new BinaryReader(new MemoryStream(this.Data))) {
+						f = br.ReadSingle();
+					}
+					for (int i = (int)Math.Ceiling(f * 4800); i > 0; --i) {
 						tapeBitStream.Add(true);
 					}
 					break;
